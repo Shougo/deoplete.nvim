@@ -30,8 +30,6 @@ let g:loaded_deoplete = 1
 
 command! -nargs=0 -bar DeopleteEnable
       \ call deoplete#init#enable()
-command! -nargs=0 -bar DeopleteDisable
-      \ call deoplete#init#disable()
 command! -nargs=0 -bar DeopleteLock
       \ call deoplete#commands#_lock()
 command! -nargs=0 -bar DeopleteUnlock

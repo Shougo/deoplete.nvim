@@ -54,18 +54,6 @@ function! deoplete#init#enable() abort "{{{
   doautocmd <nomodeline> deoplete InsertEnter
 endfunction"}}}
 
-function! deoplete#init#disable() abort "{{{
-  if !deoplete#init#is_enabled()
-    return
-  endif
-
-  let s:is_enabled = 0
-
-  augroup deoplete
-    autocmd!
-  augroup END
-endfunction"}}}
-
 function! deoplete#init#is_enabled() abort "{{{
   return s:is_enabled
 endfunction"}}}
