@@ -1,0 +1,51 @@
+"=============================================================================
+" FILE: deoplete.vim
+" AUTHOR:  Shougo Matsushita <Shougo.Matsu at gmail.com>
+" License: MIT license  {{{
+"     Permission is hereby granted, free of charge, to any person obtaining
+"     a copy of this software and associated documentation files (the
+"     "Software"), to deal in the Software without restriction, including
+"     without limitation the rights to use, copy, modify, merge, publish,
+"     distribute, sublicense, and/or sell copies of the Software, and to
+"     permit persons to whom the Software is furnished to do so, subject to
+"     the following conditions:
+"
+"     The above copyright notice and this permission notice shall be included
+"     in all copies or substantial portions of the Software.
+"
+"     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+"     OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+"     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+"     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+"     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+"     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+"     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+" }}}
+"=============================================================================
+
+if exists('g:loaded_deoplete')
+  finish
+endif
+let g:loaded_deoplete = 1
+
+command! -nargs=0 -bar DeopleteEnable
+      \ call deoplete#init#enable()
+command! -nargs=0 -bar DeopleteDisable
+      \ call deoplete#init#disable()
+command! -nargs=0 -bar DeopleteLock
+      \ call deoplete#commands#_lock()
+command! -nargs=0 -bar DeopleteUnlock
+      \ call deoplete#commands#_unlock()
+command! -nargs=0 -bar DeopleteToggle
+      \ call deoplete#commands#_toggle_lock()
+
+" Global options definition. "{{{
+if get(g:, 'deoplete#enable_at_startup', 0)
+  augroup deoplete
+    " Enable startup.
+    autocmd CursorHold,InsertEnter
+          \ * call deoplete#init#enable()
+  augroup END
+endif"}}}
+
+" vim: foldmethod=marker
