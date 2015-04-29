@@ -46,7 +46,7 @@ function! deoplete#init#enable() abort "{{{
 
   " Python3 initialization
   python3 import sys
-  execute 'python3 sys.path.insert(0, "' . s:base_directory . '")'
+  execute 'python3 sys.path.insert(0, "' . s:base_directory . '../python3")'
   python3 import deoplete.deoplete
   execute 'python3 deoplete = deoplete.deoplete.Deoplete("'
         \ . s:base_directory . '")'
