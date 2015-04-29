@@ -23,7 +23,7 @@
 " }}}
 "=============================================================================
 
-function! deoplete#helpers#get_input(event) "{{{
+function! deoplete#helpers#get_input(event) abort "{{{
   let input = ((a:event ==# 'InsertEnter' || mode() ==# 'i') ?
         \   (col('.')-1) : col('.')) >= len(getline('.')) ?
         \      getline('.') :
