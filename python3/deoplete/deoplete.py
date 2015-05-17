@@ -29,9 +29,9 @@ import deoplete.sources.buffer
 class Deoplete(object):
     def __init__(self, base_dir):
         self.base_dir = base_dir
-    def gather_candidates(self, input):
-        buffer = deoplete.sources.Buffer()
-        return buffer.gather_candidates()
+    def gather_candidates(self, context):
+        buffer = deoplete.sources.buffer.Buffer()
+        return buffer.gather_candidates({})
 
 @neovim.plugin
 class DeopleteHandlers(object):
@@ -40,5 +40,5 @@ class DeopleteHandlers(object):
 
     @neovim.rpc_export('completion_begin')
     def completion_begin(self, data):
-        self.vim.command('call feedkeys("\<C-x>\<C-p>")')
+        self.vim.command('call feedkeys("\<C-x>\<C-p>", "n")')
         # self.vim.command('call feedkeys("\<C-r>=\<CR>")')

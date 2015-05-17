@@ -24,17 +24,27 @@
 #=============================================================================
 
 import re
+import vim
 
 class Buffer(object):
     def __init__(self):
+        pass
 
-        def get_complete_position(self, context):
-            m = re.search(context.input, r'[a-zA-Z_][a-zA-Z0-9_]')
-            if m:
-                return m.start()
-            else:
-                return -1
+    def get_complete_position(self, context):
+        m = re.search(context.input, r'[a-zA-Z_][a-zA-Z0-9_]')
+        if m:
+            return m.start()
+        else:
+            return -1
 
-        def gather_candidates(self):
-            return ['hoge', 'piyo', 'hogera']
+    def gather_candidates(self, context):
+        b = vim.current.buffer
+        p = re.compile('[a-zA-Z_]\w*')
+        candidates = []
+        line = 0
+        m = len(b)
+        while line < m:
+                candidates += p.findall(b[line])
+                line += 1
+        return candidates
 
