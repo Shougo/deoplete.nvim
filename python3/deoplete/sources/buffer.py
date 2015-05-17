@@ -37,13 +37,10 @@ class Buffer(object):
             return -1
 
     def gather_candidates(self, vim, context):
-        b = vim.current.buffer
-        p = re.compile('[a-zA-Z_]\w*')
         candidates = []
-        line = 0
-        m = len(b)
-        while line < m:
-                candidates += p.findall(b[line])
-                line += 1
+        p = re.compile('[a-zA-Z_]\w*')
+
+        for l in vim.current.buffer:
+                candidates += p.findall(l)
         return candidates
 
