@@ -23,6 +23,7 @@
 # }}}
 #=============================================================================
 
+import neovim
 import deoplete.sources.buffer
 
 class Deoplete(object):
@@ -32,3 +33,12 @@ class Deoplete(object):
         buffer = deoplete.sources.Buffer()
         return buffer.gather_candidates()
 
+@neovim.plugin
+class DeopleteHandlers(object):
+    def __init__(self, vim):
+        self.vim = vim
+
+    @neovim.rpc_export('completion_begin')
+    def completion_begin(self, data):
+        self.vim.command('call feedkeys("\<C-x>\<C-p>")')
+        # self.vim.command('call feedkeys("\<C-r>=\<CR>")')
