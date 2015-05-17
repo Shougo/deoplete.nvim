@@ -46,7 +46,8 @@ function! s:do_auto_complete(event) abort "{{{
         \ }
 
   " call rpcnotify(0, 'completion_begin', data)
-  python3 print(deoplete.gather_candidates({}))
+  python3 import vim
+  python3 print(deoplete.gather_candidates(vim, {}))
 endfunction"}}}
 
 " vim: foldmethod=marker

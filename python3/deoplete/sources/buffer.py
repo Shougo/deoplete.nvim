@@ -24,20 +24,19 @@
 #=============================================================================
 
 import re
-import vim
 
 class Buffer(object):
     def __init__(self):
         pass
 
-    def get_complete_position(self, context):
+    def get_complete_position(self, vim, context):
         m = re.search(context.input, r'[a-zA-Z_][a-zA-Z0-9_]')
         if m:
             return m.start()
         else:
             return -1
 
-    def gather_candidates(self, context):
+    def gather_candidates(self, vim, context):
         b = vim.current.buffer
         p = re.compile('[a-zA-Z_]\w*')
         candidates = []
