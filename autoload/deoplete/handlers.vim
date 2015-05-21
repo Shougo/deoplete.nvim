@@ -23,27 +23,16 @@
 " }}}
 "=============================================================================
 
-function! deoplete#handlers#init() abort "{{{
+function! deoplete#handlers#_init() abort "{{{
   augroup deoplete
     autocmd!
   augroup END
 
   for event in ['TextChangedI', 'InsertEnter']
     execute 'autocmd deoplete' event '*'
-          \ 'call rpcnotify(g:deoplete#_channel_id, "completion_begin", {})'
+          \ 'call rpcnotify(g:deoplete#_channel_id, "completion_begin",
+          \  deoplete#init#_context("' . event . '"))'
   endfor
-endfunction"}}}
-
-let s:current_completion_id = 0
-
-function! s:do_auto_complete(event) abort "{{{
-  let s:current_completion_id += 1
-  let data = {
-        \ 'id': s:current_completion_id,
-        \ 'input': deoplete#helpers#get_input(a:event),
-        \ 'position': getpos('.'),
-        \ 'filetype': &filetype,
-        \ }
 endfunction"}}}
 
 " vim: foldmethod=marker

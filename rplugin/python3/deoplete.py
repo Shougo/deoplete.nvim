@@ -64,12 +64,14 @@ class DeopleteHandlers(object):
         + str(self.vim.channel_id))
 
     @neovim.rpc_export('completion_begin')
-    def completion_begin(self, data):
-        candidates = self.deoplete.gather_candidates(self.vim, {})
+    def completion_begin(self, context):
+        candidates = self.deoplete.gather_candidates(self.vim, context)
         if not candidates:
                 return
-        self.vim.command('let g:deoplete#_candidates = ' + str(candidates))
-        self.vim.command('call feedkeys("\<C-r>='
-        + 'deoplete#mappings#_do_auto_complete(0, g:deoplete#_candidates)\<CR>'
-        + '\<C-r>=deoplete#mappings#_popup_post()\<CR>", "n")')
+        self.vim.command(
+          'let g:deoplete#_complete_position = 0')
+        self.vim.command(
+          'let g:deoplete#_candidates = ' + str(candidates))
+        self.vim.command(
+          'call feedkeys("\<Plug>(deoplete_start_auto_complete)")')
 

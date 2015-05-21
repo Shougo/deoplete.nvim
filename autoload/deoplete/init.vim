@@ -48,7 +48,8 @@ function! deoplete#init#enable() abort "{{{
 
   let s:is_enabled = 1
 
-  call deoplete#handlers#init()
+  call deoplete#handlers#_init()
+  call deoplete#mappings#_init()
 
   execute 'DeopleteInitializePython' s:base_directory
 
@@ -57,6 +58,17 @@ endfunction"}}}
 
 function! deoplete#init#is_enabled() abort "{{{
   return s:is_enabled
+endfunction"}}}
+
+function! deoplete#init#_context(event) abort "{{{
+  return {
+        \ 'id': b:changedtick,
+        \ 'input': deoplete#helpers#get_input(a:event),
+        \ 'complete_str':
+        \   matchstr(deoplete#helpers#get_input(a:event), '\h\w*$'),
+        \ 'position': getpos('.'),
+        \ 'filetype': &filetype,
+        \ }
 endfunction"}}}
 
 " vim: foldmethod=marker
