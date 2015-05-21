@@ -25,15 +25,16 @@
 
 function! deoplete#mappings#_init() abort "{{{
   inoremap <silent> <Plug>(deoplete_start_auto_complete) <C-r>=
-        \ deoplete#mappings#_do_auto_complete(
-        \     g:deoplete#_complete_position, g:deoplete#_candidates)<CR><C-r>=
+        \ deoplete#mappings#_do_auto_complete(g:deoplete#_context)<CR><C-r>=
         \ deoplete#mappings#_popup_post()<CR>
 endfunction"}}}
 
-function! deoplete#mappings#_do_auto_complete(pos, candidates) abort "{{{
-  call complete(match(
-        \ deoplete#helpers#get_input('TextChangedI'), '\h\w*$') + 1,
-        \ a:candidates)
+function! deoplete#mappings#_do_auto_complete(context) abort "{{{
+  if b:changedtick == a:context.changedtick
+    call complete(match(
+          \ deoplete#helpers#get_input('TextChangedI'), '\h\w*$') + 1,
+          \ a:context.candidates)
+  endif
   return ''
 endfunction"}}}
 

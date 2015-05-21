@@ -62,7 +62,7 @@ endfunction"}}}
 
 function! deoplete#init#_context(event) abort "{{{
   return {
-        \ 'id': b:changedtick,
+        \ 'changedtick': b:changedtick,
         \ 'input': deoplete#helpers#get_input(a:event),
         \ 'complete_str':
         \   matchstr(deoplete#helpers#get_input(a:event), '\h\w*$'),

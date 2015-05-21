@@ -69,9 +69,14 @@ class DeopleteHandlers(object):
         if not candidates:
                 return
         self.vim.command(
-          'let g:deoplete#_complete_position = 0')
+          'let g:deoplete#_context = {}')
         self.vim.command(
-          'let g:deoplete#_candidates = ' + str(candidates))
+          'let g:deoplete#_context.complete_position = 0')
+        self.vim.command(
+          'let g:deoplete#_context.changedtick = '
+            + str(context[b'changedtick']))
+        self.vim.command(
+          'let g:deoplete#_context.candidates = ' + str(candidates))
         self.vim.command(
           'call feedkeys("\<Plug>(deoplete_start_auto_complete)")')
 
