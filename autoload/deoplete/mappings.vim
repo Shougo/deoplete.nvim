@@ -23,4 +23,15 @@
 " }}}
 "=============================================================================
 
+function! deoplete#mappings#_do_auto_complete(pos, candidates) abort "{{{
+  call complete(match(
+        \ deoplete#helpers#get_input('TextChangedI'), '\h\w*$') + 1,
+        \ a:candidates)
+  return ''
+endfunction"}}}
+
+function! deoplete#mappings#_popup_post() abort "{{{
+  return !pumvisible() ? '' : "\<C-p>"
+endfunction"}}}
+
 " vim: foldmethod=marker

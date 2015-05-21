@@ -24,13 +24,52 @@
 #=============================================================================
 
 import neovim
+import re
+
+class Buffer(object):
+    def __init__(self):
+        pass
+
+    def get_complete_position(self, vim, context):
+        m = re.search(context.input, r'[a-zA-Z_][a-zA-Z0-9_]')
+        if m:
+            return m.start()
+        else:
+            return -1
+
+    def gather_candidates(self, vim, context):
+        candidates = []
+        p = re.compile('[a-zA-Z_]\w*')
+
+        for l in vim.current.buffer:
+                candidates += p.findall(l)
+        return candidates
+
+class Deoplete(object):
+    def __init__(self, base_dir):
+        self.base_dir = base_dir
+    def gather_candidates(self, vim, context):
+        buffer = Buffer()
+        return buffer.gather_candidates(vim, {})
 
 @neovim.plugin
 class DeopleteHandlers(object):
     def __init__(self, vim):
         self.vim = vim
 
+    @neovim.command('DeopleteInitializePython', sync=True, nargs=1)
+    def init_python(self, base_dir):
+        self.deoplete = Deoplete(base_dir)
+        self.vim.command('let g:deoplete#_channel_id = '
+        + str(self.vim.channel_id))
+
     @neovim.rpc_export('completion_begin')
     def completion_begin(self, data):
-        self.vim.command('call feedkeys("\<C-x>\<C-p>", "n")')
-        # self.vim.command('call feedkeys("\<C-r>=\<CR>")')
+        candidates = self.deoplete.gather_candidates(self.vim, {})
+        if not candidates:
+                return
+        self.vim.command('let g:deoplete#_candidates = ' + str(candidates))
+        self.vim.command('call feedkeys("\<C-r>='
+        + 'deoplete#mappings#_do_auto_complete(0, g:deoplete#_candidates)\<CR>'
+        + '\<C-r>=deoplete#mappings#_popup_post()\<CR>", "n")')
+

@@ -30,7 +30,7 @@ function! deoplete#handlers#init() abort "{{{
 
   for event in ['TextChangedI', 'InsertEnter']
     execute 'autocmd deoplete' event '*'
-          \ 'call s:do_auto_complete("'.event.'")'
+          \ 'call rpcnotify(g:deoplete#_channel_id, "completion_begin", {})'
   endfor
 endfunction"}}}
 
@@ -44,10 +44,6 @@ function! s:do_auto_complete(event) abort "{{{
         \ 'position': getpos('.'),
         \ 'filetype': &filetype,
         \ }
-
-  call rpcnotify(0, 'completion_begin', data)
-  " python3 import vim
-  " python3 print(deoplete.gather_candidates(vim, {}))
 endfunction"}}}
 
 " vim: foldmethod=marker
