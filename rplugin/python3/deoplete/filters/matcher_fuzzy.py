@@ -1,5 +1,5 @@
 #=============================================================================
-# FILE: context.py
+# FILE: matcher_fuzzy.py
 # AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 # License: MIT license  {{{
 #     Permission is hereby granted, free of charge, to any person obtaining
@@ -23,8 +23,25 @@
 # }}}
 #=============================================================================
 
-class Context(object):
+import re
+
+class Filter(object):
     def __init__(self):
-        self.base_dir = base_dir
+        pass
 
+    def filter(self, vim, context):
+        p = re.compile(fuzzy_escape(context['complete_str']))
+        # debug(vim, fuzzy_escape(context['complete_str']))
+        return [x for x in context['candidates'] if p.match(x)]
 
+def fuzzy_escape(string):
+    # Escape string for python regexp.
+    string = re.sub(r'([a-zA-Z0-9_])', r'\1.*', escape(string))
+    return string
+
+def escape(string):
+    # Escape string for python regexp.
+    return re.sub('[\[\]().*+?^$-]', '\\\1', string)
+
+def debug(vim, msg):
+        vim.command('echomsg string("' + msg + '")')

@@ -30,7 +30,7 @@ function! deoplete#mappings#_init() abort "{{{
 endfunction"}}}
 
 function! deoplete#mappings#_do_auto_complete(context) abort "{{{
-  if b:changedtick == a:context.changedtick
+  if b:changedtick == get(a:context, 'changedtick', -1)
     call complete(match(
           \ deoplete#helpers#get_input('TextChangedI'), '\h\w*$') + 1,
           \ a:context.candidates)

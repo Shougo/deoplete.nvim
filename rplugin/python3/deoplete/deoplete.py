@@ -24,12 +24,36 @@
 #=============================================================================
 
 import neovim
-import deoplete.sources.buffer
+import importlib
+from .sources.buffer import Buffer
+# from .filters.matcher_head import Filter
+from .filters.matcher_fuzzy import Filter
 
 class Deoplete(object):
     def __init__(self, base_dir):
         self.base_dir = base_dir
     def gather_candidates(self, vim, context):
-        buffer = deoplete.sources.buffer.Buffer()
-        return buffer.gather_candidates(vim, {})
+        # Skip completion
+        if vim.eval('&l:completefunc') != '' \
+          and vim.eval('&l:buftype').find('nofile') >= 0:
+            return []
 
+        # Encoding conversion
+        encoding = vim.eval('&encoding')
+        context = { k.decode(encoding) :
+                    (v.decode(encoding) if isinstance(v, bytes) else v)
+                    for k, v in context.items()}
+        # debug(vim, context)
+
+        if context['complete_str'] == '':
+            return []
+
+        buffer = Buffer()
+        context['candidates'] = buffer.gather_candidates(vim, context)
+
+        filter = Filter()
+        context['candidates'] = filter.filter(vim, context)
+        return context['candidates']
+
+def debug(vim, msg):
+        vim.command('echomsg string(' + str(msg) + ')')
