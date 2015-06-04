@@ -36,13 +36,13 @@ function! deoplete#init#enable() abort "{{{
 
   if !has('nvim') || !has('python3')
     echomsg '[deoplete] deoplete.nvim does not work with this version.'
-    echomsg '[deoplete] It requires neovim with Python3 support ("+python3").'
+    echomsg '[deoplete] It requires Neovim with Python3 support ("+python3").'
     return
   endif
 
   if !exists(':DeopleteInitializePython')
     UpdateRemotePlugins
-    echomsg '[deoplete] Please restart neovim.'
+    echomsg '[deoplete] Please restart Neovim.'
     return
   endif
 
