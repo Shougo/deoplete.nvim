@@ -1,0 +1,160 @@
+*deoplete.txt*	Dark powered asynchronous completion framework for neovim.
+
+Version: 0.0
+Author: Shougo <Shougo.Matsu at gmail.com>
+License: MIT license  {{{
+    Permission is hereby granted, free of charge, to any person obtaining
+    a copy of this software and associated documentation files (the
+    "Software"), to deal in the Software without restriction, including
+    without limitation the rights to use, copy, modify, merge, publish,
+    distribute, sublicense, and/or sell copies of the Software, and to
+    permit persons to whom the Software is furnished to do so, subject to
+    the following conditions:
+    The above copyright notice and this permission notice shall be included
+    in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+    OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+    SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+}}}
+
+CONTENTS					*deoplete-contents*
+
+Introduction		|deoplete-introduction|
+Install			|deoplete-install|
+Interface		|deoplete-interface|
+  Commands		  |deoplete-commands|
+  Variables		  |deoplete-variables|
+  Key mappings		  |deoplete-key-mappings|
+  Functions		  |deoplete-functions|
+Examples		|deoplete-examples|
+Sources			|deoplete-sources|
+Create source		|deoplete-create-source|
+Create filter		|deoplete-create-filter|
+FILTERS			|deoplete-filters|
+External sources	|deoplete-external-sources|
+FAQ			|deoplete-faq|
+
+==============================================================================
+INTRODUCTION					*deoplete-introduction*
+
+*deoplete* is the abbreviation of "dark powered neo-completion".  It
+provides asynchronous keyword completion system in the
+current buffer.  Deoplete cannot be customized and has not many
+features currently.  It is provided for testing purpose.
+
+Note: deoplete may consume more memory than other plugins do.
+
+Improvements in deoplete in comparison to |neocomplete|:
+
+1. Real asynchronous completion behavior like |YouCompleteMe| by default.
+2. Uses Python3 to implement sources.
+3. Removes legacy interface.
+4. Requires |if_python3|.
+
+==============================================================================
+INSTALL						*deoplete-install*
+
+Note: deoplete requires Neovim(latest is recommended) with Python3 enabled.
+
+1. Extract the files and put them in your Neovim directory
+   (usually `~/.nvim/`).
+2. Execute the `:UpdateRemotePlugins` and restart Neovim.
+3. Execute the `:DeopleteEnable` command or
+   set "let g:deoplete#enable_at_startup = 1" in your `.nvimrc`
+
+If ":echo has('python3')" returns `1`, then you're done; otherwise, see below.
+
+You can enable Python3 interface with pip: >
+
+    sudo pip3 install neovim
+
+If you want to read for Neovim-python/python3 interface install documentation,
+you should read |nvim-python|.
+
+==============================================================================
+INTERFACE					*deoplete-interface*
+
+------------------------------------------------------------------------------
+COMMANDS 					*deoplete-commands*
+
+:DeopleteEnable				*:DeopleteEnable*
+		Validate deoplete and initialize it.
+
+------------------------------------------------------------------------------
+VARIABLES 					*deoplete-variables*
+
+					*g:deoplete#enable_at_startup*
+g:deoplete#enable_at_startup
+		Deoplete gets started automatically when Neovim starts if
+		this value is 1.
+
+		With the default value 0, you cannot use deoplete
+		unless you start it manually.
+
+					*g:deoplete#enable_ignore_case*
+g:deoplete#enable_ignore_case
+		When deoplete looks for candidate completion, this
+		variable controls whether deoplete ignores the upper-
+		and lowercase.  If it is 1, deoplete ignores case.
+
+		Default value is 'ignorecase'.
+
+					*g:deoplete#enable_smart_case*
+g:deoplete#enable_smart_case
+		When a capital letter is included in input, deoplete does
+		not ignore the upper- and lowercase.
+
+		Default value is 'infercase'.
+
+------------------------------------------------------------------------------
+FUNCTIONS 					*deoplete-functions*
+
+deoplete#initialize()			*deoplete#initialize()*
+		Initialize deoplete and sources.
+		Note: It enables deoplete.
+		Note: You should call it in |VimEnter| autocmd.
+		User customization for deoplete must be set before
+		initialization of deoplete.
+
+------------------------------------------------------------------------------
+KEY MAPPINGS 					*deoplete-key-mappings*
+
+==============================================================================
+EXAMPLES					*deoplete-examples*
+>
+	" Use deoplete.
+	let g:deoplete#enable_at_startup = 1
+	" Use smartcase.
+	let g:deoplete#enable_smart_case = 1
+<
+==============================================================================
+SOURCES						*deoplete-sources*
+
+buffer						*deoplete-source-buffer*
+		This source collects keywords from current buffer.
+
+------------------------------------------------------------------------------
+USER SOURCES 					*deoplete-user-sources*
+
+==============================================================================
+FILTERS						*deoplete-filters*
+
+==============================================================================
+CREATE SOURCE					*deoplete-create-source*
+
+==============================================================================
+CREATE FILTER					*deoplete-create-filter*
+
+==============================================================================
+EXTERNAL SOURCES				*deoplete-external-sources*
+
+==============================================================================
+FAQ						*deoplete-faq*
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:noet:fen:noet:
