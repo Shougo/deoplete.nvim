@@ -27,6 +27,13 @@ if !exists('s:is_enabled')
   let s:is_enabled = 0
 endif
 
+" Global options definition. "{{{
+let g:deoplete#enable_ignore_case =
+      \ get(g:, 'deoplete#enable_ignore_case', &ignorecase)
+let g:deoplete#enable_smart_case =
+      \ get(g:, 'deoplete#enable_smart_case', &infercase)
+"}}}
+
 let s:base_directory = escape(expand('<sfile>:p:h'), '\')
 
 function! deoplete#init#enable() abort "{{{
@@ -68,6 +75,8 @@ function! deoplete#init#_context(event) abort "{{{
         \   matchstr(deoplete#helpers#get_input(a:event), '\h\w*$'),
         \ 'position': getpos('.'),
         \ 'filetype': &filetype,
+        \ 'ignorecase': g:deoplete#enable_ignore_case,
+        \ 'smartcase': g:deoplete#enable_smart_case,
         \ }
 endfunction"}}}
 

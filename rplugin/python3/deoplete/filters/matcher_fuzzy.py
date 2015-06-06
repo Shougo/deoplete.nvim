@@ -30,9 +30,14 @@ class Filter(object):
         pass
 
     def filter(self, vim, context):
-        p = re.compile(fuzzy_escape(context['complete_str']))
-        # debug(vim, fuzzy_escape(context['complete_str']))
-        return [x for x in context['candidates'] if p.match(x)]
+        complete_str = context['complete_str']
+        if context['ignorecase']:
+            complete_str = complete_str.lower()
+        p = re.compile(fuzzy_escape(complete_str))
+        # debug(vim, fuzzy_escape(complete_str))
+        return [x for x in context['candidates'] if p.match(x.lower())] \
+            if context['ignorecase'] \
+            else [x for x in context['candidates'] if p.match(x)]
 
 def fuzzy_escape(string):
     # Escape string for python regexp.

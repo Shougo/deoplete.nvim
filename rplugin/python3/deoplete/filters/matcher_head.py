@@ -28,6 +28,13 @@ class Filter(object):
         pass
 
     def filter(self, vim, context):
-        max = len(context['complete_str'])
+        complete_str = context['complete_str']
+        if context['ignorecase']:
+            complete_str = complete_str.lower()
+        max = len(complete_str)
         return [x for x in context['candidates']
-                if x.find(context['complete_str'], 0, max) == 0]
+                if x.lower().find(complete_str, 0, max) == 0] \
+            if context['ignorecase'] \
+            else [x for x in context['candidates']
+                  if x.find(complete_str, 0, max) == 0]
+

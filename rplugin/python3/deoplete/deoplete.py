@@ -24,6 +24,7 @@
 #=============================================================================
 
 import neovim
+import re
 import importlib
 from .sources.buffer import Buffer
 # from .filters.matcher_head import Filter
@@ -50,6 +51,11 @@ class Deoplete(object):
 
         buffer = Buffer()
         context['candidates'] = buffer.gather_candidates(vim, context)
+
+        # Set ignorecase
+        if context['smartcase'] \
+                and re.search(r'[A-Z]', context['complete_str']):
+            context['ignorecase'] = 0
 
         filter = Filter()
         context['candidates'] = filter.filter(vim, context)
