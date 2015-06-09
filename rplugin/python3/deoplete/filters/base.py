@@ -1,5 +1,5 @@
 #=============================================================================
-# FILE: matcher_head.py
+# FILE: base.py
 # AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 # License: MIT license  {{{
 #     Permission is hereby granted, free of charge, to any person obtaining
@@ -23,25 +23,14 @@
 # }}}
 #=============================================================================
 
-from .base import Base
+from abc import abstractmethod
 
-class Filter(Base):
+class Base(object):
     def __init__(self):
-        Base.__init__(self)
+        self.name = ''
+        self.description = ''
+        pass
 
-        self.name = 'matcher_head'
-        self.description = 'head_matcher'
-
+    @abstractmethod
     def filter(self, vim, context):
-        complete_str = context['complete_str']
-        if context['ignorecase']:
-            complete_str = complete_str.lower()
-        input_len = len(complete_str)
-        return [x for x in context['candidates']
-                if len(x) > input_len \
-                   and x.lower().find(complete_str, 0, input_len) == 0] \
-            if context['ignorecase'] \
-            else [x for x in context['candidates']
-                  if len(x) > input_len \
-                     and x.find(complete_str, 0, input_len) == 0]
-
+        pass

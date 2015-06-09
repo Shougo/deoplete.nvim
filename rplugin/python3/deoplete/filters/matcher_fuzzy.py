@@ -24,20 +24,27 @@
 #=============================================================================
 
 import re
+from .base import Base
 
-class Filter(object):
+class Filter(Base):
     def __init__(self):
-        pass
+        Base.__init__(self)
+
+        self.name = 'matcher_head'
+        self.description = 'head_matcher'
 
     def filter(self, vim, context):
         complete_str = context['complete_str']
         if context['ignorecase']:
             complete_str = complete_str.lower()
         p = re.compile(fuzzy_escape(complete_str))
+        input_len = len(complete_str)
         # debug(vim, fuzzy_escape(complete_str))
-        return [x for x in context['candidates'] if p.match(x.lower())] \
+        return [x for x in context['candidates'] \
+                if len(x) > input_len and p.match(x.lower())] \
             if context['ignorecase'] \
-            else [x for x in context['candidates'] if p.match(x)]
+            else [x for x in context['candidates'] \
+                  if len(x) > input_len and p.match(x)]
 
 def fuzzy_escape(string):
     # Escape string for python regexp.
