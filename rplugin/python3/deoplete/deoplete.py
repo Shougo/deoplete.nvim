@@ -61,7 +61,7 @@ class Deoplete(object):
     def debug(self, msg):
         self.vim.command('echomsg string("' + str(msg) + '")')
 
-    def gather_candidates(self, vim, context):
+    def gather_candidates(self, context):
         # Skip completion
         if self.vim.eval('&l:completefunc') != '' \
           and self.vim.eval('&l:buftype').find('nofile') >= 0:

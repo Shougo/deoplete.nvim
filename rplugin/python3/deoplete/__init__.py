@@ -39,7 +39,7 @@ class DeopleteHandlers(object):
 
     @neovim.rpc_export('completion_begin')
     def completion_begin(self, context):
-        candidates = self.deoplete.gather_candidates(self.vim, context)
+        candidates = self.deoplete.gather_candidates(context)
         if not candidates or self.vim.eval('mode()') != 'i':
                 return
         self.vim.command(
