@@ -35,7 +35,9 @@ class Deoplete(object):
         self.vim = vim
         self.filters = {}
         self.sources = {}
+        self.runtimepath = ''
 
+    def load_sources(self):
         # Load sources from runtimepath
         for path in self.vim.eval(
                 "globpath(&runtimepath, \
@@ -44,9 +46,10 @@ class Deoplete(object):
             source = importlib.machinery.SourceFileLoader(
                 'deoplete.sources.' + name[: -3], path).load_module()
             if hasattr(source, 'Source'):
-                 self.sources[name] = source.Source()
+                self.sources[name[: -3]] = source.Source()
         # self.debug(self.sources)
 
+    def load_filters(self):
         # Load filters from runtimepath
         for path in self.vim.eval(
                 "globpath(&runtimepath, \
@@ -55,7 +58,7 @@ class Deoplete(object):
             filter = importlib.machinery.SourceFileLoader(
                 'deoplete.filters.' + name[: -3], path).load_module()
             if hasattr(filter, 'Filter'):
-                 self.filters[name] = filter.Filter()
+                self.filters[name[: -3]] = filter.Filter()
         # self.debug(self.filters)
 
     def debug(self, msg):
@@ -66,6 +69,11 @@ class Deoplete(object):
         if self.vim.eval('&l:completefunc') != '' \
           and self.vim.eval('&l:buftype').find('nofile') >= 0:
             return []
+
+        if self.vim.eval('&runtimepath') != self.runtimepath:
+            # Recache
+            self.load_sources()
+            self.load_filters()
 
         # Encoding conversion
         encoding = self.vim.eval('&encoding')
@@ -82,21 +90,20 @@ class Deoplete(object):
                 and re.search(r'[A-Z]', context['complete_str']):
             context['ignorecase'] = 0
 
-        sources = ['buffer', 'neosnippet']
+        # sources = ['buffer', 'neosnippet']
+        # sources = ['buffer']
+        sources = []
         candidates = []
-        for source_name in sources:
-            key = source_name + '.py'
-            if not key in self.sources:
+        for source_name, source in self.sources.items():
+            if sources and (not source_name in sources):
                 continue
 
-            source = self.sources[key]
             context['candidates'] = source.gather_candidates(
                 self.vim, context)
 
             for filter_name in source.filters:
-                key = filter_name + '.py'
-                if key in self.filters:
-                    context['candidates'] = self.filters[key].filter(
+                if filter_name in self.filters:
+                    context['candidates'] = self.filters[filter_name].filter(
                         self.vim, context)
             # self.debug(context['candidates'])
             candidates += context['candidates']
