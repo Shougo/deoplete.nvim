@@ -31,9 +31,9 @@ class DeopleteHandlers(object):
     def __init__(self, vim):
         self.vim = vim
 
-    @neovim.command('DeopleteInitializePython', sync=True, nargs=1)
-    def init_python(self, base_dir):
-        self.deoplete = Deoplete(base_dir, self.vim)
+    @neovim.command('DeopleteInitializePython', sync=True, nargs=0)
+    def init_python(self):
+        self.deoplete = Deoplete(self.vim)
         self.vim.command('let g:deoplete#_channel_id = '
         + str(self.vim.channel_id))
 

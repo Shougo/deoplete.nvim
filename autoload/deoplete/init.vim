@@ -34,8 +34,6 @@ let g:deoplete#enable_smart_case =
       \ get(g:, 'deoplete#enable_smart_case', &infercase)
 "}}}
 
-let s:base_directory = escape(expand('<sfile>:p:h'), '\')
-
 function! deoplete#init#enable() abort "{{{
   if deoplete#init#is_enabled()
     return
@@ -58,7 +56,7 @@ function! deoplete#init#enable() abort "{{{
   call deoplete#handlers#_init()
   call deoplete#mappings#_init()
 
-  execute 'DeopleteInitializePython' s:base_directory
+  DeopleteInitializePython
 
   doautocmd <nomodeline> deoplete InsertEnter
 endfunction"}}}

@@ -31,8 +31,7 @@ import deoplete.sources
 import deoplete.filters
 
 class Deoplete(object):
-    def __init__(self, base_dir, vim):
-        self.base_dir = base_dir
+    def __init__(self, vim):
         self.vim = vim
         self.filters = {}
         self.sources = {}
