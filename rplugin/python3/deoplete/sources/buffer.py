@@ -25,8 +25,9 @@
 
 import re
 
-class Buffer(object):
+class Source(object):
     def __init__(self):
+        self.filters = ['matcher_fuzzy']
         pass
 
     def get_complete_position(self, vim, context):

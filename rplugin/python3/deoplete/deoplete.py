@@ -25,41 +25,82 @@
 
 import neovim
 import re
-import importlib
-from .sources.buffer import Buffer
-# from .filters.matcher_head import Filter
-from .filters.matcher_fuzzy import Filter
+import importlib.machinery
+import os.path
+import deoplete.sources
+import deoplete.filters
 
 class Deoplete(object):
-    def __init__(self, base_dir):
+    def __init__(self, base_dir, vim):
         self.base_dir = base_dir
+        self.vim = vim
+        self.filters = {}
+        self.sources = {}
+
+        # Load sources from runtimepath
+        for path in self.vim.eval(
+                "globpath(&runtimepath, \
+                'rplugin/python3/deoplete/sources/*.py')").split("\n"):
+            name = os.path.basename(path)
+            source = importlib.machinery.SourceFileLoader(
+                'deoplete.sources.' + name[: -3], path).load_module()
+            if hasattr(source, 'Source'):
+                 self.sources[name] = source.Source()
+        # self.debug(self.sources)
+
+        # Load filters from runtimepath
+        for path in self.vim.eval(
+                "globpath(&runtimepath, \
+                'rplugin/python3/deoplete/filters/*.py')").split("\n"):
+            name = os.path.basename(path)
+            filter = importlib.machinery.SourceFileLoader(
+                'deoplete.filters.' + name[: -3], path).load_module()
+            if hasattr(filter, 'Filter'):
+                 self.filters[name] = filter.Filter()
+        # self.debug(self.filters)
+
+    def debug(self, msg):
+        self.vim.command('echomsg string("' + str(msg) + '")')
+
     def gather_candidates(self, vim, context):
         # Skip completion
-        if vim.eval('&l:completefunc') != '' \
-          and vim.eval('&l:buftype').find('nofile') >= 0:
+        if self.vim.eval('&l:completefunc') != '' \
+          and self.vim.eval('&l:buftype').find('nofile') >= 0:
             return []
 
         # Encoding conversion
-        encoding = vim.eval('&encoding')
+        encoding = self.vim.eval('&encoding')
         context = { k.decode(encoding) :
                     (v.decode(encoding) if isinstance(v, bytes) else v)
                     for k, v in context.items()}
-        # debug(vim, context)
+        # self.debug(context)
 
         if context['complete_str'] == '':
             return []
-
-        buffer = Buffer()
-        context['candidates'] = buffer.gather_candidates(vim, context)
 
         # Set ignorecase
         if context['smartcase'] \
                 and re.search(r'[A-Z]', context['complete_str']):
             context['ignorecase'] = 0
 
-        filter = Filter()
-        context['candidates'] = filter.filter(vim, context)
-        return context['candidates']
+        sources = ['buffer', 'neosnippet']
+        candidates = []
+        for source_name in sources:
+            key = source_name + '.py'
+            if not key in self.sources:
+                continue
 
-def debug(vim, msg):
-        vim.command('echomsg string(' + str(msg) + ')')
+            source = self.sources[key]
+            context['candidates'] = source.gather_candidates(
+                self.vim, context)
+
+            for filter_name in source.filters:
+                key = filter_name + '.py'
+                if key in self.filters:
+                    context['candidates'] = self.filters[key].filter(
+                        self.vim, context)
+            # self.debug(context['candidates'])
+            candidates += context['candidates']
+
+        return candidates
+
