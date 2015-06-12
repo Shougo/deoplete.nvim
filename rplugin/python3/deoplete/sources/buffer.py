@@ -27,6 +27,7 @@ import re
 
 class Source(object):
     def __init__(self):
+        self.mark = '[B]'
         self.filters = ['matcher_fuzzy']
         pass
 
@@ -43,5 +44,5 @@ class Source(object):
 
         for l in vim.current.buffer:
                 candidates += p.findall(l)
-        return candidates
+        return [{ 'word': x } for x in candidates]
 

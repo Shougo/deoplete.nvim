@@ -106,7 +106,17 @@ class Deoplete(object):
                     context['candidates'] = self.filters[filter_name].filter(
                         self.vim, context)
             # self.debug(context['candidates'])
+
+            # On post filter
+            if hasattr(source, 'on_post_filter'):
+                context['candidates'] = source.on_post_filter(
+                    self.vim, context)
+
+            # Set default menu
+            for candidate in context['candidates']:
+                if not 'menu' in candidate:
+                    candidate['menu'] = source.mark
+
             candidates += context['candidates']
 
         return candidates
-

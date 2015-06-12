@@ -41,10 +41,10 @@ class Filter(Base):
         input_len = len(complete_str)
         # debug(vim, fuzzy_escape(complete_str))
         return [x for x in context['candidates'] \
-                if len(x) > input_len and p.match(x.lower())] \
+                if len(x['word']) > input_len and p.match(x['word'].lower())] \
             if context['ignorecase'] \
             else [x for x in context['candidates'] \
-                  if len(x) > input_len and p.match(x)]
+                  if len(x['word']) > input_len and p.match(x['word'])]
 
 def fuzzy_escape(string):
     # Escape string for python regexp.
