@@ -45,6 +45,15 @@ function! deoplete#init#enable() abort "{{{
     return
   endif
 
+  if &completeopt !~# 'noinsert\|noselect'
+    try
+      set completeopt+=noinsert,noselect
+    catch
+      echomsg '[deoplete] deoplete.nvim does not work with this version.'
+      echomsg '[deoplete] Please update neovim to latest version.'
+    endtry
+  endif
+
   if !exists(':DeopleteInitializePython')
     UpdateRemotePlugins
     echomsg '[deoplete] Please restart Neovim.'

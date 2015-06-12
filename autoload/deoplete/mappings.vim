@@ -24,9 +24,8 @@
 "=============================================================================
 
 function! deoplete#mappings#_init() abort "{{{
-  inoremap <silent> <Plug>(deoplete_start_auto_complete) <C-r>=
-        \ deoplete#mappings#_do_auto_complete(g:deoplete#_context)<CR><C-r>=
-        \ deoplete#mappings#_popup_post()<CR>
+  inoremap <silent> <Plug>(deoplete_start_auto_complete)
+        \ <C-r>=deoplete#mappings#_do_auto_complete(g:deoplete#_context)<CR>
 endfunction"}}}
 
 function! deoplete#mappings#_do_auto_complete(context) abort "{{{
@@ -36,10 +35,6 @@ function! deoplete#mappings#_do_auto_complete(context) abort "{{{
           \ a:context.candidates)
   endif
   return ''
-endfunction"}}}
-
-function! deoplete#mappings#_popup_post() abort "{{{
-  return !pumvisible() ? '' : "\<C-p>"
 endfunction"}}}
 
 " vim: foldmethod=marker
