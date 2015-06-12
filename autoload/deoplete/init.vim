@@ -51,12 +51,12 @@ function! deoplete#init#enable() abort "{{{
     return
   endif
 
+  DeopleteInitializePython
+
   let s:is_enabled = 1
 
   call deoplete#handlers#_init()
   call deoplete#mappings#_init()
-
-  DeopleteInitializePython
 
   doautocmd <nomodeline> deoplete InsertEnter
 endfunction"}}}
