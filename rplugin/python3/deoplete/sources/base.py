@@ -34,9 +34,12 @@ class Base(object):
         self.sorters = []
         self.converters = []
 
-    @abstractmethod
     def get_complete_position(self, vim, context):
-        pass
+        m = re.search(context.input, r'[a-zA-Z_][a-zA-Z0-9_]')
+        if m:
+            return m.start()
+        else:
+            return -1
 
     @abstractmethod
     def gather_candidate(self, vim, context):

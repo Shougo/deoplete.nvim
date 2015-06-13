@@ -33,13 +33,6 @@ class Source(Base):
         self.mark = '[B]'
         pass
 
-    def get_complete_position(self, vim, context):
-        m = re.search(context.input, r'[a-zA-Z_][a-zA-Z0-9_]')
-        if m:
-            return m.start()
-        else:
-            return -1
-
     def gather_candidates(self, vim, context):
         candidates = []
         p = re.compile('[a-zA-Z_]\w*')
