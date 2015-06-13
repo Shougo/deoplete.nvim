@@ -24,11 +24,14 @@
 "=============================================================================
 
 function! deoplete#mappings#_init() abort "{{{
-  inoremap <silent> <Plug>(deoplete_start_auto_complete)
-        \ <C-r>=deoplete#mappings#_do_auto_complete(g:deoplete#_context)<CR>
+  inoremap <silent> <Plug>(deoplete_start_complete)
+        \ <C-r>=deoplete#mappings#_do_complete(g:deoplete#_context)<CR>
+  inoremap <silent> <Plug>(deoplete_start_manual_complete)
+        \ <C-r>=call rpcnotify(g:deoplete#_channel_id, 'completion_begin',
+        \  deoplete#init#_context('Manual'))<CR>
 endfunction"}}}
 
-function! deoplete#mappings#_do_auto_complete(context) abort "{{{
+function! deoplete#mappings#_do_complete(context) abort "{{{
   if b:changedtick == get(a:context, 'changedtick', -1)
     call complete(match(
           \ deoplete#helpers#get_input('TextChangedI'), '\h\w*$') + 1,

@@ -52,5 +52,5 @@ class DeopleteHandlers(object):
         self.vim.command(
           'let g:deoplete#_context.candidates = ' + str(candidates))
         self.vim.command(
-          'call feedkeys("\<Plug>(deoplete_start_auto_complete)")')
+          'call feedkeys("\<Plug>(deoplete_start_complete)")')
 
