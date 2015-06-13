@@ -24,12 +24,16 @@
 #=============================================================================
 
 import neovim
+import re
 from .deoplete import Deoplete
 
 @neovim.plugin
 class DeopleteHandlers(object):
     def __init__(self, vim):
         self.vim = vim
+
+    def debug(self, msg):
+        self.vim.command('echomsg string("' + str(msg) + '")')
 
     @neovim.command('DeopleteInitializePython', sync=True, nargs=0)
     def init_python(self):
@@ -39,6 +43,24 @@ class DeopleteHandlers(object):
 
     @neovim.rpc_export('completion_begin')
     def completion_begin(self, context):
+        # Encoding conversion
+        encoding = self.vim.eval('&encoding')
+        context = { k.decode(encoding) :
+                    (v.decode(encoding) if isinstance(v, bytes) else v)
+                    for k, v in context.items()}
+
+        # Call omni completion
+        omni_pattern = self.vim.eval(
+            'deoplete#util#get_buffer_config('\
+            +'"b:deoplete#omni_pattern", deoplete#omni_patterns,'\
+            +'g:deoplete#_omni_patterns)')
+        # self.debug(omni_pattern)
+        if omni_pattern != '' \
+                and re.search('('+omni_pattern+')$', context['input']) \
+                and self.vim.eval('mode()') == 'i':
+            self.vim.command(
+                'call feedkeys("\<C-x>\<C-o>", "n")')
+
         candidates = self.deoplete.gather_candidates(context)
         if not candidates or self.vim.eval('mode()') != 'i':
                 return
@@ -48,7 +70,7 @@ class DeopleteHandlers(object):
           'let g:deoplete#_context.complete_position = 0')
         self.vim.command(
           'let g:deoplete#_context.changedtick = '
-            + str(context[b'changedtick']))
+            + str(context['changedtick']))
         self.vim.command(
           'let g:deoplete#_context.candidates = ' + str(candidates))
         self.vim.command(

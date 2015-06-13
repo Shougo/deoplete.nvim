@@ -118,6 +118,25 @@ g:deoplete#auto_completion_start_length
 
 		Default value is 2.
 
+				*g:deoplete#omni_patterns*
+g:deoplete#omni_patterns
+		This dictionary records keyword patterns to Omni completion.
+		This is appointed in regular expression every file type.
+		If this pattern is not defined or empty pattern, deoplete
+		does not call 'omnifunc'.
+		Note: If it is a set, deoplete will call 'omnifunc'
+		directly.  So almost deoplete features are disabled.
+>
+		let g:deoplete#omni_patterns = {}
+		let g:deoplete#omni_patterns.ruby =
+		\ '[^. *\t]\.\w*\|\h\w*::'
+<
+		Default value is in g:deoplete#_omni_patterns.
+
+				*b:deoplete#omni_patterns*
+b:deoplete#omni_patterns
+		It is the keyword pattern to Omni completion in the buffer.
+
 ------------------------------------------------------------------------------
 FUNCTIONS 					*deoplete-functions*
 

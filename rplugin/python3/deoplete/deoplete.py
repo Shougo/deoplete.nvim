@@ -75,11 +75,6 @@ class Deoplete(object):
             self.load_sources()
             self.load_filters()
 
-        # Encoding conversion
-        encoding = self.vim.eval('&encoding')
-        context = { k.decode(encoding) :
-                    (v.decode(encoding) if isinstance(v, bytes) else v)
-                    for k, v in context.items()}
         # self.debug(context)
 
         if context['event'] != 'Manual' \

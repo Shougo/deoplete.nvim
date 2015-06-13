@@ -77,6 +77,28 @@ function! deoplete#init#_variables() abort "{{{
         \ 'g:deoplete#enable_smart_case', &ignorecase)
   call deoplete#util#set_default(
         \ 'g:deoplete#auto_completion_start_length', &ignorecase)
+  call deoplete#util#set_default(
+        \ 'g:deoplete#omni_patterns', {})
+  call deoplete#util#set_default(
+        \ 'g:deoplete#_omni_patterns', {})
+
+  " Initialize omni completion pattern. "{{{
+  call deoplete#util#set_pattern(
+        \ g:deoplete#_omni_patterns,
+        \ 'html,xhtml,xml,markdown,mkd',
+        \ '<[^>]*')
+  call deoplete#util#set_pattern(
+        \ g:deoplete#_omni_patterns,
+        \ 'css,scss,sass',
+        \ '^\s+\w+|\w+[):;]?\s+\w*|[@!]')
+  call deoplete#util#set_pattern(
+        \ g:deoplete#_omni_patterns,
+        \ 'javascript',
+        \ '[^. \t]\.([a-zA-Z_]\w*)?')
+  call deoplete#util#set_pattern(
+        \g:deoplete#_omni_patterns,
+        \ 'python', '[^. \t]\.\w*')
+  "}}}
 endfunction"}}}
 
 function! deoplete#init#_context(event, sources) abort "{{{
