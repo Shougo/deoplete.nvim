@@ -33,7 +33,6 @@ class Base(object):
         self.matchers = ['matcher_fuzzy']
         self.sorters = []
         self.converters = []
-        pass
 
     @abstractmethod
     def get_complete_position(self, vim, context):
