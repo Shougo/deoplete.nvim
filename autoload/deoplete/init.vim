@@ -66,6 +66,7 @@ function! deoplete#init#enable() abort "{{{
 
   call deoplete#handlers#_init()
   call deoplete#mappings#_init()
+  call deoplete#echodoc#init()
 
   doautocmd <nomodeline> deoplete InsertEnter
 endfunction"}}}
