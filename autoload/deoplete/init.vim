@@ -51,6 +51,7 @@ function! deoplete#init#enable() abort "{{{
     catch
       echomsg '[deoplete] deoplete.nvim does not work with this version.'
       echomsg '[deoplete] Please update neovim to latest version.'
+      return
     endtry
   endif
 
