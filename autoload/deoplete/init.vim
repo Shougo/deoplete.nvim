@@ -27,14 +27,9 @@ if !exists('s:is_enabled')
   let s:is_enabled = 0
 endif
 
-" Global options definition. "{{{
-let g:deoplete#enable_ignore_case =
-      \ get(g:, 'deoplete#enable_ignore_case', &ignorecase)
-let g:deoplete#enable_smart_case =
-      \ get(g:, 'deoplete#enable_smart_case', &infercase)
-let g:deoplete#auto_completion_start_length =
-      \ get(g:, 'deoplete#auto_completion_start_length', 2)
-"}}}
+function! deoplete#init#is_enabled() abort "{{{
+  return s:is_enabled
+endfunction"}}}
 
 function! deoplete#init#enable() abort "{{{
   if deoplete#init#is_enabled()
@@ -67,6 +62,7 @@ function! deoplete#init#enable() abort "{{{
 
   let s:is_enabled = 1
 
+  call deoplete#init#_variables()
   call deoplete#handlers#_init()
   call deoplete#mappings#_init()
   call deoplete#echodoc#init()
@@ -74,8 +70,13 @@ function! deoplete#init#enable() abort "{{{
   doautocmd <nomodeline> deoplete InsertEnter
 endfunction"}}}
 
-function! deoplete#init#is_enabled() abort "{{{
-  return s:is_enabled
+function! deoplete#init#_variables() abort "{{{
+  call deoplete#util#set_default(
+        \ 'g:deoplete#enable_ignore_case', &ignorecase)
+  call deoplete#util#set_default(
+        \ 'g:deoplete#enable_smart_case', &ignorecase)
+  call deoplete#util#set_default(
+        \ 'g:deoplete#auto_completion_start_length', &ignorecase)
 endfunction"}}}
 
 function! deoplete#init#_context(event, sources) abort "{{{
