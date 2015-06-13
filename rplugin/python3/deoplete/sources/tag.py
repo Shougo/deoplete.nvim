@@ -43,8 +43,10 @@ class Source(Base):
         candidates = []
         p = re.compile('^[a-zA-Z_]\w*(?=\t)')
 
-        for tags_file in vim.eval('tagfiles()'):
+        for tags_file in vim.eval(
+                'map(tagfiles(), "fnamemodify(v:val, \\":p\\")")'):
             with open(tags_file, 'r') as tags_file:
                 for l in tags_file.readlines():
                     candidates += p.findall(l)
         return [{ 'word': x } for x in list(set(candidates))]
+
