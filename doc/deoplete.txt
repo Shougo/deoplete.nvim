@@ -132,14 +132,14 @@ deoplete#initialize()			*deoplete#initialize()*
 KEY MAPPINGS 					*deoplete-key-mappings*
 
 				*deoplete#mappings#start_manual_complete()*
-deoplete#mappings#start_manual_complete([{sources}])
+deoplete#mappings#manual_complete([{sources}])
 		Use this function on inoremap <expr>.  The keymapping call the
 		completion of deoplete.  When you rearrange the completion
 		of the Vim standard, you use it.
 		If you give {sources} argument, deoplete will call {sources}.
 		{sources} is name of source or list of sources name.
 >
-		inoremap <expr><Tab>  deoplete#mappings#start_manual_complete()
+		inoremap <expr><Tab>  deoplete#mappings#manual_complete()
 <
 ==============================================================================
 EXAMPLES					*deoplete-examples*

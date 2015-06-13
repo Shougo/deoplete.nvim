@@ -37,7 +37,7 @@ function! deoplete#mappings#_do_complete(context) abort "{{{
   return ''
 endfunction"}}}
 
-function! deoplete#mappings#start_manual_complete(...) abort "{{{
+function! deoplete#mappings#manual_complete(...) abort "{{{
   " Start complete.
   return "\<C-o>:call rpcnotify(g:deoplete#_channel_id, 'completion_begin',
         \  deoplete#init#_context(
