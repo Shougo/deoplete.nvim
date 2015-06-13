@@ -32,6 +32,8 @@ let g:deoplete#enable_ignore_case =
       \ get(g:, 'deoplete#enable_ignore_case', &ignorecase)
 let g:deoplete#enable_smart_case =
       \ get(g:, 'deoplete#enable_smart_case', &infercase)
+let g:deoplete#auto_completion_start_length =
+      \ get(g:, 'deoplete#auto_completion_start_length', 2)
 "}}}
 
 function! deoplete#init#enable() abort "{{{
@@ -76,9 +78,10 @@ function! deoplete#init#is_enabled() abort "{{{
   return s:is_enabled
 endfunction"}}}
 
-function! deoplete#init#_context(event) abort "{{{
+function! deoplete#init#_context(event, sources) abort "{{{
   return {
         \ 'changedtick': b:changedtick,
+        \ 'event': a:event,
         \ 'input': deoplete#helpers#get_input(a:event),
         \ 'complete_str':
         \   matchstr(deoplete#helpers#get_input(a:event), '\h\w*$'),
@@ -86,6 +89,7 @@ function! deoplete#init#_context(event) abort "{{{
         \ 'filetype': &filetype,
         \ 'ignorecase': g:deoplete#enable_ignore_case,
         \ 'smartcase': g:deoplete#enable_smart_case,
+        \ 'sources': a:sources,
         \ }
 endfunction"}}}
 

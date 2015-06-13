@@ -31,7 +31,7 @@ function! deoplete#handlers#_init() abort "{{{
   for event in ['TextChangedI', 'InsertEnter']
     execute 'autocmd deoplete' event '*'
           \ 'call rpcnotify(g:deoplete#_channel_id, "completion_begin",
-          \  deoplete#init#_context("' . event . '"))'
+          \  deoplete#init#_context("' . event . '", []))'
   endfor
 endfunction"}}}
 

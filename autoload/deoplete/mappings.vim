@@ -26,9 +26,6 @@
 function! deoplete#mappings#_init() abort "{{{
   inoremap <silent> <Plug>(deoplete_start_complete)
         \ <C-r>=deoplete#mappings#_do_complete(g:deoplete#_context)<CR>
-  inoremap <silent> <Plug>(deoplete_start_manual_complete)
-        \ <C-r>=call rpcnotify(g:deoplete#_channel_id, 'completion_begin',
-        \  deoplete#init#_context('Manual'))<CR>
 endfunction"}}}
 
 function! deoplete#mappings#_do_complete(context) abort "{{{
@@ -38,6 +35,13 @@ function! deoplete#mappings#_do_complete(context) abort "{{{
           \ a:context.candidates)
   endif
   return ''
+endfunction"}}}
+
+function! deoplete#mappings#start_manual_complete(...) abort "{{{
+  " Start complete.
+  return "\<C-o>:call rpcnotify(g:deoplete#_channel_id, 'completion_begin',
+        \  deoplete#init#_context(
+        \    'Manual'," . string(get(a:000, 0, [])) . "))\<CR>"
 endfunction"}}}
 
 " vim: foldmethod=marker

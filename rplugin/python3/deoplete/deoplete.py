@@ -82,7 +82,9 @@ class Deoplete(object):
                     for k, v in context.items()}
         # self.debug(context)
 
-        if context['complete_str'] == '':
+        if context['event'] != 'Manual' \
+                    and len(context['complete_str']) < self.vim.eval(
+                        'g:deoplete#auto_completion_start_length'):
             return []
 
         # Set ignorecase
@@ -92,7 +94,7 @@ class Deoplete(object):
 
         # sources = ['buffer', 'neosnippet']
         # sources = ['buffer']
-        sources = []
+        sources = context['sources']
         candidates = []
         for source_name, source in self.sources.items():
             if sources and (not source_name in sources):

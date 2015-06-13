@@ -111,6 +111,13 @@ g:deoplete#enable_smart_case
 
 		Default value is 'infercase'.
 
+				*g:deoplete#auto_completion_start_length*
+g:deoplete#auto_completion_start_length
+		This variable controls the number of the input completion
+		at the time of key input automatically.
+
+		Default value is 2.
+
 ------------------------------------------------------------------------------
 FUNCTIONS 					*deoplete-functions*
 
@@ -124,6 +131,16 @@ deoplete#initialize()			*deoplete#initialize()*
 ------------------------------------------------------------------------------
 KEY MAPPINGS 					*deoplete-key-mappings*
 
+				*deoplete#mappings#start_manual_complete()*
+deoplete#mappings#start_manual_complete([{sources}])
+		Use this function on inoremap <expr>.  The keymapping call the
+		completion of deoplete.  When you rearrange the completion
+		of the Vim standard, you use it.
+		If you give {sources} argument, deoplete will call {sources}.
+		{sources} is name of source or list of sources name.
+>
+		inoremap <expr><Tab>  deoplete#mappings#start_manual_complete()
+<
 ==============================================================================
 EXAMPLES					*deoplete-examples*
 >
