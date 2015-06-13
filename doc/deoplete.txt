@@ -138,7 +138,7 @@ SOURCES						*deoplete-sources*
 buffer						*deoplete-source-buffer*
 		This source collects keywords from current buffer.
 
-tags						*deoplete-source-tags*
+tag						*deoplete-source-tag*
 		This source collects keywords from |ctags| files.
 
 ------------------------------------------------------------------------------
