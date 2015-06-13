@@ -1,6 +1,6 @@
 #=============================================================================
-# FILE: tags.py
-# AUTHOR: Felipe Morales <hel.sheep at gmail.com>
+# FILE: base.py
+# AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 # License: MIT license  {{{
 #     Permission is hereby granted, free of charge, to any person obtaining
 #     a copy of this software and associated documentation files (the
@@ -23,28 +23,23 @@
 # }}}
 #=============================================================================
 
-import re
-from .base import Base
+from abc import abstractmethod
 
-class Source(Base):
+class Base(object):
     def __init__(self):
-        Base.__init__(self)
+        self.name = ''
+        self.description = ''
+        self.marker = ''
+        self.matchers = ['matcher_fuzzy']
+        self.sorters = []
+        self.converters = []
+        pass
 
-        self.mark = '[T]'
-
+    @abstractmethod
     def get_complete_position(self, vim, context):
-        m = re.search(context.input, r'[a-zA-Z_][a-zA-Z0-9_]')
-        if m:
-            return m.start()
-        else:
-            return -1
+        pass
 
-    def gather_candidates(self, vim, context):
-        candidates = []
-        p = re.compile('^[a-zA-Z_]\w*(?=\t)')
+    @abstractmethod
+    def gather_candidate(self, vim, context):
+        pass
 
-        for tags_file in vim.eval('tagfiles()'):
-            with open(tags_file, 'r') as tags_file:
-                for l in tags_file.readlines():
-                    candidates += p.findall(l)
-        return [{ 'word': x } for x in list(set(candidates))]

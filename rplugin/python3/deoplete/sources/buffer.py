@@ -24,11 +24,13 @@
 #=============================================================================
 
 import re
+from .base import Base
 
-class Source(object):
+class Source(Base):
     def __init__(self):
+        Base.__init__(self)
+
         self.mark = '[B]'
-        self.filters = ['matcher_fuzzy']
         pass
 
     def get_complete_position(self, vim, context):

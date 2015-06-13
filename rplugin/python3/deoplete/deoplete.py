@@ -101,7 +101,8 @@ class Deoplete(object):
             context['candidates'] = source.gather_candidates(
                 self.vim, context)
 
-            for filter_name in source.filters:
+            for filter_name in \
+                    source.matchers + source.sorters + source.converters:
                 if filter_name in self.filters:
                     context['candidates'] = self.filters[filter_name].filter(
                         self.vim, context)
