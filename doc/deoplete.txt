@@ -197,6 +197,18 @@ EXTERNAL SOURCES				*deoplete-external-sources*
 ==============================================================================
 FAQ						*deoplete-faq*
 
+Q: deoplete deos not work.
+
+A: Please enable debug mode from command line. >
+
+	$ export NVIM_PYTHON_LOG_FILE=/tmp/log
+	$ export NVIM_PYTHON_LOG_LEVEL=DEBUG
+	$ neovim
+	... Use deoplete
+	$ cat /tmp/log_{PID}
+
+And please upload the log file.
+
 Q: I want to get quiet messages in auto completion.
 
 A: You can disable the messages through the 'shortmess' option.
