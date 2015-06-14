@@ -96,8 +96,11 @@ function! deoplete#init#_variables() abort "{{{
         \ 'javascript',
         \ '[^. \t]\.([a-zA-Z_]\w*)?')
   call deoplete#util#set_pattern(
-        \g:deoplete#_omni_patterns,
+        \ g:deoplete#_omni_patterns,
         \ 'python', '[^. \t]\.\w*')
+  call deoplete#util#set_pattern(
+        \ g:deoplete#_omni_patterns,
+        \ 'ruby', '[^. \t]\.\w*|[a-zA-Z_]\w*::\w*')
   "}}}
 endfunction"}}}
 
