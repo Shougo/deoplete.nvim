@@ -56,6 +56,7 @@ class DeopleteHandlers(object):
             +'g:deoplete#_omni_patterns)')
         # self.debug(omni_pattern)
         if omni_pattern != '' \
+                and self.vim.eval('&l:omnifunc') != '' \
                 and re.search('('+omni_pattern+')$', context['input']) \
                 and self.vim.eval('mode()') == 'i':
             self.vim.command(
