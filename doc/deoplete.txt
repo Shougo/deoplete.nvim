@@ -126,6 +126,7 @@ g:deoplete#omni_patterns
 		does not call 'omnifunc'.
 		Note: If it is a set, deoplete will call 'omnifunc'
 		directly.  So almost deoplete features are disabled.
+		Note: It is Python3 regexp.
 >
 		let g:deoplete#omni_patterns = {}
 		let g:deoplete#omni_patterns.ruby =
@@ -136,6 +137,7 @@ g:deoplete#omni_patterns
 				*b:deoplete#omni_patterns*
 b:deoplete#omni_patterns
 		It is the keyword pattern to Omni completion in the buffer.
+		Note: It is Python3 regexp.
 
 ------------------------------------------------------------------------------
 FUNCTIONS 					*deoplete-functions*
