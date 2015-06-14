@@ -25,6 +25,7 @@
 
 import neovim
 import re
+import traceback
 from .deoplete import Deoplete
 
 @neovim.plugin
@@ -34,6 +35,14 @@ class DeopleteHandlers(object):
 
     def debug(self, msg):
         self.vim.command('echomsg string("' + str(msg) + '")')
+
+    def error(self, e):
+        tmp = self.vim.eval('tempname()')
+        with open(tmp, 'w') as f:
+            traceback.print_exc(None, f)
+        self.vim.command('call deoplete#util#print_error(' \
+                         + '"The error is occurred.  Please read ".'
+                         + 'string("'+tmp+'")." file.")')
 
     @neovim.command('DeopleteInitializePython', sync=True, nargs=0)
     def init_python(self):
@@ -62,7 +71,11 @@ class DeopleteHandlers(object):
             self.vim.command(
                 'call feedkeys("\<C-x>\<C-o>", "n")')
 
-        candidates = self.deoplete.gather_candidates(context)
+        try:
+            candidates = self.deoplete.gather_candidates(context)
+        except Exception as e:
+            self.error(e)
+            candidates = []
         if not candidates or self.vim.eval('mode()') != 'i':
                 return
         self.vim.command(

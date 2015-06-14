@@ -47,6 +47,12 @@ function! deoplete#util#get_buffer_config(buffer_var, user_var, default_var) "{{
 
   return get(a:user_var, filetype, get(a:default_var, filetype, ''))
 endfunction"}}}
+function! deoplete#util#print_error(string) "{{{
+  echohl Error | echomsg '[deoplete] ' . a:string | echohl None
+endfunction"}}}
+function! deoplete#util#print_warning(string) "{{{
+  echohl WarningMsg | echomsg '[deoplete] ' . a:string | echohl None
+endfunction"}}}
 
 function! deoplete#util#convert2list(expr) "{{{
   return type(a:expr) ==# type([]) ? a:expr : [a:expr]
