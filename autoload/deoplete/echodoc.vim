@@ -31,7 +31,7 @@ let s:doc_dict = {
 function! s:doc_dict.search(cur_text) "{{{
   let item = v:completed_item
 
-  if empty(item)
+  if empty(item) || type(item) != type({})
     return []
   endif
 
