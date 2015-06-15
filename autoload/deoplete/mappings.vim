@@ -29,6 +29,8 @@ function! deoplete#mappings#_init() abort "{{{
 endfunction"}}}
 
 function! deoplete#mappings#_do_complete(context) abort "{{{
+  set completeopt+=menuone
+
   if b:changedtick == get(a:context, 'changedtick', -1)
     call complete(match(
           \ deoplete#helpers#get_input('TextChangedI'), '\h\w*$') + 1,
