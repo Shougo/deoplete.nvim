@@ -38,14 +38,9 @@ function! deoplete#util#set_pattern(variable, keys, pattern) "{{{
     endif
   endfor
 endfunction"}}}
-function! deoplete#util#get_buffer_config(buffer_var, user_var, default_var) "{{{
-  if exists(a:buffer_var)
-    return a:buffer_var
-  endif
-
-  let filetype = &filetype
-
-  return get(a:user_var, filetype, get(a:default_var, filetype, ''))
+function! deoplete#util#get_buffer_config(filetype, buffer_var, user_var, default_var) "{{{
+  return exists(a:buffer_var) ? a:buffer_var :
+        \ get(a:user_var, a:filetype, get(a:default_var, a:filetype, ''))
 endfunction"}}}
 function! deoplete#util#print_error(string) "{{{
   echohl Error | echomsg '[deoplete] ' . a:string | echohl None

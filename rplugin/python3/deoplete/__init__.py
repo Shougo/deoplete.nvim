@@ -26,7 +26,10 @@
 import neovim
 import re
 import traceback
-from .deoplete import Deoplete
+
+import deoplete
+from deoplete.deoplete import Deoplete
+from deoplete.util import get_buffer_config
 
 @neovim.plugin
 class DeopleteHandlers(object):
@@ -59,10 +62,10 @@ class DeopleteHandlers(object):
                     for k, v in context.items()}
 
         # Call omni completion
-        omni_pattern = self.vim.eval(
-            'deoplete#util#get_buffer_config('\
-            +'"b:deoplete#omni_pattern", deoplete#omni_patterns,'\
-            +'g:deoplete#_omni_patterns)')
+        omni_pattern = get_buffer_config(self.vim, context,
+                                         'b:deoplete#omni_pattern',
+                                         'g:deoplete#omni_patterns',
+                                         'g:deoplete#_omni_patterns')
         # self.debug(omni_pattern)
         if omni_pattern != '' \
                 and self.vim.eval('&l:omnifunc') != '' \
