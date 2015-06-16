@@ -24,10 +24,6 @@
 "=============================================================================
 
 function! deoplete#handlers#_init() abort "{{{
-  augroup deoplete
-    autocmd!
-  augroup END
-
   for event in ['TextChangedI', 'InsertEnter']
     execute 'autocmd deoplete' event '*'
           \ 'call rpcnotify(g:deoplete#_channel_id, "completion_begin",

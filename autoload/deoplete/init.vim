@@ -36,6 +36,10 @@ function! deoplete#init#enable() abort "{{{
     return
   endif
 
+  augroup deoplete
+    autocmd!
+  augroup END
+
   if !has('nvim') || !has('python3')
     echomsg '[deoplete] deoplete.nvim does not work with this version.'
     echomsg '[deoplete] It requires Neovim with Python3 support ("+python3").'
