@@ -85,6 +85,8 @@ function! deoplete#init#_variables() abort "{{{
         \ 'g:deoplete#omni_patterns', {})
   call deoplete#util#set_default(
         \ 'g:deoplete#_omni_patterns', {})
+  call deoplete#util#set_default(
+        \ 'g:deoplete#enable_auto_select', 0)
 
   " Initialize omni completion pattern. "{{{
   call deoplete#util#set_pattern(
