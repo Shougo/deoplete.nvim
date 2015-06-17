@@ -111,6 +111,14 @@ g:deoplete#enable_smart_case
 
 		Default value is 'infercase'.
 
+					*g:deoplete#enable_auto_select*
+g:deoplete#enable_auto_select
+		When deoplete displays candidates, this option controls
+		whether deoplete selects the first candidate
+		automatically.
+
+		Default value is 0.
+
 				*g:deoplete#auto_completion_start_length*
 g:deoplete#auto_completion_start_length
 		This variable controls the number of the input completion

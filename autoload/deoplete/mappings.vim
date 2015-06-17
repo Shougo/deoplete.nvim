@@ -36,7 +36,7 @@ function! deoplete#mappings#_do_complete(context) abort "{{{
           \ deoplete#helpers#get_input('TextChangedI'), '\h\w*$') + 1,
           \ a:context.candidates)
   endif
-  return ''
+  return  pumvisible() && g:deoplete#enable_auto_select ? "\<Down>" : ''
 endfunction"}}}
 
 function! deoplete#mappings#manual_complete(...) abort "{{{
