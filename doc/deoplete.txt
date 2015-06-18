@@ -178,6 +178,7 @@ buffer						*deoplete-source-buffer*
 
 tag						*deoplete-source-tag*
 		This source collects keywords from |ctags| files.
+		Note: It only supports UTF-8 encoding tag file.
 
 ------------------------------------------------------------------------------
 USER SOURCES 					*deoplete-user-sources*

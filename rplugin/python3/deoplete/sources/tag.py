@@ -34,12 +34,21 @@ class Source(Base):
 
     def gather_candidates(self, vim, context):
         candidates = []
-        p = re.compile('^[a-zA-Z_]\w*(?=\t)')
 
         for tags_file in vim.eval(
                 'map(tagfiles(), "fnamemodify(v:val, \\":p\\")")'):
-            with open(tags_file, 'r') as tags_file:
-                for l in tags_file.readlines():
-                    candidates += p.findall(l)
+            with open(tags_file, 'r', errors='replace') as f:
+                candidates += parse_tags(f)
         return [{ 'word': x } for x in list(set(candidates))]
+
+def debug(vim, msg):
+    vim.command('echomsg string("' + str(msg) + '")')
+
+def parse_tags(f):
+    p = re.compile('^[a-zA-Z_]\w*(?=\t)')
+    candidates = []
+
+    for l in f.readlines():
+        candidates += p.findall(l)
+    return candidates
 

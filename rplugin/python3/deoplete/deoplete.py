@@ -114,6 +114,7 @@ class Deoplete(object):
             for candidate in context['candidates']:
                 if not 'menu' in candidate:
                     candidate['menu'] = source.mark
+            # self.debug(context['candidates'])
 
             candidates += context['candidates']
 
