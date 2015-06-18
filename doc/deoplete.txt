@@ -223,5 +223,11 @@ like preview window feature.
 A: You can do it by |echodoc|.
 http://github.com/Shougo/echodoc.vim
 
+Q: I want to use auto select feature like |neocomplete|.
+
+A: You can use it by the 'completeopt' option. >
+
+	set completeopt+=noinsert
+
 ==============================================================================
 vim:tw=78:ts=8:ft=help:norl:noet:fen:noet:
