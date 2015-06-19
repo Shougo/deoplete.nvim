@@ -24,7 +24,11 @@
 #=============================================================================
 
 import re
+from os.path import getmtime
+from collections import namedtuple
 from .base import Base
+
+TagsCacheItem = namedtuple('TagsCacheItem', 'mtime tags')
 
 class Source(Base):
     def __init__(self):
@@ -32,14 +36,22 @@ class Source(Base):
 
         self.mark = '[T]'
 
+        self.cache = {}
+
     def gather_candidates(self, vim, context):
         candidates = []
-
         for tags_file in vim.eval(
                 'map(tagfiles(), "fnamemodify(v:val, \\":p\\")")'):
-            with open(tags_file, 'r', errors='replace') as f:
-                candidates += parse_tags(f)
-        return [{ 'word': x } for x in list(set(candidates))]
+            mtime = getmtime(tags_file)
+            if tags_file not in self.cache or \
+                    self.cache[tags_file].mtime != mtime:
+                with open(tags_file, 'r', errors='replace') as f:
+                    new_candidates = parse_tags(f)
+                    candidates += new_candidates
+                self.cache[tags_file] = TagsCacheItem(mtime, new_candidates)
+            else:
+                candidates += self.cache[tags_file].tags
+        return [{ 'word': x } for x in candidates]
 
 def debug(vim, msg):
     vim.command('echomsg string("' + str(msg) + '")')
@@ -50,5 +62,5 @@ def parse_tags(f):
 
     for l in f.readlines():
         candidates += p.findall(l)
-    return candidates
+    return list(set(candidates))
 
