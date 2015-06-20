@@ -76,6 +76,12 @@ You can enable Python3 interface with pip: >
 If you want to read for Neovim-python/python3 interface install documentation,
 you should read |nvim-python|.
 
+						*deoplete-context-filetype*
+
+If you like to use the context filetype feature, you need to install the
+context_filetype.vim plugin which you can find under the following repository:
+https://github.com/Shougo/context_filetype.vim
+
 ==============================================================================
 INTERFACE					*deoplete-interface*
 

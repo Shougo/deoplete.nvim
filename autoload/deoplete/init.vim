@@ -116,7 +116,8 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \ 'complete_str':
         \   matchstr(deoplete#helpers#get_input(a:event), '\h\w*$'),
         \ 'position': getpos('.'),
-        \ 'filetype': &filetype,
+        \ 'filetype': (exists('*context_filetype#get_filetype') ?
+        \   context_filetype#get_filetype() : &filetype),
         \ 'ignorecase': g:deoplete#enable_ignore_case,
         \ 'smartcase': g:deoplete#enable_smart_case,
         \ 'sources': a:sources,
