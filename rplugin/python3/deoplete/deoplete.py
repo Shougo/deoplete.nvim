@@ -74,6 +74,7 @@ class Deoplete(object):
             # Recache
             self.load_sources()
             self.load_filters()
+            self.runtimepath = self.vim.eval('&runtimepath')
 
         # self.debug(context)
 

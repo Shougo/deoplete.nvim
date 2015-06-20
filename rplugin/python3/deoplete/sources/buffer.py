@@ -24,6 +24,8 @@
 #=============================================================================
 
 import re
+import operator
+import functools
 from .base import Base
 
 class Source(Base):
@@ -31,13 +33,22 @@ class Source(Base):
         Base.__init__(self)
 
         self.mark = '[B]'
+        self.buffers = {}
         pass
 
     def gather_candidates(self, vim, context):
-        candidates = []
+        current_candidates = []
         p = re.compile('[a-zA-Z_]\w*')
 
         for l in vim.current.buffer:
-                candidates += p.findall(l)
-        return [{ 'word': x } for x in candidates]
+                current_candidates += p.findall(l)
+        self.buffers[vim.current.buffer.number] = {
+            'filetype': context['filetype'],
+            'candidates': current_candidates,
+        }
+
+        return [{ 'word': x } for x in
+                functools.reduce(operator.add, [
+                     x['candidates'] for x in self.buffers.values()
+                     if x['filetype'] == context['filetype']])]
 
