@@ -82,6 +82,10 @@ function! deoplete#init#_variables() abort "{{{
   call deoplete#util#set_default(
         \ 'g:deoplete#auto_completion_start_length', 2)
   call deoplete#util#set_default(
+        \ 'g:deoplete#keyword_patterns', {})
+  call deoplete#util#set_default(
+        \ 'g:deoplete#_keyword_patterns', {})
+  call deoplete#util#set_default(
         \ 'g:deoplete#omni_patterns', {})
   call deoplete#util#set_default(
         \ 'g:deoplete#_omni_patterns', {})
@@ -89,6 +93,13 @@ function! deoplete#init#_variables() abort "{{{
         \ 'g:deoplete#sources', {})
   call deoplete#util#set_default(
         \ 'g:deoplete#ignore_sources', {})
+
+  " Initialize default keyword pattern. "{{{
+  call deoplete#util#set_pattern(
+        \ g:deoplete#_keyword_patterns,
+        \ '_',
+        \ '[a-zA-Z_]\w*')
+  "}}}
 
   " Initialize omni completion pattern. "{{{
   call deoplete#util#set_pattern(
@@ -121,9 +132,7 @@ function! deoplete#init#_context(event, sources) abort "{{{
   let sources = a:sources
   if a:event !=# 'Manual' && empty(sources)
     " Use default sources
-    let sources = (exists('b:deoplete_sources')
-          \ || has_key(g:deoplete#sources, filetype)) ?
-          \ s:get_sources(filetype) : s:get_sources('_')
+    let sources = s:get_sources(filetype)
   endif
 
   return {
@@ -141,9 +150,9 @@ function! deoplete#init#_context(event, sources) abort "{{{
 endfunction"}}}
 
 function! s:get_sources(filetype) abort "{{{
-  let sources = deoplete#util#get_buffer_config(a:filetype,
+  let sources = deoplete#util#get_default_buffer_config(a:filetype,
         \ 'b:deoplete_sources', g:deoplete#sources, {}, [])
-  let ignore_sources = deoplete#util#get_buffer_config(a:filetype,
+  let ignore_sources = deoplete#util#get_default_buffer_config(a:filetype,
         \ 'b:deoplete_ignore_sources', g:deoplete#ignore_sources, {}, [])
 
   " Ignore sources
