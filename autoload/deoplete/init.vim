@@ -85,6 +85,10 @@ function! deoplete#init#_variables() abort "{{{
         \ 'g:deoplete#omni_patterns', {})
   call deoplete#util#set_default(
         \ 'g:deoplete#_omni_patterns', {})
+  call deoplete#util#set_default(
+        \ 'g:deoplete#sources', {})
+  call deoplete#util#set_default(
+        \ 'g:deoplete#ignore_sources', {})
 
   " Initialize omni completion pattern. "{{{
   call deoplete#util#set_pattern(
@@ -109,6 +113,16 @@ function! deoplete#init#_variables() abort "{{{
 endfunction"}}}
 
 function! deoplete#init#_context(event, sources) abort "{{{
+  let filetype = (exists('*context_filetype#get_filetype') ?
+        \   context_filetype#get_filetype() : &filetype)
+  let sources = a:sources
+  if a:event !=# 'Manual' && empty(sources)
+    " Use default sources
+    let sources = (exists('b:deoplete_sources')
+          \ || has_key(g:deoplete#sources, filetype)) ?
+          \ s:get_sources(filetype) : s:get_sources('_')
+  endif
+
   return {
         \ 'changedtick': b:changedtick,
         \ 'event': a:event,
@@ -116,12 +130,21 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \ 'complete_str':
         \   matchstr(deoplete#helpers#get_input(a:event), '\h\w*$'),
         \ 'position': getpos('.'),
-        \ 'filetype': (exists('*context_filetype#get_filetype') ?
-        \   context_filetype#get_filetype() : &filetype),
+        \ 'filetype': filetype,
         \ 'ignorecase': g:deoplete#enable_ignore_case,
         \ 'smartcase': g:deoplete#enable_smart_case,
-        \ 'sources': a:sources,
+        \ 'sources': sources,
         \ }
+endfunction"}}}
+
+function! s:get_sources(filetype) abort "{{{
+  let sources = deoplete#util#get_buffer_config(a:filetype,
+        \ 'b:deoplete_sources', g:deoplete#sources, {}, [])
+  let ignore_sources = deoplete#util#get_buffer_config(a:filetype,
+        \ 'b:deoplete_ignore_sources', g:deoplete#ignore_sources, {}, [])
+
+  " Ignore sources
+  return filter(sources, "index(ignore_sources, v:val) < 0")
 endfunction"}}}
 
 " vim: foldmethod=marker

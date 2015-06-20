@@ -145,6 +145,33 @@ b:deoplete#omni_patterns
 		It is the keyword pattern to Omni completion in the buffer.
 		Note: It is Python3 regexp.
 
+g:deoplete#sources		*g:deoplete#sources*
+		It is a dictionary to decide use source names.  The key is
+		filetype and the value is source names list.  If the key is
+		"_", the value will be used for default filetypes.  For
+		example, you can load some sources in C++ filetype.
+		If the value is [], it will load all sources.
+		Default value is {}.
+>
+		" Examples:
+		let g:deoplete#sources = {}
+		let g:deoplete#sources._ = ['buffer']
+		let g:deoplete#sources.cpp = ['buffer', 'tag']
+<
+b:deoplete_sources		*b:deoplete_sources*
+		Buffer local variable version of |g:deoplete#sources|.
+>
+		" Examples:
+		" In cmdwin, only use buffer source.
+		autocmd CmdwinEnter * let b:deoplete_sources = ['buffer']
+<
+g:deoplete#ignore_sources	*g:deoplete#ignore_sources*
+		It is a dictionary to decide ignore source names.
+		Default value is {}.
+
+b:deoplete_ignore_sources	*b:deoplete_ignore_sources*
+		Buffer local variable version of |g:deoplete#ignore_sources|.
+
 ------------------------------------------------------------------------------
 FUNCTIONS 					*deoplete-functions*
 
