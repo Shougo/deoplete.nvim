@@ -29,7 +29,7 @@ import traceback
 
 import deoplete
 from deoplete.deoplete import Deoplete
-from deoplete.util import get_buffer_config
+from deoplete.util import get_buffer_config, convert2list
 
 @neovim.plugin
 class DeopleteHandlers(object):
@@ -62,17 +62,19 @@ class DeopleteHandlers(object):
                     for k, v in context.items()}
 
         # Call omni completion
-        omni_pattern = get_buffer_config(self.vim, context,
-                                         'b:deoplete_omni_pattern',
+        omni_patterns = convert2list(get_buffer_config(self.vim, context,
+                                         'b:deoplete_omni_patterns',
                                          'g:deoplete#omni_patterns',
-                                         'g:deoplete#_omni_patterns')
+                                         'g:deoplete#_omni_patterns'))
         # self.debug(omni_pattern)
-        if omni_pattern != '' \
-                and self.vim.eval('&l:omnifunc') != '' \
-                and re.search('('+omni_pattern+')$', context['input']) \
-                and self.vim.eval('mode()') == 'i':
-            self.vim.command(
-                'call feedkeys("\<C-x>\<C-o>", "n")')
+        for pattern in omni_patterns:
+            if pattern != '' \
+                    and self.vim.eval('&l:omnifunc') != '' \
+                    and re.search('('+pattern+')$', context['input']) \
+                    and self.vim.eval('mode()') == 'i':
+                self.vim.command(
+                    'call feedkeys("\<C-x>\<C-o>", "n")')
+                return
 
         try:
             candidates = self.deoplete.gather_candidates(context)

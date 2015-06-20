@@ -127,7 +127,8 @@ g:deoplete#auto_completion_start_length
 				*g:deoplete#omni_patterns*
 g:deoplete#omni_patterns
 		This dictionary records keyword patterns to Omni completion.
-		This is appointed in regular expression every file type.
+		This is appointed in regular expression string or list every
+		file type.
 		If this pattern is not defined or empty pattern, deoplete
 		does not call 'omnifunc'.
 		Note: If it is a set, deoplete will call 'omnifunc'
@@ -136,7 +137,8 @@ g:deoplete#omni_patterns
 >
 		let g:deoplete#omni_patterns = {}
 		let g:deoplete#omni_patterns.ruby =
-		\ '[^. *\t]\.\w*\|\h\w*::'
+		\ ['[^. *\t]\.\w*', '\h\w*::']
+		let g:deoplete#omni_patterns.java = '[^. *\t]\.\w*'
 <
 		Default value is in g:deoplete#_omni_patterns.
 

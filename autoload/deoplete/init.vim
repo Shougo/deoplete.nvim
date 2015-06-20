@@ -98,7 +98,7 @@ function! deoplete#init#_variables() abort "{{{
   call deoplete#util#set_pattern(
         \ g:deoplete#_omni_patterns,
         \ 'css,scss,sass',
-        \ '^\s+\w+|\w+[):;]?\s+\w*|[@!]')
+        \ ['^\s+\w+', '\w+[):;]?\s+\w*|[@!]'])
   call deoplete#util#set_pattern(
         \ g:deoplete#_omni_patterns,
         \ 'javascript',
@@ -108,7 +108,7 @@ function! deoplete#init#_variables() abort "{{{
         \ 'python', '[^. \t]\.\w*')
   call deoplete#util#set_pattern(
         \ g:deoplete#_omni_patterns,
-        \ 'ruby', '[^. \t]\.\w*|[a-zA-Z_]\w*::\w*')
+        \ 'ruby', ['[^. \t]\.\w*', '[a-zA-Z_]\w*::\w*'])
   "}}}
 endfunction"}}}
 

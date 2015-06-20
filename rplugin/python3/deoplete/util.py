@@ -27,3 +27,6 @@ def get_buffer_config(vim, context, buffer_var, user_var, default_var):
     return vim.eval('deoplete#util#get_buffer_config("{0}", "{1}", {2}, {3})'\
              .format(context['filetype'],
                      buffer_var, user_var, default_var))
+
+def convert2list(expr):
+    return (expr if isinstance(expr, list) else [expr])
