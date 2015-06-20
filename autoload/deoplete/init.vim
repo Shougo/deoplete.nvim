@@ -135,6 +135,11 @@ function! deoplete#init#_context(event, sources) abort "{{{
     let sources = s:get_sources(filetype)
   endif
 
+  let keyword_patterns = join(deoplete#util#convert2list(
+        \   deoplete#util#get_default_buffer_config(
+        \   filetype, 'b:deoplete_keyword_patterns',
+        \   g:deoplete#keyword_patterns, g:deoplete#_keyword_patterns)), '|')
+
   return {
         \ 'changedtick': b:changedtick,
         \ 'event': a:event,
@@ -146,6 +151,7 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \ 'ignorecase': g:deoplete#enable_ignore_case,
         \ 'smartcase': g:deoplete#enable_smart_case,
         \ 'sources': sources,
+        \ 'keyword_patterns': keyword_patterns,
         \ }
 endfunction"}}}
 

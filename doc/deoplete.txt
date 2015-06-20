@@ -124,6 +124,22 @@ g:deoplete#auto_completion_start_length
 
 		Default value is 2.
 
+				*g:deoplete#keyword_patterns*
+g:deoplete#keyword_patterns
+		This dictionary records keyword patterns to buffer completion.
+		This is appointed in regular expression string or list every
+		file type.
+		Note: It is Python3 regexp.
+>
+		let g:deoplete#keyword_patterns = {}
+		let g:deoplete#keyword_patterns.tex = '\\?[a-zA-Z_]\w*'
+<
+		Default value is in g:deoplete#_keyword_patterns.
+
+				*b:deoplete_keyword_patterns*
+b:deoplete_keyword_patterns
+		Buffer local variable of |g:deoplete#keyword_patterns|.
+
 				*g:deoplete#omni_patterns*
 g:deoplete#omni_patterns
 		This dictionary records keyword patterns to Omni completion.

@@ -38,7 +38,7 @@ class Source(Base):
 
     def gather_candidates(self, vim, context):
         current_candidates = []
-        p = re.compile('[a-zA-Z_]\w*')
+        p = re.compile(context['keyword_patterns'])
 
         for l in vim.current.buffer:
                 current_candidates += p.findall(l)
