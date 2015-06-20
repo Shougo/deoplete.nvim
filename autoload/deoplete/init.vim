@@ -115,6 +115,9 @@ endfunction"}}}
 function! deoplete#init#_context(event, sources) abort "{{{
   let filetype = (exists('*context_filetype#get_filetype') ?
         \   context_filetype#get_filetype() : &filetype)
+  if filetype == ''
+    let filetype = 'nothing'
+  endif
   let sources = a:sources
   if a:event !=# 'Manual' && empty(sources)
     " Use default sources
