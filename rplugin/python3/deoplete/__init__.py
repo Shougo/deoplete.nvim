@@ -63,7 +63,7 @@ class DeopleteHandlers(object):
 
         # Call omni completion
         omni_pattern = get_buffer_config(self.vim, context,
-                                         'b:deoplete#omni_pattern',
+                                         'b:deoplete_omni_pattern',
                                          'g:deoplete#omni_patterns',
                                          'g:deoplete#_omni_patterns')
         # self.debug(omni_pattern)

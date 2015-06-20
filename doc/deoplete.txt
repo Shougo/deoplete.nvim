@@ -140,8 +140,8 @@ g:deoplete#omni_patterns
 <
 		Default value is in g:deoplete#_omni_patterns.
 
-				*b:deoplete#omni_patterns*
-b:deoplete#omni_patterns
+				*b:deoplete_omni_patterns*
+b:deoplete_omni_patterns
 		Buffer local variable of |g:deoplete#omni_patterns|.
 
 g:deoplete#sources		*g:deoplete#sources*
