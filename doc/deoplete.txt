@@ -142,8 +142,7 @@ g:deoplete#omni_patterns
 
 				*b:deoplete#omni_patterns*
 b:deoplete#omni_patterns
-		It is the keyword pattern to Omni completion in the buffer.
-		Note: It is Python3 regexp.
+		Buffer local variable of |g:deoplete#omni_patterns|.
 
 g:deoplete#sources		*g:deoplete#sources*
 		It is a dictionary to decide use source names.  The key is
@@ -159,7 +158,7 @@ g:deoplete#sources		*g:deoplete#sources*
 		let g:deoplete#sources.cpp = ['buffer', 'tag']
 <
 b:deoplete_sources		*b:deoplete_sources*
-		Buffer local variable version of |g:deoplete#sources|.
+		Buffer local variable of |g:deoplete#sources|.
 >
 		" Examples:
 		" In cmdwin, only use buffer source.
@@ -170,7 +169,7 @@ g:deoplete#ignore_sources	*g:deoplete#ignore_sources*
 		Default value is {}.
 
 b:deoplete_ignore_sources	*b:deoplete_ignore_sources*
-		Buffer local variable version of |g:deoplete#ignore_sources|.
+		Buffer local variable of |g:deoplete#ignore_sources|.
 
 ------------------------------------------------------------------------------
 FUNCTIONS 					*deoplete-functions*
