@@ -46,4 +46,17 @@ function! deoplete#mappings#manual_complete(...) abort "{{{
         \    'Manual'," . string(get(a:000, 0, [])) . "))\<CR>"
 endfunction"}}}
 
+function! deoplete#mappings#close_popup() "{{{
+  return pumvisible() ? "\<C-y>" : ''
+endfunction
+"}}}
+function! deoplete#mappings#smart_close_popup() "{{{
+  return pumvisible() ? "\<C-e>" : ''
+endfunction
+"}}}
+function! deoplete#mappings#cancel_popup() "{{{
+  return pumvisible() ? "\<C-e>" : ''
+endfunction
+"}}}
+
 " vim: foldmethod=marker
