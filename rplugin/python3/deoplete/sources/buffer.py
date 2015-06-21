@@ -32,6 +32,7 @@ class Source(Base):
     def __init__(self):
         Base.__init__(self)
 
+        self.name = 'buffer'
         self.mark = '[B]'
         self.buffers = {}
         pass

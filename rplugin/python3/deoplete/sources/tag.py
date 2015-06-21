@@ -35,6 +35,7 @@ class Source(Base):
     def __init__(self):
         Base.__init__(self)
 
+        self.name = 'tag'
         self.mark = '[T]'
 
         self.cache = {}
