@@ -68,7 +68,7 @@ class Deoplete(object):
         # Skip completion
         if self.vim.eval('&l:completefunc') != '' \
           and self.vim.eval('&l:buftype').find('nofile') >= 0:
-            return []
+            return (-1, [])
 
         if self.vim.eval('&runtimepath') != self.runtimepath:
             # Recache
@@ -81,7 +81,7 @@ class Deoplete(object):
         if context['event'] != 'Manual' \
                     and len(context['complete_str']) < self.vim.eval(
                         'g:deoplete#auto_completion_start_length'):
-            return []
+            return (-1, [])
 
         # Set ignorecase
         if context['smartcase'] \
@@ -98,6 +98,7 @@ class Deoplete(object):
 
             context['candidates'] = source.gather_candidates(
                 self.vim, context)
+            # self.debug(context['candidates'])
 
             for filter_name in \
                     source.matchers + source.sorters + source.converters:
@@ -118,5 +119,7 @@ class Deoplete(object):
             # self.debug(context['candidates'])
 
             candidates += context['candidates']
+        m = re.search('('+context['keyword_patterns']+')$', context['input'])
+        complete_position = m.start() if m else -1
 
-        return candidates
+        return (complete_position, candidates)

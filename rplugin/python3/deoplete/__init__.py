@@ -77,7 +77,8 @@ class DeopleteHandlers(object):
                 return
 
         try:
-            candidates = self.deoplete.gather_candidates(context)
+            complete_position, candidates = \
+                self.deoplete.gather_candidates(context)
         except Exception as e:
             self.error(e)
             candidates = []
@@ -86,12 +87,14 @@ class DeopleteHandlers(object):
         self.vim.command(
           'let g:deoplete#_context = {}')
         self.vim.command(
-          'let g:deoplete#_context.complete_position = 0')
+          'let g:deoplete#_context.complete_position = '
+            + str(complete_position))
         self.vim.command(
           'let g:deoplete#_context.changedtick = '
             + str(context['changedtick']))
         self.vim.command(
-          'let g:deoplete#_context.candidates = ' + str(candidates))
+          'let g:deoplete#_context.candidates = '
+            + str(candidates))
         self.vim.command(
           'call feedkeys("\<Plug>(deoplete_start_complete)")')
 

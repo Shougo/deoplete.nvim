@@ -32,9 +32,7 @@ function! deoplete#mappings#_do_complete(context) abort "{{{
   set completeopt+=menuone
 
   if b:changedtick == get(a:context, 'changedtick', -1)
-    call complete(match(
-          \ deoplete#helpers#get_input('TextChangedI'), '\h\w*$') + 1,
-          \ a:context.candidates)
+    call complete(a:context.complete_position + 1, a:context.candidates)
   endif
   return ''
 endfunction"}}}

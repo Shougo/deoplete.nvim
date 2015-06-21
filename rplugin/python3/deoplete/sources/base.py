@@ -35,11 +35,8 @@ class Base(object):
         self.converters = []
 
     def get_complete_position(self, vim, context):
-        m = re.search(context.input, context['keyword_patterns'])
-        if m:
-            return m.start()
-        else:
-            return -1
+        m = re.search('('+context['keyword_patterns']+')$', context['input'])
+        return m.start() if m else -1
 
     @abstractmethod
     def gather_candidate(self, vim, context):
