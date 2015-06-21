@@ -53,7 +53,7 @@ def fuzzy_escape(string):
 
 def escape(string):
     # Escape string for python regexp.
-    return re.sub('[\[\]().*+?^$-]', '\\\1', string)
+    return re.sub(r'([\[\]().*+?^$-])', r'\\\1', string)
 
 def debug(vim, msg):
         vim.command('echomsg string("' + msg + '")')

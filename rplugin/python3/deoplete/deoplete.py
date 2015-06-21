@@ -103,6 +103,10 @@ class Deoplete(object):
                 source.get_complete_position(self.vim, cont)
             cont['complete_str'] = \
                 cont['input'][cont['complete_position'] :]
+            # self.debug(source_name)
+            # self.debug(cont['input'])
+            # self.debug(cont['complete_position'])
+            # self.debug(cont['complete_str'])
 
             if cont['event'] != 'Manual' \
                         and len(cont['complete_str']) < start_length:
@@ -121,6 +125,8 @@ class Deoplete(object):
                 self.vim, context)
             # self.debug(context['candidates'])
 
+            # self.debug(context['complete_str'])
+            # self.debug(context['candidates'])
             for filter_name in \
                     source.matchers + source.sorters + source.converters:
                 if filter_name in self.filters:
