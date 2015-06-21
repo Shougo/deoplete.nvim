@@ -23,6 +23,7 @@
 # }}}
 #=============================================================================
 
+import re
 from abc import abstractmethod
 
 class Base(object):

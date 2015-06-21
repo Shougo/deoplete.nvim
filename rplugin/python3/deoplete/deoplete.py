@@ -27,6 +27,8 @@ import neovim
 import re
 import importlib.machinery
 import os.path
+import copy
+
 import deoplete.sources
 import deoplete.filters
 
@@ -78,24 +80,43 @@ class Deoplete(object):
 
         # self.debug(context)
 
-        if context['event'] != 'Manual' \
-                    and len(context['complete_str']) < self.vim.eval(
-                        'g:deoplete#auto_completion_start_length'):
-            return (-1, [])
-
         # Set ignorecase
         if context['smartcase'] \
                 and re.search(r'[A-Z]', context['complete_str']):
             context['ignorecase'] = 0
 
+        results = self.gather_results(context)
+        return self.merge_results(results)
+
+    def gather_results(self, context):
         # sources = ['buffer', 'neosnippet']
         # sources = ['buffer']
         sources = context['sources']
-        candidates = []
+        results = []
+        start_length = self.vim.eval(
+            'g:deoplete#auto_completion_start_length')
         for source_name, source in self.sources.items():
             if sources and (not source_name in sources):
                 continue
+            cont = copy.deepcopy(context)
+            cont['complete_position'] = \
+                source.get_complete_position(self.vim, cont)
+            cont['complete_str'] = \
+                cont['input'][cont['complete_position'] :]
 
+            if cont['event'] != 'Manual' \
+                        and len(cont['complete_str']) < start_length:
+                # Skip
+                continue
+            results.append({
+                'name': source_name,
+                'source': source,
+                'context': cont,
+            })
+
+        for result in results:
+            context = result['context']
+            source = result['source']
             context['candidates'] = source.gather_candidates(
                 self.vim, context)
             # self.debug(context['candidates'])
@@ -117,9 +138,29 @@ class Deoplete(object):
                 if not 'menu' in candidate:
                     candidate['menu'] = source.mark
             # self.debug(context['candidates'])
+        return results
 
+    def merge_results(self, results):
+        if not results:
+            return (-1, [])
+        complete_position = min(
+            [x['context']['complete_position'] for x in results])
+        candidates = []
+        for result in results:
+            context = result['context']
+            if context['complete_position'] <= complete_position:
+                complete_position = context['complete_position']
+                candidates += context['candidates']
+                continue
+            prefix = context['input']\
+                [: context['complete_position'] - complete_position]
+
+            context['complete_position'] = complete_position
+            context['complete_str'] = prefix
+
+            # Add prefix
+            for candidate in context['candidates']:
+                candidate['word'] = prefix + candidate['word']
             candidates += context['candidates']
-        m = re.search('('+context['keyword_patterns']+')$', context['input'])
-        complete_position = m.start() if m else -1
-
         return (complete_position, candidates)
+
