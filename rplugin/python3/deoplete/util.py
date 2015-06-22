@@ -36,3 +36,6 @@ def get_default_buffer_config(vim, context, buffer_var, user_var, default_var):
                      buffer_var, user_var, default_var))
 def convert2list(expr):
     return (expr if isinstance(expr, list) else [expr])
+
+def globruntime(vim, path):
+    return vim.eval("globpath(&runtimepath, '" + path + "', 1, 1)")
