@@ -27,7 +27,7 @@ from abc import abstractmethod
 
 class Base(object):
     def __init__(self):
-        self.name = ''
+        self.name = 'base'
         self.description = ''
 
     @abstractmethod

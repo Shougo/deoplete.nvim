@@ -28,7 +28,7 @@ from abc import abstractmethod
 
 class Base(object):
     def __init__(self):
-        self.name = ''
+        self.name = 'base'
         self.description = ''
         self.marker = ''
         self.matchers = ['matcher_fuzzy']
