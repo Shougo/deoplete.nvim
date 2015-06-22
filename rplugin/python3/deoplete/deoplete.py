@@ -43,7 +43,7 @@ class Deoplete(object):
         # Load sources from runtimepath
         for path in self.vim.eval(
                 "globpath(&runtimepath, \
-                'rplugin/python3/deoplete/sources/*.py')").split("\n"):
+                'rplugin/python3/deoplete/sources/*.py', 1, 1)"):
             name = os.path.basename(path)
             source = importlib.machinery.SourceFileLoader(
                 'deoplete.sources.' + name[: -3], path).load_module()
@@ -55,7 +55,7 @@ class Deoplete(object):
         # Load filters from runtimepath
         for path in self.vim.eval(
                 "globpath(&runtimepath, \
-                'rplugin/python3/deoplete/filters/*.py')").split("\n"):
+                'rplugin/python3/deoplete/filters/*.py', 1, 1)"):
             name = os.path.basename(path)
             filter = importlib.machinery.SourceFileLoader(
                 'deoplete.filters.' + name[: -3], path).load_module()
