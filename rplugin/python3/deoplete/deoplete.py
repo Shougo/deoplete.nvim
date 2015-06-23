@@ -112,8 +112,9 @@ class Deoplete(object):
             # self.debug(cont['complete_str'])
 
             if cont['event'] != 'Manual' \
-                        and len(cont['complete_str']) < start_length:
-                # Skip
+                        and (len(cont['complete_str']) < start_length \
+                            or cont['complete_position'] == -1):
+                # Skip if input is shorter than start length or no completion
                 continue
             results.append({
                 'name': source_name,
