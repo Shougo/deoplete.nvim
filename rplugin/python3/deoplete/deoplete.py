@@ -111,8 +111,9 @@ class Deoplete(object):
             # self.debug(cont['complete_position'])
             # self.debug(cont['complete_str'])
 
-            if cont['event'] != 'Manual' \
-                        and len(cont['complete_str']) < start_length:
+            if cont['complete_position'] < 0 \
+                    or (cont['event'] != 'Manual' \
+                        and len(cont['complete_str']) < start_length):
                 # Skip
                 continue
             results.append({
