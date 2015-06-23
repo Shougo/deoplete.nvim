@@ -54,12 +54,10 @@ class Source(Base):
         # so instead of building a complicated regex,
         # we reverse the input and search backwards
         reversed_input = context['input'][::-1]
-        m = re.match('[A-Za-z' + isfname + ']*\/\.?', reversed_input)
-        if m:
-            # correct position
-            return len(reversed_input) - m.end()
-        else:
-            return -1
+        m = re.match('[A-Za-z' + isfname + ']*\/\.*', reversed_input)
+
+        # correct position
+        return len(reversed_input) - m.end() if m else -1
 
     def gather_candidates(self, vim, context):
         candidates = glob(context['complete_str'] + '*')
