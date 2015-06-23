@@ -25,6 +25,7 @@
 #=============================================================================
 
 import re
+import os
 from glob import glob
 from .base import Base
 
@@ -60,6 +61,10 @@ class Source(Base):
         return len(reversed_input) - m.end() if m else -1
 
     def gather_candidates(self, vim, context):
-        candidates = glob(context['complete_str'] + '*')
-        return [{ 'word': x } for x in sorted(candidates)]
+        dirs = [x for x in glob(context['complete_str'] + '*')
+                      if os.path.isdir(x)]
+        files = [x for x in glob(context['complete_str'] + '*')
+                      if not os.path.isdir(x)]
+        return [{ 'word': x, 'abbr': x + '/' } for x in sorted(dirs)] \
+             + [{ 'word': x } for x in sorted(files)]
 
