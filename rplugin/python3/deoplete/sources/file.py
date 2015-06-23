@@ -30,13 +30,13 @@ from .base import Base
 
 def parse_isfname(isfname):
     values = []
-    parts = isfname.split(",")
+    parts = isfname.split(',')
     for part in parts:
         if re.match('\d+-\d+', part):
-            "-".join(map(lambda x: chr(int(x)), part.split("-")))
+            '-'.join(map(lambda x: chr(int(x)), part.split('-')))
         else:
             values += part
-    return "".join(values)
+    return ''.join(values)
 
 def debug(vim, msg):
     vim.command('echomsg string("' + str(msg) + '")')
