@@ -256,12 +256,15 @@ EXAMPLES					*deoplete-examples*
 SOURCES						*deoplete-sources*
 
 buffer						*deoplete-source-buffer*
-		This source collects keywords from current buffer and the
-		buffers which have same 'filetype'.
+		It collects keywords from current buffer and the buffers which
+		have same 'filetype'.
 
 tag						*deoplete-source-tag*
-		This source collects keywords from |ctags| files.
+		It collects keywords from |ctags| files.
 		Note: It only supports UTF-8 encoding tag file.
+
+file						*deoplete-source-file*
+		This source collects keywords from local files.
 
 ------------------------------------------------------------------------------
 USER SOURCES 					*deoplete-user-sources*

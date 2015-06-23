@@ -1,6 +1,7 @@
 #=============================================================================
-# FILE: files.py
+# FILE: file.py
 # AUTHOR: Felipe Morales <hel.sheep at gmail.com>
+#         Shougo Matsushita <Shougo.Matsu at gmail.com>
 # License: MIT license  {{{
 #     Permission is hereby granted, free of charge, to any person obtaining
 #     a copy of this software and associated documentation files (the
@@ -44,7 +45,7 @@ class Source(Base):
     def __init__(self):
         Base.__init__(self)
 
-        self.name = 'files'
+        self.name = 'file'
         self.mark = '[F]'
 
     def get_complete_position(self, vim, context):
