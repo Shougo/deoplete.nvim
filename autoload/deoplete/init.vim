@@ -144,8 +144,7 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \ 'changedtick': b:changedtick,
         \ 'event': a:event,
         \ 'input': deoplete#helpers#get_input(a:event),
-        \ 'complete_str':
-        \   matchstr(deoplete#helpers#get_input(a:event), '\h\w*$'),
+        \ 'complete_str': '',
         \ 'position': getpos('.'),
         \ 'filetype': filetype,
         \ 'ignorecase': g:deoplete#enable_ignore_case,
