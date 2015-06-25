@@ -26,18 +26,17 @@
 
 import re
 import os
+from os.path import exists, dirname
 from glob import glob
 from .base import Base
 
-def parse_isfname(isfname):
-    values = []
-    parts = isfname.split(',')
-    for part in parts:
-        if re.match('\d+-\d+', part):
-            '-'.join(map(lambda x: chr(int(x)), part.split('-')))
-        else:
-            values += part
-    return ''.join(values)
+def longest_path_that_exists(input_str):
+    data = input_str.split(' ')
+    pos = [" ".join(data[i:]) for i in range(len(data))]
+    existing_paths = list(filter(lambda x: exists(dirname(x)), pos))
+    if existing_paths and len(existing_paths) > 0:
+        return sorted(existing_paths)[-1]
+    return None
 
 def debug(vim, msg):
     vim.command('echomsg string("' + str(msg) + '")')
@@ -50,15 +49,10 @@ class Source(Base):
         self.mark = '[F]'
 
     def get_complete_position(self, vim, context):
-        isfname = parse_isfname(vim.eval('&isfname'))
-        # we need the last path available in the input,
-        # so instead of building a complicated regex,
-        # we reverse the input and search backwards
-        reversed_input = context['input'][::-1]
-        m = re.match('[A-Za-z' + isfname + ']*\/\.*', reversed_input)
-
-        # correct position
-        return len(reversed_input) - m.end() if m else -1
+        p = longest_path_that_exists(context['input'])
+        if p not in (None, []):
+            return context['input'].find(p)
+        return -1
 
     def gather_candidates(self, vim, context):
         dirs = [x for x in glob(context['complete_str'] + '*')
