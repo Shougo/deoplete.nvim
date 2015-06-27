@@ -31,6 +31,7 @@ class Base(object):
         self.name = 'base'
         self.description = ''
         self.marker = ''
+        self.min_pattern_length = -1
         self.matchers = ['matcher_fuzzy']
         self.sorters = []
         self.converters = []

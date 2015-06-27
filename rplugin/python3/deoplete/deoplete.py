@@ -113,9 +113,14 @@ class Deoplete(object):
             # self.debug(cont['complete_position'])
             # self.debug(cont['complete_str'])
 
+            min_pattern_length = source.min_pattern_length
+            if min_pattern_length < 0:
+                # Use default value
+                min_pattern_length = start_length
+
             if cont['complete_position'] < 0 \
                     or (cont['event'] != 'Manual' \
-                        and len(cont['complete_str']) < start_length):
+                        and len(cont['complete_str']) < min_pattern_length):
                 # Skip
                 continue
             results.append({
