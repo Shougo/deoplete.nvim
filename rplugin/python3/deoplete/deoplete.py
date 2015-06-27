@@ -50,7 +50,7 @@ class Deoplete(object):
             source = importlib.machinery.SourceFileLoader(
                 'deoplete.sources.' + name[: -3], path).load_module()
             if hasattr(source, 'Source'):
-                self.sources[name[: -3]] = source.Source()
+                self.sources[name[: -3]] = source.Source(self.vim)
         # self.debug(self.sources)
 
     def load_filters(self):
@@ -104,8 +104,7 @@ class Deoplete(object):
                         not context['filetype'] in source.filetypes):
                 continue
             cont = copy.deepcopy(context)
-            cont['complete_position'] = \
-                source.get_complete_position(self.vim, cont)
+            cont['complete_position'] = source.get_complete_position(cont)
             cont['complete_str'] = \
                 cont['input'][cont['complete_position'] :]
             # self.debug(source_name)
@@ -132,8 +131,7 @@ class Deoplete(object):
         for result in results:
             context = result['context']
             source = result['source']
-            context['candidates'] = source.gather_candidates(
-                self.vim, context)
+            context['candidates'] = source.gather_candidates(context)
             # self.debug(context['candidates'])
 
             # self.debug(context['complete_str'])
@@ -147,8 +145,7 @@ class Deoplete(object):
 
             # On post filter
             if hasattr(source, 'on_post_filter'):
-                context['candidates'] = source.on_post_filter(
-                    self.vim, context)
+                context['candidates'] = source.on_post_filter(context)
 
             # Set default menu
             for candidate in context['candidates']:

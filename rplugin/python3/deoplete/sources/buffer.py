@@ -29,21 +29,21 @@ import functools
 from .base import Base
 
 class Source(Base):
-    def __init__(self):
-        Base.__init__(self)
+    def __init__(self, vim):
+        Base.__init__(self, vim)
 
         self.name = 'buffer'
         self.mark = '[B]'
         self.buffers = {}
         pass
 
-    def gather_candidates(self, vim, context):
+    def gather_candidates(self, context):
         current_candidates = []
         p = re.compile(context['keyword_patterns'])
 
-        for l in vim.current.buffer:
+        for l in self.vim.current.buffer:
                 current_candidates += p.findall(l)
-        self.buffers[vim.current.buffer.number] = {
+        self.buffers[self.vim.current.buffer.number] = {
             'filetype': context['filetype'],
             'candidates': current_candidates,
         }

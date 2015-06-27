@@ -32,17 +32,17 @@ from .base import Base
 TagsCacheItem = namedtuple('TagsCacheItem', 'mtime tags')
 
 class Source(Base):
-    def __init__(self):
-        Base.__init__(self)
+    def __init__(self, vim):
+        Base.__init__(self, vim)
 
         self.name = 'tag'
         self.mark = '[T]'
 
         self.cache = {}
 
-    def gather_candidates(self, vim, context):
+    def gather_candidates(self, context):
         candidates = []
-        for tags_file in vim.eval(
+        for tags_file in self.vim.eval(
                 'map(tagfiles(), "fnamemodify(v:val, \\":p\\")")'):
             mtime = getmtime(tags_file)
             if tags_file not in self.cache or \

@@ -42,19 +42,19 @@ def debug(vim, msg):
     vim.command('echomsg string("' + str(msg) + '")')
 
 class Source(Base):
-    def __init__(self):
-        Base.__init__(self)
+    def __init__(self, vim):
+        Base.__init__(self, vim)
 
         self.name = 'file'
         self.mark = '[F]'
 
-    def get_complete_position(self, vim, context):
+    def get_complete_position(self, context):
         p = longest_path_that_exists(context['input'])
         if p not in (None, []):
             return context['input'].find(p)
         return -1
 
-    def gather_candidates(self, vim, context):
+    def gather_candidates(self, context):
         dirs = [x for x in glob(context['complete_str'] + '*')
                       if os.path.isdir(x)]
         files = [x for x in glob(context['complete_str'] + '*')

@@ -27,7 +27,8 @@ import re
 from abc import abstractmethod
 
 class Base(object):
-    def __init__(self):
+    def __init__(self, vim):
+        self.vim = vim
         self.name = 'base'
         self.description = ''
         self.marker = ''
@@ -37,11 +38,11 @@ class Base(object):
         self.converters = []
         self.filetypes = []
 
-    def get_complete_position(self, vim, context):
+    def get_complete_position(self, context):
         m = re.search('('+context['keyword_patterns']+')$', context['input'])
         return m.start() if m else -1
 
     @abstractmethod
-    def gather_candidate(self, vim, context):
+    def gather_candidate(self, context):
         pass
 
