@@ -26,10 +26,11 @@
 from abc import abstractmethod
 
 class Base(object):
-    def __init__(self):
+    def __init__(self, vim):
+        self.vim = vim
         self.name = 'base'
         self.description = ''
 
     @abstractmethod
-    def filter(self, vim, context):
+    def filter(self, context):
         pass

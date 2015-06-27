@@ -26,13 +26,13 @@
 from .base import Base
 
 class Filter(Base):
-    def __init__(self):
-        Base.__init__(self)
+    def __init__(self, vim):
+        Base.__init__(self, vim)
 
         self.name = 'matcher_head'
         self.description = 'head_matcher'
 
-    def filter(self, vim, context):
+    def filter(self, context):
         complete_str = context['complete_str']
         if context['ignorecase']:
             complete_str = complete_str.lower()

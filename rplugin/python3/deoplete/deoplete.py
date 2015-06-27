@@ -63,7 +63,7 @@ class Deoplete(object):
             filter = importlib.machinery.SourceFileLoader(
                 'deoplete.filters.' + name[: -3], path).load_module()
             if hasattr(filter, 'Filter'):
-                self.filters[name[: -3]] = filter.Filter()
+                self.filters[name[: -3]] = filter.Filter(self.vim)
         # self.debug(self.filters)
 
     def debug(self, msg):
@@ -141,8 +141,8 @@ class Deoplete(object):
             for filter_name in \
                     source.matchers + source.sorters + source.converters:
                 if filter_name in self.filters:
-                    context['candidates'] = self.filters[filter_name].filter(
-                        self.vim, context)
+                    context['candidates'] = \
+                        self.filters[filter_name].filter(context)
             # self.debug(context['candidates'])
 
             # On post filter
