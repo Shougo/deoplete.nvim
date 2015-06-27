@@ -99,7 +99,9 @@ class Deoplete(object):
         start_length = self.vim.eval(
             'g:deoplete#auto_completion_start_length')
         for source_name, source in self.sources.items():
-            if sources and (not source_name in sources):
+            if (sources and not source_name in sources) \
+                    or (source.filetypes and
+                        not context['filetype'] in source.filetypes):
                 continue
             cont = copy.deepcopy(context)
             cont['complete_position'] = \

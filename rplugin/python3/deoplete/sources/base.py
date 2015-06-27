@@ -34,6 +34,7 @@ class Base(object):
         self.matchers = ['matcher_fuzzy']
         self.sorters = []
         self.converters = []
+        self.filetypes = []
 
     def get_complete_position(self, vim, context):
         m = re.search('('+context['keyword_patterns']+')$', context['input'])
