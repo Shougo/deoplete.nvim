@@ -29,7 +29,7 @@ import traceback
 
 import deoplete
 from deoplete.deoplete import Deoplete
-from deoplete.util import get_buffer_config, convert2list
+import deoplete.util
 
 @neovim.plugin
 class DeopleteHandlers(object):
@@ -62,10 +62,12 @@ class DeopleteHandlers(object):
                     for k, v in context.items()}
 
         # Call omni completion
-        omni_patterns = convert2list(get_buffer_config(self.vim, context,
-                                         'b:deoplete_omni_patterns',
-                                         'g:deoplete#omni_patterns',
-                                         'g:deoplete#_omni_patterns'))
+        omni_patterns = deoplete.util.convert2list(
+            deoplete.util.get_buffer_config(
+                self.vim, context,
+                'b:deoplete_omni_patterns',
+                'g:deoplete#omni_patterns',
+                'g:deoplete#_omni_patterns'))
         # self.debug(omni_pattern)
         for pattern in omni_patterns:
             if pattern != '' \

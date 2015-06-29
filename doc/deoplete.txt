@@ -94,7 +94,7 @@ COMMANDS 					*deoplete-commands*
 ------------------------------------------------------------------------------
 VARIABLES 					*deoplete-variables*
 
-					*g:deoplete#enable_at_startup*
+				*g:deoplete#enable_at_startup*
 g:deoplete#enable_at_startup
 		Deoplete gets started automatically when Neovim starts if
 		this value is 1.
@@ -102,7 +102,7 @@ g:deoplete#enable_at_startup
 		With the default value 0, you cannot use deoplete
 		unless you start it manually.
 
-					*g:deoplete#enable_ignore_case*
+				*g:deoplete#enable_ignore_case*
 g:deoplete#enable_ignore_case
 		When deoplete looks for candidate completion, this
 		variable controls whether deoplete ignores the upper-
@@ -110,7 +110,7 @@ g:deoplete#enable_ignore_case
 
 		Default value is 'ignorecase'.
 
-					*g:deoplete#enable_smart_case*
+				*g:deoplete#enable_smart_case*
 g:deoplete#enable_smart_case
 		When a capital letter is included in input, deoplete does
 		not ignore the upper- and lowercase.
@@ -123,6 +123,18 @@ g:deoplete#auto_completion_start_length
 		at the time of key input automatically.
 
 		Default value is 2.
+
+				*g:deoplete#disable_auto_complete*
+g:deoplete#disable_auto_complete
+		It controls whether you invalidate automatic completion.  If
+		it is 1, automatic completion becomes invalid, but can use the
+		manual completion by |deoplete#mappings#manual_complete()|.
+
+		Default value is 0.
+
+				*b:deoplete_disable_auto_complete*
+b:deoplete_disable_auto_complete
+		Buffer local variable of |g:deoplete#disable_auto_complete|.
 
 				*g:deoplete#keyword_patterns*
 g:deoplete#keyword_patterns

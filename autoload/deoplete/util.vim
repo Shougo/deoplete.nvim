@@ -54,6 +54,9 @@ function! deoplete#util#get_default_buffer_config(
         \ deoplete#util#get_buffer_config(
         \  '_', a:buffer_var, a:user_var, a:default_var, default_val)
 endfunction"}}}
+function! deoplete#util#get_simple_buffer_config(buffer_var, user_var) "{{{
+  return exists(a:buffer_var) ? a:buffer_var : a:user_var
+endfunction"}}}
 function! deoplete#util#print_error(string) "{{{
   echohl Error | echomsg '[deoplete] ' . a:string | echohl None
 endfunction"}}}
