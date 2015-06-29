@@ -39,6 +39,14 @@ def get_simple_buffer_config(vim, buffer_var, user_var):
     return vim.eval('deoplete#util#get_simple_buffer_config("{0}", {1})' \
              .format(buffer_var, user_var))
 
+def set_pattern(vim, variable, keys, pattern):
+    return vim.eval("deoplete#util#set_pattern({0}, '{1}', '{2}')" \
+             .format(variable, keys, pattern))
+
+def set_default(vim, var, val):
+    return vim.eval("deoplete#util#set_default('{0}', {1})" \
+             .format(var, val))
+
 def convert2list(expr):
     return (expr if isinstance(expr, list) else [expr])
 
