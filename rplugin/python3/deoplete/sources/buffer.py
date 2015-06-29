@@ -35,7 +35,6 @@ class Source(Base):
         self.name = 'buffer'
         self.mark = '[B]'
         self.buffers = {}
-        pass
 
     def gather_candidates(self, context):
         current_candidates = []
