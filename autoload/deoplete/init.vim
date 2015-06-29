@@ -75,6 +75,7 @@ function! deoplete#init#enable() abort "{{{
 endfunction"}}}
 
 function! deoplete#init#_variables() abort "{{{
+  " User vairables
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_ignore_case', &ignorecase)
   call deoplete#util#set_default(
@@ -95,6 +96,10 @@ function! deoplete#init#_variables() abort "{{{
         \ 'g:deoplete#sources', {})
   call deoplete#util#set_default(
         \ 'g:deoplete#ignore_sources', {})
+
+  " Internal vairables
+  call deoplete#util#set_default(
+        \ 'g:deoplete#_skip_next_complete', 0)
 
   " Initialize default keyword pattern. "{{{
   call deoplete#util#set_pattern(

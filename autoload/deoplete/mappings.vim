@@ -53,6 +53,7 @@ function! deoplete#mappings#smart_close_popup() "{{{
 endfunction
 "}}}
 function! deoplete#mappings#cancel_popup() "{{{
+  let g:deoplete#_skip_next_complete = 1
   return pumvisible() ? "\<C-e>" : ''
 endfunction
 "}}}
