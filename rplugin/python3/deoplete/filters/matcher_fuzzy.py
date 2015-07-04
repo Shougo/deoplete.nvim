@@ -39,7 +39,6 @@ class Filter(Base):
             complete_str = complete_str.lower()
         p = re.compile(fuzzy_escape(complete_str))
         input_len = len(complete_str)
-        # debug(self.vim, fuzzy_escape(complete_str))
         return [x for x in context['candidates'] \
                 if len(x['word']) > input_len and p.match(x['word'].lower())] \
             if context['ignorecase'] \
@@ -55,5 +54,3 @@ def escape(string):
     # Escape string for python regexp.
     return re.sub(r'([\[\]().*+?^$-])', r'\\\1', string)
 
-def debug(vim, msg):
-        vim.command('echomsg string("' + msg + '")')

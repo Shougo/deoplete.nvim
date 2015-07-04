@@ -52,3 +52,7 @@ def convert2list(expr):
 
 def globruntime(vim, path):
     return vim.eval("globpath(&runtimepath, '" + path + "', 1, 1)")
+
+def debug(vim, msg):
+    vim.command('echomsg string("' + str(msg) + '")')
+

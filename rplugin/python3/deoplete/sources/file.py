@@ -38,9 +38,6 @@ def longest_path_that_exists(input_str):
         return sorted(existing_paths)[-1]
     return None
 
-def debug(vim, msg):
-    vim.command('echomsg string("' + str(msg) + '")')
-
 class Source(Base):
     def __init__(self, vim):
         Base.__init__(self, vim)

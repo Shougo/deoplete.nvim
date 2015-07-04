@@ -55,9 +55,6 @@ class Source(Base):
                 candidates += self.cache[tags_file].tags
         return [{ 'word': x } for x in candidates]
 
-def debug(vim, msg):
-    vim.command('echomsg string("' + str(msg) + '")')
-
 def parse_tags(f):
     p = re.compile('^[a-zA-Z_]\w*(?=\t)')
     candidates = []
