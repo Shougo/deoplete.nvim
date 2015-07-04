@@ -51,12 +51,12 @@ function! s:doc_dict.search(cur_text) "{{{
   endif
 
   let match = stridx(abbr, item.word)
-  if match >= 0
-    call add(ret, { 'text' : abbr[ : match-1] })
+  if match < 0
+    call add(ret, { 'text' : abbr })
+  else
+    call add(ret, { 'text' : item.word, 'highlight' : 'Identifier' })
+    call add(ret, { 'text' : abbr[match+len(item.word) :] })
   endif
-
-  call add(ret, { 'text' : item.word, 'highlight' : 'Identifier' })
-  call add(ret, { 'text' : abbr[match+len(item.word) :] })
 
   return ret
 endfunction"}}}
