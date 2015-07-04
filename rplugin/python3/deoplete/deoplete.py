@@ -160,10 +160,13 @@ class Deoplete(object):
         return results
 
     def merge_results(self, results):
+        results = [x for x in results if x['context']['candidates']]
         if not results:
             return (-1, [])
+
         complete_position = min(
             [x['context']['complete_position'] for x in results])
+
         candidates = []
         for result in results:
             context = result['context']
