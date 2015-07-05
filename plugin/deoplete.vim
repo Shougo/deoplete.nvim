@@ -30,12 +30,6 @@ let g:loaded_deoplete = 1
 
 command! -nargs=0 -bar DeopleteEnable
       \ call deoplete#init#enable()
-command! -nargs=0 -bar DeopleteLock
-      \ call deoplete#commands#_lock()
-command! -nargs=0 -bar DeopleteUnlock
-      \ call deoplete#commands#_unlock()
-command! -nargs=0 -bar DeopleteToggle
-      \ call deoplete#commands#_toggle_lock()
 
 " Global options definition. "{{{
 if get(g:, 'deoplete#enable_at_startup', 0)
