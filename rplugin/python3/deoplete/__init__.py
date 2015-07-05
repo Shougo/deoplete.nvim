@@ -35,23 +35,28 @@ import deoplete.util
 class DeopleteHandlers(object):
     def __init__(self, vim):
         self.vim = vim
+        self.msgfile = self.vim.eval('tempname()')
 
     def debug(self, msg):
         self.vim.command('echomsg string("' + str(msg) + '")')
 
     def error(self, e):
-        tmp = self.vim.eval('tempname()')
-        with open(tmp, 'w') as f:
+        with open(self.msgfile, 'a') as f:
             traceback.print_exc(None, f)
-        self.vim.command('call deoplete#util#print_error(' \
+        self.vim.command('call deoplete#util#print_error('
                          + '"The error is occurred.  Please read ".'
-                         + 'string("'+tmp+'")." file.")')
+                         + 'string("'+self.msgfile+'").'
+                         +'" file or execute :DeopleteMessages command.")')
 
     @neovim.command('DeopleteInitializePython', sync=True, nargs=0)
     def init_python(self):
         self.deoplete = Deoplete(self.vim)
         self.vim.command('let g:deoplete#_channel_id = '
         + str(self.vim.channel_id))
+
+    @neovim.command('DeopleteMessages', sync=True, nargs=0)
+    def print_error(self):
+        self.vim.command('edit ' + self.msgfile)
 
     @neovim.rpc_export('completion_begin')
     def completion_begin(self, context):
