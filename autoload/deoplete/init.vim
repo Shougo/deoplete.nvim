@@ -48,7 +48,7 @@ function! deoplete#init#enable() abort "{{{
 
   if &completeopt !~# 'noinsert\|noselect'
     try
-      set completeopt+=noinsert,noselect
+      set completeopt+=noselect
     catch
       echomsg '[deoplete] deoplete.nvim does not work with this version.'
       echomsg '[deoplete] Please update neovim to latest version.'
