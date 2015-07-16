@@ -2,11 +2,11 @@ deoplete
 ========
 
 Deoplete is the abbreviation of "dark powered neo-completion".  It
-provides asynchronous keyword completion system in the
-current buffer.  Deoplete cannot be customized and has not many
-features currently.  It is provided for testing purpose.
+provides an asynchronous keyword completion system in the
+current buffer.  Deoplete cannot be customized and doesn't currently have many
+features.  It is provided for testing purposes.
 
-**Note:** It is still alpha version!  It is not for production use.
+**Note:** It is still an alpha version!  It is not for production use.
 
 ## Installation
 
@@ -28,7 +28,7 @@ You can enable Python3 interface with pip:
 
     sudo pip3 install neovim
 
-If you want to read for Neovim-python/python3 interface install documentation,
+If you want to read the Neovim-python/python3 interface install documentation,
 you should read `:help nvim-python`.
 
 ## Screenshots
