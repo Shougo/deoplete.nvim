@@ -60,12 +60,6 @@ class DeopleteHandlers(object):
 
     @neovim.rpc_export('completion_begin')
     def completion_begin(self, context):
-        # Encoding conversion
-        encoding = self.vim.eval('&encoding')
-        context = { k.decode(encoding) :
-                    (v.decode(encoding) if isinstance(v, bytes) else v)
-                    for k, v in context.items()}
-
         # Call omni completion
         omni_patterns = deoplete.util.convert2list(
             deoplete.util.get_buffer_config(
