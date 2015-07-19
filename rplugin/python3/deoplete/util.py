@@ -56,3 +56,6 @@ def globruntime(vim, path):
 def debug(vim, msg):
     vim.command('echomsg string("' + str(msg) + '")')
 
+def escape(expr):
+    return expr.replace("'", "''")
+
