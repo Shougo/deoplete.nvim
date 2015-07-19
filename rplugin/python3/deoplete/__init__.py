@@ -69,10 +69,12 @@ class DeopleteHandlers(object):
                 'g:deoplete#_omni_patterns'))
         # self.debug(omni_pattern)
         for pattern in omni_patterns:
-            if pattern != '' \
-                    and self.vim.eval('&l:omnifunc') != '' \
-                    and re.search('('+pattern+')$', context['input']) \
-                    and self.vim.eval('mode()') == 'i':
+            if self.vim.eval('mode()') == 'i' \
+                    and (pattern != '' \
+                         and self.vim.eval('&l:omnifunc') != '' \
+                         and re.search('('+pattern+')$', context['input'])) \
+                         or self.vim.eval(
+                             'deoplete#util#is_eskk_convertion()') != 0:
                 self.vim.command(
                     'call feedkeys("\<C-x>\<C-o>", "n")')
                 return
