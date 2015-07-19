@@ -31,11 +31,6 @@ function! deoplete#handlers#_init() abort "{{{
 endfunction"}}}
 
 function! s:completion_begin(event) abort "{{{
-  if g:deoplete#_skip_next_complete
-    let g:deoplete#_skip_next_complete = 0
-    return
-  endif
-
   call rpcnotify(g:deoplete#_channel_id, 'completion_begin',
           \  deoplete#init#_context(a:event, []))
 endfunction"}}}

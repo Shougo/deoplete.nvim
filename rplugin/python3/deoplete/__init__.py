@@ -60,6 +60,14 @@ class DeopleteHandlers(object):
 
     @neovim.rpc_export('completion_begin')
     def completion_begin(self, context):
+        # Skip
+        if self.vim.eval('g:deoplete#_skip_next_complete'):
+            self.vim.command(
+                'let g:deoplete#_skip_next_complete = 0')
+            return
+        if self.vim.eval('&paste') != 0:
+            return
+
         # Call omni completion
         omni_patterns = deoplete.util.convert2list(
             deoplete.util.get_buffer_config(
