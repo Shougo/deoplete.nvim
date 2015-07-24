@@ -43,7 +43,9 @@ class Source(Base):
     def gather_candidates(self, context):
         candidates = []
         for tags_file in self.vim.eval(
-                'map(tagfiles(), "fnamemodify(v:val, \\":p\\")")'):
+                'map(tagfiles() + (get(g:, "loaded_neoinclude", 0) ? ' \
+                + ' neoinclude#include#get_tag_files() : []), ' \
+                + '"fnamemodify(v:val, \\":p\\")")'):
             mtime = getmtime(tags_file)
             if tags_file not in self.cache or \
                     self.cache[tags_file].mtime != mtime:
