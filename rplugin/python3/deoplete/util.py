@@ -54,7 +54,7 @@ def globruntime(vim, path):
     return vim.eval("globpath(&runtimepath, '" + path + "', 1, 1)")
 
 def debug(vim, msg):
-    vim.command('echomsg string("' + str(msg) + '")')
+    vim.command('echomsg string("' + str(msg).replace('\\', '\\\\') + '")')
 
 def escape(expr):
     return expr.replace("'", "''")
