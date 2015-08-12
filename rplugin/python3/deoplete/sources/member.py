@@ -80,25 +80,19 @@ class Source(Base):
             'g:deoplete#member#_prefix_patterns')
         if prefix_pattern == '':
             return -1
-        if re.search(self.object_pattern + prefix_pattern + r'\w*$',
-                    context['input']) is None:
+        m = re.search(self.object_pattern + prefix_pattern + r'\w*$',
+                    context['input'])
+        if m is None:
             return -1
+        self.prefix = re.sub('\w*$', '', m.group(0))
         return re.search(r'\w*$', context['input']).start()
 
     def gather_candidates(self, context):
-        prefix_pattern = get_default_buffer_config(
-            self.vim, context,
-            'b:deoplete_member_prefix_patterns',
-            'g:deoplete#member#prefix_patterns',
-            'g:deoplete#member#_prefix_patterns')
-        p = re.compile(self.object_pattern + prefix_pattern
-                       + r'\w+(?:\(\)?)?')
+        p = re.compile(r'(?<=' + re.escape(self.prefix) + r')\w+(?:\(\)?)?')
 
-        current_candidates = []
-        for l in self.vim.current.buffer:
-            current_candidates += p.findall(l)
+        return [{ 'word': x } for x in
+                functools.reduce(operator.add, [
+                     p.findall(x) for x in self.vim.current.buffer
+                     ])]
 
-        return [{ 'word': x } for x in [
-            re.sub(self.object_pattern + prefix_pattern, '', x)
-            for x in current_candidates]]
 
