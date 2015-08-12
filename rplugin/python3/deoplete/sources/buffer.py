@@ -41,7 +41,7 @@ class Source(Base):
         p = re.compile(context['keyword_patterns'])
 
         for l in self.vim.current.buffer:
-                current_candidates += p.findall(l)
+            current_candidates += p.findall(l)
         self.buffers[self.vim.current.buffer.number] = {
             'filetype': context['filetype'],
             'candidates': current_candidates,

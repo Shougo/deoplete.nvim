@@ -204,6 +204,21 @@ g:deoplete#ignore_sources	*g:deoplete#ignore_sources*
 b:deoplete_ignore_sources	*b:deoplete_ignore_sources*
 		Buffer local variable of |g:deoplete#ignore_sources|.
 
+				*g:deoplete#member#prefix_patterns*
+g:deoplete#member#prefix_patterns
+		This dictionary records prefix patterns to member completion.
+		This is appointed in regular expression string or list every
+		file type.
+		If this pattern is not defined or empty pattern, deoplete
+		does not complete member candidates.
+		Note: It is Python3 regexp.
+
+		Default value is in g:deoplete#member#_prefix_patterns.
+
+				*b:deoplete_member_prefix_patterns*
+b:deoplete_member_prefix_patterns
+		Buffer local variable of |g:deoplete#member#prefix_patterns|.
+
 ------------------------------------------------------------------------------
 FUNCTIONS 					*deoplete-functions*
 
@@ -273,6 +288,9 @@ SOURCES						*deoplete-sources*
 buffer						*deoplete-source-buffer*
 		It collects keywords from current buffer and the buffers which
 		have same 'filetype'.
+
+member						*deoplete-source-member*
+		It collects members from current buffer.
 
 tag						*deoplete-source-tag*
 		It collects keywords from |ctags| files.
