@@ -35,8 +35,7 @@ function! s:doc_dict.search(cur_text) "{{{
     return []
   endif
 
-  let abbr = (item.word !=# item.abbr) ?
-        \ item.abbr : item.word
+  let abbr = (item.abbr != '') ? item.abbr : item.word
   if item.info != ''
     let abbr = split(item.info, '\n')[0]
   endif
