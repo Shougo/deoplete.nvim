@@ -43,8 +43,7 @@ function! s:doc_dict.search(cur_text) "{{{
     let abbr = split(item.info, '\n')[0]
   endif
 
-  if has_key(item, 'abbr')
-        \ && abbr ==# item.abbr && len(item.menu) > 5
+  if len(item.menu) > 5
     " Combine menu.
     let abbr .= ' ' . item.menu
   endif
