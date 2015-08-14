@@ -35,9 +35,7 @@ function! s:doc_dict.search(cur_text) "{{{
     return []
   endif
 
-  let ret = []
-
-  let abbr = (has_key(item, 'abbr') && item.word !=# item.abbr) ?
+  let abbr = (item.word !=# item.abbr) ?
         \ item.abbr : item.word
   if item.info != ''
     let abbr = split(item.info, '\n')[0]
@@ -52,6 +50,8 @@ function! s:doc_dict.search(cur_text) "{{{
   if len(abbr) < len(item.word) + 2
     return []
   endif
+
+  let ret = []
 
   let match = stridx(abbr, item.word)
   if match < 0
