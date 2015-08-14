@@ -38,12 +38,13 @@ function! s:doc_dict.search(cur_text) "{{{
   let ret = []
 
   let abbr = (has_key(item, 'abbr') && item.word !=# item.abbr) ?
-        \ item.abbr : get(split(item.info, '\n'), 0)
-  if abbr == ''
-    return []
+        \ item.abbr : item.word
+  if item.info != ''
+    let abbr = split(item.info, '\n')[0]
   endif
+
   if has_key(item, 'abbr')
-        \ && abbr ==# item.abbr && len(get(item, 'menu', '')) > 5
+        \ && abbr ==# item.abbr && len(item.menu) > 5
     " Combine menu.
     let abbr .= ' ' . item.menu
   endif
