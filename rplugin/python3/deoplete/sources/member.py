@@ -27,7 +27,8 @@ import re
 import operator
 import functools
 from deoplete.util import \
-    set_default, set_pattern, get_default_buffer_config, debug
+    set_default, set_pattern, \
+    get_default_buffer_config, debug, charpos2bytepos
 from .base import Base
 
 class Source(Base):
@@ -94,5 +95,4 @@ class Source(Base):
                 functools.reduce(operator.add, [
                      p.findall(x) for x in self.vim.current.buffer
                      ])]
-
 

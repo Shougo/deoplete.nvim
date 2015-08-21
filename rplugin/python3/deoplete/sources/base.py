@@ -25,6 +25,7 @@
 
 import re
 from abc import abstractmethod
+from deoplete.util import charpos2bytepos, debug
 
 class Base(object):
     def __init__(self, vim):
@@ -37,6 +38,7 @@ class Base(object):
         self.sorters = []
         self.converters = []
         self.filetypes = []
+        self.is_bytepos = False
 
     def get_complete_position(self, context):
         m = re.search('('+context['keyword_patterns']+')$', context['input'])

@@ -30,7 +30,9 @@ import os.path
 import copy
 
 import deoplete.sources
-import deoplete.util
+from deoplete.util import \
+    globruntime, debug, \
+    get_simple_buffer_config, charpos2bytepos, bytepos2charpos
 import deoplete.filters
 
 class Deoplete(object):
@@ -42,9 +44,9 @@ class Deoplete(object):
 
     def load_sources(self):
         # Load sources from runtimepath
-        for path in deoplete.util.globruntime(self.vim,
+        for path in globruntime(self.vim,
                 'rplugin/python3/deoplete/sources/base.py') \
-                + deoplete.util.globruntime(self.vim,
+                + globruntime(self.vim,
                 'rplugin/python3/deoplete/sources/*.py'):
             name = os.path.basename(path)
             source = importlib.machinery.SourceFileLoader(
@@ -55,9 +57,9 @@ class Deoplete(object):
 
     def load_filters(self):
         # Load filters from runtimepath
-        for path in deoplete.util.globruntime(self.vim,
+        for path in globruntime(self.vim,
                 'rplugin/python3/deoplete/filters/base.py') \
-                + deoplete.util.globruntime(self.vim,
+                + globruntime(self.vim,
                 'rplugin/python3/deoplete/filters/*.py'):
             name = os.path.basename(path)
             filter = importlib.machinery.SourceFileLoader(
@@ -74,7 +76,7 @@ class Deoplete(object):
         if (self.vim.eval('&l:completefunc') != '' \
                 and self.vim.eval('&l:buftype').find('nofile') >= 0) \
                 or (context['event'] != 'Manual' and \
-                    deoplete.util.get_simple_buffer_config(
+                    get_simple_buffer_config(
                         self.vim,
                         'b:deoplete_disable_auto_complete',
                         'g:deoplete#disable_auto_complete')):
@@ -109,20 +111,25 @@ class Deoplete(object):
                         not context['filetype'] in source.filetypes):
                 continue
             cont = copy.deepcopy(context)
-            cont['complete_position'] = source.get_complete_position(cont)
-            cont['complete_str'] = \
-                cont['input'][cont['complete_position'] :]
-            # self.debug(source_name)
-            # self.debug(cont['input'])
-            # self.debug(cont['complete_position'])
-            # self.debug(cont['complete_str'])
+            charpos = source.get_complete_position(cont)
+            if source.is_bytepos:
+                charpos = bytepos2charpos(
+                    self.vim, cont['input'], charpos)
+            cont['complete_str'] = cont['input'][charpos :]
+            cont['complete_position'] = charpos2bytepos(
+                self.vim, cont['input'], charpos)
+            self.debug(source_name)
+            self.debug(cont['input'])
+            self.debug(charpos)
+            self.debug(cont['complete_position'])
+            self.debug(cont['complete_str'])
 
             min_pattern_length = source.min_pattern_length
             if min_pattern_length < 0:
                 # Use default value
                 min_pattern_length = start_length
 
-            if cont['complete_position'] < 0 \
+            if charpos < 0 \
                     or (cont['event'] != 'Manual' \
                         and len(cont['complete_str']) < min_pattern_length):
                 # Skip

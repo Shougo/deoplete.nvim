@@ -59,3 +59,10 @@ def debug(vim, msg):
 def escape(expr):
     return expr.replace("'", "''")
 
+def charpos2bytepos(vim, input, pos):
+    return len(bytes(input[: pos], vim.eval('&encoding')))
+
+def bytepos2charpos(vim, input, pos):
+    return vim.eval("len(substitute('{0}'[: {1}-1], '.', 'x', 'g'))"
+                    .format(escape(input), pos))
+
