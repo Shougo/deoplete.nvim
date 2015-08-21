@@ -25,7 +25,7 @@
 #=============================================================================
 
 import re
-from os.path import getmtime
+from os.path import getmtime, exists
 from collections import namedtuple
 from .base import Base
 
@@ -42,10 +42,10 @@ class Source(Base):
 
     def gather_candidates(self, context):
         candidates = []
-        for tags_file in self.vim.eval(
+        for tags_file in [x for x in self.vim.eval(
                 'map(tagfiles() + (get(g:, "loaded_neoinclude", 0) ? ' \
                 + ' neoinclude#include#get_tag_files() : []), ' \
-                + '"fnamemodify(v:val, \\":p\\")")'):
+                + '"fnamemodify(v:val, \\":p\\")")') if exists(x)]:
             mtime = getmtime(tags_file)
             if tags_file not in self.cache or \
                     self.cache[tags_file].mtime != mtime:
