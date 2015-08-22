@@ -105,7 +105,8 @@ class Deoplete(object):
         results = []
         start_length = self.vim.eval(
             'g:deoplete#auto_completion_start_length')
-        for source_name, source in self.sources.items():
+        for source_name, source in sorted(self.sources.items(),
+                key=lambda x: x[1].rank, reverse=True):
             if (sources and not source_name in sources) \
                     or (source.filetypes and
                         not context['filetype'] in source.filetypes):
@@ -118,11 +119,12 @@ class Deoplete(object):
             cont['complete_str'] = cont['input'][charpos :]
             cont['complete_position'] = charpos2bytepos(
                 self.vim, cont['input'], charpos)
+            # self.debug(source.rank)
             self.debug(source_name)
-            self.debug(cont['input'])
-            self.debug(charpos)
-            self.debug(cont['complete_position'])
-            self.debug(cont['complete_str'])
+            # self.debug(cont['input'])
+            # self.debug(charpos)
+            # self.debug(cont['complete_position'])
+            # self.debug(cont['complete_str'])
 
             min_pattern_length = source.min_pattern_length
             if min_pattern_length < 0:

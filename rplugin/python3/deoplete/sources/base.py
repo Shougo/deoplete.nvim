@@ -39,6 +39,7 @@ class Base(object):
         self.converters = []
         self.filetypes = []
         self.is_bytepos = False
+        self.rank = 100
 
     def get_complete_position(self, context):
         m = re.search('('+context['keyword_patterns']+')$', context['input'])
