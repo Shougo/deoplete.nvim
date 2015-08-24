@@ -120,7 +120,7 @@ class Deoplete(object):
             cont['complete_position'] = charpos2bytepos(
                 self.vim, cont['input'], charpos)
             # self.debug(source.rank)
-            self.debug(source_name)
+            # self.debug(source_name)
             # self.debug(cont['input'])
             # self.debug(charpos)
             # self.debug(cont['complete_position'])
