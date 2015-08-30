@@ -67,6 +67,16 @@ class DeopleteHandlers(object):
             return
         if self.vim.eval('&paste') != 0:
             return
+        if context['position'] == self.vim.eval(
+                'get(g:deoplete#_context, "position", [])'):
+            return
+
+        self.vim.command(
+          'let g:deoplete#_context = {}')
+
+        # Save previous position
+        self.vim.command(
+          'let g:deoplete#_context.position = ' + str(context['position']))
 
         # Call omni completion
         omni_patterns = deoplete.util.convert2list(
@@ -95,8 +105,6 @@ class DeopleteHandlers(object):
             candidates = []
         if not candidates or self.vim.eval('mode()') != 'i':
                 return
-        self.vim.command(
-          'let g:deoplete#_context = {}')
         self.vim.command(
           'let g:deoplete#_context.complete_position = '
             + str(complete_position))

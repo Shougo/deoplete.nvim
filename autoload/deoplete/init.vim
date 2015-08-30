@@ -75,6 +75,8 @@ function! deoplete#init#enable() abort "{{{
 endfunction"}}}
 
 function! deoplete#init#_variables() abort "{{{
+  let g:deoplete#_context = {}
+
   " User vairables
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_ignore_case', &ignorecase)

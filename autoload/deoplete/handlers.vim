@@ -24,6 +24,10 @@
 "=============================================================================
 
 function! deoplete#handlers#_init() abort "{{{
+  augroup deoplete
+    autocmd InsertLeave * call s:on_insert_leave()
+  augroup END
+
   for event in ['TextChangedI', 'InsertEnter']
     execute 'autocmd deoplete' event '*'
           \ 'call s:completion_begin("' . event . '")'
@@ -33,6 +37,10 @@ endfunction"}}}
 function! s:completion_begin(event) abort "{{{
   call rpcnotify(g:deoplete#_channel_id, 'completion_begin',
           \  deoplete#init#_context(a:event, []))
+endfunction"}}}
+
+function! s:on_insert_leave() abort "{{{
+  let g:deoplete#_context = {}
 endfunction"}}}
 
 " vim: foldmethod=marker
