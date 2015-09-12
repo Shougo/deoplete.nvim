@@ -103,6 +103,16 @@ function! deoplete#init#_variables() abort "{{{
   call deoplete#util#set_default(
         \ 'g:deoplete#_skip_next_complete', 0)
 
+  " Source variables
+  call deoplete#util#set_default(
+        \ 'g:deoplete#omni#input_patterns', {})
+  call deoplete#util#set_default(
+        \ 'g:deoplete#omni#_input_patterns', {})
+  call deoplete#util#set_default(
+        \ 'g:deoplete#member#prefix_patterns', {})
+  call deoplete#util#set_default(
+        \ 'g:deoplete#member#_prefix_patterns', {})
+
   " Initialize default keyword pattern. "{{{
   call deoplete#util#set_pattern(
         \ g:deoplete#_keyword_patterns,
@@ -112,23 +122,42 @@ function! deoplete#init#_variables() abort "{{{
 
   " Initialize omni completion pattern. "{{{
   call deoplete#util#set_pattern(
-        \ g:deoplete#_omni_patterns,
-        \ 'html,xhtml,xml,markdown,mkd',
-        \ '<[^>]*')
+        \ g:deoplete#omni#_input_patterns,
+        \ 'html,xhtml,xml,markdown,mkd', ['<[^>]*'])
   call deoplete#util#set_pattern(
-        \ g:deoplete#_omni_patterns,
-        \ 'css,scss,sass',
-        \ ['^\s+\w+', '\w+[):;]?\s+\w*|[@!]'])
+        \ g:deoplete#omni#_input_patterns,
+        \ 'css,scss,sass', ['^\s+\w+', '\w+[):;]?\s+\w*|[@!]'])
   call deoplete#util#set_pattern(
-        \ g:deoplete#_omni_patterns,
-        \ 'javascript',
-        \ '[^. \t]\.([a-zA-Z_]\w*)?')
+        \ g:deoplete#omni#_input_patterns,
+        \ 'javascript', ['[^. \t]\.([a-zA-Z_]\w*)?'])
   call deoplete#util#set_pattern(
-        \ g:deoplete#_omni_patterns,
-        \ 'go,python', '[^. \t]\.\w*')
+        \ g:deoplete#omni#_input_patterns,
+        \ 'go,python', ['[^. \t]\.\w*'])
   call deoplete#util#set_pattern(
-        \ g:deoplete#_omni_patterns,
+        \ g:deoplete#omni#_input_patterns,
         \ 'ruby', ['[^. \t]\.\w*', '[a-zA-Z_]\w*::\w*'])
+  "}}}
+
+  " Initialize member prefix pattern. "{{{
+  call deoplete#util#set_pattern(
+        \ g:deoplete#member#_prefix_patterns,
+        \ 'c,objc', ['\.', '->'])
+  call deoplete#util#set_pattern(
+        \ g:deoplete#member#_prefix_patterns,
+        \ 'cpp,objcpp', ['\.', '->', '::'])
+  call deoplete#util#set_pattern(
+        \ g:deoplete#member#_prefix_patterns,
+        \ 'perl,php', ['->'])
+  call deoplete#util#set_pattern(
+        \ g:deoplete#member#_prefix_patterns,
+        \ 'cs,java,javascript,d,vim,ruby,python,perl6,scala,vb',
+        \ '\.')
+  call deoplete#util#set_pattern(
+        \ g:deoplete#member#_prefix_patterns,
+        \ 'ruby', ['\.', '::'])
+  call deoplete#util#set_pattern(
+        \ g:deoplete#member#_prefix_patterns,
+        \ 'lua', ['\.', ':'])
   "}}}
 endfunction"}}}
 

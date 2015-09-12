@@ -219,6 +219,27 @@ g:deoplete#member#prefix_patterns
 b:deoplete_member_prefix_patterns
 		Buffer local variable of |g:deoplete#member#prefix_patterns|.
 
+				*g:deoplete#omni#input_patterns*
+g:deoplete#omni#input_patterns
+		This dictionary records keyword patterns to Omni completion.
+		This is appointed in regular expression string or list every
+		file type.
+		If this pattern is not defined or empty pattern, deoplete
+		does not call 'omnifunc'.
+		Note: Some omnifuncs may not be worked.
+		Note: It is Python3 regexp.
+>
+		let g:deoplete#omni#input_patterns = {}
+		let g:deoplete#omni#input_patterns.ruby =
+		\ ['[^. *\t]\.\w*', '\h\w*::']
+		let g:deoplete#omni#input_patterns.java = '[^. *\t]\.\w*'
+<
+		Default value is in g:deoplete#omni#_input_patterns.
+
+				*b:deoplete_omni_patterns*
+b:deoplete_omni_input_patterns
+		Buffer local variable of |g:deoplete#omni#input_patterns|.
+
 ------------------------------------------------------------------------------
 FUNCTIONS 					*deoplete-functions*
 
@@ -298,6 +319,9 @@ tag						*deoplete-source-tag*
 
 file						*deoplete-source-file*
 		This source collects keywords from local files.
+
+omni						*deoplete-source-omni*
+		This source collects keywords from 'omnifunc'.
 
 ------------------------------------------------------------------------------
 USER SOURCES 					*deoplete-user-sources*

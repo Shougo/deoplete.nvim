@@ -113,7 +113,7 @@ class Deoplete(object):
                 continue
             cont = copy.deepcopy(context)
             charpos = source.get_complete_position(cont)
-            if source.is_bytepos:
+            if charpos >= 0 and source.is_bytepos:
                 charpos = bytepos2charpos(
                     self.vim, cont['input'], charpos)
             cont['complete_str'] = cont['input'][charpos :]
@@ -145,7 +145,14 @@ class Deoplete(object):
         for result in results:
             context = result['context']
             source = result['source']
+
             context['candidates'] = source.gather_candidates(context)
+            if context['candidates'] \
+                    and type(context['candidates'][0]) == type(''):
+                # Convert to dict
+                context['candidates'] = \
+                    [{ 'word': x } for x in context['candidates'] ]
+
             # self.debug(context['candidates'])
 
             # self.debug(context['complete_str'])
