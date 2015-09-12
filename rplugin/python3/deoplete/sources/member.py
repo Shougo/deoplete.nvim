@@ -27,8 +27,7 @@ import re
 import operator
 import functools
 from deoplete.util import \
-    set_default, set_pattern, \
-    get_default_buffer_config, debug, charpos2bytepos
+    get_default_buffer_config, debug, charpos2bytepos, convert2list
 from .base import Base
 
 class Source(Base):
@@ -40,53 +39,24 @@ class Source(Base):
         self.buffers = {}
         self.min_pattern_length = 0
 
-        # Initialize member prefix patterns
-        set_default(self.vim,
-                    'g:deoplete#member#prefix_patterns', {})
-        set_default(self.vim,
-                    'g:deoplete#member#_prefix_patterns', {})
-        set_pattern(self.vim,
-                    'g:deoplete#member#_prefix_patterns',
-                    'c,objc', r'\.|->')
-        set_pattern(self.vim,
-                    'g:deoplete#member#_prefix_patterns',
-                    'cpp,objcpp', r'\.|->|::')
-        set_pattern(self.vim,
-                    'g:deoplete#member#_prefix_patterns',
-                    'perl,php', r'->')
-        set_pattern(self.vim,
-                    'g:deoplete#member#_prefix_patterns',
-                    'cs,java,javascript,d,vim,ruby,python,perl6,scala,vb',
-                    r'\.')
-        set_pattern(self.vim,
-                    'g:deoplete#member#_prefix_patterns',
-                    'cs,java,javascript,d,vim,ruby,python,perl6,scala,vb',
-                    r'\.')
-        set_pattern(self.vim,
-                    'g:deoplete#member#_prefix_patterns',
-                    'ruby', r'\.|::')
-        set_pattern(self.vim,
-                    'g:deoplete#member#_prefix_patterns',
-                    'lua', r'\.|:')
-
         # Initialize member object pattern
         self.object_pattern = r'[a-zA-Z_]\w*(?:\(\)?)?'
 
     def get_complete_position(self, context):
         # Check member prefix pattern.
-        prefix_pattern = get_default_buffer_config(
-            self.vim, context,
-            'b:deoplete_member_prefix_patterns',
-            'g:deoplete#member#prefix_patterns',
-            'g:deoplete#member#_prefix_patterns')
-        if prefix_pattern == '':
-            return -1
-        m = re.search(self.object_pattern + prefix_pattern + r'\w*$',
-                    context['input'])
-        if m is None:
-            return -1
-        self.prefix = re.sub('\w*$', '', m.group(0))
-        return re.search(r'\w*$', context['input']).start()
+        for prefix_pattern in convert2list(
+                get_default_buffer_config(
+                    self.vim, context,
+                    'b:deoplete_member_prefix_patterns',
+                    'g:deoplete#member#prefix_patterns',
+                    'g:deoplete#member#_prefix_patterns')):
+            m = re.search(self.object_pattern + prefix_pattern + r'\w*$',
+                        context['input'])
+            if m is None or prefix_pattern == '':
+                continue
+            self.prefix = re.sub(r'\w*$', '', m.group(0))
+            return re.search(r'\w*$', context['input']).start()
+        return -1
 
     def gather_candidates(self, context):
         p = re.compile(r'(?<=' + re.escape(self.prefix) + r')\w+(?:\(\)?)?')
