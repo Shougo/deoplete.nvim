@@ -170,8 +170,8 @@ class Deoplete(object):
 
             # Set default menu
             for candidate in context['candidates']:
-                if not 'menu' in candidate:
-                    candidate['menu'] = source.mark
+                candidate['menu'] = \
+                    source.mark + ' ' + candidate.get('menu', '')
             # self.debug(context['candidates'])
         return results
 
