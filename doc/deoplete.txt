@@ -238,7 +238,7 @@ g:deoplete#omni#input_patterns
 <
 		Default value is in g:deoplete#omni#_input_patterns.
 
-				*b:deoplete_omni_patterns*
+				*b:deoplete_omni_input_patterns*
 b:deoplete_omni_input_patterns
 		Buffer local variable of |g:deoplete#omni#input_patterns|.
 
