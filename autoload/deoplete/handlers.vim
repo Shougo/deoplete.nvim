@@ -26,6 +26,7 @@
 function! deoplete#handlers#_init() abort "{{{
   augroup deoplete
     autocmd InsertLeave * call s:on_insert_leave()
+    autocmd CompleteDone * call s:complete_done()
   augroup END
 
   for event in ['TextChangedI', 'InsertEnter']
@@ -41,6 +42,10 @@ endfunction"}}}
 
 function! s:on_insert_leave() abort "{{{
   let g:deoplete#_context = {}
+endfunction"}}}
+
+function! s:complete_done() abort "{{{
+  let g:deoplete#_context.position = getpos('.')
 endfunction"}}}
 
 " vim: foldmethod=marker

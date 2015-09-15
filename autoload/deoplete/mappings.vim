@@ -45,15 +45,17 @@ function! deoplete#mappings#manual_complete(...) abort "{{{
 endfunction"}}}
 
 function! deoplete#mappings#close_popup() "{{{
+  let g:deoplete#_context.position = getpos('.')
   return pumvisible() ? "\<C-y>" : ''
 endfunction
 "}}}
 function! deoplete#mappings#smart_close_popup() "{{{
+  let g:deoplete#_context.position = getpos('.')
   return pumvisible() ? "\<C-e>" : ''
 endfunction
 "}}}
 function! deoplete#mappings#cancel_popup() "{{{
-  let g:deoplete#_skip_next_complete = 1
+  let g:deoplete#_context.position = getpos('.')
   return pumvisible() ? "\<C-e>" : ''
 endfunction
 "}}}

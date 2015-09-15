@@ -265,17 +265,6 @@ deoplete#mappings#manual_complete([{sources}])
 >
 		inoremap <expr><Tab>  deoplete#mappings#manual_complete()
 <
-deoplete#mappings#close_popup()
-		Insert candidate and close popup menu for deoplete.
->
-		inoremap <expr><C-y>  deoplete#mappings#close_popup()
-<
-				*deoplete#mappings#cancel_popup()*
-deoplete#mappings#cancel_popup()
-		Cancel completion menu for deoplete.
->
-		inoremap <expr><C-e>  deoplete#mappings#cancel_popup()
-<
 				*deoplete#mappings#smart_close_popup()*
 deoplete#mappings#smart_close_popup()
 		Insert candidate and re-generate popup menu for deoplete.
@@ -297,9 +286,6 @@ EXAMPLES					*deoplete-examples*
 	let g:deoplete#enable_at_startup = 1
 	" Use smartcase.
 	let g:deoplete#enable_smart_case = 1
-
-	inoremap <expr><C-y>  deoplete#mappings#close_popup()
-	inoremap <expr><C-e>  deoplete#mappings#cancel_popup()
 
 	" <C-h>, <BS>: close popup and delete backword char.
 	inoremap <expr><C-h> deolete#mappings#smart_close_popup()."\<C-h>"
