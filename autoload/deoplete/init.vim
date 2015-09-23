@@ -121,16 +121,16 @@ function! deoplete#init#_variables() abort "{{{
   "}}}
 
   " Initialize omni completion pattern. "{{{
-  " Note: HTML omni func does not work in omni source.
+  " Note: HTML omni func use search().
   call deoplete#util#set_pattern(
         \ g:deoplete#omni_patterns,
         \ 'html,xhtml,xml,markdown,mkd', ['<[^>]*'])
   call deoplete#util#set_pattern(
         \ g:deoplete#omni#_input_patterns,
-        \ 'css,scss,sass', ['^\s+\w+', '\w+[):;]?\s+\w*', '[@!]'])
+        \ 'javascript', ['[^. \t]\.([a-zA-Z_]\w*)?'])
   call deoplete#util#set_pattern(
         \ g:deoplete#omni#_input_patterns,
-        \ 'javascript', ['[^. \t]\.([a-zA-Z_]\w*)?'])
+        \ 'css,scss,sass', ['^\s+\w+', '\w+[):;]?\s+\w*', '[@!]'])
   call deoplete#util#set_pattern(
         \ g:deoplete#omni#_input_patterns,
         \ 'go,python', ['[^. \t]\.\w*'])

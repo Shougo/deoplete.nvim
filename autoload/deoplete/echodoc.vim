@@ -42,7 +42,7 @@ function! s:doc_dict.search(cur_text) "{{{
   endif
 
   if item.info != ''
-    let abbr = split(item.info, '\n')[0]
+    let abbr = split(item.info, '\n\|\\n')[0]
   endif
 
   " Skip
