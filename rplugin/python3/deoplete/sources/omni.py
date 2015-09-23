@@ -49,7 +49,7 @@ class Source(Base):
                 'g:deoplete#omni#input_patterns',
                 'g:deoplete#omni#_input_patterns')):
 
-            m = re.search(input_pattern, context['input'])
+            m = re.search('('+input_pattern+')$', context['input'])
             if m is None or input_pattern == '':
                 continue
 

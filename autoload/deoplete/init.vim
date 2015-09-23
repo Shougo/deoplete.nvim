@@ -126,7 +126,7 @@ function! deoplete#init#_variables() abort "{{{
         \ 'html,xhtml,xml,markdown,mkd', ['<[^>]*'])
   call deoplete#util#set_pattern(
         \ g:deoplete#omni#_input_patterns,
-        \ 'css,scss,sass', ['^\s+\w+', '\w+[):;]?\s+\w*|[@!]'])
+        \ 'css,scss,sass', ['^\s+\w+', '\w+[):;]?\s+\w*', '[@!]'])
   call deoplete#util#set_pattern(
         \ g:deoplete#omni#_input_patterns,
         \ 'javascript', ['[^. \t]\.([a-zA-Z_]\w*)?'])
