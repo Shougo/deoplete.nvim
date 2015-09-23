@@ -228,7 +228,7 @@ g:deoplete#omni#input_patterns
 		file type.
 		If this pattern is not defined or empty pattern, deoplete
 		does not call 'omnifunc'.
-		Note: Some omnifuncs may not be worked.
+		Note: Some omnifuncs which moves the cursor is not worked.
 		Note: It is Python3 regexp.
 >
 		let g:deoplete#omni#input_patterns = {}

@@ -61,10 +61,6 @@ class Source(Base):
                     'call deoplete#util#print_error('
                     + '"Error occurred calling omnifunction: "'
                     + '. &l:omnifunc)')
-                self.vim.command(
-                    'call deoplete#util#print_error(v:throwpoint)')
-                self.vim.command(
-                    'call deoplete#util#print_error(v:exception)')
 
                 return -1
             finally:
@@ -80,17 +76,13 @@ class Source(Base):
             candidates = self.vim.eval(
                 "call(&l:omnifunc, [0, '{0}'])"
                 .format(escape(context['complete_str'])))
-        except:
-            self.vim.command(
-                'call deoplete#util#print_error('
-                + '"Error occurred calling omnifunction: "'
-                + '. &l:omnifunc)')
-            self.vim.command(
-                'call deoplete#util#print_error(v:throwpoint)')
-            self.vim.command(
-                'call deoplete#util#print_error(v:exception)')
-
-            candidates = []
+        # except:
+        #     self.vim.command(
+        #         'call deoplete#util#print_error('
+        #         + '"Error occurred calling omnifunction: "'
+        #         + '. &l:omnifunc)')
+        #
+        #     candidates = []
         finally:
             if pos != self.vim.eval('getpos(".")'):
                 self.vim.command(
