@@ -125,6 +125,11 @@ function! deoplete#init#_variables() abort "{{{
   call deoplete#util#set_pattern(
         \ g:deoplete#omni_patterns,
         \ 'html,xhtml,xml,markdown,mkd', ['<[^>]*'])
+  " Note: vim-go moves cursor.
+  call deoplete#util#set_pattern(
+        \ g:deoplete#omni_patterns,
+        \ 'go', ['[^. \t]\.\w*'])
+
   call deoplete#util#set_pattern(
         \ g:deoplete#omni#_input_patterns,
         \ 'javascript', ['[^. \t]\.([a-zA-Z_]\w*)?'])
@@ -133,7 +138,7 @@ function! deoplete#init#_variables() abort "{{{
         \ 'css,scss,sass', ['^\s+\w+', '\w+[):;]?\s+\w*', '[@!]'])
   call deoplete#util#set_pattern(
         \ g:deoplete#omni#_input_patterns,
-        \ 'go,python', ['[^. \t]\.\w*'])
+        \ 'python', ['[^. \t]\.\w*'])
   call deoplete#util#set_pattern(
         \ g:deoplete#omni#_input_patterns,
         \ 'ruby', ['[^. \t]\.\w*', '[a-zA-Z_]\w*::\w*'])
