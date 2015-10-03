@@ -128,20 +128,27 @@ function! deoplete#init#_variables() abort "{{{
   " Note: vim-go and vim-javacomplete2 moves cursor.
   call deoplete#util#set_pattern(
         \ g:deoplete#omni_patterns,
-        \ 'go,java', ['[^. \t]\.\w*'])
+        \ 'go,java', ['[^. \t0-9]\.\w*'])
+  call deoplete#util#set_pattern(
+        \ g:deoplete#omni_patterns,
+        \ 'c', ['[^. \t0-9]\.\w*', '[^. \t0-9]->\w*'])
+  call deoplete#util#set_pattern(
+        \ g:deoplete#omni_patterns,
+        \ 'cpp', ['[^. \t0-9]\.\w*', '[^. \t0-9]->\w*',
+        \         '[a-zA-Z_]\w*::\w*'])
 
   call deoplete#util#set_pattern(
         \ g:deoplete#omni#_input_patterns,
-        \ 'javascript', ['[^. \t]\.([a-zA-Z_]\w*)?'])
+        \ 'javascript', ['[^. \t0-9]\.([a-zA-Z_]\w*)?'])
   call deoplete#util#set_pattern(
         \ g:deoplete#omni#_input_patterns,
         \ 'css,scss,sass', ['^\s+\w+', '\w+[):;]?\s+\w*', '[@!]'])
   call deoplete#util#set_pattern(
         \ g:deoplete#omni#_input_patterns,
-        \ 'python', ['[^. \t]\.\w*'])
+        \ 'python', ['[^. \t0-9]\.\w*'])
   call deoplete#util#set_pattern(
         \ g:deoplete#omni#_input_patterns,
-        \ 'ruby', ['[^. \t]\.\w*', '[a-zA-Z_]\w*::\w*'])
+        \ 'ruby', ['[^. \t0-9]\.\w*', '[a-zA-Z_]\w*::\w*'])
   "}}}
 
   " Initialize member prefix pattern. "{{{
