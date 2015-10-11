@@ -32,7 +32,8 @@ import copy
 import deoplete.sources
 from deoplete.util import \
     globruntime, debug, \
-    get_simple_buffer_config, charpos2bytepos, bytepos2charpos
+    get_simple_buffer_config, charpos2bytepos, \
+    bytepos2charpos, get_custom
 import deoplete.filters
 
 class Deoplete(object):
@@ -157,8 +158,13 @@ class Deoplete(object):
 
             # self.debug(context['complete_str'])
             # self.debug(context['candidates'])
-            for filter_name in \
-                    source.matchers + source.sorters + source.converters:
+            matchers = get_custom(self.vim, source.name).get(
+                'matchers', source.matchers)
+            sorters = get_custom(self.vim, source.name).get(
+                'sorters', source.sorters)
+            converters = get_custom(self.vim, source.name).get(
+                'converters', source.converters)
+            for filter_name in matchers + sorters + converters:
                 if filter_name in self.filters:
                     context['candidates'] = \
                         self.filters[filter_name].filter(context)

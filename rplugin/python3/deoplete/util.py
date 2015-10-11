@@ -70,3 +70,6 @@ def bytepos2charpos(vim, input, pos):
     return vim.eval("len(substitute('{0}'[: {1}-1], '.', 'x', 'g'))"
                     .format(escape(input), pos))
 
+def get_custom(vim, source_name):
+    return vim.eval('deoplete#custom#get("{0}")'.format(source_name))
+

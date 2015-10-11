@@ -253,6 +253,18 @@ deoplete#initialize()			*deoplete#initialize()*
 		User customization for deoplete must be set before
 		initialization of deoplete.
 
+deoplete#custom#source({source-name}, {option-name}, {value})
+						*deoplete#custom#source()*
+		Set {source-name} source specialized {option-name}
+		to {value}. You may specify multiple sources with
+		separating "," in {source-name}.
+		If {source-name} is "_", sources default option will be
+		change.
+>
+		" Examples:
+		" Use head matcher instead of fuzzy matcher
+		call deoplete#custom#set('_', 'matchers', ['matcher_head'])
+<
 ------------------------------------------------------------------------------
 KEY MAPPINGS 					*deoplete-key-mappings*
 
@@ -526,6 +538,12 @@ For clang_complete configuration is below. >
 	let g:clang_auto_select = 0
 	let g:clang_default_keymappings = 0
 	"let g:clang_use_library = 1
+
+Q: I want to use head matcher instead of fuzzy matcher.
+
+A: >
+	" Use head matcher instead of fuzzy matcher
+	call deoplete#custom#set('_', 'matchers', ['matcher_head'])
 
 ==============================================================================
 vim:tw=78:ts=8:ft=help:norl:noet:fen:noet:
