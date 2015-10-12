@@ -44,7 +44,7 @@ class DeopleteHandlers(object):
         with open(self.msgfile, 'a') as f:
             traceback.print_exc(None, f)
         self.vim.command('call deoplete#util#print_error('
-                         + '"The error is occurred.  Please read ".'
+                         + '"An error has occurred.  Please read ".'
                          + 'string("'+self.msgfile+'").'
                          +'" file or execute :DeopleteMessages command.")')
 
