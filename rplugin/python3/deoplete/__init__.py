@@ -105,6 +105,7 @@ class DeopleteHandlers(object):
             candidates = []
         if not candidates or self.vim.eval('mode()') != 'i':
                 return
+        # self.debug(candidates)
         self.vim.command(
           'let g:deoplete#_context.complete_position = '
             + str(complete_position))

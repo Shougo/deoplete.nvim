@@ -206,5 +206,6 @@ class Deoplete(object):
             for candidate in context['candidates']:
                 candidate['word'] = prefix + candidate['word']
             candidates += context['candidates']
+        # self.debug(candidates)
         return (complete_position, candidates)
 

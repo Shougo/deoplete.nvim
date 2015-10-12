@@ -26,6 +26,7 @@
 import re
 import operator
 import functools
+from deoplete.util import debug
 from .base import Base
 
 class Source(Base):
