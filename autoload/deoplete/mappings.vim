@@ -37,7 +37,7 @@ function! deoplete#mappings#_do_complete(context) abort "{{{
   endif
 
   if b:changedtick == get(a:context, 'changedtick', -1)
-    " Need unescape.
+    " Unescape is needed for the candidates.
     for candidate in a:context.candidates
       call map(filter(candidate,
             \ 'type(v:val) == type("")'), "substitute(v:val,
