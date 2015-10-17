@@ -56,7 +56,7 @@ class DeopleteHandlers(object):
 
     @neovim.command('DeopleteMessages', sync=True, nargs=0)
     def print_error(self):
-        self.vim.command('edit ' + self.msgfile)
+        self.vim.command('split ' + self.msgfile)
 
     @neovim.rpc_export('completion_begin')
     def completion_begin(self, context):
