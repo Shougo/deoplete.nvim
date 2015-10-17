@@ -24,31 +24,31 @@
 #=============================================================================
 
 def get_buffer_config(vim, context, buffer_var, user_var, default_var):
-    return vim.eval(('deoplete#util#get_buffer_config(' \
-                    +'"{0}", "{1}", {2}, {3})') \
+    return vim.eval(('deoplete#util#get_buffer_config('
+                    +'"{0}", "{1}", {2}, {3})')
              .format(context['filetype'],
                      buffer_var, user_var, default_var))
 
 def get_default_buffer_config(vim, context, buffer_var, user_var, default_var):
-    return vim.eval(('deoplete#util#get_default_buffer_config(' \
-                    +'"{0}", "{1}", {2}, {3})') \
+    return vim.eval(('deoplete#util#get_default_buffer_config('
+                    +'"{0}", "{1}", {2}, {3})')
              .format(context['filetype'],
                      buffer_var, user_var, default_var))
 
 def get_simple_buffer_config(vim, buffer_var, user_var):
-    return vim.eval('deoplete#util#get_simple_buffer_config("{0}", {1})' \
+    return vim.eval('deoplete#util#get_simple_buffer_config("{0}", {1})'
              .format(buffer_var, user_var))
 
 def set_pattern(vim, variable, keys, pattern):
-    return vim.eval("deoplete#util#set_pattern({0}, '{1}', '{2}')" \
+    return vim.eval("deoplete#util#set_pattern({0}, '{1}', '{2}')"
              .format(variable, keys, pattern))
 
 def set_list(vim, variable, keys, list):
-    return vim.eval("deoplete#util#set_pattern({0}, '{1}', {2})" \
+    return vim.eval("deoplete#util#set_pattern({0}, '{1}', {2})"
              .format(variable, keys, list))
 
 def set_default(vim, var, val):
-    return vim.eval("deoplete#util#set_default('{0}', {1})" \
+    return vim.eval("deoplete#util#set_default('{0}', {1})"
              .format(var, val))
 
 def convert2list(expr):
