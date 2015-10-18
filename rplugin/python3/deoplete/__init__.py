@@ -36,17 +36,12 @@ from deoplete.util import \
 class DeopleteHandlers(object):
     def __init__(self, vim):
         self.vim = vim
-        self.msgfile = self.vim.eval('tempname()')
 
     @neovim.command('DeopleteInitializePython', sync=True, nargs=0)
     def init_python(self):
         self.deoplete = Deoplete(self.vim)
         self.vim.command('let g:deoplete#_channel_id = '
         + str(self.vim.channel_id))
-
-    @neovim.command('DeopleteMessages', sync=True, nargs=0)
-    def print_error(self):
-        self.vim.command('split ' + self.msgfile)
 
     @neovim.rpc_export('completion_begin')
     def completion_begin(self, context):
@@ -90,12 +85,10 @@ class DeopleteHandlers(object):
             complete_position, candidates = self.deoplete.gather_candidates(
                 context)
         except Exception as e:
-            with open(self.msgfile, 'a') as f:
-                traceback.print_exc(None, f)
+            for line in traceback.format_exc().splitlines():
+                 error(self.vim, line)
             error(self.vim,
-                  'An error has occurred.  Please read "'
-                  + self.msgfile
-                  +'" file or execute :DeopleteMessages command.')
+                  'An error has occurred. Please execute :messages command.')
             candidates = []
         if not candidates or self.vim.eval('mode()') != 'i':
                 return

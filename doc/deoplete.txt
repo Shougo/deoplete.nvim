@@ -93,9 +93,6 @@ COMMANDS 					*deoplete-commands*
 :DeopleteEnable				*:DeopleteEnable*
 		Validate deoplete and initialize it.
 
-:DeopleteMessages			*:DeopleteMessages*
-		Edit deoplete error messages file.
-
 ------------------------------------------------------------------------------
 VARIABLES 					*deoplete-variables*
 
