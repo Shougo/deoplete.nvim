@@ -48,10 +48,6 @@ class Filter(Base):
 
 def fuzzy_escape(string):
     # Escape string for python regexp.
-    string = re.sub(r'([a-zA-Z0-9_])', r'\1.*', escape(string))
+    string = re.sub(r'([a-zA-Z0-9_])', r'\1.*', re.escape(string))
     return string
-
-def escape(string):
-    # Escape string for python regexp.
-    return re.sub(r'([\[\]().*+?^$\\-])', r'\\\1', string)
 
