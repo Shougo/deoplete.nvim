@@ -55,7 +55,8 @@ class Source(Base):
 
             pos = self.vim.eval('getpos(".")')
             try:
-                complete_pos = self.vim.eval('call(&l:omnifunc, [1, ""])')
+                complete_pos = self.vim.call(
+                    self.vim.eval('&l:omnifunc'), 1, '')
             except:
                 error(self.vim, 'Error occurred calling omnifunction: '
                     + self.vim.eval('&l:omnifunc'))
@@ -73,9 +74,8 @@ class Source(Base):
     def gather_candidates(self, context):
         pos = self.vim.eval('getpos(".")')
         try:
-            candidates = self.vim.eval(
-                "call(&l:omnifunc, [0, '{0}'])"
-                .format(escape(context['complete_str'])))
+            candidates = self.vim.call(
+                self.vim.eval('&l:omnifunc'), 0, context['complete_str'])
         except:
             error(self.vim, 'Error occurred calling omnifunction: '
                 + self.vim.eval('&l:omnifunc'))
