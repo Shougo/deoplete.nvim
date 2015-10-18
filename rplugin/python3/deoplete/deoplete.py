@@ -144,6 +144,7 @@ class Deoplete(object):
             context = result['context']
             source = result['source']
 
+            # debug(self.vim, source.name)
             context['candidates'] = source.gather_candidates(context)
             if context['candidates'] and type(
                     context['candidates'][0]) == type(''):
@@ -171,10 +172,13 @@ class Deoplete(object):
             if hasattr(source, 'on_post_filter'):
                 context['candidates'] = source.on_post_filter(context)
 
-            # Set default menu
-            for candidate in context['candidates']:
-                candidate['menu'] = source.mark + ' ' + candidate.get(
-                    'menu', '')
+            if context['candidates'] and (
+                    not re.match(r'\[.*\]',
+                                 context['candidates'][0].get('menu', ''))):
+                # Set default menu
+                for candidate in context['candidates']:
+                    candidate['menu'] = source.mark + ' ' + candidate.get(
+                        'menu', '')
             # debug(self.vim, context['candidates'])
         return results
 
