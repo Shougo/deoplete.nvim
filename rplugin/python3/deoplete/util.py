@@ -60,7 +60,7 @@ def globruntime(vim, path):
     return vim.eval("globpath(&runtimepath, '" + path + "', 1, 1)")
 
 def debug(vim, msg):
-    vim.command('echomsg string(\'' + json.dumps(msg) + '\')')
+    vim.command('echomsg string(\'' + escape(json.dumps(msg)) + '\')')
 
 def error(vim, msg):
     vim.call('deoplete#util#print_error', msg)
