@@ -23,6 +23,8 @@
 # }}}
 #=============================================================================
 
+import json
+
 def get_buffer_config(vim, context, buffer_var, user_var, default_var):
     return vim.eval(('deoplete#util#get_buffer_config('
                     +'"{0}", "{1}", {2}, {3})')
@@ -58,7 +60,10 @@ def globruntime(vim, path):
     return vim.eval("globpath(&runtimepath, '" + path + "', 1, 1)")
 
 def debug(vim, msg):
-    vim.command('echomsg string("' + str(msg).replace('\\', '\\\\') + '")')
+    vim.command('echomsg string(\'' + json.dumps(msg) + '\')')
+
+def error(vim, msg):
+    vim.call('deoplete#util#print_error', msg)
 
 def escape(expr):
     return expr.replace("'", "''")
