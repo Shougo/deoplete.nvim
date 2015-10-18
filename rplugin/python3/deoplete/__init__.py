@@ -88,8 +88,8 @@ class DeopleteHandlers(object):
         # self.debug(omni_pattern)
         for pattern in omni_patterns:
             if self.vim.eval('mode()') == 'i' \
-                    and (pattern != '' \
-                         and self.vim.eval('&l:omnifunc') != '' \
+                    and (pattern != ''
+                         and self.vim.eval('&l:omnifunc') != ''
                          and re.search('('+pattern+')$', context['input'])) \
                          or self.vim.eval(
                              'deoplete#util#is_eskk_convertion()') != 0:
@@ -98,8 +98,8 @@ class DeopleteHandlers(object):
                 return
 
         try:
-            complete_position, candidates = \
-                self.deoplete.gather_candidates(context)
+            complete_position, candidates = self.deoplete.gather_candidates(
+                context)
         except Exception as e:
             self.error(e)
             candidates = []

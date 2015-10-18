@@ -56,6 +56,6 @@ class Source(Base):
                       if os.path.isdir(x)]
         files = [x for x in glob(context['complete_str'] + '*')
                       if not os.path.isdir(x)]
-        return [{ 'word': x, 'abbr': x + '/' } for x in sorted(dirs)] \
-             + [{ 'word': x } for x in sorted(files)]
+        return [{ 'word': x, 'abbr': x + '/' } for x in sorted(dirs)
+                ] + [{ 'word': x } for x in sorted(files)]
 

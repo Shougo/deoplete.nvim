@@ -46,9 +46,9 @@ class Deoplete(object):
     def load_sources(self):
         # Load sources from runtimepath
         for path in globruntime(self.vim,
-                'rplugin/python3/deoplete/sources/base.py') \
-                + globruntime(self.vim,
-                'rplugin/python3/deoplete/sources/*.py'):
+                                'rplugin/python3/deoplete/sources/base.py'
+                    ) + globruntime(self.vim,
+                                    'rplugin/python3/deoplete/sources/*.py'):
             name = os.path.basename(path)
             source = importlib.machinery.SourceFileLoader(
                 'deoplete.sources.' + name[: -3], path).load_module()
@@ -59,9 +59,9 @@ class Deoplete(object):
     def load_filters(self):
         # Load filters from runtimepath
         for path in globruntime(self.vim,
-                'rplugin/python3/deoplete/filters/base.py') \
-                + globruntime(self.vim,
-                'rplugin/python3/deoplete/filters/*.py'):
+                                'rplugin/python3/deoplete/filters/base.py'
+                    ) + globruntime(self.vim,
+                                    'rplugin/python3/deoplete/filters/*.py'):
             name = os.path.basename(path)
             filter = importlib.machinery.SourceFileLoader(
                 'deoplete.filters.' + name[: -3], path).load_module()
@@ -75,8 +75,8 @@ class Deoplete(object):
     def gather_candidates(self, context):
         # Skip completion
         if (self.vim.eval('&l:completefunc') != ''
-                and self.vim.eval('&l:buftype').find('nofile') >= 0) \
-                or (context['event'] != 'Manual' and
+                and self.vim.eval('&l:buftype').find('nofile') >= 0
+                ) or (context['event'] != 'Manual' and
                     get_simple_buffer_config(
                         self.vim,
                         'b:deoplete_disable_auto_complete',
@@ -92,8 +92,8 @@ class Deoplete(object):
         # self.debug(context)
 
         # Set ignorecase
-        if context['smartcase'] \
-                and re.search(r'[A-Z]', context['complete_str']):
+        if context['smartcase'] and re.search(r'[A-Z]',
+                                              context['complete_str']):
             context['ignorecase'] = 0
 
         results = self.gather_results(context)
@@ -108,8 +108,8 @@ class Deoplete(object):
             'g:deoplete#auto_completion_start_length')
         for source_name, source in sorted(self.sources.items(),
                 key=lambda x: x[1].rank, reverse=True):
-            if (sources and not source_name in sources) \
-                    or (source.filetypes and
+            if (sources and not source_name in sources
+                    ) or (source.filetypes and
                         not context['filetype'] in source.filetypes):
                 continue
             cont = copy.deepcopy(context)
@@ -132,9 +132,9 @@ class Deoplete(object):
                 # Use default value
                 min_pattern_length = start_length
 
-            if charpos < 0 \
-                    or (cont['event'] != 'Manual'
-                        and len(cont['complete_str']) < min_pattern_length):
+            if charpos < 0 or (cont['event'] != 'Manual'
+                               and len(cont['complete_str'])
+                                     < min_pattern_length):
                 # Skip
                 continue
             results.append({
@@ -148,11 +148,11 @@ class Deoplete(object):
             source = result['source']
 
             context['candidates'] = source.gather_candidates(context)
-            if context['candidates'] \
-                    and type(context['candidates'][0]) == type(''):
+            if context['candidates'] and type(
+                    context['candidates'][0]) == type(''):
                 # Convert to dict
-                context['candidates'] = \
-                    [{ 'word': x } for x in context['candidates'] ]
+                context['candidates'] = [{ 'word': x }
+                                         for x in context['candidates'] ]
 
             # self.debug(context['candidates'])
 
@@ -166,8 +166,8 @@ class Deoplete(object):
                 'converters', source.converters)
             for filter_name in matchers + sorters + converters:
                 if filter_name in self.filters:
-                    context['candidates'] = \
-                        self.filters[filter_name].filter(context)
+                    context['candidates'] = self.filters[
+                        filter_name].filter(context)
             # self.debug(context['candidates'])
 
             # On post filter
@@ -176,8 +176,8 @@ class Deoplete(object):
 
             # Set default menu
             for candidate in context['candidates']:
-                candidate['menu'] = \
-                    source.mark + ' ' + candidate.get('menu', '')
+                candidate['menu'] = source.mark + ' ' + candidate.get(
+                    'menu', '')
             # self.debug(context['candidates'])
         return results
 
@@ -196,8 +196,8 @@ class Deoplete(object):
                 complete_position = context['complete_position']
                 candidates += context['candidates']
                 continue
-            prefix = context['input']\
-                [: context['complete_position'] - complete_position]
+            prefix = context['input'][: context['complete_position']
+                                      - complete_position]
 
             context['complete_position'] = complete_position
             context['complete_str'] = prefix

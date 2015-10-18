@@ -47,8 +47,8 @@ class Source(Base):
                 + ' neoinclude#include#get_tag_files() : []), '
                 + '"fnamemodify(v:val, \\":p\\")")') if exists(x)]:
             mtime = getmtime(tags_file)
-            if tags_file not in self.cache or \
-                    self.cache[tags_file].mtime != mtime:
+            if tags_file not in self.cache or self.cache[
+                    tags_file].mtime != mtime:
                 with open(tags_file, 'r', errors='replace') as f:
                     new_candidates = parse_tags(f)
                     candidates += new_candidates
