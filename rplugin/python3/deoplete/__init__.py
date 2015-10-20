@@ -56,12 +56,10 @@ class DeopleteHandlers(object):
                 'get(g:deoplete#_context, "position", [])'):
             return
 
-        self.vim.command(
-          'let g:deoplete#_context = {}')
+        var_context = {}
 
         # Save previous position
-        self.vim.command(
-          'let g:deoplete#_context.position = ' + str(context['position']))
+        var_context['position'] = context['position']
 
         # Call omni completion
         omni_patterns = convert2list(get_buffer_config(
@@ -79,6 +77,7 @@ class DeopleteHandlers(object):
                              'deoplete#util#is_eskk_convertion()') != 0:
                 self.vim.command(
                     'call feedkeys("\<C-x>\<C-o>", "n")')
+                self.vim.vars['deoplete#_context'] = var_context
                 return
 
         try:
@@ -90,19 +89,17 @@ class DeopleteHandlers(object):
             error(self.vim,
                   'An error has occurred. Please execute :messages command.')
             candidates = []
+
         if not candidates or self.vim.eval('mode()') != 'i':
-                return
+            self.vim.vars['deoplete#_context'] = var_context
+            return
+
         # debug(self.vim, candidates)
-        # debug(self.vim, 'hoge')
-        self.vim.command(
-          'let g:deoplete#_context.complete_position = '
-            + str(complete_position))
-        self.vim.command(
-          'let g:deoplete#_context.changedtick = '
-            + str(context['changedtick']))
-        self.vim.command(
-          'let g:deoplete#_context.candidates = '
-            + str(candidates))
+        var_context['complete_position'] = complete_position
+        var_context['changedtick'] = context['changedtick']
+        var_context['candidates'] = candidates
+        self.vim.vars['deoplete#_context'] = var_context
+
         self.vim.command(
           'call feedkeys("\<Plug>(deoplete_start_complete)")')
 
