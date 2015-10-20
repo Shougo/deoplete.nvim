@@ -40,15 +40,13 @@ class DeopleteHandlers(object):
     @neovim.command('DeopleteInitializePython', sync=True, nargs=0)
     def init_python(self):
         self.deoplete = Deoplete(self.vim)
-        self.vim.command('let g:deoplete#_channel_id = '
-        + str(self.vim.channel_id))
+        self.vim.vars['deoplete#_channel_id'] = self.vim.channel_id
 
     @neovim.rpc_export('completion_begin')
     def completion_begin(self, context):
         # Skip
         if self.vim.eval('g:deoplete#_skip_next_complete'):
-            self.vim.command(
-                'let g:deoplete#_skip_next_complete = 0')
+            self.vim.vars['deoplete#_skip_next_complete'] = 0
             return
         if self.vim.eval('&paste') != 0:
             return
