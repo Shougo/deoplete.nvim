@@ -73,8 +73,8 @@ class DeopleteHandlers(object):
                          and re.search('('+pattern+')$', context['input'])) \
                          or self.vim.eval(
                              'deoplete#util#is_eskk_convertion()') != 0:
-                self.vim.command(
-                    'call feedkeys("\<C-x>\<C-o>", "n")')
+                self.vim.feedkeys(
+                    self.vim.eval('"\<C-x>\<C-o>"'), options='n')
                 self.vim.vars['deoplete#_context'] = var_context
                 return
 
@@ -98,6 +98,7 @@ class DeopleteHandlers(object):
         var_context['candidates'] = candidates
         self.vim.vars['deoplete#_context'] = var_context
 
+        # Note: cannot use vim.feedkeys()
         self.vim.command(
           'call feedkeys("\<Plug>(deoplete_start_complete)")')
 
