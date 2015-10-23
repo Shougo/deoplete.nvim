@@ -29,7 +29,7 @@ from os.path import getmtime, exists
 from collections import namedtuple
 from .base import Base
 
-TagsCacheItem = namedtuple('TagsCacheItem', 'mtime tags')
+TagsCacheItem = namedtuple('TagsCacheItem', 'mtime candidates')
 
 class Source(Base):
     def __init__(self, vim):
@@ -42,19 +42,19 @@ class Source(Base):
 
     def gather_candidates(self, context):
         candidates = []
-        for tags_file in [x for x in self.vim.eval(
+        for filename in [x for x in self.vim.eval(
                 'map(tagfiles() + (get(g:, "loaded_neoinclude", 0) ? '
                 + ' neoinclude#include#get_tag_files() : []), '
                 + '"fnamemodify(v:val, \\":p\\")")') if exists(x)]:
-            mtime = getmtime(tags_file)
-            if tags_file not in self.cache or self.cache[
-                    tags_file].mtime != mtime:
-                with open(tags_file, 'r', errors='replace') as f:
+            mtime = getmtime(filename)
+            if filename not in self.cache or self.cache[
+                    filename].mtime != mtime:
+                with open(filename, 'r', errors='replace') as f:
                     new_candidates = parse_tags(f)
                     candidates += new_candidates
-                self.cache[tags_file] = TagsCacheItem(mtime, new_candidates)
+                self.cache[filename] = TagsCacheItem(mtime, new_candidates)
             else:
-                candidates += self.cache[tags_file].tags
+                candidates += self.cache[filename].candidates
         return [{ 'word': x } for x in candidates]
 
 def parse_tags(f):
