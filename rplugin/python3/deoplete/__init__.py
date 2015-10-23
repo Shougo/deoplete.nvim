@@ -67,6 +67,7 @@ class DeopleteHandlers(object):
             'g:deoplete#_omni_patterns'))
         # debug(self.vim, omni_patterns)
         for pattern in omni_patterns:
+            # debug(self.vim, pattern)
             if self.vim.eval('mode()') == 'i' \
                     and (pattern != ''
                          and self.vim.eval('&l:omnifunc') != ''
@@ -88,11 +89,11 @@ class DeopleteHandlers(object):
                   'An error has occurred. Please execute :messages command.')
             candidates = []
 
+        # debug(self.vim, candidates)
         if not candidates or self.vim.eval('mode()') != 'i':
             self.vim.vars['deoplete#_context'] = var_context
             return
 
-        # debug(self.vim, candidates)
         var_context['complete_position'] = complete_position
         var_context['changedtick'] = context['changedtick']
         var_context['candidates'] = candidates

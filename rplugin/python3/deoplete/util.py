@@ -26,38 +26,33 @@
 import json
 
 def get_buffer_config(vim, context, buffer_var, user_var, default_var):
-    return vim.eval(('deoplete#util#get_buffer_config('
-                    +'"{0}", "{1}", {2}, {3})')
-             .format(context['filetype'],
-                     buffer_var, user_var, default_var))
+    return vim.call('deoplete#util#get_buffer_config',
+                    context['filetype'],
+                    buffer_var, user_var, default_var)
 
 def get_default_buffer_config(vim, context, buffer_var, user_var, default_var):
-    return vim.eval(('deoplete#util#get_default_buffer_config('
-                    +'"{0}", "{1}", {2}, {3})')
-             .format(context['filetype'],
-                     buffer_var, user_var, default_var))
+    return vim.call('deoplete#util#get_default_buffer_config',
+                    context['filetype'],
+                    buffer_var, user_var, default_var)
 
 def get_simple_buffer_config(vim, buffer_var, user_var):
-    return vim.eval('deoplete#util#get_simple_buffer_config("{0}", {1})'
-             .format(buffer_var, user_var))
+    return vim.call('deoplete#util#get_simple_buffer_config',
+                    buffer_var, user_var)
 
 def set_pattern(vim, variable, keys, pattern):
-    return vim.eval("deoplete#util#set_pattern({0}, '{1}', '{2}')"
-             .format(variable, keys, pattern))
+    return vim.call('deoplete#util#set_pattern', variable, keys, pattern)
 
 def set_list(vim, variable, keys, list):
-    return vim.eval("deoplete#util#set_pattern({0}, '{1}', {2})"
-             .format(variable, keys, list))
+    return vim.call('deoplete#util#set_pattern', variable, keys, list)
 
 def set_default(vim, var, val):
-    return vim.eval("deoplete#util#set_default('{0}', {1})"
-             .format(var, val))
+    return vim.call('deoplete#util#set_default', var, val)
 
 def convert2list(expr):
     return (expr if isinstance(expr, list) else [expr])
 
 def globruntime(vim, path):
-    return vim.eval("globpath(&runtimepath, '" + path + "', 1, 1)")
+    return vim.funcs.globpath(vim.eval('&runtimepath'), path, 1, 1)
 
 def debug(vim, msg):
     vim.command('echomsg string(\'' + escape(json.dumps(msg)) + '\')')
@@ -72,9 +67,8 @@ def charpos2bytepos(vim, input, pos):
     return len(bytes(input[: pos], vim.eval('&encoding')))
 
 def bytepos2charpos(vim, input, pos):
-    return vim.eval("len(substitute('{0}'[: {1}-1], '.', 'x', 'g'))"
-                    .format(escape(input), pos))
+    return len(vim.funcs.substitute(input[: pos], '.', 'x', 'g'))
 
 def get_custom(vim, source_name):
-    return vim.eval('deoplete#custom#get("{0}")'.format(source_name))
+    return vim.call('deoplete#custom#get', source_name)
 
