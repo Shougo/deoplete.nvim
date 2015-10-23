@@ -321,6 +321,9 @@ file						*deoplete-source-file*
 omni						*deoplete-source-omni*
 		This source collects keywords from 'omnifunc'.
 
+dictionary					*deoplete-source-dictionary*
+		This source collects keywords from 'dictionary'.
+
 ------------------------------------------------------------------------------
 USER SOURCES 					*deoplete-user-sources*
 
