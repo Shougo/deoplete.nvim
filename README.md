@@ -14,7 +14,7 @@ features.  It is provided for testing purposes.
 See [requirements](#requirements) if you aren't sure whether you have this.
 
 1. Extract the files and put them in your Neovim directory
-   (usually `~/.nvim/`).
+   (usually `~/.config/nvim`).
 2. Execute the `:UpdateRemotePlugins` and restart Neovim.
 3. Execute the `:DeopleteEnable` command or set `let g:deoplete#enable_at_startup = 1`
    in your `.nvimrc`
