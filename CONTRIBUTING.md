@@ -6,9 +6,9 @@
  * OS:
  * Neovim version:
 
-## Minimal nvimrc less than 50 lines
+## Minimal init.vim less than 50 lines
 
-   " Your nvimrc
+   " Your init.vim
    set runtimepath+=~/path/to/deoplete.nvim/
 
   let g:deoplete#enable_at_startup = 1

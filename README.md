@@ -17,7 +17,7 @@ See [requirements](#requirements) if you aren't sure whether you have this.
    (usually `~/.config/nvim`).
 2. Execute the `:UpdateRemotePlugins` and restart Neovim.
 3. Execute the `:DeopleteEnable` command or set `let g:deoplete#enable_at_startup = 1`
-   in your `.nvimrc`
+   in your `$XDG_CONFIG_HOME/nvim/init.vim`
 
 ## Requirements
 
