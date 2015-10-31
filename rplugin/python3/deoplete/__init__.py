@@ -44,41 +44,6 @@ class DeopleteHandlers(object):
 
     @neovim.rpc_export('completion_begin')
     def completion_begin(self, context):
-        # Skip
-        if self.vim.eval('g:deoplete#_skip_next_complete'):
-            self.vim.vars['deoplete#_skip_next_complete'] = 0
-            return
-        if self.vim.eval('&paste') != 0:
-            return
-        if context['position'] == self.vim.eval(
-                'get(g:deoplete#_context, "position", [])'):
-            return
-
-        var_context = {}
-
-        # Save previous position
-        var_context['position'] = context['position']
-
-        # Call omni completion
-        omni_patterns = convert2list(get_buffer_config(
-            self.vim, context,
-            'b:deoplete_omni_patterns',
-            'g:deoplete#omni_patterns',
-            'g:deoplete#_omni_patterns'))
-        # debug(self.vim, omni_patterns)
-        for pattern in omni_patterns:
-            # debug(self.vim, pattern)
-            if self.vim.eval('mode()') == 'i' \
-                    and (pattern != ''
-                         and self.vim.eval('&l:omnifunc') != ''
-                         and re.search('('+pattern+')$', context['input'])) \
-                         or self.vim.eval(
-                             'deoplete#util#is_eskk_convertion()') != 0:
-                self.vim.feedkeys(
-                    self.vim.eval('"\<C-x>\<C-o>"'), options='n')
-                self.vim.vars['deoplete#_context'] = var_context
-                return
-
         try:
             complete_position, candidates = self.deoplete.gather_candidates(
                 context)
@@ -88,6 +53,8 @@ class DeopleteHandlers(object):
             error(self.vim,
                   'An error has occurred. Please execute :messages command.')
             candidates = []
+
+        var_context = {}
 
         # debug(self.vim, candidates)
         if not candidates or self.vim.eval('mode()') != 'i':

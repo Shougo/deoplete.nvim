@@ -163,7 +163,7 @@ g:deoplete#omni_patterns
 		does not call 'omnifunc'.
 		Note: If it is a set, deoplete will call 'omnifunc'
 		directly.  So almost deoplete features are disabled.
-		Note: It is Python3 regexp.
+		Note: It is Vim regexp.
 >
 		let g:deoplete#omni_patterns = {}
 		let g:deoplete#omni_patterns.ruby =
@@ -231,7 +231,7 @@ g:deoplete#omni#input_patterns
 >
 		let g:deoplete#omni#input_patterns = {}
 		let g:deoplete#omni#input_patterns.ruby =
-		\ ['[^. *\t]\.\w*', '\h\w*::']
+		\ ['[^. *\t]\.\w*', '[a-zA-Z_]\w*::']
 		let g:deoplete#omni#input_patterns.java = '[^. *\t]\.\w*'
 <
 		Default value is in g:deoplete#omni#_input_patterns.

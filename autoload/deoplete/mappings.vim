@@ -29,17 +29,21 @@ function! deoplete#mappings#_init() abort "{{{
 endfunction"}}}
 
 function! deoplete#mappings#_do_complete(context) abort "{{{
+  call deoplete#mappings#_set_completeopt()
+
+  if b:changedtick == get(a:context, 'changedtick', -1)
+    call complete(a:context.complete_position + 1, a:context.candidates)
+  endif
+
+  return ''
+endfunction"}}}
+function! deoplete#mappings#_set_completeopt() abort "{{{
   " Deoplete does not work if completeopt contains longest and menu options
   set completeopt-=longest
   set completeopt+=menuone
   if &completeopt !~# 'noinsert\|noselect'
     set completeopt+=noselect
   endif
-
-  if b:changedtick == get(a:context, 'changedtick', -1)
-    call complete(a:context.complete_position + 1, a:context.candidates)
-  endif
-  return ''
 endfunction"}}}
 
 function! deoplete#mappings#manual_complete(...) abort "{{{

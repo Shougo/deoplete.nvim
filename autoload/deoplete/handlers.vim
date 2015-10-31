@@ -36,8 +36,38 @@ function! deoplete#handlers#_init() abort "{{{
 endfunction"}}}
 
 function! s:completion_begin(event) abort "{{{
-  call rpcnotify(g:deoplete#_channel_id, 'completion_begin',
-          \  deoplete#init#_context(a:event, []))
+  let context = deoplete#init#_context(a:event, [])
+
+  " Skip
+  if g:deoplete#_skip_next_complete
+    let deoplete#_skip_next_complete = 0
+    return
+  endif
+  if &paste || context.position ==#
+        \      get(g:deoplete#_context, 'position', [])
+    return
+  endif
+
+  " Save the previous position
+  let g:deoplete#_context.position = context.position
+
+  " Call omni completion
+  for pattern in deoplete#util#convert2list(
+        \ deoplete#util#get_buffer_config(
+        \ context.filetype,
+        \ 'b:deoplete_omni_patterns',
+        \ 'g:deoplete#omni_patterns',
+        \ 'g:deoplete#_omni_patterns'))
+    if deoplete#util#is_eskk_convertion()
+          \ || (pattern != '' && &l:omnifunc != ''
+          \ && context.input =~# '\%('.pattern.'\)$')
+      call deoplete#mappings#_set_completeopt()
+      call feedkeys("\<C-x>\<C-o>", 'n')
+      return
+    endif
+  endfor
+
+  call rpcnotify(g:deoplete#_channel_id, 'completion_begin', context)
 endfunction"}}}
 
 function! s:on_insert_leave() abort "{{{
