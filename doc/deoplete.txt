@@ -265,7 +265,7 @@ deoplete#custom#source({source-name}, {option-name}, {value})
 ------------------------------------------------------------------------------
 KEY MAPPINGS 					*deoplete-key-mappings*
 
-				*deoplete#mappings#start_manual_complete()*
+					*deoplete#mappings#manual_complete()*
 deoplete#mappings#manual_complete([{sources}])
 		Use this function on inoremap <expr>.  The keymapping call the
 		completion of deoplete.  When you rearrange the completion
@@ -275,7 +275,7 @@ deoplete#mappings#manual_complete([{sources}])
 >
 		inoremap <expr><Tab>  deoplete#mappings#manual_complete()
 <
-				*deoplete#mappings#smart_close_popup()*
+					*deoplete#mappings#smart_close_popup()*
 deoplete#mappings#smart_close_popup()
 		Insert candidate and re-generate popup menu for deoplete.
 >
