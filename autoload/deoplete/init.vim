@@ -176,10 +176,12 @@ endfunction"}}}
 
 function! deoplete#init#_context(event, sources) abort "{{{
   let filetype = (exists('*context_filetype#get_filetype') ?
-        \   context_filetype#get_filetype() : &filetype)
-  if filetype == ''
-    let filetype = 'nothing'
-  endif
+        \   context_filetype#get_filetype() :
+        \   (&filetype == '' ? 'nothing' : &filetype))
+  let filetypes = (exists('*context_filetype#get_filetypes') ?
+        \   context_filetype#get_filetypes() :
+        \   (&filetype == '' ? ['nothing'] : [&filetype]))
+
   let sources = a:sources
   if a:event !=# 'Manual' && empty(sources)
     " Use default sources
@@ -199,6 +201,7 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \ 'complete_str': '',
         \ 'position': getpos('.'),
         \ 'filetype': filetype,
+        \ 'filetypes': filetypes,
         \ 'ignorecase': g:deoplete#enable_ignore_case,
         \ 'smartcase': g:deoplete#enable_smart_case,
         \ 'sources': sources,

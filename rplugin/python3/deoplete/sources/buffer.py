@@ -53,5 +53,5 @@ class Source(Base):
         return [{ 'word': x } for x in
                 functools.reduce(operator.add, [
                      x['candidates'] for x in self.buffers.values()
-                     if x['filetype'] == context['filetype']])]
+                     if x['filetype'] in context['filetypes']])]
 
