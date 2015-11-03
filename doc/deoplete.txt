@@ -427,6 +427,10 @@ gather_candidates	Function	(Required)
 			filetype		(String)
 				Current 'filetype'.
 
+			filetypes		(List)
+				It contains current 'filetype' and same
+				filetypes and composite filetypes.
+
 ------------------------------------------------------------------------------
 CANDIDATE ATTRIBUTES				*deoplete-candidate-attributes*
 
