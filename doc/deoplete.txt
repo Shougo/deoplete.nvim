@@ -467,15 +467,27 @@ FAQ						*deoplete-faq*
 
 Q: deoplete deos not work.
 
-A: Please enable debug mode from command line. >
+A:
+  1. Please update neovim to latest version.
+
+  2. Please update neovim python3 module to latest version.
+>
+	$ sudo pip3 install neovim --upgrade
+<
+  3. Please execute |:UpdateRemotePlugins| command manually.
+
+  4. Please check if Python3 interface works.  You can check it by ":echo
+  has('python3')" command.
+
+https://github.com/neovim/neovim/wiki/Troubleshooting#python-support-isnt-working
+
+  5. Please enable debug mode from command line and upload the log file. >
 
 	$ export NVIM_PYTHON_LOG_FILE=/tmp/log
 	$ export NVIM_PYTHON_LOG_LEVEL=DEBUG
 	$ neovim
 	... Use deoplete
 	$ cat /tmp/log_{PID}
-
-And please upload the log file.
 
 Q: I want to get quiet messages in auto completion.
 
@@ -508,23 +520,6 @@ uses if_ruby feature.  But neovim does not support it.  You should use
 vim-monster plugin for ruby completion.
 https://github.com/osyo-manga/vim-monster
 
-Q: deoplete does not work...
-
-A: Please check followings.
-
-  1. Please update neovim to latest version.
-
-  2. Please update neovim python3 module to latest version.
->
-	$ sudo pip3 install neovim --upgrade
-<
-  3. Please execute |:UpdateRemotePlugins| command manually.
-
-  4. Please check if Python3 interface works.  You can check it by ":echo
-  has('python3')" command.
-
-https://github.com/neovim/neovim/wiki/Troubleshooting#python-support-isnt-working
-
 Q: I want to use C/C++ omni completion with deoplete.
 
 A: You can use |clang_complete| or |vim-marching|.
@@ -544,6 +539,17 @@ Q: I want to use head matcher instead of fuzzy matcher.
 A: >
 	" Use head matcher instead of fuzzy matcher
 	call deoplete#custom#set('_', 'matchers', ['matcher_head'])
+
+Q: Is deoplete faster than neocomplete?
+
+A: No.  Deoplete is asynchronous completion plugin.  But it does not
+mean that it is faster than neocomplete.  It can skip the completion if you
+input the characters too fast.  I think it is great than the speed.  You
+should use faster machine for deoplete.
+
+Q: I want to complete AAA using deoplete.
+
+A: You can create the source for it.  Why don't create the source if you need?
 
 ==============================================================================
 vim:tw=78:ts=8:ft=help:norl:noet:fen:noet:
