@@ -145,7 +145,9 @@ function! deoplete#init#_variables() abort "{{{
         \ 'css,scss,sass', ['^\s+\w+', '\w+[):;]?\s+\w*', '[@!]'])
   call deoplete#util#set_pattern(
         \ g:deoplete#omni#_input_patterns,
-        \ 'python', ['[^. \t0-9]\.\w*'])
+        \ 'python', ['[^. \t0-9]\.\w*', '^\s*@\w*',
+        \            '^\s*from\s.+import \w*', '^\s*from \w*',
+        \            '^\s*import \w*'])
   call deoplete#util#set_pattern(
         \ g:deoplete#omni#_input_patterns,
         \ 'ruby', ['[^. \t0-9]\.\w*', '[a-zA-Z_]\w*::\w*'])
