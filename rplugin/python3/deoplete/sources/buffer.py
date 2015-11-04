@@ -26,7 +26,6 @@
 import re
 import operator
 import functools
-from deoplete.util import debug
 from .base import Base
 
 class Source(Base):
@@ -43,7 +42,6 @@ class Source(Base):
         current_candidates = functools.reduce(operator.add, [
                      p.findall(x) for x in self.vim.current.buffer
                      ])
-        # debug(self.vim, current_candidates)
 
         self.buffers[self.vim.current.buffer.number] = {
             'filetype': context['filetype'],

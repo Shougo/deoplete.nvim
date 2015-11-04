@@ -24,7 +24,6 @@
 # }}}
 #=============================================================================
 
-import re
 import os
 from os.path import exists, dirname
 from glob import glob

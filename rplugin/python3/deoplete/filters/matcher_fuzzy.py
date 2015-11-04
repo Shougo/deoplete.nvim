@@ -25,7 +25,6 @@
 
 import re
 from .base import Base
-from deoplete.util import debug
 
 class Filter(Base):
     def __init__(self, vim):

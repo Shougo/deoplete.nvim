@@ -23,18 +23,18 @@
 # }}}
 #=============================================================================
 
-import neovim
 import re
 import importlib.machinery
 import os.path
 import copy
 
 import deoplete.sources
+deoplete.sources  # silence pyflakes
 from deoplete.util import \
-    globruntime, debug, \
-    get_simple_buffer_config, charpos2bytepos, \
+    globruntime, get_simple_buffer_config, charpos2bytepos, \
     bytepos2charpos, get_custom
 import deoplete.filters
+deoplete.filters  # silence pyflakes
 
 class Deoplete(object):
     def __init__(self, vim):

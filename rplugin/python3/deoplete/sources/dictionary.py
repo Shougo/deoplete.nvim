@@ -26,7 +26,6 @@
 import re
 from os.path import getmtime, exists
 from collections import namedtuple
-from deoplete.util import debug
 from .base import Base
 
 DictCacheItem = namedtuple('DictCacheItem', 'mtime candidates')

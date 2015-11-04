@@ -26,7 +26,7 @@
 import re
 from .base import Base
 from deoplete.util import \
-    get_default_buffer_config, debug, error, escape, convert2list
+    get_default_buffer_config, error, convert2list
 
 class Source(Base):
     def __init__(self, vim):

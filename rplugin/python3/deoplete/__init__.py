@@ -24,13 +24,10 @@
 #=============================================================================
 
 import neovim
-import re
 import traceback
 
-import deoplete
 from deoplete.deoplete import Deoplete
-from deoplete.util import \
-    debug, error, convert2list, get_buffer_config
+from deoplete.util import error
 
 @neovim.plugin
 class DeopleteHandlers(object):
@@ -47,7 +44,7 @@ class DeopleteHandlers(object):
         try:
             complete_position, candidates = self.deoplete.gather_candidates(
                 context)
-        except Exception as e:
+        except Exception:
             for line in traceback.format_exc().splitlines():
                  error(self.vim, line)
             error(self.vim,
@@ -56,7 +53,6 @@ class DeopleteHandlers(object):
 
         var_context = {}
 
-        # debug(self.vim, candidates)
         if not candidates or self.vim.eval('mode()') != 'i':
             self.vim.vars['deoplete#_context'] = var_context
             return

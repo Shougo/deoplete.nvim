@@ -25,7 +25,6 @@
 
 import re
 from abc import abstractmethod
-from deoplete.util import charpos2bytepos, debug
 
 class Base(object):
     def __init__(self, vim):
