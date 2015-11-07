@@ -62,11 +62,11 @@ class Deoplete(object):
                                 'rplugin/python3/deoplete/filters/base.py'
                     ) + globruntime(self.vim,
                                     'rplugin/python3/deoplete/filters/*.py'):
-            name = os.path.basename(path)
+            name = os.path.basename(path)[: -3]
             filter = importlib.machinery.SourceFileLoader(
-                'deoplete.filters.' + name[: -3], path).load_module()
-            if hasattr(filter, 'Filter'):
-                self.filters[name[: -3]] = filter.Filter(self.vim)
+                'deoplete.filters.' + name, path).load_module()
+            if hasattr(filter, 'Filter') and not name in self.filters:
+                self.filters[name] = filter.Filter(self.vim)
         # debug(self.vim, self.filters)
 
     def gather_candidates(self, context):
