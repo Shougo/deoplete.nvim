@@ -7,7 +7,7 @@ python:
     - 3.4
 
 install:
-    - pip install neovim pyflakes
+    - pip install neovim pyflakes nose
 
 before_script:
     - git clone https://github.com/syngan/vim-vimlint /tmp/vim-vimlint
@@ -16,3 +16,4 @@ before_script:
 script:
     - sh /tmp/vim-vimlint/bin/vimlint.sh -l /tmp/vim-vimlint -p /tmp/vim-vimlparser -e EVL103=1 -e EVL102.l:_=1 autoload
     - pyflakes rplugin/
+    - nosetests rplugin/python3/
