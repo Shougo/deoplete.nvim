@@ -41,8 +41,10 @@ function! deoplete#init#enable() abort "{{{
   augroup END
 
   if !has('nvim') || !has('python3')
-    echomsg '[deoplete] deoplete.nvim does not work with this version.'
-    echomsg '[deoplete] It requires Neovim with Python3 support ("+python3").'
+    call deoplete#util#print_error(
+          \ 'deoplete.nvim does not work with this version.')
+    call deoplete#util#print_error(
+          \ 'It requires Neovim with Python3 support("+python3").')
     return
   endif
 
@@ -50,15 +52,19 @@ function! deoplete#init#enable() abort "{{{
     try
       set completeopt+=noselect
     catch
-      echomsg '[deoplete] deoplete.nvim does not work with this version.'
-      echomsg '[deoplete] Please update neovim to latest version.'
+      call deoplete#util#print_error(
+            \ 'deoplete.nvim does not work with this version.')
+      call deoplete#util#print_error(
+            \ 'Please update neovim to latest version.')
       return
     endtry
   endif
 
   if !exists(':DeopleteInitializePython')
-    UpdateRemotePlugins
-    echomsg '[deoplete] Please restart Neovim.'
+    call deoplete#util#print_error(
+          \ 'deoplete.nvim is not registered as Neovim remote plugins.')
+    call deoplete#util#print_error(
+          \ 'Please execute :UpdateRemotePlugins command and restart Neovim.')
     return
   endif
 
