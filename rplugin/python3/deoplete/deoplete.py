@@ -197,8 +197,8 @@ class Deoplete(object):
                 complete_position = context['complete_position']
                 candidates += context['candidates']
                 continue
-            prefix = context['input'][: context['complete_position']
-                                      - complete_position]
+            prefix = context['input'][context['complete_position']
+                                      - complete_position :]
 
             context['complete_position'] = complete_position
             context['complete_str'] = prefix
