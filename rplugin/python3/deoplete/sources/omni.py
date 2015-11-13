@@ -53,7 +53,7 @@ class Source(Base):
             if m is None or input_pattern == '':
                 continue
 
-            pos = self.vim.funcs.getpos('.')
+            pos = self.vim.current.window.cursor
             try:
                 complete_pos = self.vim.call(
                     self.vim.eval('&l:omnifunc'), 1, '')
@@ -63,7 +63,7 @@ class Source(Base):
 
                 return -1
             finally:
-                if pos != self.vim.funcs.getpos('.'):
+                if pos != self.vim.current.window.cursor:
                     error(self.vim, 'omnifunction: '
                         + self.vim.eval('&l:omnifunc') + ' moves cursor!')
                     error(self.vim, 'Deoplete cannot support it in omni source.'
@@ -72,7 +72,7 @@ class Source(Base):
         return -1
 
     def gather_candidates(self, context):
-        pos = self.vim.funcs.getpos('.')
+        pos = self.vim.current.window.cursor
         try:
             candidates = self.vim.call(
                 self.vim.eval('&l:omnifunc'), 0, context['complete_str'])
@@ -82,7 +82,7 @@ class Source(Base):
 
             candidates = []
         finally:
-            if pos != self.vim.funcs.getpos('.'):
+            if pos != self.vim.current.window.cursor:
                 error(self.vim, 'omnifunction: '
                     + self.vim.eval('&l:omnifunc') + ' moves cursor!')
                 error(self.vim, 'Deoplete cannot support it in omni source.'
