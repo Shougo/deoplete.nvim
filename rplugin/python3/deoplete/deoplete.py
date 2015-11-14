@@ -36,6 +36,8 @@ from deoplete.util import \
 import deoplete.filters
 deoplete.filters  # silence pyflakes
 
+from deoplete.util import debug
+
 class Deoplete(object):
     def __init__(self, vim):
         self.vim = vim
@@ -87,11 +89,6 @@ class Deoplete(object):
             self.runtimepath = self.vim.eval('&runtimepath')
 
         # debug(self.vim, context)
-
-        # Set ignorecase
-        if context['smartcase'] and re.search(r'[A-Z]',
-                                              context['complete_str']):
-            context['ignorecase'] = 0
 
         results = self.gather_results(context)
         return self.merge_results(results)
@@ -152,20 +149,26 @@ class Deoplete(object):
                 context['candidates'] = [{ 'word': x }
                                          for x in context['candidates'] ]
 
-            # debug(self.vim, context['candidates'])
-
-            # debug(self.vim, context['complete_str'])
-            # debug(self.vim, context['candidates'])
             matchers = get_custom(self.vim, source.name).get(
                 'matchers', source.matchers)
             sorters = get_custom(self.vim, source.name).get(
                 'sorters', source.sorters)
             converters = get_custom(self.vim, source.name).get(
                 'converters', source.converters)
-            for filter_name in matchers + sorters + converters:
-                if filter_name in self.filters:
-                    context['candidates'] = self.filters[
-                        filter_name].filter(context)
+
+            ignorecase = context['ignorecase']
+            try:
+                # Set ignorecase
+                if context['smartcase'] and re.match(r'[A-Z]',
+                                                     context['complete_str']):
+                    context['ignorecase'] = 0
+
+                for filter_name in matchers + sorters + converters:
+                    if filter_name in self.filters:
+                        context['candidates'] = self.filters[
+                            filter_name].filter(context)
+            finally:
+                context['ignorecase'] = ignorecase
             # debug(self.vim, context['candidates'])
 
             # On post filter
