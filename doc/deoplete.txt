@@ -307,6 +307,8 @@ SOURCES						*deoplete-sources*
 buffer						*deoplete-source-buffer*
 		It collects keywords from current buffer and the buffers which
 		have same 'filetype'.
+		Note: It takes time to get the candidates in the first time if
+		you want to edit the large files(like Vim 22000 lines eval.c).
 
 member						*deoplete-source-member*
 		It collects members from current buffer.
