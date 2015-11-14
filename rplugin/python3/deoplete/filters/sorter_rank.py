@@ -1,5 +1,5 @@
 #=============================================================================
-# FILE: base.py
+# FILE: sorter_rank.py
 # AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 # License: MIT license  {{{
 #     Permission is hereby granted, free of charge, to any person obtaining
@@ -23,28 +23,19 @@
 # }}}
 #=============================================================================
 
-import re
-from abc import abstractmethod
+from .base import Base
 
-class Base(object):
+class Filter(Base):
     def __init__(self, vim):
-        self.vim = vim
-        self.name = 'base'
-        self.description = ''
-        self.marker = ''
-        self.min_pattern_length = -1
-        self.matchers = ['matcher_fuzzy']
-        self.sorters = ['sorter_rank']
-        self.converters = []
-        self.filetypes = []
-        self.is_bytepos = False
-        self.rank = 100
+        Base.__init__(self, vim)
 
-    def get_complete_position(self, context):
-        m = re.search('('+context['keyword_patterns']+')$', context['input'])
-        return m.start() if m else -1
+        self.name = 'sorter_rank'
+        self.description = 'rank sorter'
 
-    @abstractmethod
-    def gather_candidate(self, context):
-        pass
+    def filter(self, context):
+        complete_str = context['complete_str'].lower()
+        input_len = len(complete_str)
+        return sorted(context['candidates'],
+            key=lambda x: abs(x['word'].lower().find(
+                complete_str, 0, input_len)))
 
