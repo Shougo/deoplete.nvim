@@ -30,8 +30,8 @@ class Filter(Base):
     def __init__(self, vim):
         Base.__init__(self, vim)
 
-        self.name = 'matcher_head'
-        self.description = 'head_matcher'
+        self.name = 'matcher_fuzzy'
+        self.description = 'fuzzy matcher'
 
     def filter(self, context):
         complete_str = context['complete_str']
