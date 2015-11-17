@@ -41,6 +41,7 @@ class DeopleteHandlers(object):
 
     @neovim.rpc_export('completion_begin')
     def completion_begin(self, context):
+        pos = self.vim.current.window.cursor
         try:
             complete_position, candidates = self.deoplete.gather_candidates(
                 context)
@@ -51,12 +52,12 @@ class DeopleteHandlers(object):
                   'An error has occurred. Please execute :messages command.')
             candidates = []
 
-        var_context = {}
-
-        if not candidates or self.vim.eval('mode()') != 'i':
-            self.vim.vars['deoplete#_context'] = var_context
+        if not candidates or self.vim.funcs.mode() != 'i' \
+                or pos != self.vim.current.window.cursor:
+            self.vim.vars['deoplete#_context'] = {}
             return
 
+        var_context = {}
         var_context['complete_position'] = complete_position
         var_context['changedtick'] = context['changedtick']
         var_context['candidates'] = candidates
