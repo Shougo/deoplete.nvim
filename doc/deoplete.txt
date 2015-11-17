@@ -273,7 +273,9 @@ deoplete#mappings#manual_complete([{sources}])
 		If you give {sources} argument, deoplete will call {sources}.
 		{sources} is name of source or list of sources name.
 >
-		inoremap <expr><Tab>  deoplete#mappings#manual_complete()
+		inoremap <silent><expr><Tab>
+		\ pumvisible() ? "\<C-n>" :
+		\ deoplete#mappings#manual_complete()
 <
 					*deoplete#mappings#smart_close_popup()*
 deoplete#mappings#smart_close_popup()
