@@ -77,6 +77,10 @@ endfunction"}}}
 
 function! s:complete_done() abort "{{{
   let g:deoplete#_context.position = getpos('.')
+  if exists('b:deoplete_saved_completeopt')
+    let &completeopt = b:deoplete_saved_completeopt
+    unlet b:deoplete_saved_completeopt
+  endif
 endfunction"}}}
 
 " vim: foldmethod=marker

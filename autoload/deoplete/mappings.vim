@@ -38,7 +38,11 @@ function! deoplete#mappings#_do_complete(context) abort "{{{
   return ''
 endfunction"}}}
 function! deoplete#mappings#_set_completeopt() abort "{{{
-  " Deoplete does not work if completeopt contains longest and menu options
+  " Deoplete does not work if completeopt contains longest and menu options.
+  if exists('b:deoplete_saved_completeopt')
+    return
+  endif
+  let b:deoplete_saved_completeopt = &completeopt
   set completeopt-=longest
   set completeopt+=menuone
   if &completeopt !~# 'noinsert\|noselect'
