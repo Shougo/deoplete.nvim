@@ -80,4 +80,26 @@ function! deoplete#util#convert2list(expr) "{{{
   return type(a:expr) ==# type([]) ? a:expr : [a:expr]
 endfunction"}}}
 
+function! deoplete#util#get_input(event) abort "{{{
+  let input = ((a:event ==# 'InsertEnter' || mode() ==# 'i') ?
+        \   (col('.')-1) : col('.')) >= len(getline('.')) ?
+        \      getline('.') :
+        \      matchstr(getline('.'),
+        \         '^.*\%' . (mode() ==# 'i' ? col('.') : col('.') - 1)
+        \         . 'c' . (mode() ==# 'i' ? '' : '.'))
+
+  if input =~ '^.\{-}\ze\S\+$'
+    let complete_str = matchstr(input, '\S\+$')
+    let input = matchstr(input, '^.\{-}\ze\S\+$')
+  else
+    let complete_str = ''
+  endif
+
+  if a:event ==# 'InsertCharPre'
+    let complete_str .= v:char
+  endif
+
+  return input . complete_str
+endfunction"}}}
+
 " vim: foldmethod=marker

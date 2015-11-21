@@ -202,7 +202,7 @@ function! deoplete#init#_context(event, sources) abort "{{{
   return {
         \ 'changedtick': b:changedtick,
         \ 'event': a:event,
-        \ 'input': deoplete#helpers#get_input(a:event),
+        \ 'input': deoplete#util#get_input(a:event),
         \ 'complete_str': '',
         \ 'position': getpos('.'),
         \ 'filetype': filetype,
