@@ -76,15 +76,6 @@ endfunction"}}}
 
 function! s:complete_done() abort "{{{
   let g:deoplete#_context.position = getpos('.')
-  if g:deoplete#enable_auto_pairs
-        \ && get(v:completed_item, 'word', '') =~ '[\[<({]$'
-    " Auto close pairs
-    let pairs = { '[': ']', '<': '>', '(': ')', '{': '}' }
-    let event = 'CompleteDone'
-    call setline('.', deoplete#util#get_input(event)
-          \ . pairs[ v:completed_item.word[-1:]]
-          \ . deoplete#util#get_next_input(event))
-  endif
 endfunction"}}}
 
 " vim: foldmethod=marker

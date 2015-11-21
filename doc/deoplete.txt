@@ -84,6 +84,11 @@ If you like to use the context filetype feature, you need to install the
 context_filetype.vim plugin which you can find under the following repository:
 https://github.com/Shougo/context_filetype.vim
 
+						*deoplete-neopairs*
+
+If you want to insert the parentheses pairs automatically, you need to install
+the neopairs plugin (https://github.com/Shougo/neopairs.vim).
+
 ==============================================================================
 INTERFACE					*deoplete-interface*
 
