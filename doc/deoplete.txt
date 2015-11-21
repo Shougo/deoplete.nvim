@@ -261,6 +261,9 @@ deoplete#custom#source({source-name}, {option-name}, {value})
 		" Examples:
 		" Use head matcher instead of fuzzy matcher
 		call deoplete#custom#set('_', 'matchers', ['matcher_head'])
+		" Disable auto completion in buffer source
+		call deoplete#custom#set('buffer',
+		\ 'min_pattern_length', 9999)
 <
 ------------------------------------------------------------------------------
 KEY MAPPINGS 					*deoplete-key-mappings*

@@ -121,7 +121,8 @@ class Deoplete(object):
             # debug(self.vim, cont['complete_position'])
             # debug(self.vim, cont['complete_str'])
 
-            min_pattern_length = source.min_pattern_length
+            min_pattern_length = get_custom(self.vim, source.name).get(
+                'min_pattern_length', source.min_pattern_length)
             if min_pattern_length < 0:
                 # Use default value
                 min_pattern_length = start_length
