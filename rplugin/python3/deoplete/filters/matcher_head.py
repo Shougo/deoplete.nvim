@@ -39,9 +39,9 @@ class Filter(Base):
         input_len = len(complete_str)
         return [x for x in context['candidates']
                 if len(x['word']) > input_len
-                   and x['word'].lower().find(complete_str, 0, input_len) == 0
+                   and x['word'].lower().startswith(complete_str)
                 ] if context['ignorecase'] \
                   else [x for x in context['candidates']
                         if len(x['word']) > input_len
-                        and x['word'].find(complete_str, 0, input_len) == 0]
+                        and x['word'].startswith(complete_str)]
 
