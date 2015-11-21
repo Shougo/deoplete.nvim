@@ -126,6 +126,10 @@ g:deoplete#auto_completion_start_length
 
 		Default value is 2.
 
+				*g:deoplete#enable_auto_pairs*
+g:deoplete#enable_auto_pairs
+		If it is enabled, close the parenthesis automatically.
+
 				*g:deoplete#disable_auto_complete*
 g:deoplete#disable_auto_complete
 		It controls whether you invalidate automatic completion.  If

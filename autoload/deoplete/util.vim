@@ -101,5 +101,8 @@ function! deoplete#util#get_input(event) abort "{{{
 
   return input . complete_str
 endfunction"}}}
+function! deoplete#util#get_next_input(event) abort "{{{
+  return getline('.')[len(deoplete#util#get_input(a:event)) :]
+endfunction"}}}
 
 " vim: foldmethod=marker
