@@ -74,7 +74,7 @@ class Deoplete(object):
     def gather_candidates(self, context):
         # Skip completion
         if (self.vim.eval('&l:completefunc') != ''
-                and self.vim.eval('&l:buftype').find('nofile') >= 0
+                and 'nofile' in self.vim.eval('&l:buftype')
                 ) or (context['event'] != 'Manual' and
                     get_simple_buffer_config(
                         self.vim,
