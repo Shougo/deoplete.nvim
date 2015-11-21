@@ -594,8 +594,8 @@ https://github.com/osyo-manga/vim-monster
 Q: I want to use C/C++ omni completion with deoplete.
 
 A: You can use |clang_complete| or |vim-marching|.
-But vim-marching is recommended.
 
+https://github.com/Rip-Rip/clang_complete
 https://github.com/osyo-manga/vim-marching
 
 For clang_complete configuration is below. >
@@ -604,6 +604,9 @@ For clang_complete configuration is below. >
 	let g:clang_auto_select = 0
 	let g:clang_default_keymappings = 0
 	"let g:clang_use_library = 1
+
+Current clang_complete supports the original deoplete source.
+It is better than using omni source.
 
 Q: I want to use head matcher instead of fuzzy matcher.
 
