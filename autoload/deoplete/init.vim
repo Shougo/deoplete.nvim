@@ -186,9 +186,10 @@ function! deoplete#init#_context(event, sources) abort "{{{
   let filetype = (exists('*context_filetype#get_filetype') ?
         \   context_filetype#get_filetype() :
         \   (&filetype == '' ? 'nothing' : &filetype))
-  let filetypes = (exists('*context_filetype#get_filetypes') ?
+  let filetypes = exists('*context_filetype#get_filetypes') ?
         \   context_filetype#get_filetypes() :
-        \   (&filetype == '' ? ['nothing'] : [&filetype]))
+        \   &filetype == '' ? ['nothing'] :
+        \                     [&filetype] + split(&filetype, ',')
 
   let sources = a:sources
   if a:event !=# 'Manual' && empty(sources)

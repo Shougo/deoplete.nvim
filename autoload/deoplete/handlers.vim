@@ -52,19 +52,20 @@ function! s:completion_begin(event) abort "{{{
   let g:deoplete#_context.position = context.position
 
   " Call omni completion
-  for pattern in deoplete#util#convert2list(
-        \ deoplete#util#get_buffer_config(
-        \ context.filetype,
-        \ 'b:deoplete_omni_patterns',
-        \ 'g:deoplete#omni_patterns',
-        \ 'g:deoplete#_omni_patterns'))
-    if deoplete#util#is_eskk_convertion()
-          \ || (pattern != '' && &l:omnifunc != ''
-          \ && context.input =~# '\%('.pattern.'\)$')
-      call deoplete#mappings#_set_completeopt()
-      call feedkeys("\<C-x>\<C-o>", 'n')
-      return
-    endif
+  for filetype in context.filetypes
+    for pattern in deoplete#util#convert2list(
+          \ deoplete#util#get_buffer_config(filetype,
+          \ 'b:deoplete_omni_patterns',
+          \ 'g:deoplete#omni_patterns',
+          \ 'g:deoplete#_omni_patterns'))
+      if deoplete#util#is_eskk_convertion()
+            \ || (pattern != '' && &l:omnifunc != ''
+            \ && context.input =~# '\%('.pattern.'\)$')
+        call deoplete#mappings#_set_completeopt()
+        call feedkeys("\<C-x>\<C-o>", 'n')
+        return
+      endif
+    endfor
   endfor
 
   call rpcnotify(g:deoplete#_channel_id, 'completion_begin', context)
