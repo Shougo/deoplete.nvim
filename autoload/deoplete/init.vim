@@ -123,7 +123,7 @@ function! deoplete#init#_variables() abort "{{{
   call deoplete#util#set_pattern(
         \ g:deoplete#_keyword_patterns,
         \ '_',
-        \ '[a-zA-Z_]\w*')
+        \ '[a-zA-Z_]\k*')
   "}}}
 
   " Initialize omni completion pattern. "{{{
@@ -202,6 +202,12 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \   filetype, 'b:deoplete_keyword_patterns',
         \   'g:deoplete#keyword_patterns',
         \   'g:deoplete#_keyword_patterns')), '|')
+
+  " Convert keyword pattern.
+  let pattern = deoplete#util#vimoption2python(
+        \ &l:iskeyword . (&l:lisp ? ',-' : ''))
+  let keyword_patterns = substitute(keyword_patterns,
+        \ '\\k', '\=pattern', 'g')
 
   return {
         \ 'changedtick': b:changedtick,

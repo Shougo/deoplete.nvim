@@ -105,4 +105,45 @@ function! deoplete#util#get_next_input(event) abort "{{{
   return getline('.')[len(deoplete#util#get_input(a:event)) :]
 endfunction"}}}
 
+function! deoplete#util#vimoption2python(option) abort "{{{
+  let has_dash = 0
+  let patterns = []
+  for pattern in split(a:option, ',')
+    if pattern == ''
+      " ,
+      call add(patterns, ',')
+    elseif pattern == '-'
+      let has_dash = 1
+    elseif pattern =~ '\d\+'
+      call add(patterns, substitute(pattern, '\d\+',
+            \ '\=nr2char(submatch(0))', 'g'))
+    else
+      call add(patterns, pattern)
+    endif
+  endfor
+
+  " Dash must be last.
+  if has_dash
+    call add(patterns, '-')
+  endif
+
+  return '[a-zA-Z' . join(deoplete#util#uniq(patterns), '') . ']'
+endfunction"}}}
+
+function! deoplete#util#uniq(list) "{{{
+  let list = map(copy(a:list), '[v:val, v:val]')
+  let i = 0
+  let seen = {}
+  while i < len(list)
+    let key = string(list[i][1])
+    if has_key(seen, key)
+      call remove(list, i)
+    else
+      let seen[key] = 1
+      let i += 1
+    endif
+  endwhile
+  return map(list, 'v:val[0]')
+endfunction"}}}
+
 " vim: foldmethod=marker
