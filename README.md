@@ -15,7 +15,8 @@ See [requirements](#requirements) if you aren't sure whether you have this.
 
 1. Extract the files and put them in your Neovim directory
    (usually `~/.config/nvim`).
-2. Execute the `:UpdateRemotePlugins` and restart Neovim.
+2. Execute the `:UpdateRemotePlugins` or `:NeoBundleRemotePlugins` (for using
+   NeoBundle) and restart Neovim.
 3. Execute the `:DeopleteEnable` command or set `let g:deoplete#enable_at_startup = 1`
    in your `$XDG_CONFIG_HOME/nvim/init.vim`
 
