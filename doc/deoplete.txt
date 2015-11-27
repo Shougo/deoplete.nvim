@@ -359,7 +359,7 @@ Default sorters: ['sorter_rank'].
 	You can change it by |deoplete#custom#set()|.
 
 					*deoplete-filter-converter_default*
-Default converters: [].
+Default converters: ['converter_remove_overlap'].
 
 	You can change it by |deoplete#custom#set()|.
 
@@ -371,6 +371,10 @@ matcher_fuzzy	Fuzzy matching matcher.
 
 					*deoplete-filter-sorter_rank*
 sorter_rank	Matched rank order sorter.  The higher the head matched word.
+
+				*deoplete-filter-converter_remove_overlap*
+converter_remove_overlap
+		It removes overlapped text in a candidate's word.
 
 ==============================================================================
 CREATE SOURCE					*deoplete-create-source*

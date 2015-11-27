@@ -213,6 +213,7 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \ 'changedtick': b:changedtick,
         \ 'event': a:event,
         \ 'input': deoplete#util#get_input(a:event),
+        \ 'next_input': deoplete#util#get_next_input(a:event),
         \ 'complete_str': '',
         \ 'position': getpos('.'),
         \ 'filetype': filetype,

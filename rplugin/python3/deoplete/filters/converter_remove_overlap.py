@@ -1,5 +1,5 @@
 #=============================================================================
-# FILE: base.py
+# FILE: converter_remove_overlap.py
 # AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 # License: MIT license  {{{
 #     Permission is hereby granted, free of charge, to any person obtaining
@@ -24,27 +24,33 @@
 #=============================================================================
 
 import re
-from abc import abstractmethod
+from .base import Base
 
-class Base(object):
+class Filter(Base):
     def __init__(self, vim):
-        self.vim = vim
-        self.name = 'base'
-        self.description = ''
-        self.marker = ''
-        self.min_pattern_length = -1
-        self.matchers = ['matcher_fuzzy']
-        self.sorters = ['sorter_rank']
-        self.converters = ['converter_remove_overlap']
-        self.filetypes = []
-        self.is_bytepos = False
-        self.rank = 100
+        Base.__init__(self, vim)
 
-    def get_complete_position(self, context):
-        m = re.search('('+context['keyword_patterns']+')$', context['input'])
-        return m.start() if m else -1
+        self.name = 'converter_remove_overlap'
+        self.description = 'remove overlap converter'
 
-    @abstractmethod
-    def gather_candidate(self, context):
-        pass
+    def filter(self, context):
+        m = re.search('\S+', context['next_input'])
+        if not m:
+            return context['candidates']
+        next = m.group(0)
+        for [overlap, candidate] in [
+                [x, y] for x, y
+                in [[overlap_length(x['word'], next), x]
+                    for x in context['candidates']] if x > 0]:
+            if not 'abbr' in candidate:
+                candidate['abbr'] = candidate['word']
+            candidate['word'] = candidate['word'][: -overlap]
+        return [x for x in context['candidates']
+                if x['word'] != context['complete_str']]
+
+def overlap_length(left, right):
+    pos = len(right)
+    while pos > 0 and not left.endswith(right[: pos]):
+        pos -= 1
+    return pos
 
