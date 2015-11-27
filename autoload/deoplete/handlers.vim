@@ -72,15 +72,14 @@ function! s:completion_begin(event) abort "{{{
 endfunction"}}}
 
 function! s:on_insert_leave() abort "{{{
+  if exists('g:deoplete#_context.saved_completeopt')
+    let &completeopt = g:deoplete#_context.saved_completeopt
+  endif
   let g:deoplete#_context = {}
 endfunction"}}}
 
 function! s:complete_done() abort "{{{
   let g:deoplete#_context.position = getpos('.')
-  if exists('b:deoplete_saved_completeopt')
-    let &completeopt = b:deoplete_saved_completeopt
-    unlet b:deoplete_saved_completeopt
-  endif
 endfunction"}}}
 
 " vim: foldmethod=marker

@@ -49,7 +49,7 @@ function! deoplete#init#enable() abort "{{{
   endif
 
   if &completeopt !~# 'noinsert\|noselect'
-    let l:save_completeopt = &completeopt
+    let save_completeopt = &completeopt
     try
       set completeopt+=noselect
     catch
@@ -59,7 +59,7 @@ function! deoplete#init#enable() abort "{{{
             \ 'Please update neovim to latest version.')
       return
     finally
-      let &completeopt = l:save_completeopt
+      let &completeopt = save_completeopt
     endtry
   endif
 
