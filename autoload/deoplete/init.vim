@@ -129,17 +129,17 @@ function! deoplete#init#_variables() abort "{{{
   " Initialize omni completion pattern. "{{{
   " Note: HTML omni func use search().
   call deoplete#util#set_pattern(
-        \ g:deoplete#omni_patterns,
+        \ g:deoplete#_omni_patterns,
         \ 'html,xhtml,xml,markdown,mkd', ['<[^>]*'])
   " Note: vim-go and vim-javacomplete2 moves cursor.
   call deoplete#util#set_pattern(
-        \ g:deoplete#omni_patterns,
+        \ g:deoplete#_omni_patterns,
         \ 'go,java', ['[^. \t0-9]\.\w*'])
   call deoplete#util#set_pattern(
-        \ g:deoplete#omni_patterns,
+        \ g:deoplete#_omni_patterns,
         \ 'c', ['[^. \t0-9]\.\w*', '[^. \t0-9]->\w*'])
   call deoplete#util#set_pattern(
-        \ g:deoplete#omni_patterns,
+        \ g:deoplete#_omni_patterns,
         \ 'cpp', ['[^. \t0-9]\.\w*', '[^. \t0-9]->\w*',
         \         '[a-zA-Z_]\w*::\w*'])
 
