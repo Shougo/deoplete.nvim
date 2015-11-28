@@ -1,4 +1,4 @@
-#=============================================================================
+# ============================================================================
 # FILE: tag.py
 # AUTHOR: Felipe Morales <hel.sheep at gmail.com>
 #         Shougo Matsushita <Shougo.Matsu at gmail.com>
@@ -22,7 +22,7 @@
 #     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 #     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
-#=============================================================================
+# ============================================================================
 
 import re
 from os.path import getmtime, exists
@@ -31,7 +31,9 @@ from .base import Base
 
 TagsCacheItem = namedtuple('TagsCacheItem', 'mtime candidates')
 
+
 class Source(Base):
+
     def __init__(self, vim):
         Base.__init__(self, vim)
 
@@ -55,7 +57,8 @@ class Source(Base):
                 self.cache[filename] = TagsCacheItem(mtime, new_candidates)
             else:
                 candidates += self.cache[filename].candidates
-        return [{ 'word': x } for x in candidates]
+        return [{'word': x} for x in candidates]
+
 
 def parse_tags(f):
     p = re.compile('^[a-zA-Z_]\w*(?=\t)')
@@ -64,4 +67,3 @@ def parse_tags(f):
     for l in f.readlines():
         candidates += p.findall(l)
     return list(set(candidates))
-

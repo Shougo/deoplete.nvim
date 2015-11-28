@@ -1,4 +1,4 @@
-#=============================================================================
+# ============================================================================
 # FILE: __init__.py
 # AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 # License: MIT license  {{{
@@ -21,7 +21,7 @@
 #     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 #     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
-#=============================================================================
+# ============================================================================
 
 import neovim
 import traceback
@@ -29,8 +29,10 @@ import traceback
 from deoplete.deoplete import Deoplete
 from deoplete.util import error
 
+
 @neovim.plugin
 class DeopleteHandlers(object):
+
     def __init__(self, vim):
         self.vim = vim
 
@@ -47,7 +49,7 @@ class DeopleteHandlers(object):
                 context)
         except Exception:
             for line in traceback.format_exc().splitlines():
-                 error(self.vim, line)
+                error(self.vim, line)
             error(self.vim,
                   'An error has occurred. Please execute :messages command.')
             candidates = []
@@ -69,5 +71,4 @@ class DeopleteHandlers(object):
             'call deoplete#mappings#_set_completeopt()')
         # Note: cannot use vim.feedkeys()
         self.vim.command(
-          'call feedkeys("\<Plug>(deoplete_start_complete)")')
-
+            'call feedkeys("\<Plug>(deoplete_start_complete)")')

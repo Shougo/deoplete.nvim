@@ -1,4 +1,4 @@
-#=============================================================================
+# ============================================================================
 # FILE: buffer.py
 # AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 # License: MIT license  {{{
@@ -21,14 +21,16 @@
 #     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 #     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
-#=============================================================================
+# ============================================================================
 
 import re
 import operator
 import functools
 from .base import Base
 
+
 class Source(Base):
+
     def __init__(self, vim):
         Base.__init__(self, vim)
 
@@ -46,7 +48,7 @@ class Source(Base):
             self.buffers[self.vim.current.buffer.number][
                 'candidates'] += functools.reduce(operator.add, [
                     p.findall(x) for x in self.vim.current.buffer[
-                        max([0, line-500]) : line+500]
+                        max([0, line - 500]): line + 500]
                 ])
         else:
             self.buffers[self.vim.current.buffer.number] = {
@@ -56,8 +58,7 @@ class Source(Base):
                 ]),
             }
 
-        return [{ 'word': x } for x in
+        return [{'word': x} for x in
                 functools.reduce(operator.add, [
-                     x['candidates'] for x in self.buffers.values()
-                     if x['filetype'] in context['filetypes']])]
-
+                    x['candidates'] for x in self.buffers.values()
+                    if x['filetype'] in context['filetypes']])]
