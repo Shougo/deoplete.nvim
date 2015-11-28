@@ -26,6 +26,7 @@
 import re
 from .base import Base
 
+
 class Filter(Base):
     def __init__(self, vim):
         Base.__init__(self, vim)
@@ -42,15 +43,15 @@ class Filter(Base):
                 [x, y] for x, y
                 in [[overlap_length(x['word'], next), x]
                     for x in context['candidates']] if x > 0]:
-            if not 'abbr' in candidate:
+            if 'abbr' not in candidate:
                 candidate['abbr'] = candidate['word']
             candidate['word'] = candidate['word'][: -overlap]
         return [x for x in context['candidates']
                 if x['word'] != context['complete_str']]
+
 
 def overlap_length(left, right):
     pos = len(right)
     while pos > 0 and not left.endswith(right[: pos]):
         pos -= 1
     return pos
-

@@ -51,12 +51,13 @@ class Deoplete(object):
         # Load sources from runtimepath
         for path in globruntime(self.vim,
                                 'rplugin/python3/deoplete/sources/base.py'
-                                ) + globruntime(self.vim,
-                                                'rplugin/python3/deoplete/sources/*.py'):
+                                ) + globruntime(
+                                    self.vim,
+                                    'rplugin/python3/deoplete/sources/*.py'):
             name = os.path.basename(path)[: -3]
             source = importlib.machinery.SourceFileLoader(
                 'deoplete.sources.' + name, path).load_module()
-            if hasattr(source, 'Source') and not name in self.sources:
+            if hasattr(source, 'Source') and name not in self.sources:
                 self.sources[name] = source.Source(self.vim)
         # debug(self.vim, self.sources)
 
@@ -64,12 +65,13 @@ class Deoplete(object):
         # Load filters from runtimepath
         for path in globruntime(self.vim,
                                 'rplugin/python3/deoplete/filters/base.py'
-                                ) + globruntime(self.vim,
-                                                'rplugin/python3/deoplete/filters/*.py'):
+                                ) + globruntime(
+                                    self.vim,
+                                    'rplugin/python3/deoplete/filters/*.py'):
             name = os.path.basename(path)[: -3]
             filter = importlib.machinery.SourceFileLoader(
                 'deoplete.filters.' + name, path).load_module()
-            if hasattr(filter, 'Filter') and not name in self.filters:
+            if hasattr(filter, 'Filter') and name not in self.filters:
                 self.filters[name] = filter.Filter(self.vim)
         # debug(self.vim, self.filters)
 
@@ -103,8 +105,9 @@ class Deoplete(object):
         start_length = self.vim.eval(
             'g:deoplete#auto_completion_start_length')
         for source_name, source in sorted(self.sources.items(),
-                                          key=lambda x: x[1].rank, reverse=True):
-            if (sources and not source_name in sources
+                                          key=lambda x: x[1].rank,
+                                          reverse=True):
+            if (sources and source_name not in sources
                 ) or (source.filetypes and
                       not context['filetype'] in source.filetypes):
                 continue
@@ -146,8 +149,8 @@ class Deoplete(object):
 
             # debug(self.vim, source.name)
             context['candidates'] = source.gather_candidates(context)
-            if context['candidates'] and type(
-                    context['candidates'][0]) == type(''):
+            if context['candidates'] and isinstance(
+                    context['candidates'][0], str):
                 # Convert to dict
                 context['candidates'] = [{'word': x}
                                          for x in context['candidates']]

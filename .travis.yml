@@ -7,7 +7,7 @@ python:
     - 3.4
 
 install:
-    - pip install neovim pyflakes nose
+    - pip install neovim flake8 nose
 
 before_script:
     - git clone https://github.com/syngan/vim-vimlint /tmp/vim-vimlint
