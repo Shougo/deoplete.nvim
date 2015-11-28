@@ -34,7 +34,7 @@ class Filter(Base):
         self.description = 'remove overlap converter'
 
     def filter(self, context):
-        m = re.search('\S+', context['next_input'])
+        m = re.match('\S+', context['next_input'])
         if not m:
             return context['candidates']
         next = m.group(0)
