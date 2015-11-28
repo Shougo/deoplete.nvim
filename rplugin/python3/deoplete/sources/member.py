@@ -1,4 +1,4 @@
-#=============================================================================
+# ============================================================================
 # FILE: member.py
 # AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 # License: MIT license  {{{
@@ -21,7 +21,7 @@
 #     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 #     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
-#=============================================================================
+# ============================================================================
 
 import re
 import operator
@@ -30,7 +30,9 @@ from deoplete.util import \
     get_default_buffer_config, convert2list
 from .base import Base
 
+
 class Source(Base):
+
     def __init__(self, vim):
         Base.__init__(self, vim)
 
@@ -51,7 +53,7 @@ class Source(Base):
                     'g:deoplete#member#prefix_patterns',
                     'g:deoplete#member#_prefix_patterns')):
             m = re.search(self.object_pattern + prefix_pattern + r'\w*$',
-                        context['input'])
+                          context['input'])
             if m is None or prefix_pattern == '':
                 continue
             self.prefix = re.sub(r'\w*$', '', m.group(0))
@@ -61,8 +63,7 @@ class Source(Base):
     def gather_candidates(self, context):
         p = re.compile(r'(?<=' + re.escape(self.prefix) + r')\w+(?:\(\)?)?')
 
-        return [{ 'word': x } for x in
+        return [{'word': x} for x in
                 functools.reduce(operator.add, [
-                     p.findall(x) for x in self.vim.current.buffer
-                     ])]
-
+                    p.findall(x) for x in self.vim.current.buffer
+                ])]

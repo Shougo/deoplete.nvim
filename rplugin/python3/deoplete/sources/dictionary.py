@@ -1,4 +1,4 @@
-#=============================================================================
+# ============================================================================
 # FILE: dictionary.py
 # AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 # License: MIT license  {{{
@@ -21,7 +21,7 @@
 #     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 #     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
-#=============================================================================
+# ============================================================================
 
 import re
 from os.path import getmtime, exists
@@ -30,7 +30,9 @@ from .base import Base
 
 DictCacheItem = namedtuple('DictCacheItem', 'mtime candidates')
 
+
 class Source(Base):
+
     def __init__(self, vim):
         Base.__init__(self, vim)
 
@@ -53,7 +55,8 @@ class Source(Base):
                 self.cache[filename] = DictCacheItem(mtime, new_candidates)
             else:
                 candidates += self.cache[filename].candidates
-        return [{ 'word': x } for x in candidates]
+        return [{'word': x} for x in candidates]
+
 
 def parse_dictionary(f, keyword_patterns):
     p = re.compile(keyword_patterns)
@@ -63,6 +66,6 @@ def parse_dictionary(f, keyword_patterns):
         candidates += p.findall(l)
     return list(set(candidates))
 
+
 def get_dictionaries(vim, filetype):
     return vim.eval('&l:dictionary').split(',')
-

@@ -1,4 +1,4 @@
-#=============================================================================
+# ============================================================================
 # FILE: deoplete.py
 # AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 # License: MIT license  {{{
@@ -21,7 +21,7 @@
 #     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 #     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
-#=============================================================================
+# ============================================================================
 
 import re
 import importlib.machinery
@@ -38,7 +38,9 @@ deoplete.filters  # silence pyflakes
 
 # from deoplete.util import debug
 
+
 class Deoplete(object):
+
     def __init__(self, vim):
         self.vim = vim
         self.filters = {}
@@ -49,8 +51,8 @@ class Deoplete(object):
         # Load sources from runtimepath
         for path in globruntime(self.vim,
                                 'rplugin/python3/deoplete/sources/base.py'
-                    ) + globruntime(self.vim,
-                                    'rplugin/python3/deoplete/sources/*.py'):
+                                ) + globruntime(self.vim,
+                                                'rplugin/python3/deoplete/sources/*.py'):
             name = os.path.basename(path)[: -3]
             source = importlib.machinery.SourceFileLoader(
                 'deoplete.sources.' + name, path).load_module()
@@ -62,8 +64,8 @@ class Deoplete(object):
         # Load filters from runtimepath
         for path in globruntime(self.vim,
                                 'rplugin/python3/deoplete/filters/base.py'
-                    ) + globruntime(self.vim,
-                                    'rplugin/python3/deoplete/filters/*.py'):
+                                ) + globruntime(self.vim,
+                                                'rplugin/python3/deoplete/filters/*.py'):
             name = os.path.basename(path)[: -3]
             filter = importlib.machinery.SourceFileLoader(
                 'deoplete.filters.' + name, path).load_module()
@@ -75,11 +77,11 @@ class Deoplete(object):
         # Skip completion
         if (self.vim.eval('&l:completefunc') != ''
                 and 'nofile' in self.vim.eval('&l:buftype')
-                ) or (context['event'] != 'Manual' and
-                    get_simple_buffer_config(
-                        self.vim,
-                        'b:deoplete_disable_auto_complete',
-                        'g:deoplete#disable_auto_complete')):
+            ) or (context['event'] != 'Manual' and
+                  get_simple_buffer_config(
+                self.vim,
+                'b:deoplete_disable_auto_complete',
+                'g:deoplete#disable_auto_complete')):
             return (-1, [])
 
         if self.vim.eval('&runtimepath') != self.runtimepath:
@@ -101,17 +103,17 @@ class Deoplete(object):
         start_length = self.vim.eval(
             'g:deoplete#auto_completion_start_length')
         for source_name, source in sorted(self.sources.items(),
-                key=lambda x: x[1].rank, reverse=True):
+                                          key=lambda x: x[1].rank, reverse=True):
             if (sources and not source_name in sources
-                    ) or (source.filetypes and
-                        not context['filetype'] in source.filetypes):
+                ) or (source.filetypes and
+                      not context['filetype'] in source.filetypes):
                 continue
             cont = copy.deepcopy(context)
             charpos = source.get_complete_position(cont)
             if charpos >= 0 and source.is_bytepos:
                 charpos = bytepos2charpos(
                     self.vim, cont['input'], charpos)
-            cont['complete_str'] = cont['input'][charpos :]
+            cont['complete_str'] = cont['input'][charpos:]
             cont['complete_position'] = charpos2bytepos(
                 self.vim, cont['input'], charpos)
             # debug(self.vim, source.rank)
@@ -129,7 +131,7 @@ class Deoplete(object):
 
             if charpos < 0 or (cont['event'] != 'Manual'
                                and len(cont['complete_str'])
-                                     < min_pattern_length):
+                               < min_pattern_length):
                 # Skip
                 continue
             results.append({
@@ -147,8 +149,8 @@ class Deoplete(object):
             if context['candidates'] and type(
                     context['candidates'][0]) == type(''):
                 # Convert to dict
-                context['candidates'] = [{ 'word': x }
-                                         for x in context['candidates'] ]
+                context['candidates'] = [{'word': x}
+                                         for x in context['candidates']]
 
             matchers = get_custom(self.vim, source.name).get(
                 'matchers', source.matchers)
@@ -202,7 +204,7 @@ class Deoplete(object):
                 candidates += context['candidates']
                 continue
             prefix = context['input'][context['complete_position']
-                                      - complete_position :]
+                                      - complete_position:]
 
             context['complete_position'] = complete_position
             context['complete_str'] = prefix
@@ -213,4 +215,3 @@ class Deoplete(object):
             candidates += context['candidates']
         # debug(self.vim, candidates)
         return (complete_position, candidates)
-

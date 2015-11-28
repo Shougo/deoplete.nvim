@@ -1,4 +1,4 @@
-#=============================================================================
+# ============================================================================
 # FILE: file.py
 # AUTHOR: Felipe Morales <hel.sheep at gmail.com>
 #         Shougo Matsushita <Shougo.Matsu at gmail.com>
@@ -22,12 +22,13 @@
 #     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 #     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
-#=============================================================================
+# ============================================================================
 
 import os
 from os.path import exists, dirname
 from glob import glob
 from .base import Base
+
 
 def longest_path_that_exists(input_str):
     data = input_str.split(' ')
@@ -37,7 +38,9 @@ def longest_path_that_exists(input_str):
         return sorted(existing_paths)[-1]
     return None
 
+
 class Source(Base):
+
     def __init__(self, vim):
         Base.__init__(self, vim)
 
@@ -52,9 +55,8 @@ class Source(Base):
 
     def gather_candidates(self, context):
         dirs = [x for x in glob(context['complete_str'] + '*')
-                      if os.path.isdir(x)]
+                if os.path.isdir(x)]
         files = [x for x in glob(context['complete_str'] + '*')
-                      if not os.path.isdir(x)]
-        return [{ 'word': x, 'abbr': x + '/' } for x in sorted(dirs)
-                ] + [{ 'word': x } for x in sorted(files)]
-
+                 if not os.path.isdir(x)]
+        return [{'word': x, 'abbr': x + '/'} for x in sorted(dirs)
+                ] + [{'word': x} for x in sorted(files)]

@@ -1,4 +1,4 @@
-#=============================================================================
+# ============================================================================
 # FILE: omni.py
 # AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 # License: MIT license  {{{
@@ -21,14 +21,16 @@
 #     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 #     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
-#=============================================================================
+# ============================================================================
 
 import re
 from .base import Base
 from deoplete.util import \
     get_default_buffer_config, error, convert2list
 
+
 class Source(Base):
+
     def __init__(self, vim):
         Base.__init__(self, vim)
 
@@ -49,7 +51,7 @@ class Source(Base):
                 'g:deoplete#omni#input_patterns',
                 'g:deoplete#omni#_input_patterns')):
 
-            m = re.search('('+input_pattern+')$', context['input'])
+            m = re.search('(' + input_pattern + ')$', context['input'])
             if m is None or input_pattern == '':
                 continue
 
@@ -58,7 +60,7 @@ class Source(Base):
                     self.vim.eval('&l:omnifunc'), 1, '')
             except:
                 error(self.vim, 'Error occurred calling omnifunction: '
-                    + self.vim.eval('&l:omnifunc'))
+                      + self.vim.eval('&l:omnifunc'))
 
                 return -1
             return complete_pos
@@ -70,9 +72,8 @@ class Source(Base):
                 self.vim.eval('&l:omnifunc'), 0, context['complete_str'])
         except:
             error(self.vim, 'Error occurred calling omnifunction: '
-                + self.vim.eval('&l:omnifunc'))
+                  + self.vim.eval('&l:omnifunc'))
 
             candidates = []
 
         return candidates
-

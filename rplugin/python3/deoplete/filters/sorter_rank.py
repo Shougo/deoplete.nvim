@@ -1,4 +1,4 @@
-#=============================================================================
+# ============================================================================
 # FILE: sorter_rank.py
 # AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 # License: MIT license  {{{
@@ -21,11 +21,13 @@
 #     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 #     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
-#=============================================================================
+# ============================================================================
 
 from .base import Base
 
+
 class Filter(Base):
+
     def __init__(self, vim):
         Base.__init__(self, vim)
 
@@ -36,6 +38,5 @@ class Filter(Base):
         complete_str = context['complete_str'].lower()
         input_len = len(complete_str)
         return sorted(context['candidates'],
-            key=lambda x: abs(x['word'].lower().find(
-                complete_str, 0, input_len)))
-
+                      key=lambda x: abs(x['word'].lower().find(
+                          complete_str, 0, input_len)))

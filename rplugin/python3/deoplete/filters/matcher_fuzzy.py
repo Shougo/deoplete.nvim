@@ -1,4 +1,4 @@
-#=============================================================================
+# ============================================================================
 # FILE: matcher_fuzzy.py
 # AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 # License: MIT license  {{{
@@ -21,12 +21,14 @@
 #     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 #     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
-#=============================================================================
+# ============================================================================
 
 import re
 from .base import Base
 
+
 class Filter(Base):
+
     def __init__(self, vim):
         Base.__init__(self, vim)
 
@@ -42,11 +44,11 @@ class Filter(Base):
         return [x for x in context['candidates']
                 if len(x['word']) > input_len and p.match(x['word'].lower())
                 ] if context['ignorecase'] \
-                  else [x for x in context['candidates']
-                        if len(x['word']) > input_len and p.match(x['word'])]
+            else [x for x in context['candidates']
+                  if len(x['word']) > input_len and p.match(x['word'])]
+
 
 def fuzzy_escape(string):
     # Escape string for python regexp.
     string = re.sub(r'([a-zA-Z0-9_])', r'\1.*', re.escape(string))
     return string
-

@@ -1,4 +1,4 @@
-#=============================================================================
+# ============================================================================
 # FILE: matcher_head.py
 # AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 # License: MIT license  {{{
@@ -21,11 +21,13 @@
 #     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 #     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
-#=============================================================================
+# ============================================================================
 
 from .base import Base
 
+
 class Filter(Base):
+
     def __init__(self, vim):
         Base.__init__(self, vim)
 
@@ -39,9 +41,8 @@ class Filter(Base):
         input_len = len(complete_str)
         return [x for x in context['candidates']
                 if len(x['word']) > input_len
-                   and x['word'].lower().startswith(complete_str)
+                and x['word'].lower().startswith(complete_str)
                 ] if context['ignorecase'] \
-                  else [x for x in context['candidates']
-                        if len(x['word']) > input_len
-                        and x['word'].startswith(complete_str)]
-
+            else [x for x in context['candidates']
+                  if len(x['word']) > input_len
+                  and x['word'].startswith(complete_str)]
