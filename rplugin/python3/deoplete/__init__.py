@@ -63,6 +63,10 @@ class DeopleteHandlers(object):
         var_context['candidates'] = candidates
         self.vim.vars['deoplete#_context'] = var_context
 
+        # Set (and store) current &completeopt setting.  This cannot be done
+        # (currently) from the deoplete_start_complete mapping's function.
+        self.vim.command(
+            'call deoplete#mappings#_set_completeopt()')
         # Note: cannot use vim.feedkeys()
         self.vim.command(
           'call feedkeys("\<Plug>(deoplete_start_complete)")')
