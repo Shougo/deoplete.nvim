@@ -1,6 +1,6 @@
 test: vim-themis
 	vim-themis/bin/themis --reporter spec test
-	run_tests.sh
+	./run_tests.sh
 
 # Use existing vim-themis install from ~/.vim, or clone it.
 vim-themis:
