@@ -1,7 +1,6 @@
 test: vim-themis
 	vim-themis/bin/themis --reporter spec test
-	pyflakes rplugin/
-	nosetests rplugin/python3/
+	run_tests.sh
 
 # Use existing vim-themis install from ~/.vim, or clone it.
 vim-themis:
