@@ -29,8 +29,6 @@ function! deoplete#mappings#_init() abort "{{{
 endfunction"}}}
 
 function! deoplete#mappings#_do_complete(context) abort "{{{
-  call deoplete#mappings#_set_completeopt()
-
   if b:changedtick == get(a:context, 'changedtick', -1)
     call complete(a:context.complete_position + 1, a:context.candidates)
   endif

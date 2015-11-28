@@ -51,8 +51,6 @@ function! s:completion_begin(event) abort "{{{
   " Save the previous position
   let g:deoplete#_context.position = context.position
 
-  call deoplete#mappings#_set_completeopt()
-
   " Call omni completion
   for filetype in context.filetypes
     for pattern in deoplete#util#convert2list(
@@ -63,6 +61,7 @@ function! s:completion_begin(event) abort "{{{
       if deoplete#util#is_eskk_convertion()
             \ || (pattern != '' && &l:omnifunc != ''
             \ && context.input =~# '\%('.pattern.'\)$')
+        call deoplete#mappings#_set_completeopt()
         call feedkeys("\<C-x>\<C-o>", 'n')
         return
       endif
