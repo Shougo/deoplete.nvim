@@ -27,12 +27,10 @@ function! deoplete#handlers#_init() abort "{{{
   augroup deoplete
     autocmd InsertLeave * call s:on_insert_leave()
     autocmd CompleteDone * call s:complete_done()
-  augroup END
 
-  for event in ['TextChangedI', 'InsertEnter']
-    execute 'autocmd deoplete' event '*'
-          \ 'call s:completion_begin("' . event . '")'
-  endfor
+    autocmd TextChangedI * call s:completion_begin("TextChangedI")
+    autocmd InsertEnter * call s:completion_begin("InsertEnter")
+  augroup END
 endfunction"}}}
 
 function! s:completion_begin(event) abort "{{{
