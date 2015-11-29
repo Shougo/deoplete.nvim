@@ -6,14 +6,13 @@
  * OS:
  * Neovim version:
 
-## Minimal init.vim less than 50 lines
+## Provide a minimal init.vim with less than 50 lines
 
-   " Your init.vim
-   set runtimepath+=~/path/to/deoplete.nvim/
+    " Your minimal.vimrc
+    set runtimepath+=~/path/to/deoplete.nvim/
+    let g:deoplete#enable_at_startup = 1
 
-  let g:deoplete#enable_at_startup = 1
-
-## Reproducable ways from Neovim starting
+## Generate a logfile if appropriate
 
  1. export NVIM_PYTHON_LOG_FILE=/tmp/log
  2. export NVIM_PYTHON_LOG_LEVEL=DEBUG
