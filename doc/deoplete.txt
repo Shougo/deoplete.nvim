@@ -123,7 +123,7 @@ g:deoplete#enable_smart_case
 		When a capital letter is included in input, deoplete does
 		not ignore the upper- and lowercase.
 
-		Default value is 'infercase'.
+		Default value is 'smartcase'.
 
 				*g:deoplete#auto_completion_start_length*
 g:deoplete#auto_completion_start_length
