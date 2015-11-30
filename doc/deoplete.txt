@@ -286,11 +286,11 @@ deoplete#mappings#manual_complete([{sources}])
 		custom completion setups.
 		You can provide a list of {sources}: It can be the name of a
 		source or a list of sources name.
->
+
 		If you want to trigger deoplete manually, see also
 		|g:deoplete#disable_auto_complete|, which should be 1 then
 		typically.
-
+>
 		inoremap <silent><expr> <Tab>
 		\ pumvisible() ? "\<C-n>" :
 		\ deoplete#mappings#manual_complete()
