@@ -133,7 +133,7 @@ function! deoplete#init#_variables() abort "{{{
   " Note: HTML omni func use search().
   call deoplete#util#set_pattern(
         \ g:deoplete#_omni_patterns,
-        \ 'html,xhtml,xml,markdown,mkd', ['<', '\s[[:alnum:]-]*'])
+        \ 'html,xhtml,xml,markdown,mkd', ['<', '<[^>]*\s[[:alnum:]-]*'])
   " Note: vim-go and vim-javacomplete2 moves cursor.
   call deoplete#util#set_pattern(
         \ g:deoplete#_omni_patterns,
