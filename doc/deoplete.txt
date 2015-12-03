@@ -309,6 +309,10 @@ deoplete#mappings#smart_close_popup()
 		plugins.
 		Note: This key mapping is for <C-h> or <BS> keymappings.
 
+					*deoplete#mappings#close_popup()*
+deoplete#mappings#close_popup()
+		Insert candidate and close popup menu for deoplete.
+
 ==============================================================================
 EXAMPLES					*deoplete-examples*
 >
@@ -324,7 +328,7 @@ EXAMPLES					*deoplete-examples*
 	" <CR>: close popup and save indent.
 	inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 	function! s:my_cr_function()
-	  return deoplete#mappings#smart_close_popup() . "\<CR>"
+	  return deoplete#mappings#close_popup() . "\<CR>"
 	endfunction
 <
 ==============================================================================
