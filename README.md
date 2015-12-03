@@ -6,8 +6,6 @@ provides an asynchronous keyword completion system in the
 current buffer.  Deoplete cannot be customized and doesn't currently have many
 features.  It is provided for testing purposes.
 
-**Note:** It is still an alpha version!  It is not for production use.
-
 ## Installation
 
 **Note:** deoplete requires Neovim(latest is recommended) with Python3 enabled.
