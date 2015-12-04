@@ -13,6 +13,7 @@ class Source(Base):
         self.name = 'jedi'
         self.mark = '[J]'
         self.filetypes = ['python']
+        self.min_pattern_length = 0
 
     def gather_candidates(self, context):
         util.debug(self.vim, 'Init deoplete jedi')
