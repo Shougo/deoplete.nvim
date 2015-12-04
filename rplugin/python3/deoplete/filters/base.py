@@ -26,6 +26,7 @@
 from abc import abstractmethod
 import deoplete.util
 
+
 class Base(object):
 
     def __init__(self, vim):
