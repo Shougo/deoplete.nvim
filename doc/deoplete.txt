@@ -261,8 +261,8 @@ deoplete#initialize()			*deoplete#initialize()*
 		User customization for deoplete must be set before
 		initialization of deoplete.
 
-deoplete#custom#source({source-name}, {option-name}, {value})
 						*deoplete#custom#source()*
+deoplete#custom#source({source-name}, {option-name}, {value})
 		Set {source-name} source specialized {option-name}
 		to {value}. You may specify multiple sources with
 		separating "," in {source-name}.
@@ -275,6 +275,8 @@ deoplete#custom#source({source-name}, {option-name}, {value})
 		" Disable auto completion in buffer source
 		call deoplete#custom#set('buffer',
 		\ 'min_pattern_length', 9999)
+		" Change the source rank
+		call deoplete#custom#set('buffer', 'rank', 9999)
 <
 ------------------------------------------------------------------------------
 KEY MAPPINGS 					*deoplete-key-mappings*

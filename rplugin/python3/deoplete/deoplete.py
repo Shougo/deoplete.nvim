@@ -100,16 +100,18 @@ class Deoplete(object):
     def gather_results(self, context):
         # sources = ['buffer', 'neosnippet']
         # sources = ['buffer']
-        sources = context['sources']
+        sources = sorted(self.sources.items(),
+                         key=lambda x: get_custom(self.vim, x[1].name).get(
+                             'rank', x[1].rank),
+                         reverse=True)
         results = []
         start_length = self.vim.eval(
             'g:deoplete#auto_completion_start_length')
-        for source_name, source in sorted(self.sources.items(),
-                                          key=lambda x: x[1].rank,
-                                          reverse=True):
-            if (sources and source_name not in sources
-                ) or (source.filetypes and
-                      not context['filetype'] in source.filetypes):
+        for source_name, source in sources:
+            if (context['sources']
+                    and source_name not in context['sources']
+                ) or (source.filetypes
+                      and context['filetype'] not in source.filetypes):
                 continue
             cont = copy.deepcopy(context)
             charpos = source.get_complete_position(cont)
