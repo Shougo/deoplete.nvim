@@ -25,18 +25,29 @@
 # ============================================================================
 
 import os
+import re
 from os.path import exists, dirname
-from glob import glob
 from .base import Base
 
 
-def longest_path_that_exists(input_str):
+def longest_path_that_exists(vim, input_str):
     data = input_str.split(' ')
     pos = [" ".join(data[i:]) for i in range(len(data))]
-    existing_paths = list(filter(lambda x: exists(dirname(x)), pos))
+    existing_paths = list(filter(lambda x: exists(
+        dirname(substitute_path(vim, x))), pos))
     if existing_paths and len(existing_paths) > 0:
         return sorted(existing_paths)[-1]
     return None
+
+
+def substitute_path(vim, path):
+    m = re.match(r'[.~]/', path)
+    if m:
+        return re.sub(r'^[.~]', vim.funcs.getcwd(), path)
+    m = re.match(r'\$([A-Z_]+)/', path)
+    if m and os.environ.get(m.group(1)):
+        return re.sub(r'^\$[A-Z_]+', os.environ.get(m.group(1)), path)
+    return path
 
 
 class Source(Base):
@@ -46,17 +57,24 @@ class Source(Base):
 
         self.name = 'file'
         self.mark = '[F]'
+        self.min_pattern_length = 0
 
     def get_complete_position(self, context):
-        p = longest_path_that_exists(context['input'])
-        if p not in (None, []):
-            return context['input'].find(p)
-        return -1
+        return context['input'].rfind('/') + 1
 
     def gather_candidates(self, context):
-        dirs = [x for x in glob(context['complete_str'] + '*')
-                if os.path.isdir(x)]
-        files = [x for x in glob(context['complete_str'] + '*')
-                 if not os.path.isdir(x)]
+        p = longest_path_that_exists(self.vim, context['input'])
+        if p in (None, []) or p == '/' or re.search('//+$', p):
+            return []
+        complete_str = substitute_path(self.vim, dirname(p) + '/')
+        if not os.path.isdir(complete_str):
+            return []
+        hidden = context['complete_str'].find('.') == 0
+        dirs = [x for x in os.listdir(complete_str)
+                if os.path.isdir(complete_str + x)
+                and (hidden or x[0] != '.')]
+        files = [x for x in os.listdir(complete_str)
+                 if not os.path.isdir(complete_str + x)
+                 and (hidden or x[0] != '.')]
         return [{'word': x, 'abbr': x + '/'} for x in sorted(dirs)
                 ] + [{'word': x} for x in sorted(files)]
