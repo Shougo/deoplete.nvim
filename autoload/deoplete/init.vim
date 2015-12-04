@@ -165,6 +165,9 @@ function! deoplete#init#_variables() abort "{{{
   " Initialize member prefix pattern. "{{{
   call deoplete#util#set_pattern(
         \ g:deoplete#member#_prefix_patterns,
+        \ '_', '\.')
+  call deoplete#util#set_pattern(
+        \ g:deoplete#member#_prefix_patterns,
         \ 'c,objc', ['\.', '->'])
   call deoplete#util#set_pattern(
         \ g:deoplete#member#_prefix_patterns,
@@ -172,10 +175,6 @@ function! deoplete#init#_variables() abort "{{{
   call deoplete#util#set_pattern(
         \ g:deoplete#member#_prefix_patterns,
         \ 'perl,php', ['->'])
-  call deoplete#util#set_pattern(
-        \ g:deoplete#member#_prefix_patterns,
-        \ 'cs,java,javascript,d,vim,ruby,python,perl6,scala,vb',
-        \ '\.')
   call deoplete#util#set_pattern(
         \ g:deoplete#member#_prefix_patterns,
         \ 'ruby', ['\.', '::'])
