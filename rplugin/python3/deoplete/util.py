@@ -63,8 +63,8 @@ def globruntime(vim, path):
     return vim.funcs.globpath(vim.eval('&runtimepath'), path, 1, 1)
 
 
-def debug(vim, msg):
-    vim.command('echomsg string(\'' + escape(json.dumps(msg)) + '\')')
+def debug(vim, expr):
+    vim.command('echomsg string(\'' + escape(json.dumps(expr)) + '\')')
 
 
 def error(vim, msg):
