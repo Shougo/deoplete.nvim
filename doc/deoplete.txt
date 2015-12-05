@@ -144,6 +144,12 @@ g:deoplete#disable_auto_complete
 b:deoplete_disable_auto_complete
 		Buffer local variable of |g:deoplete#disable_auto_complete|.
 
+				*g:deoplete#delimiters*
+g:deoplete#delimiters
+		Delimiters list.
+
+		Default value is ['/', '.', '::', ':', '#']
+
 				*g:deoplete#keyword_patterns*
 g:deoplete#keyword_patterns
 		This dictionary records keyword patterns to buffer completion.
@@ -268,7 +274,9 @@ deoplete#custom#source({source-name}, {option-name}, {value})
 		" Examples:
 		" Use head matcher instead of fuzzy matcher
 		call deoplete#custom#set('_', 'matchers', ['matcher_head'])
-		" Disable auto completion in buffer source
+		" Use auto delimiter feature
+		call deoplete#custom#set('_', 'converters',
+		\ ['converter_auto_delimiter', 'remove_overlap'])
 		call deoplete#custom#set('buffer',
 		\ 'min_pattern_length', 9999)
 		" Change the source rank
@@ -387,6 +395,10 @@ sorter_rank	Matched rank order sorter.  The higher the head matched word.
 				*deoplete-filter-converter_remove_overlap*
 converter_remove_overlap
 		It removes overlapped text in a candidate's word.
+
+				*deoplete-filter-converter_auto_delimiter*
+converter_auto_delimiter
+		It adds delimiter characters in a candidate's word.
 
 ==============================================================================
 CREATE SOURCE					*deoplete-create-source*

@@ -41,8 +41,12 @@ function! s:completion_begin(event) abort "{{{
     let deoplete#_skip_next_complete = 0
     return
   endif
-  if &paste || context.position ==#
+  if &paste || (context.position ==#
         \      get(g:deoplete#_context, 'position', [])
+        \      && (empty(v:completed_item)
+        \         || empty(filter(g:deoplete#delimiters,
+        \         'strridx(v:completed_item.word, v:val)
+        \          == (len(v:completed_item.word) - len(v:val))'))))
     return
   endif
 

@@ -36,7 +36,7 @@ from deoplete.util import \
 import deoplete.filters
 deoplete.filters  # silence pyflakes
 
-# from deoplete.util import debug
+from deoplete.util import debug
 
 
 class Deoplete(object):
