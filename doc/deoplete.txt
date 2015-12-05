@@ -116,21 +116,21 @@ g:deoplete#enable_ignore_case
 		variable controls whether deoplete ignores the upper-
 		and lowercase.  If it is 1, deoplete ignores case.
 
-		Default value is 'ignorecase'.
+		Default value: 'ignorecase'
 
 				*g:deoplete#enable_smart_case*
 g:deoplete#enable_smart_case
 		When a capital letter is included in input, deoplete does
 		not ignore the upper- and lowercase.
 
-		Default value is 'smartcase'.
+		Default value: 'smartcase'
 
 				*g:deoplete#auto_completion_start_length*
 g:deoplete#auto_completion_start_length
 		This variable controls the number of the input completion
 		at the time of key input automatically.
 
-		Default value is 2.
+		Default value: 2
 
 				*g:deoplete#disable_auto_complete*
 g:deoplete#disable_auto_complete
@@ -138,7 +138,7 @@ g:deoplete#disable_auto_complete
 		it is 1, automatic completion becomes invalid, but can use the
 		manual completion by |deoplete#mappings#manual_complete()|.
 
-		Default value is 0.
+		Default value: 0
 
 				*b:deoplete_disable_auto_complete*
 b:deoplete_disable_auto_complete
@@ -148,7 +148,7 @@ b:deoplete_disable_auto_complete
 g:deoplete#delimiters
 		Delimiters list.
 
-		Default value is ['/', '.', '::', ':', '#']
+		Default value: ['/', '.', '::', ':', '#']
 
 				*g:deoplete#keyword_patterns*
 g:deoplete#keyword_patterns
@@ -161,7 +161,7 @@ g:deoplete#keyword_patterns
 		let g:deoplete#keyword_patterns = {}
 		let g:deoplete#keyword_patterns.tex = '\\?[a-zA-Z_]\w*'
 <
-		Default value is in g:deoplete#_keyword_patterns.
+		Default value: in g:deoplete#_keyword_patterns
 
 				*b:deoplete_keyword_patterns*
 b:deoplete_keyword_patterns
@@ -183,7 +183,7 @@ g:deoplete#omni_patterns
 		\ ['[^. *\t]\.\w*', '\h\w*::']
 		let g:deoplete#omni_patterns.java = '[^. *\t]\.\w*'
 <
-		Default value is in g:deoplete#_omni_patterns.
+		Default value: in g:deoplete#_omni_patterns
 
 				*b:deoplete_omni_patterns*
 b:deoplete_omni_patterns
@@ -195,7 +195,8 @@ g:deoplete#sources		*g:deoplete#sources*
 		"_", the value will be used for default filetypes.  For
 		example, you can load some sources in C++ filetype.
 		If the value is [], it will load all sources.
-		Default value is {}.
+
+		Default value: {}
 >
 		" Examples:
 		let g:deoplete#sources = {}
@@ -211,7 +212,7 @@ b:deoplete_sources		*b:deoplete_sources*
 <
 g:deoplete#ignore_sources	*g:deoplete#ignore_sources*
 		It is a dictionary to decide ignore source names.
-		Default value is {}.
+		Default value: {}
 
 b:deoplete_ignore_sources	*b:deoplete_ignore_sources*
 		Buffer local variable of |g:deoplete#ignore_sources|.
@@ -225,7 +226,7 @@ g:deoplete#member#prefix_patterns
 		does not complete member candidates.
 		Note: It is Python3 regexp.
 
-		Default value is in g:deoplete#member#_prefix_patterns.
+		Default value: in g:deoplete#member#_prefix_patterns
 
 				*b:deoplete_member_prefix_patterns*
 b:deoplete_member_prefix_patterns
@@ -247,7 +248,7 @@ g:deoplete#omni#input_patterns
 		\ ['[^. *\t]\.\w*', '[a-zA-Z_]\w*::']
 		let g:deoplete#omni#input_patterns.java = '[^. *\t]\.\w*'
 <
-		Default value is in g:deoplete#omni#_input_patterns.
+		Default value: in g:deoplete#omni#_input_patterns
 
 				*b:deoplete_omni_input_patterns*
 b:deoplete_omni_input_patterns
