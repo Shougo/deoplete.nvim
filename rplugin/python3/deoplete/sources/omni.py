@@ -40,7 +40,14 @@ class Source(Base):
         self.is_bytepos = True
         self.min_pattern_length = 0
 
+        self.source__prev_pos = -1
+        self.source__prev_line = ''
+        self.source__prev_candidates = []
+
     def get_complete_position(self, context):
+        if self.source__use_previous_result(context):
+            return self.source__prev_pos
+
         # Check member prefix pattern.
         if self.vim.eval('&l:omnifunc') == '':
             return -1
@@ -67,6 +74,9 @@ class Source(Base):
         return -1
 
     def gather_candidates(self, context):
+        if self.source__use_previous_result(context):
+            return self.source__prev_candidates
+
         try:
             candidates = self.vim.call(
                 self.vim.eval('&l:omnifunc'), 0, context['complete_str'])
@@ -75,5 +85,15 @@ class Source(Base):
                   + self.vim.eval('&l:omnifunc'))
 
             candidates = []
+        self.source__prev_pos = context['complete_position']
+        self.source__prev_line = self.vim.current.buffer[
+            self.vim.current.window.cursor[0] - 1]
+        self.source__prev_candidates = candidates
 
         return candidates
+
+    def source__use_previous_result(self, context):
+        return (re.sub(r'\w+$', '', context['input']) ==
+                re.sub(r'\w+$', '', self.source__prev_line)
+                and context['input'].find(self.source__prev_line) == 0
+                and self.source__prev_candidates)
