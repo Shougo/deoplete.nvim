@@ -54,7 +54,8 @@ class Source(Base):
                 with open(filename, 'r', errors='replace') as f:
                     new_candidates = parse_tags(f)
                     candidates += new_candidates
-                self.source__cache[filename] = TagsCacheItem(mtime, new_candidates)
+                self.source__cache[filename] = TagsCacheItem(
+                    mtime, new_candidates)
             else:
                 candidates += self.source__cache[filename].candidates
         return [{'word': x} for x in candidates]

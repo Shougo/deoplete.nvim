@@ -52,7 +52,8 @@ class Source(Base):
                     new_candidates = parse_dictionary(
                         f, context['keyword_patterns'])
                     candidates += new_candidates
-                self.source__cache[filename] = DictCacheItem(mtime, new_candidates)
+                self.source__cache[filename] = DictCacheItem(
+                    mtime, new_candidates)
             else:
                 candidates += self.source__cache[filename].candidates
         return [{'word': x} for x in candidates]
