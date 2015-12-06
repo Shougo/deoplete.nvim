@@ -48,8 +48,8 @@ class Source(Base):
         if self.source__use_previous_result(context):
             return self.source__prev_pos
 
-        # Check member prefix pattern.
-        if self.vim.eval('&l:omnifunc') == '':
+        omnifunc = self.vim.eval('&l:omnifunc')
+        if omnifunc == '' or omnifunc == 'ccomplete#Complete':
             return -1
         for input_pattern in convert2list(
             get_default_buffer_config(
@@ -63,11 +63,10 @@ class Source(Base):
                 continue
 
             try:
-                complete_pos = self.vim.call(
-                    self.vim.eval('&l:omnifunc'), 1, '')
+                complete_pos = self.vim.call(omnifunc, 1, '')
             except:
                 error(self.vim, 'Error occurred calling omnifunction: '
-                      + self.vim.eval('&l:omnifunc'))
+                      + omnifunc)
 
                 return -1
             return complete_pos
@@ -77,12 +76,13 @@ class Source(Base):
         if self.source__use_previous_result(context):
             return self.source__prev_candidates
 
+        omnifunc = self.vim.eval('&l:omnifunc')
         try:
             candidates = self.vim.call(
-                self.vim.eval('&l:omnifunc'), 0, context['complete_str'])
+                omnifunc, 0, context['complete_str'])
         except:
             error(self.vim, 'Error occurred calling omnifunction: '
-                  + self.vim.eval('&l:omnifunc'))
+                  + omnifunc)
 
             candidates = []
         self.source__prev_pos = context['complete_position']

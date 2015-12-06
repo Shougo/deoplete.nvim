@@ -134,18 +134,17 @@ function! deoplete#init#_variables() abort "{{{
   call deoplete#util#set_pattern(
         \ g:deoplete#_omni_patterns,
         \ 'html,xhtml,xml,markdown,mkd', ['<', '<[^>]*\s[[:alnum:]-]*'])
-  " Note: vim-go and vim-javacomplete2 moves cursor.
+
   call deoplete#util#set_pattern(
-        \ g:deoplete#_omni_patterns,
-        \ 'go,java', ['[^. \t0-9]\.\w*'])
-  call deoplete#util#set_pattern(
-        \ g:deoplete#_omni_patterns,
+        \ g:deoplete#omni#input_patterns,
         \ 'c', ['[^. \t0-9]\.\w*', '[^. \t0-9]->\w*'])
   call deoplete#util#set_pattern(
-        \ g:deoplete#_omni_patterns,
+        \ g:deoplete#omni#input_patterns,
         \ 'cpp', ['[^. \t0-9]\.\w*', '[^. \t0-9]->\w*',
         \         '[a-zA-Z_]\w*::\w*'])
-
+  call deoplete#util#set_pattern(
+        \ g:deoplete#omni#input_patterns,
+        \ 'go,java', ['[^. \t0-9]\.\w*'])
   call deoplete#util#set_pattern(
         \ g:deoplete#omni#_input_patterns,
         \ 'javascript', ['[^. \t0-9]\.([a-zA-Z_]\w*)?'])
