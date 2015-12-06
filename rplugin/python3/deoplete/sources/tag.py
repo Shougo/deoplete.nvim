@@ -40,7 +40,7 @@ class Source(Base):
         self.name = 'tag'
         self.mark = '[T]'
 
-        self.cache = {}
+        self.source__cache = {}
 
     def gather_candidates(self, context):
         candidates = []
@@ -49,14 +49,14 @@ class Source(Base):
                 + ' neoinclude#include#get_tag_files() : []), '
                 + '"fnamemodify(v:val, \\":p\\")")') if exists(x)]:
             mtime = getmtime(filename)
-            if filename not in self.cache or self.cache[
+            if filename not in self.source__cache or self.source__cache[
                     filename].mtime != mtime:
                 with open(filename, 'r', errors='replace') as f:
                     new_candidates = parse_tags(f)
                     candidates += new_candidates
-                self.cache[filename] = TagsCacheItem(mtime, new_candidates)
+                self.source__cache[filename] = TagsCacheItem(mtime, new_candidates)
             else:
-                candidates += self.cache[filename].candidates
+                candidates += self.source__cache[filename].candidates
         return [{'word': x} for x in candidates]
 
 

@@ -36,22 +36,22 @@ class Source(Base):
 
         self.name = 'buffer'
         self.mark = '[B]'
-        self.buffers = {}
+        self.source__buffers = {}
         self.source__max_lines = 5000
 
     def gather_candidates(self, context):
         p = re.compile(context['keyword_patterns'])
 
-        if (self.vim.current.buffer.number in self.buffers) and len(
+        if (self.vim.current.buffer.number in self.source__buffers) and len(
                 self.vim.current.buffer) > self.source__max_lines:
             line = self.vim.current.window.cursor[0]
-            self.buffers[self.vim.current.buffer.number][
+            self.source__buffers[self.vim.current.buffer.number][
                 'candidates'] += functools.reduce(operator.add, [
                     p.findall(x) for x in self.vim.current.buffer[
                         max([0, line - 500]): line + 500]
                 ])
         else:
-            self.buffers[self.vim.current.buffer.number] = {
+            self.source__buffers[self.vim.current.buffer.number] = {
                 'filetype': context['filetype'],
                 'candidates': functools.reduce(operator.add, [
                     p.findall(x) for x in self.vim.current.buffer
@@ -60,5 +60,5 @@ class Source(Base):
 
         return [{'word': x} for x in
                 functools.reduce(operator.add, [
-                    x['candidates'] for x in self.buffers.values()
+                    x['candidates'] for x in self.source__buffers.values()
                     if x['filetype'] in context['filetypes']])]

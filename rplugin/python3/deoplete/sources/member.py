@@ -38,7 +38,7 @@ class Source(Base):
 
         self.name = 'member'
         self.mark = '[M]'
-        self.buffers = {}
+        self.source__buffers = {}
         self.min_pattern_length = 0
 
         # Initialize member object pattern

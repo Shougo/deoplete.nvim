@@ -39,22 +39,22 @@ class Source(Base):
         self.name = 'dictionary'
         self.mark = '[D]'
 
-        self.cache = {}
+        self.source__cache = {}
 
     def gather_candidates(self, context):
         candidates = []
         for filename in [x for x in get_dictionaries(
                 self.vim, context['filetype']) if exists(x)]:
             mtime = getmtime(filename)
-            if filename not in self.cache or self.cache[
+            if filename not in self.source__cache or self.source__cache[
                     filename].mtime != mtime:
                 with open(filename, 'r', errors='replace') as f:
                     new_candidates = parse_dictionary(
                         f, context['keyword_patterns'])
                     candidates += new_candidates
-                self.cache[filename] = DictCacheItem(mtime, new_candidates)
+                self.source__cache[filename] = DictCacheItem(mtime, new_candidates)
             else:
-                candidates += self.cache[filename].candidates
+                candidates += self.source__cache[filename].candidates
         return [{'word': x} for x in candidates]
 
 
