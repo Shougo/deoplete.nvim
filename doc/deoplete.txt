@@ -564,6 +564,36 @@ CREATE FILTER					*deoplete-create-filter*
 ==============================================================================
 EXTERNAL SOURCES				*deoplete-external-sources*
 
+neco-vim: vim source
+https://github.com/Shougo/neco-vim
+
+neosnippet: neosnippet source
+https://github.com/Shougo/neosnippet.vim
+
+neoinclude: include and file/include sources
+https://github.com/Shougo/neoinclude.vim
+
+neco-syntax: syntax source
+https://github.com/Shougo/neco-syntax
+
+vimshell: vimshell source
+https://github.com/Shougo/vimshell.vim
+
+neco-ghc: ghc source
+https://github.com/eagletmt/neco-ghc
+
+vim-racer: racer source
+https://github.com/racer-rust/vim-racer
+
+UltiSnips source: ultisnips source
+https://github.com/SirVer/ultisnips
+
+clang-complete: clang_complete source
+https://github.com/Rip-Rip/clang_complete
+
+deoplete-go: go source
+https://github.com/zchee/deoplete-go
+
 ==============================================================================
 FAQ						*deoplete-faq*
 
