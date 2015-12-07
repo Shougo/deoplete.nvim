@@ -60,7 +60,8 @@ class Source(Base):
         self.min_pattern_length = 0
 
     def get_complete_position(self, context):
-        return context['input'].rfind('/') + 1
+        pos = context['input'].rfind('/')
+        return pos if pos < 0 else pos + 1
 
     def gather_candidates(self, context):
         p = longest_path_that_exists(self.vim, context['input'])
