@@ -106,6 +106,12 @@ function! deoplete#util#get_next_input(event) abort "{{{
 endfunction"}}}
 
 function! deoplete#util#vimoption2python(option) abort "{{{
+  return '[a-zA-Z' . s:vimoption2python(a:option) . ']'
+endfunction"}}}
+function! deoplete#util#vimoption2python_not(option) abort "{{{
+  return '[^a-zA-Z' . s:vimoption2python(a:option) . ']'
+endfunction"}}}
+function! s:vimoption2python(option) abort "{{{
   let has_dash = 0
   let patterns = []
   for pattern in split(a:option, ',')
@@ -127,7 +133,7 @@ function! deoplete#util#vimoption2python(option) abort "{{{
     call add(patterns, '-')
   endif
 
-  return '[a-zA-Z' . join(deoplete#util#uniq(patterns), '') . ']'
+  return join(deoplete#util#uniq(patterns), '')
 endfunction"}}}
 
 function! deoplete#util#uniq(list) "{{{
