@@ -67,8 +67,7 @@ class DeopleteHandlers(object):
 
         # Set (and store) current &completeopt setting.  This cannot be done
         # (currently) from the deoplete_start_complete mapping's function.
-        self.vim.command(
-            'call deoplete#mappings#_set_completeopt()')
+        self.vim.call('deoplete#mappings#_set_completeopt')
         # Note: cannot use vim.feedkeys()
         self.vim.command(
             'call feedkeys("\<Plug>(deoplete_start_complete)")')
