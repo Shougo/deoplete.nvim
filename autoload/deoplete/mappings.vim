@@ -51,9 +51,13 @@ endfunction"}}}
 function! deoplete#mappings#manual_complete(...) abort "{{{
   " Start complete.
   return pumvisible() ? '' :
-        \ "\<C-o>:call rpcnotify(g:deoplete#_channel_id, 'completion_begin',
-        \  deoplete#init#_context(
-        \    'Manual'," . string(get(a:000, 0, [])) . "))\<CR>"
+        \ "\<C-r>=deoplete#mappings#_rpcnotify_wrapper("
+        \ . string(get(a:000, 0, [])) . ")\<CR>"
+endfunction"}}}
+function! deoplete#mappings#_rpcnotify_wrapper(sources) abort "{{{
+  call rpcnotify(g:deoplete#_channel_id, 'completion_begin',
+        \  deoplete#init#_context('Manual', a:sources))
+  return ''
 endfunction"}}}
 
 function! deoplete#mappings#close_popup() "{{{
