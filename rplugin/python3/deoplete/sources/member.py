@@ -42,7 +42,8 @@ class Source(Base):
         self.min_pattern_length = 0
 
         # Initialize member object pattern
-        self.object_pattern = r'[a-zA-Z_]\w*(?:\(\)?)?'
+        self.__object_pattern = r'[a-zA-Z_]\w*(?:\(\)?)?'
+        self.__prefix = ''
 
     def get_complete_position(self, context):
         # Check member prefix pattern.
@@ -52,16 +53,16 @@ class Source(Base):
                     'b:deoplete_member_prefix_patterns',
                     'g:deoplete#member#prefix_patterns',
                     'g:deoplete#member#_prefix_patterns')):
-            m = re.search(self.object_pattern + prefix_pattern + r'\w*$',
+            m = re.search(self.__object_pattern + prefix_pattern + r'\w*$',
                           context['input'])
             if m is None or prefix_pattern == '':
                 continue
-            self.prefix = re.sub(r'\w*$', '', m.group(0))
+            self.__prefix = re.sub(r'\w*$', '', m.group(0))
             return re.search(r'\w*$', context['input']).start()
         return -1
 
     def gather_candidates(self, context):
-        p = re.compile(r'(?<=' + re.escape(self.prefix) + r')\w+(?:\(\)?)?')
+        p = re.compile(r'(?<=' + re.escape(self.__prefix) + r')\w+(?:\(\)?)?')
 
         return [{'word': x} for x in
                 functools.reduce(operator.add, [
