@@ -40,13 +40,13 @@ class Source(Base):
         self.is_bytepos = True
         self.min_pattern_length = 0
 
-        self.source__prev_pos = -1
-        self.source__prev_line = ''
-        self.source__prev_candidates = []
+        self.__prev_pos = -1
+        self.__prev_line = ''
+        self.__prev_candidates = []
 
     def get_complete_position(self, context):
-        if self.source__use_previous_result(context):
-            return self.source__prev_pos
+        if self.__use_previous_result(context):
+            return self.__prev_pos
 
         omnifunc = self.vim.eval('&l:omnifunc')
         if omnifunc == '' or omnifunc == 'ccomplete#Complete':
@@ -73,8 +73,8 @@ class Source(Base):
         return -1
 
     def gather_candidates(self, context):
-        if self.source__use_previous_result(context):
-            return self.source__prev_candidates
+        if self.__use_previous_result(context):
+            return self.__prev_candidates
 
         omnifunc = self.vim.eval('&l:omnifunc')
         try:
@@ -85,15 +85,15 @@ class Source(Base):
                   + omnifunc)
 
             candidates = []
-        self.source__prev_pos = context['complete_position']
-        self.source__prev_line = self.vim.current.buffer[
+        self.__prev_pos = context['complete_position']
+        self.__prev_line = self.vim.current.buffer[
             self.vim.current.window.cursor[0] - 1]
-        self.source__prev_candidates = candidates
+        self.__prev_candidates = candidates
 
         return candidates
 
-    def source__use_previous_result(self, context):
+    def __use_previous_result(self, context):
         return (re.sub(r'\w+$', '', context['input']) ==
-                re.sub(r'\w+$', '', self.source__prev_line)
-                and context['input'].find(self.source__prev_line) == 0
-                and self.source__prev_candidates)
+                re.sub(r'\w+$', '', self.__prev_line)
+                and context['input'].find(self.__prev_line) == 0
+                and self.__prev_candidates)

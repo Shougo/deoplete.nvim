@@ -503,8 +503,8 @@ gather_candidates	Function	(Required)
 			Here, {context} is the context information when the
 			source is called(|deoplete-notation-{context}|).
 
-			*deoplete-source-attribute-source__*
-source__{name}		(Unknown)	(Optional)
+			*deoplete-source-attribute-__*
+__{name}		(Unknown)	(Optional)
 			Additional source information.
 			Note: Recommend sources save variables instead of
 			global variables.

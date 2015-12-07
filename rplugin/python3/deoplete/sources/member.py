@@ -38,10 +38,8 @@ class Source(Base):
 
         self.name = 'member'
         self.mark = '[M]'
-        self.source__buffers = {}
         self.min_pattern_length = 0
 
-        # Initialize member object pattern
         self.__object_pattern = r'[a-zA-Z_]\w*(?:\(\)?)?'
         self.__prefix = ''
 
