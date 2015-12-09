@@ -72,9 +72,12 @@ class Source(Base):
         return None
 
     def __substitute_path(self, path):
-        m = re.match(r'[.~]/', path)
+        m = re.match(r'\./', path)
         if m:
-            return re.sub(r'^[.~]', self.vim.funcs.getcwd(), path)
+            return re.sub(r'^\.', self.vim.funcs.getcwd(), path)
+        m = re.match(r'~/', path)
+        if m and os.environ.get('HOME'):
+            return re.sub(r'^~', os.environ.get('HOME'), path)
         m = re.match(r'\$([A-Z_]+)/', path)
         if m and os.environ.get(m.group(1)):
             return re.sub(r'^\$[A-Z_]+', os.environ.get(m.group(1)), path)
