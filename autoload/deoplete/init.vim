@@ -136,14 +136,14 @@ function! deoplete#init#_variables() abort "{{{
         \ 'html,xhtml,xml,markdown,mkd', ['<', '<[^>]*\s[[:alnum:]-]*'])
 
   call deoplete#util#set_pattern(
-        \ g:deoplete#omni#input_patterns,
+        \ g:deoplete#omni#_input_patterns,
         \ 'c', ['[^. \t0-9]\.\w*', '[^. \t0-9]->\w*'])
   call deoplete#util#set_pattern(
-        \ g:deoplete#omni#input_patterns,
+        \ g:deoplete#omni#_input_patterns,
         \ 'cpp', ['[^. \t0-9]\.\w*', '[^. \t0-9]->\w*',
         \         '[a-zA-Z_]\w*::\w*'])
   call deoplete#util#set_pattern(
-        \ g:deoplete#omni#input_patterns,
+        \ g:deoplete#omni#_input_patterns,
         \ 'go,java', ['[^. \t0-9]\.\w*'])
   call deoplete#util#set_pattern(
         \ g:deoplete#omni#_input_patterns,
