@@ -120,7 +120,7 @@ function! deoplete#init#_variables() abort "{{{
   call deoplete#util#set_default(
         \ 'g:deoplete#omni#functions', {})
   call deoplete#util#set_default(
-        \ 'g:deoplete#omni#_functions', { '_' : '' })
+        \ 'g:deoplete#omni#_functions', { '_': '' })
   call deoplete#util#set_default(
         \ 'g:deoplete#member#prefix_patterns', {})
   call deoplete#util#set_default(
