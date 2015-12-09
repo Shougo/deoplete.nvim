@@ -244,6 +244,17 @@ g:deoplete#omni#input_patterns
 b:deoplete_omni_input_patterns
 		Buffer local variable of |g:deoplete#omni#input_patterns|.
 
+				*g:deoplete#omni#functions*
+g:deoplete#omni#functions
+		This dictionary records the functions to Omni completion.
+		This is the omnifunc name list every file type.
+		If this pattern is not defined or empty pattern, deoplete use
+		'omnifunc'.
+
+				*b:deoplete_omni_functions*
+b:deoplete_omni_functions
+		Buffer local variable of |g:deoplete#omni#functions|.
+
 ------------------------------------------------------------------------------
 FUNCTIONS 					*deoplete-functions*
 

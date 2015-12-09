@@ -48,7 +48,12 @@ class Source(Base):
         if self.__use_previous_result(context):
             return self.__prev_pos
 
-        omnifunc = self.vim.eval('&l:omnifunc')
+        omnifunc = get_buffer_config(self.vim, context,
+                              'b:deoplete_omni_functions',
+                              'g:deoplete#omni#functions',
+                              'g:deoplete#omni#_functions')
+        if omnifunc == '':
+            omnifunc = self.vim.eval('&l:omnifunc')
         if omnifunc == '' or omnifunc == 'ccomplete#Complete':
             return -1
         for input_pattern in convert2list(
@@ -75,7 +80,12 @@ class Source(Base):
         if self.__use_previous_result(context):
             return self.__prev_candidates
 
-        omnifunc = self.vim.eval('&l:omnifunc')
+        omnifunc = get_buffer_config(self.vim, context,
+                              'b:deoplete_omni_functions',
+                              'g:deoplete#omni#functions',
+                              'g:deoplete#omni#_functions')
+        if omnifunc == '':
+            omnifunc = self.vim.eval('&l:omnifunc')
         try:
             candidates = self.vim.call(
                 omnifunc, 0, context['complete_str'])
