@@ -39,6 +39,7 @@ Create source		|deoplete-create-source|
 Create filter		|deoplete-create-filter|
 FILTERS			|deoplete-filters|
 External sources	|deoplete-external-sources|
+External plugins	|deoplete-external-plugins|
 FAQ			|deoplete-faq|
 
 ==============================================================================
@@ -78,17 +79,6 @@ You can enable Python3 interface with pip: >
 
 If you want to read for Neovim-python/python3 interface install documentation,
 you should read |nvim-python|.
-
-						*deoplete-context-filetype*
-
-If you like to use the context filetype feature, you need to install the
-context_filetype.vim plugin which you can find under the following repository:
-https://github.com/Shougo/context_filetype.vim
-
-						*deoplete-neopairs*
-
-If you want to insert the parentheses pairs automatically, you need to install
-the neopairs plugin (https://github.com/Shougo/neopairs.vim).
 
 ==============================================================================
 INTERFACE					*deoplete-interface*
@@ -593,6 +583,31 @@ https://github.com/Rip-Rip/clang_complete
 
 deoplete-go: go source
 https://github.com/zchee/deoplete-go
+
+==============================================================================
+EXTERNAL PLUGINS				*deoplete-external-plugins*
+
+These are my recommended plugins for deoplete.
+
+context_filetype.vim:
+It adds the context filetype feature.
+https://github.com/Shougo/context_filetype.vim
+
+neopairs.vim:
+It inserts the parentheses pairs automatically.
+https://github.com/Shougo/neopairs.vim
+
+echodoc.vim:
+It prints the documentation you have completed.
+https://github.com/Shougo/echodoc.vim
+
+neoinclude.vim:
+You can completes the candidates from the included files and included path.
+https://github.com/Shougo/neoinclude.vim
+
+FastFold:
+Speed up the updating folds when you use auto completion plugins.
+https://github.com/Konfekt/FastFold
 
 ==============================================================================
 FAQ						*deoplete-faq*
