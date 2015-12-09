@@ -250,6 +250,9 @@ g:deoplete#omni#functions
 		This is the omnifunc name list every file type.
 		If this pattern is not defined or empty pattern, deoplete use
 		'omnifunc'.
+		Note: It supports context filetype feature instead of
+		'omnifunc'.  You can call the omnifunc in the embedded
+		language.
 
 				*b:deoplete_omni_functions*
 b:deoplete_omni_functions
