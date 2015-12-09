@@ -49,9 +49,9 @@ class Source(Base):
             return self.__prev_pos
 
         omnifunc = get_buffer_config(self.vim, context,
-                              'b:deoplete_omni_functions',
-                              'g:deoplete#omni#functions',
-                              'g:deoplete#omni#_functions')
+                                     'b:deoplete_omni_functions',
+                                     'g:deoplete#omni#functions',
+                                     'g:deoplete#omni#_functions')
         if omnifunc == '':
             omnifunc = self.vim.eval('&l:omnifunc')
         if omnifunc == '' or omnifunc == 'ccomplete#Complete':
@@ -81,9 +81,9 @@ class Source(Base):
             return self.__prev_candidates
 
         omnifunc = get_buffer_config(self.vim, context,
-                              'b:deoplete_omni_functions',
-                              'g:deoplete#omni#functions',
-                              'g:deoplete#omni#_functions')
+                                     'b:deoplete_omni_functions',
+                                     'g:deoplete#omni#functions',
+                                     'g:deoplete#omni#_functions')
         if omnifunc == '':
             omnifunc = self.vim.eval('&l:omnifunc')
         try:
