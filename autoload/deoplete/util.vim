@@ -52,15 +52,6 @@ function! deoplete#util#get_buffer_config(
   return get({a:user_var}, filetype,
         \   get(eval(a:default_var), filetype, default_val))
 endfunction"}}}
-function! deoplete#util#get_default_buffer_config(
-      \ filetype, buffer_var, user_var, default_var, ...) "{{{
-  let default_val = get(a:000, 0, '')
-  return (exists(a:buffer_var) || has_key({a:user_var}, a:filetype)) ?
-        \ deoplete#util#get_buffer_config(
-        \  a:filetype, a:buffer_var, a:user_var, a:default_var, default_val) :
-        \ deoplete#util#get_buffer_config(
-        \  a:filetype, a:buffer_var, a:user_var, a:default_var, default_val)
-endfunction"}}}
 function! deoplete#util#get_simple_buffer_config(buffer_var, user_var) "{{{
   return exists(a:buffer_var) ? {a:buffer_var} : {a:user_var}
 endfunction"}}}

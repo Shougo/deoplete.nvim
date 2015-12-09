@@ -200,7 +200,7 @@ function! deoplete#init#_context(event, sources) abort "{{{
   endif
 
   let keyword_patterns = join(deoplete#util#convert2list(
-        \   deoplete#util#get_default_buffer_config(
+        \   deoplete#util#get_buffer_config(
         \   filetype, 'b:deoplete_keyword_patterns',
         \   'g:deoplete#keyword_patterns',
         \   'g:deoplete#_keyword_patterns')), '|')
@@ -228,12 +228,12 @@ function! deoplete#init#_context(event, sources) abort "{{{
 endfunction"}}}
 
 function! s:get_sources(filetype) abort "{{{
-  let sources = deoplete#util#get_default_buffer_config(
+  let sources = deoplete#util#get_buffer_config(
         \ a:filetype,
         \ 'b:deoplete_sources',
         \ 'g:deoplete#sources',
         \ '{}', [])
-  let ignore_sources = deoplete#util#get_default_buffer_config(
+  let ignore_sources = deoplete#util#get_buffer_config(
         \ a:filetype,
         \ 'b:deoplete_ignore_sources', 'g:deoplete#ignore_sources',
         \ '{}', [])

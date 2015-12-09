@@ -27,7 +27,7 @@ import re
 import operator
 import functools
 from deoplete.util import \
-    get_default_buffer_config, convert2list
+    get_buffer_config, convert2list
 from .base import Base
 
 
@@ -46,11 +46,10 @@ class Source(Base):
     def get_complete_position(self, context):
         # Check member prefix pattern.
         for prefix_pattern in convert2list(
-                get_default_buffer_config(
-                    self.vim, context,
-                    'b:deoplete_member_prefix_patterns',
-                    'g:deoplete#member#prefix_patterns',
-                    'g:deoplete#member#_prefix_patterns')):
+                get_buffer_config(self.vim, context,
+                                  'b:deoplete_member_prefix_patterns',
+                                  'g:deoplete#member#prefix_patterns',
+                                  'g:deoplete#member#_prefix_patterns')):
             m = re.search(self.__object_pattern + prefix_pattern + r'\w*$',
                           context['input'])
             if m is None or prefix_pattern == '':

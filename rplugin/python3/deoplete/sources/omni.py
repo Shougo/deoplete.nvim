@@ -26,7 +26,7 @@
 import re
 from .base import Base
 from deoplete.util import \
-    get_default_buffer_config, error, convert2list
+    get_buffer_config, error, convert2list
 
 
 class Source(Base):
@@ -52,11 +52,10 @@ class Source(Base):
         if omnifunc == '' or omnifunc == 'ccomplete#Complete':
             return -1
         for input_pattern in convert2list(
-            get_default_buffer_config(
-                self.vim, context,
-                'b:deoplete_omni_input_patterns',
-                'g:deoplete#omni#input_patterns',
-                'g:deoplete#omni#_input_patterns')):
+            get_buffer_config(self.vim, context,
+                              'b:deoplete_omni_input_patterns',
+                              'g:deoplete#omni#input_patterns',
+                              'g:deoplete#omni#_input_patterns')):
 
             m = re.search('(' + input_pattern + ')$', context['input'])
             if m is None or input_pattern == '':

@@ -32,12 +32,6 @@ def get_buffer_config(vim, context, buffer_var, user_var, default_var):
                     buffer_var, user_var, default_var)
 
 
-def get_default_buffer_config(vim, context, buffer_var, user_var, default_var):
-    return vim.call('deoplete#util#get_default_buffer_config',
-                    context['filetype'],
-                    buffer_var, user_var, default_var)
-
-
 def get_simple_buffer_config(vim, buffer_var, user_var):
     return vim.call('deoplete#util#get_simple_buffer_config',
                     buffer_var, user_var)
