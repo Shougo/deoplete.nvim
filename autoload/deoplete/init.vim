@@ -163,6 +163,9 @@ function! deoplete#init#_variables() abort "{{{
   call deoplete#util#set_pattern(
         \ g:deoplete#omni#_input_patterns,
         \ 'ruby', ['[^. \t0-9]\.\w*', '[a-zA-Z_]\w*::\w*'])
+  call deoplete#util#set_pattern(
+        \ g:deoplete#omni#_input_patterns,
+        \ 'lua', ['\w+[.:]', 'require\s*\(?["'']\w*'])
   "}}}
 
   " Initialize member prefix pattern. "{{{
