@@ -43,7 +43,7 @@ function! deoplete#util#get_buffer_config(
   let default_val = get(a:000, 0, '')
 
   if exists(a:buffer_var)
-    return a:buffer_var
+    return {a:buffer_var}
   endif
 
   let filetype = !has_key({a:user_var}, a:filetype)
@@ -62,7 +62,7 @@ function! deoplete#util#get_default_buffer_config(
         \  a:filetype, a:buffer_var, a:user_var, a:default_var, default_val)
 endfunction"}}}
 function! deoplete#util#get_simple_buffer_config(buffer_var, user_var) "{{{
-  return exists(a:buffer_var) ? a:buffer_var : {a:user_var}
+  return exists(a:buffer_var) ? {a:buffer_var} : {a:user_var}
 endfunction"}}}
 function! deoplete#util#print_error(string) "{{{
   echohl Error | echomsg '[deoplete] ' . a:string | echohl None
