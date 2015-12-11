@@ -48,7 +48,7 @@ INTRODUCTION					*deoplete-introduction*
 *deoplete* is the abbreviation of "dark powered neo-completion".  It
 provides asynchronous keyword completion system in the
 current buffer.  Deoplete cannot be customized and has not many
-features currently.  It is provided for testing purpose.
+features currently.
 
 Note: deoplete may consume more memory than other plugins do.
 
