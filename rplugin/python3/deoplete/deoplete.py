@@ -35,8 +35,7 @@ from deoplete.util import \
     bytepos2charpos, get_custom
 import deoplete.filters
 deoplete.filters  # silence pyflakes
-
-# from deoplete.util import debug
+import deoplete.util
 
 
 class Deoplete(object):
@@ -46,6 +45,9 @@ class Deoplete(object):
         self.filters = {}
         self.sources = {}
         self.runtimepath = ''
+
+    def debug(self, expr):
+        deoplete.util.debug(self.vim, expr)
 
     def load_sources(self):
         # Load sources from runtimepath
@@ -59,7 +61,7 @@ class Deoplete(object):
                 'deoplete.sources.' + name, path).load_module()
             if hasattr(source, 'Source') and name not in self.sources:
                 self.sources[name] = source.Source(self.vim)
-        # debug(self.vim, self.sources)
+        # self.debug(self.sources)
 
     def load_filters(self):
         # Load filters from runtimepath
@@ -73,7 +75,7 @@ class Deoplete(object):
                 'deoplete.filters.' + name, path).load_module()
             if hasattr(filter, 'Filter') and name not in self.filters:
                 self.filters[name] = filter.Filter(self.vim)
-        # debug(self.vim, self.filters)
+        # self.debug(self.filters)
 
     def gather_candidates(self, context):
         # Skip completion
@@ -92,7 +94,7 @@ class Deoplete(object):
             self.load_filters()
             self.runtimepath = self.vim.eval('&runtimepath')
 
-        # debug(self.vim, context)
+        # self.debug(context)
 
         results = self.gather_results(context)
         return self.merge_results(results)
@@ -121,12 +123,12 @@ class Deoplete(object):
             cont['complete_str'] = cont['input'][charpos:]
             cont['complete_position'] = charpos2bytepos(
                 self.vim, cont['input'], charpos)
-            # debug(self.vim, source.rank)
-            # debug(self.vim, source_name)
-            # debug(self.vim, cont['input'])
-            # debug(self.vim, charpos)
-            # debug(self.vim, cont['complete_position'])
-            # debug(self.vim, cont['complete_str'])
+            # self.debug(source.rank)
+            # self.debug(source_name)
+            # self.debug(cont['input'])
+            # self.debug(charpos)
+            # self.debug(cont['complete_position'])
+            # self.debug(cont['complete_str'])
 
             min_pattern_length = get_custom(self.vim, source.name).get(
                 'min_pattern_length', source.min_pattern_length)
@@ -149,7 +151,7 @@ class Deoplete(object):
             context = result['context']
             source = result['source']
 
-            # debug(self.vim, source.name)
+            # self.debug(source.name)
             context['candidates'] = source.gather_candidates(context)
             if context['candidates'] and isinstance(
                     context['candidates'][0], str):
@@ -177,7 +179,7 @@ class Deoplete(object):
                             filter_name].filter(context)
             finally:
                 context['ignorecase'] = ignorecase
-            # debug(self.vim, context['candidates'])
+            # self.debug(context['candidates'])
 
             # On post filter
             if hasattr(source, 'on_post_filter'):
@@ -190,7 +192,7 @@ class Deoplete(object):
                 for candidate in context['candidates']:
                     candidate['menu'] = source.mark + ' ' + candidate.get(
                         'menu', '')
-            # debug(self.vim, context['candidates'])
+            # self.debug(context['candidates'])
         return results
 
     def merge_results(self, results):
@@ -218,5 +220,5 @@ class Deoplete(object):
             for candidate in context['candidates']:
                 candidate['word'] = prefix + candidate['word']
             candidates += context['candidates']
-        # debug(self.vim, candidates)
+        # self.debug(candidates)
         return (complete_position, candidates)
