@@ -312,7 +312,7 @@ deoplete#mappings#smart_close_popup()
 		Insert candidate and re-generate popup menu for deoplete.
 >
 		inoremap <expr><C-h>
-		\ deolete#mappings#smart_close_popup()."\<C-h>"
+		\ deoplete#mappings#smart_close_popup()."\<C-h>"
 		inoremap <expr><BS>
 		\ deoplete#mappings#smart_close_popup()."\<C-h>"
 <
@@ -333,8 +333,8 @@ EXAMPLES					*deoplete-examples*
 	let g:deoplete#enable_smart_case = 1
 
 	" <C-h>, <BS>: close popup and delete backword char.
-	inoremap <expr><C-h> deolete#mappings#smart_close_popup()."\<C-h>"
-	inoremap <expr><BS> deoplete#mappings#smart_close_popup()."\<C-h>"
+	inoremap <expr><C-h> deoplete#mappings#smart_close_popup()."\<C-h>"
+	inoremap <expr><BS>  deoplete#mappings#smart_close_popup()."\<C-h>"
 
 	" <CR>: close popup and save indent.
 	inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
