@@ -405,6 +405,12 @@ converter_remove_overlap
 converter_auto_delimiter
 		It adds delimiter characters in a candidate's word.
 
+				*deoplete-filter-converter_auto_paren*
+converter_auto_paren
+		It adds parenthes character in a candidate's word.
+		It is useful if you use |neopairs.vim| or |neosnippet.vim|
+		plugins.
+
 ==============================================================================
 CREATE SOURCE					*deoplete-create-source*
 
