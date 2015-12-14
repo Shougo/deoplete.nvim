@@ -41,7 +41,7 @@ class Source(Base):
         self.min_pattern_length = 0
 
         self.__prev_pos = -1
-        self.__prev_line = ''
+        self.__prev_input = ''
         self.__prev_candidates = []
 
     def get_complete_position(self, context):
@@ -95,14 +95,13 @@ class Source(Base):
 
             candidates = []
         self.__prev_pos = context['complete_position']
-        self.__prev_line = self.vim.current.buffer[
-            self.vim.current.window.cursor[0] - 1]
+        self.__prev_input = context['input']
         self.__prev_candidates = candidates
 
         return candidates
 
     def __use_previous_result(self, context):
         return (re.sub(r'\w+$', '', context['input']) ==
-                re.sub(r'\w+$', '', self.__prev_line)
-                and context['input'].find(self.__prev_line) == 0
+                re.sub(r'\w+$', '', self.__prev_input)
+                and context['input'].find(self.__prev_input) == 0
                 and self.__prev_candidates)
