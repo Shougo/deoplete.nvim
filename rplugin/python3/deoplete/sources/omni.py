@@ -63,7 +63,8 @@ class Source(Base):
                               'g:deoplete#omni#_input_patterns')):
 
             m = re.search('(' + input_pattern + ')$', context['input'])
-            if m is None or input_pattern == '':
+            if input_pattern == '' or (context['event'] != 'Manual'
+                                       and m is None):
                 continue
 
             try:
@@ -71,7 +72,6 @@ class Source(Base):
             except:
                 error(self.vim, 'Error occurred calling omnifunction: '
                       + omnifunc)
-
                 return -1
             return complete_pos
         return -1
@@ -87,12 +87,12 @@ class Source(Base):
         if omnifunc == '':
             omnifunc = self.vim.eval('&l:omnifunc')
         try:
+            self.debug(omnifunc)
             candidates = self.vim.call(
                 omnifunc, 0, context['complete_str'])
         except:
             error(self.vim, 'Error occurred calling omnifunction: '
                   + omnifunc)
-
             candidates = []
         self.__prev_pos = context['complete_position']
         self.__prev_input = context['input']
