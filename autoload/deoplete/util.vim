@@ -23,7 +23,7 @@
 " }}}
 "=============================================================================
 
-function! deoplete#util#set_default(var, val, ...)  "{{{
+function! deoplete#util#set_default(var, val, ...)  abort "{{{
   if !exists(a:var) || type({a:var}) != type(a:val)
     let alternate_var = get(a:000, 0, '')
 
@@ -31,7 +31,7 @@ function! deoplete#util#set_default(var, val, ...)  "{{{
           \ {alternate_var} : a:val
   endif
 endfunction"}}}
-function! deoplete#util#set_pattern(variable, keys, pattern) "{{{
+function! deoplete#util#set_pattern(variable, keys, pattern) abort "{{{
   for key in split(a:keys, '\s*,\s*')
     if !has_key(a:variable, key)
       let a:variable[key] = a:pattern
@@ -39,7 +39,7 @@ function! deoplete#util#set_pattern(variable, keys, pattern) "{{{
   endfor
 endfunction"}}}
 function! deoplete#util#get_buffer_config(
-      \ filetype, buffer_var, user_var, default_var, ...) "{{{
+      \ filetype, buffer_var, user_var, default_var, ...) abort "{{{
   let default_val = get(a:000, 0, '')
 
   if exists(a:buffer_var)
@@ -52,22 +52,22 @@ function! deoplete#util#get_buffer_config(
   return get({a:user_var}, filetype,
         \   get(eval(a:default_var), filetype, default_val))
 endfunction"}}}
-function! deoplete#util#get_simple_buffer_config(buffer_var, user_var) "{{{
+function! deoplete#util#get_simple_buffer_config(buffer_var, user_var) abort "{{{
   return exists(a:buffer_var) ? {a:buffer_var} : {a:user_var}
 endfunction"}}}
-function! deoplete#util#print_error(string) "{{{
+function! deoplete#util#print_error(string) abort "{{{
   echohl Error | echomsg '[deoplete] ' . a:string | echohl None
 endfunction"}}}
-function! deoplete#util#print_warning(string) "{{{
+function! deoplete#util#print_warning(string) abort "{{{
   echohl WarningMsg | echomsg '[deoplete] ' . a:string | echohl None
 endfunction"}}}
-function! deoplete#util#is_eskk_convertion() "{{{
+function! deoplete#util#is_eskk_convertion() abort "{{{
   return exists('*eskk#is_enabled') && eskk#is_enabled()
         \   && eskk#get_preedit().get_henkan_phase() !=#
         \             g:eskk#preedit#PHASE_NORMAL
 endfunction"}}}
 
-function! deoplete#util#convert2list(expr) "{{{
+function! deoplete#util#convert2list(expr) abort "{{{
   return type(a:expr) ==# type([]) ? a:expr : [a:expr]
 endfunction"}}}
 
@@ -127,7 +127,7 @@ function! s:vimoption2python(option) abort "{{{
   return join(deoplete#util#uniq(patterns), '')
 endfunction"}}}
 
-function! deoplete#util#uniq(list) "{{{
+function! deoplete#util#uniq(list) abort "{{{
   let list = map(copy(a:list), '[v:val, v:val]')
   let i = 0
   let seen = {}

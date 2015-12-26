@@ -23,12 +23,12 @@
 " }}}
 "=============================================================================
 
-function! deoplete#custom#get(source_name) "{{{
+function! deoplete#custom#get(source_name) abort "{{{
   let source = copy(deoplete#custom#get_source_var(a:source_name))
   return extend(source, s:custom._, 'keep')
 endfunction"}}}
 
-function! deoplete#custom#get_source_var(source_name) "{{{
+function! deoplete#custom#get_source_var(source_name) abort "{{{
   if !exists('s:custom')
     let s:custom = {}
     let s:custom._ = {}
@@ -41,7 +41,7 @@ function! deoplete#custom#get_source_var(source_name) "{{{
   return s:custom[a:source_name]
 endfunction"}}}
 
-function! deoplete#custom#set(source_name, option_name, value) "{{{
+function! deoplete#custom#set(source_name, option_name, value) abort "{{{
   for key in split(a:source_name, '\s*,\s*')
     let custom_source = deoplete#custom#get_source_var(key)
     let custom_source[a:option_name] = a:value
