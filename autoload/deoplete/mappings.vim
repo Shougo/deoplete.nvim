@@ -60,20 +60,32 @@ function! deoplete#mappings#_rpcnotify_wrapper(sources) abort "{{{
   return ''
 endfunction"}}}
 
-function! deoplete#mappings#close_popup() "{{{
+function! deoplete#mappings#close_popup() abort "{{{
   let g:deoplete#_context.position = getpos('.')
   return pumvisible() ? "\<C-y>" : ''
-endfunction
-"}}}
-function! deoplete#mappings#smart_close_popup() "{{{
+endfunction"}}}
+function! deoplete#mappings#smart_close_popup() abort "{{{
   let g:deoplete#_context.position = getpos('.')
   return pumvisible() ? "\<C-e>" : ''
-endfunction
-"}}}
-function! deoplete#mappings#cancel_popup() "{{{
+endfunction"}}}
+function! deoplete#mappings#cancel_popup() abort "{{{
   let g:deoplete#_context.position = getpos('.')
   return pumvisible() ? "\<C-e>" : ''
-endfunction
-"}}}
+endfunction"}}}
+
+function! deoplete#mappings#undo_completion() abort "{{{
+  if !exists('v:completed_item') || empty(v:completed_item)
+    return ''
+  endif
+
+  let input = deoplete#util#get_input('')
+  if strridx(input, v:completed_item.word) !=
+        \ len(input) - len(v:completed_item.word)
+    return ''
+  endif
+
+  return deoplete#mappings#smart_close_popup() .
+        \  repeat("\<C-h>", strchars(v:completed_item.word))
+endfunction"}}}
 
 " vim: foldmethod=marker

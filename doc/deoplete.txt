@@ -324,6 +324,12 @@ deoplete#mappings#smart_close_popup()
 deoplete#mappings#close_popup()
 		Insert candidate and close popup menu for deoplete.
 
+					*deoplete#mappings#undo_completion()*
+deoplete#mappings#undo_completion()
+		Undo inputted candidate. >
+
+		inoremap <expr><C-g>     deoplete#mappings#undo_completion()
+<
 ==============================================================================
 EXAMPLES					*deoplete-examples*
 >
@@ -338,7 +344,7 @@ EXAMPLES					*deoplete-examples*
 
 	" <CR>: close popup and save indent.
 	inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-	function! s:my_cr_function()
+	function! s:my_cr_function() abort
 	  return deoplete#mappings#close_popup() . "\<CR>"
 	endfunction
 <
@@ -738,7 +744,7 @@ A: It is Vim/neovim's default behavior (feature.)  If you want to insert the
 new line, you should map <CR>. >
 
 	inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-	function! s:my_cr_function()
+	function! s:my_cr_function() abort
 	  return deoplete#mappings#close_popup() . "\<CR>"
 	endfunction
 
