@@ -192,6 +192,10 @@ class Deoplete(object):
                 for candidate in context['candidates']:
                     candidate['menu'] = source.mark + ' ' + candidate.get(
                         'menu', '')
+
+            # Set icase
+            for candidate in context['candidates']:
+                candidate['icase'] = 1
             # self.debug(context['candidates'])
         return results
 
