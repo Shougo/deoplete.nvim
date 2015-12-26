@@ -47,8 +47,7 @@ INTRODUCTION					*deoplete-introduction*
 
 *deoplete* is the abbreviation of "dark powered neo-completion".  It
 provides asynchronous keyword completion system in the
-current buffer.  Deoplete cannot be customized and has not many
-features currently.
+current buffer.
 
 Note: deoplete may consume more memory than other plugins do.
 
@@ -106,14 +105,14 @@ g:deoplete#enable_ignore_case
 		variable controls whether deoplete ignores the upper-
 		and lowercase.  If it is 1, deoplete ignores case.
 
-		Default value: 'ignorecase'
+		Default value: same with your 'ignorecase' value
 
 				*g:deoplete#enable_smart_case*
 g:deoplete#enable_smart_case
 		When a capital letter is included in input, deoplete does
 		not ignore the upper- and lowercase.
 
-		Default value: 'smartcase'
+		Default value: same with your 'smartcase' value
 
 				*g:deoplete#auto_completion_start_length*
 g:deoplete#auto_completion_start_length
