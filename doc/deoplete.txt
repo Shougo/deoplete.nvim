@@ -257,6 +257,17 @@ g:deoplete#omni#functions
 b:deoplete_omni_functions
 		Buffer local variable of |g:deoplete#omni#functions|.
 
+				*g:deoplete#file#enable_buffer_path*
+g:deoplete#file#enable_buffer_path
+		If it is 1, file source complete the files from the buffer
+		path instead of the current directory.
+
+		Default value: 1
+
+				*b:deoplete_file_enable_buffer_path*
+b:deoplete_file_enable_buffer_path
+		Buffer local variable of |g:deoplete#file#enable_buffer_path|.
+
 ------------------------------------------------------------------------------
 FUNCTIONS 					*deoplete-functions*
 
