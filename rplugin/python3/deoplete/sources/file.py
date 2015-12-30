@@ -41,7 +41,7 @@ class Source(Base):
         self.mark = '[F]'
         self.min_pattern_length = 0
 
-        set_default(self.vim, 'g:deoplete#file#enable_buffer_path', 1)
+        set_default(self.vim, 'g:deoplete#file#enable_buffer_path', 0)
 
     def get_complete_position(self, context):
         pos = context['input'].rfind('/')

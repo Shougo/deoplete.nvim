@@ -262,7 +262,7 @@ g:deoplete#file#enable_buffer_path
 		If it is 1, file source complete the files from the buffer
 		path instead of the current directory.
 
-		Default value: 1
+		Default value: 0
 
 				*b:deoplete_file_enable_buffer_path*
 b:deoplete_file_enable_buffer_path
