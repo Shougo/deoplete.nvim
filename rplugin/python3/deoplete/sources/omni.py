@@ -40,6 +40,7 @@ class Source(Base):
         self.is_bytepos = True
         self.min_pattern_length = 0
 
+        self.__prev_linenr = -1
         self.__prev_pos = -1
         self.__prev_input = ''
         self.__prev_candidates = []
@@ -94,6 +95,7 @@ class Source(Base):
             error(self.vim, 'Error occurred calling omnifunction: '
                   + omnifunc)
             candidates = []
+        self.__prev_linenr = self.vim.funcs.line('.')
         self.__prev_pos = context['complete_position']
         self.__prev_input = context['input']
         self.__prev_candidates = candidates
@@ -101,7 +103,7 @@ class Source(Base):
         return candidates
 
     def __use_previous_result(self, context):
-        return (re.sub(r'\w+$', '', context['input']) ==
+        return (self.vim.funcs.line('.') == self.__prev_linenr
+                and re.sub(r'\w+$', '', context['input']) ==
                 re.sub(r'\w+$', '', self.__prev_input)
-                and context['input'].find(self.__prev_input) == 0
-                and self.__prev_candidates)
+                and context['input'].find(self.__prev_input) == 0)
