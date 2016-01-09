@@ -108,10 +108,6 @@ function! deoplete#init#_variables() abort "{{{
   call deoplete#util#set_default(
         \ 'g:deoplete#ignore_sources', {})
 
-  " Internal vairables
-  call deoplete#util#set_default(
-        \ 'g:deoplete#_skip_next_complete', 0)
-
   " Source variables
   call deoplete#util#set_default(
         \ 'g:deoplete#omni#input_patterns', {})

@@ -37,10 +37,6 @@ function! s:completion_begin(event) abort "{{{
   let context = deoplete#init#_context(a:event, [])
 
   " Skip
-  if g:deoplete#_skip_next_complete
-    let deoplete#_skip_next_complete = 0
-    return
-  endif
   if &paste || (context.position ==#
         \      get(g:deoplete#_context, 'position', [])
         \      && (get(v:completed_item, 'word', '') == ''
