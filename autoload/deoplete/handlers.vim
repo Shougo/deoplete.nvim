@@ -37,14 +37,19 @@ function! s:completion_begin(event) abort "{{{
   let context = deoplete#init#_context(a:event, [])
 
   " Skip
-  if &paste || (context.position ==#
-        \      get(g:deoplete#_context, 'position', [])
+  if &paste
+        \ || (context.position ==# get(g:deoplete#_context, 'position', [])
         \      && (get(v:completed_item, 'word', '') == ''
         \         || empty(filter(copy(g:deoplete#delimiters),
         \         'strridx(v:completed_item.word, v:val)
         \          == (len(v:completed_item.word) - len(v:val))'))))
+        \ || (a:event ==# 'InsertEnter'
+        \     && has_key(g:deoplete#_context, 'position'))
     return
   endif
+
+  echomsg string(get(g:deoplete#_context, 'position', []))
+  echomsg string(context.position)
 
   " Save the previous position
   let g:deoplete#_context.position = context.position
@@ -82,7 +87,12 @@ function! s:complete_done() abort "{{{
     let &completeopt = g:deoplete#_context.saved_completeopt
     unlet g:deoplete#_context.saved_completeopt
   endif
+
   let g:deoplete#_context.position = getpos('.')
+  if mode() !=# 'i'
+    " Fix the col
+    let g:deoplete#_context.position[2] += 1
+  endif
 endfunction"}}}
 
 " vim: foldmethod=marker
