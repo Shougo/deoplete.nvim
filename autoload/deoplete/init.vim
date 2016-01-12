@@ -199,7 +199,11 @@ function! deoplete#init#_context(event, sources) abort "{{{
   let sources = a:sources
   if a:event !=# 'Manual' && empty(sources)
     " Use default sources
-    let sources = s:get_sources(filetype)
+    let sources = deoplete#util#get_buffer_config(
+          \ filetype,
+          \ 'b:deoplete_sources',
+          \ 'g:deoplete#sources',
+          \ '{}', [])
   endif
 
   let keyword_patterns = join(deoplete#util#convert2list(
@@ -228,21 +232,6 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \ 'sources': sources,
         \ 'keyword_patterns': keyword_patterns,
         \ }
-endfunction"}}}
-
-function! s:get_sources(filetype) abort "{{{
-  let sources = deoplete#util#get_buffer_config(
-        \ a:filetype,
-        \ 'b:deoplete_sources',
-        \ 'g:deoplete#sources',
-        \ '{}', [])
-  let ignore_sources = deoplete#util#get_buffer_config(
-        \ a:filetype,
-        \ 'b:deoplete_ignore_sources', 'g:deoplete#ignore_sources',
-        \ '{}', [])
-
-  " Ignore sources
-  return filter(sources, "index(ignore_sources, v:val) < 0")
 endfunction"}}}
 
 " vim: foldmethod=marker

@@ -32,7 +32,7 @@ import deoplete.sources
 deoplete.sources  # silence pyflakes
 from deoplete.util import \
     globruntime, get_simple_buffer_config, charpos2bytepos, \
-    bytepos2charpos, get_custom
+    bytepos2charpos, get_custom, get_buffer_config
 import deoplete.filters
 deoplete.filters  # silence pyflakes
 import deoplete.util
@@ -109,11 +109,18 @@ class Deoplete(object):
         results = []
         start_length = self.vim.eval(
             'g:deoplete#auto_completion_start_length')
+        ignore_sources = get_buffer_config(
+            self.vim, context,
+            'b:deoplete_ignore_sources',
+            'g:deoplete#ignore_sources',
+            '{}')
         for source_name, source in sources:
-            if (context['sources']
-                    and source_name not in context['sources']
-                ) or (source.filetypes
-                      and context['filetype'] not in source.filetypes):
+            in_sources = not context['sources'] or (
+                source_name in context['sources'])
+            in_fts = not source.filetypes or (
+                context['filetype'] not in source.filetypes)
+            in_ignore = source_name in ignore_sources
+            if not in_sources or not in_fts or in_ignore:
                 continue
             cont = copy.deepcopy(context)
             charpos = source.get_complete_position(cont)
