@@ -48,9 +48,6 @@ function! s:completion_begin(event) abort "{{{
     return
   endif
 
-  echomsg string(get(g:deoplete#_context, 'position', []))
-  echomsg string(context.position)
-
   " Save the previous position
   let g:deoplete#_context.position = context.position
 
