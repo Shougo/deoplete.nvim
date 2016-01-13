@@ -620,6 +620,9 @@ https://github.com/Rip-Rip/clang_complete
 deoplete-go: go source
 https://github.com/zchee/deoplete-go
 
+elixir.nvim: elixir source
+https://github.com/archSeer/elixir.nvim
+
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*
 
