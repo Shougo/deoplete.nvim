@@ -118,7 +118,7 @@ class Deoplete(object):
             in_sources = not context['sources'] or (
                 source_name in context['sources'])
             in_fts = not source.filetypes or (
-                context['filetype'] not in source.filetypes)
+                context['filetype'] in source.filetypes)
             in_ignore = source_name in ignore_sources
             if not in_sources or not in_fts or in_ignore:
                 continue
