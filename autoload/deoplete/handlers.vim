@@ -38,6 +38,8 @@ function! s:completion_begin(event) abort "{{{
 
   " Skip
   if &paste
+        \ || (b:deoplete_disable_auto_complete != 0)
+        \ || (g:deoplete#disable_auto_complete != 0)
         \ || (context.position ==# get(g:deoplete#_context, 'position', [])
         \      && (get(v:completed_item, 'word', '') == ''
         \         || empty(filter(copy(g:deoplete#delimiters),
