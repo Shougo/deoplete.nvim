@@ -86,10 +86,6 @@ function! s:complete_done() abort "{{{
   endif
 
   let g:deoplete#_context.position = getpos('.')
-  if mode() !=# 'i'
-    " Fix the col
-    let g:deoplete#_context.position[2] += 1
-  endif
 endfunction"}}}
 
 " vim: foldmethod=marker
