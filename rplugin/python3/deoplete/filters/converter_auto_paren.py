@@ -40,7 +40,7 @@ class Filter(Base):
         for candidate in [
                 x for x in context['candidates']
                 if not p1.search(x['word']) and
-                (('abbr' in x and p2.search(x['abbr']))
-                 or ('info' in x and p2.search(x['info'])))]:
+                (('abbr' in x and p2.search(x['abbr'])) or
+                 ('info' in x and p2.search(x['info'])))]:
             candidate['word'] += '('
         return context['candidates']

@@ -56,11 +56,11 @@ class Source(Base):
             return []
         hidden = context['complete_str'].find('.') == 0
         dirs = [x for x in os.listdir(complete_str)
-                if os.path.isdir(complete_str + x)
-                and (hidden or x[0] != '.')]
+                if os.path.isdir(complete_str + x) and
+                (hidden or x[0] != '.')]
         files = [x for x in os.listdir(complete_str)
-                 if not os.path.isdir(complete_str + x)
-                 and (hidden or x[0] != '.')]
+                 if not os.path.isdir(complete_str + x) and
+                 (hidden or x[0] != '.')]
         return [{'word': x, 'abbr': x + '/'} for x in sorted(dirs)
                 ] + [{'word': x} for x in sorted(files)]
 

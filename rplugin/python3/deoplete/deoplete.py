@@ -23,19 +23,21 @@
 # }}}
 # ============================================================================
 
+from deoplete.util import \
+    globruntime, get_simple_buffer_config, charpos2bytepos, \
+    bytepos2charpos, get_custom, get_buffer_config
+
+import deoplete.sources
+import deoplete.filters
+import deoplete.util
+
 import re
 import importlib.machinery
 import os.path
 import copy
 
-import deoplete.sources
 deoplete.sources  # silence pyflakes
-from deoplete.util import \
-    globruntime, get_simple_buffer_config, charpos2bytepos, \
-    bytepos2charpos, get_custom, get_buffer_config
-import deoplete.filters
 deoplete.filters  # silence pyflakes
-import deoplete.util
 
 
 class Deoplete(object):
@@ -79,8 +81,8 @@ class Deoplete(object):
 
     def gather_candidates(self, context):
         # Skip completion
-        if (self.vim.eval('&l:completefunc') != ''
-                and 'nofile' in self.vim.eval('&l:buftype')
+        if (self.vim.eval('&l:completefunc') != '' and
+                'nofile' in self.vim.eval('&l:buftype')
             ) or (context['event'] != 'Manual' and
                   get_simple_buffer_config(
                 self.vim,
@@ -143,9 +145,9 @@ class Deoplete(object):
                 # Use default value
                 min_pattern_length = start_length
 
-            if charpos < 0 or (cont['event'] != 'Manual'
-                               and len(cont['complete_str'])
-                               < min_pattern_length):
+            if charpos < 0 or (cont['event'] != 'Manual' and
+                               len(cont['complete_str']) <
+                               min_pattern_length):
                 # Skip
                 continue
             results.append({
@@ -221,8 +223,8 @@ class Deoplete(object):
                 complete_position = context['complete_position']
                 candidates += context['candidates']
                 continue
-            prefix = context['input'][context['complete_position']
-                                      - complete_position:]
+            prefix = context['input'][context[
+                'complete_position'] - complete_position:]
 
             context['complete_position'] = complete_position
             context['complete_str'] = prefix

@@ -64,15 +64,15 @@ class Source(Base):
                               'g:deoplete#omni#_input_patterns')):
 
             m = re.search('(' + input_pattern + ')$', context['input'])
-            if input_pattern == '' or (context['event'] != 'Manual'
-                                       and m is None):
+            if input_pattern == '' or (context['event'] !=
+                                       'Manual' and m is None):
                 continue
 
             try:
                 complete_pos = self.vim.call(omnifunc, 1, '')
             except:
-                error(self.vim, 'Error occurred calling omnifunction: '
-                      + omnifunc)
+                error(self.vim,
+                      'Error occurred calling omnifunction: ' + omnifunc)
                 return -1
             return complete_pos
         return -1
@@ -92,8 +92,8 @@ class Source(Base):
             candidates = self.vim.call(
                 omnifunc, 0, context['complete_str'])
         except:
-            error(self.vim, 'Error occurred calling omnifunction: '
-                  + omnifunc)
+            error(self.vim,
+                  'Error occurred calling omnifunction: ' + omnifunc)
             candidates = []
         self.__prev_linenr = self.vim.funcs.line('.')
         self.__prev_pos = context['complete_position']
@@ -103,7 +103,7 @@ class Source(Base):
         return candidates
 
     def __use_previous_result(self, context):
-        return (self.vim.funcs.line('.') == self.__prev_linenr
-                and re.sub(r'\w+$', '', context['input']) ==
-                re.sub(r'\w+$', '', self.__prev_input)
-                and context['input'].find(self.__prev_input) == 0)
+        return (self.vim.funcs.line('.') == self.__prev_linenr and
+                re.sub(r'\w+$', '', context['input']) == re.sub(
+                    r'\w+$', '', self.__prev_input) and
+                context['input'].find(self.__prev_input) == 0)
