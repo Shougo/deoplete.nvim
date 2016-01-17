@@ -36,8 +36,15 @@ endfunction"}}}
 function! s:completion_begin(event) abort "{{{
   let context = deoplete#init#_context(a:event, [])
 
+  let disable_auto_complete =
+        \ deoplete#util#get_simple_buffer_config(
+        \   'b:deoplete_disable_auto_complete',
+        \   'g:deoplete#disable_auto_complete')
+
   " Skip
   if &paste
+        \ || (a:event !=# 'Manual' && disable_auto_complete)
+        \ || (&l:completefunc != '' && &l:buftype =~# 'nofile')
         \ || (context.position ==# get(g:deoplete#_context, 'position', [])
         \      && (get(v:completed_item, 'word', '') == ''
         \         || empty(filter(copy(g:deoplete#delimiters),

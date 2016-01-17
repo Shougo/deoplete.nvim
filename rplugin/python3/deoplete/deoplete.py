@@ -80,16 +80,6 @@ class Deoplete(object):
         # self.debug(self.filters)
 
     def gather_candidates(self, context):
-        # Skip completion
-        if (self.vim.eval('&l:completefunc') != '' and
-                'nofile' in self.vim.eval('&l:buftype')
-            ) or (context['event'] != 'Manual' and
-                  get_simple_buffer_config(
-                self.vim,
-                'b:deoplete_disable_auto_complete',
-                'g:deoplete#disable_auto_complete')):
-            return (-1, [])
-
         if self.vim.eval('&runtimepath') != self.runtimepath:
             # Recache
             self.load_sources()
