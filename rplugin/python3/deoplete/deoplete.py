@@ -24,7 +24,7 @@
 # ============================================================================
 
 from deoplete.util import \
-    globruntime, get_simple_buffer_config, charpos2bytepos, \
+    globruntime, charpos2bytepos, \
     bytepos2charpos, get_custom, get_buffer_config
 
 import deoplete.sources
