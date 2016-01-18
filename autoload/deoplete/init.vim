@@ -146,7 +146,7 @@ function! deoplete#init#_variables() abort "{{{
         \         '[a-zA-Z_]\w*::\w*'])
   call deoplete#util#set_pattern(
         \ g:deoplete#omni#_input_patterns,
-        \ 'go,java', ['[^. \t0-9]\.\w*'])
+        \ 'java', ['[^. \t0-9]\.\w*'])
   call deoplete#util#set_pattern(
         \ g:deoplete#omni#_input_patterns,
         \ 'javascript,typescript', ['[^. \t0-9]\.([a-zA-Z_]\w*)?'])
