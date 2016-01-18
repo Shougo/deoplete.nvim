@@ -26,6 +26,8 @@
 function! deoplete#mappings#_init() abort "{{{
   inoremap <silent> <Plug>(deoplete_start_complete)
         \ <C-r>=deoplete#mappings#_do_complete(g:deoplete#_context)<CR>
+  inoremap <silent> <Plug>(deoplete_auto_refresh)
+        \ <C-r>=deoplete#mappings#refresh()<CR>
 endfunction"}}}
 
 function! deoplete#mappings#_do_complete(context) abort "{{{
@@ -70,6 +72,10 @@ function! deoplete#mappings#smart_close_popup() abort "{{{
 endfunction"}}}
 function! deoplete#mappings#cancel_popup() abort "{{{
   let g:deoplete#_context.position = getpos('.')
+  return pumvisible() ? "\<C-e>" : ''
+endfunction"}}}
+function! deoplete#mappings#refresh() abort "{{{
+  let g:deoplete#_context.refresh = 1
   return pumvisible() ? "\<C-e>" : ''
 endfunction"}}}
 

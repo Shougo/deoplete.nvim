@@ -114,6 +114,14 @@ g:deoplete#enable_smart_case
 
 		Default value: same with your 'smartcase' value
 
+				*g:deoplete#enable_refresh_always*
+g:deoplete#enable_refresh_always
+		Deoplete refreshes the candidates automatically if this value
+		is 1.
+		Note: It increases the screen flicker.
+
+		Default value: 0
+
 				*g:deoplete#auto_completion_start_length*
 g:deoplete#auto_completion_start_length
 		This variable controls the number of the input completion
@@ -339,6 +347,12 @@ deoplete#mappings#undo_completion()
 		Undo inputted candidate. >
 
 		inoremap <expr><C-g>     deoplete#mappings#undo_completion()
+<
+					*deoplete#mappings#refresh()*
+deoplete#mappings#refresh()
+		Refresh the candidates.
+>
+		inoremap <expr><C-l>     deoplete#mappings#refresh()
 <
 ==============================================================================
 EXAMPLES					*deoplete-examples*

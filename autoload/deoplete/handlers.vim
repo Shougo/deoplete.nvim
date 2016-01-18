@@ -27,6 +27,7 @@ function! deoplete#handlers#_init() abort "{{{
   augroup deoplete
     autocmd InsertLeave * call s:on_insert_leave()
     autocmd CompleteDone * call s:complete_done()
+    autocmd InsertCharPre * call s:on_insert_char_pre()
 
     autocmd TextChangedI * call s:completion_begin("TextChangedI")
     autocmd InsertEnter * call s:completion_begin("InsertEnter")
@@ -87,12 +88,27 @@ function! s:on_insert_leave() abort "{{{
 endfunction"}}}
 
 function! s:complete_done() abort "{{{
+  if get(g:deoplete#_context, 'refresh', 0)
+    " Don't skip completion
+    let g:deoplete#_context.refresh = 0
+    return
+  endif
+
   if exists('g:deoplete#_context.saved_completeopt')
     let &completeopt = g:deoplete#_context.saved_completeopt
     unlet g:deoplete#_context.saved_completeopt
   endif
 
   let g:deoplete#_context.position = getpos('.')
+endfunction"}}}
+
+function! s:on_insert_char_pre() abort "{{{
+  if !pumvisible() || !g:deoplete#enable_refresh_always
+    return
+  endif
+
+  " Auto refresh
+  call feedkeys("\<Plug>(deoplete_auto_refresh)")
 endfunction"}}}
 
 " vim: foldmethod=marker

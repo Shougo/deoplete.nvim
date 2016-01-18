@@ -89,6 +89,8 @@ function! deoplete#init#_variables() abort "{{{
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_smart_case', &smartcase)
   call deoplete#util#set_default(
+        \ 'g:deoplete#enable_refresh_always', 0)
+  call deoplete#util#set_default(
         \ 'g:deoplete#auto_completion_start_length', 2)
   call deoplete#util#set_default(
         \ 'g:deoplete#disable_auto_complete', 0)
