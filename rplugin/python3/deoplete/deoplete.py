@@ -229,7 +229,7 @@ class Deoplete(object):
         return (complete_position, candidates)
 
     def is_skip(self, context, min_pattern_length, input_pattern):
-        return (input_pattern != '' and
+        return (input_pattern == '' or
                 not re.search(input_pattern + '$', context['input'])
-                ) or (context['event'] != 'Manual' and
-                      len(context['complete_str']) < min_pattern_length)
+                ) and (context['event'] != 'Manual' and
+                       len(context['complete_str']) < min_pattern_length)
