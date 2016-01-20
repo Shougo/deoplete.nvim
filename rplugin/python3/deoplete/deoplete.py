@@ -134,10 +134,12 @@ class Deoplete(object):
             if min_pattern_length < 0:
                 # Use default value
                 min_pattern_length = start_length
+            input_pattern = get_custom(self.vim, source.name).get(
+                'input_pattern', source.input_pattern)
 
-            if charpos < 0 or (cont['event'] != 'Manual' and
-                               len(cont['complete_str']) <
-                               min_pattern_length):
+            if charpos < 0 or self.is_skip(cont,
+                                           min_pattern_length,
+                                           input_pattern):
                 # Skip
                 continue
             results.append({
@@ -225,3 +227,9 @@ class Deoplete(object):
             candidates += context['candidates']
         # self.debug(candidates)
         return (complete_position, candidates)
+
+    def is_skip(self, context, min_pattern_length, input_pattern):
+        return (input_pattern != '' and
+                not re.search(input_pattern + '$', context['input'])
+                ) or (context['event'] != 'Manual' and
+                      len(context['complete_str']) < min_pattern_length)

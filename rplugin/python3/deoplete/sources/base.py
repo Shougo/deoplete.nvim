@@ -36,6 +36,7 @@ class Base(object):
         self.description = ''
         self.marker = ''
         self.min_pattern_length = -1
+        self.input_pattern = ''
         self.matchers = ['matcher_fuzzy']
         self.sorters = ['sorter_rank']
         self.converters = ['converter_remove_overlap']
