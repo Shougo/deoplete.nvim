@@ -49,34 +49,35 @@ class Source(Base):
         if self.__use_previous_result(context):
             return self.__prev_pos
 
-        omnifunc = get_buffer_config(self.vim, context['filetype'],
-                                     'b:deoplete_omni_functions',
-                                     'g:deoplete#omni#functions',
-                                     'g:deoplete#omni#_functions')
-        if omnifunc == '':
-            omnifunc = self.vim.eval('&l:omnifunc')
-        if omnifunc == '' or omnifunc == 'ccomplete#Complete':
-            return -1
-        self.__omnifunc = omnifunc
-        for input_pattern in convert2list(
-            get_buffer_config(self.vim, context['filetype'],
-                              'b:deoplete_omni_input_patterns',
-                              'g:deoplete#omni#input_patterns',
-                              'g:deoplete#omni#_input_patterns')):
-
-            m = re.search('(' + input_pattern + ')$', context['input'])
-            if input_pattern == '' or (context['event'] !=
-                                       'Manual' and m is None):
+        for filetype in context['filetypes']:
+            omnifunc = get_buffer_config(self.vim, filetype,
+                                        'b:deoplete_omni_functions',
+                                        'g:deoplete#omni#functions',
+                                        'g:deoplete#omni#_functions')
+            if omnifunc == '':
+                omnifunc = self.vim.eval('&l:omnifunc')
+            if omnifunc == '' or omnifunc == 'ccomplete#Complete':
                 continue
+            self.__omnifunc = omnifunc
+            for input_pattern in convert2list(
+                get_buffer_config(self.vim, filetype,
+                                'b:deoplete_omni_input_patterns',
+                                'g:deoplete#omni#input_patterns',
+                                'g:deoplete#omni#_input_patterns')):
 
-            try:
-                complete_pos = self.vim.call(self.__omnifunc, 1, '')
-            except:
-                error(self.vim,
-                      'Error occurred calling omnifunction: ' +
-                      self.__omnifunc)
-                return -1
-            return complete_pos
+                m = re.search('(' + input_pattern + ')$', context['input'])
+                if input_pattern == '' or (context['event'] !=
+                                        'Manual' and m is None):
+                    continue
+
+                try:
+                    complete_pos = self.vim.call(self.__omnifunc, 1, '')
+                except:
+                    error(self.vim,
+                        'Error occurred calling omnifunction: ' +
+                        self.__omnifunc)
+                    return -1
+                return complete_pos
         return -1
 
     def gather_candidates(self, context):
