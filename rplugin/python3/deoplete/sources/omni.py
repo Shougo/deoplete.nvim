@@ -49,7 +49,7 @@ class Source(Base):
         if self.__use_previous_result(context):
             return self.__prev_pos
 
-        omnifunc = get_buffer_config(self.vim, context,
+        omnifunc = get_buffer_config(self.vim, context['filetype'],
                                      'b:deoplete_omni_functions',
                                      'g:deoplete#omni#functions',
                                      'g:deoplete#omni#_functions')
@@ -59,7 +59,7 @@ class Source(Base):
             return -1
         self.__omnifunc = omnifunc
         for input_pattern in convert2list(
-            get_buffer_config(self.vim, context,
+            get_buffer_config(self.vim, context['filetype'],
                               'b:deoplete_omni_input_patterns',
                               'g:deoplete#omni#input_patterns',
                               'g:deoplete#omni#_input_patterns')):

@@ -46,7 +46,7 @@ class Source(Base):
     def get_complete_position(self, context):
         # Check member prefix pattern.
         for prefix_pattern in convert2list(
-                get_buffer_config(self.vim, context,
+                get_buffer_config(self.vim, context['filetype'],
                                   'b:deoplete_member_prefix_patterns',
                                   'g:deoplete#member#prefix_patterns',
                                   'g:deoplete#member#_prefix_patterns')):

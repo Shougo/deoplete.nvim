@@ -102,7 +102,7 @@ class Deoplete(object):
         start_length = self.vim.eval(
             'g:deoplete#auto_completion_start_length')
         ignore_sources = get_buffer_config(
-            self.vim, context,
+            self.vim, context['filetype'],
             'b:deoplete_ignore_sources',
             'g:deoplete#ignore_sources',
             '{}')
