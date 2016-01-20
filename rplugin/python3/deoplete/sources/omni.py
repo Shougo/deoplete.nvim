@@ -57,6 +57,7 @@ class Source(Base):
             omnifunc = self.vim.eval('&l:omnifunc')
         if omnifunc == '' or omnifunc == 'ccomplete#Complete':
             return -1
+        self.__omnifunc = omnifunc
         for input_pattern in convert2list(
             get_buffer_config(self.vim, context,
                               'b:deoplete_omni_input_patterns',
@@ -69,10 +70,11 @@ class Source(Base):
                 continue
 
             try:
-                complete_pos = self.vim.call(omnifunc, 1, '')
+                complete_pos = self.vim.call(self.__omnifunc, 1, '')
             except:
                 error(self.vim,
-                      'Error occurred calling omnifunction: ' + omnifunc)
+                      'Error occurred calling omnifunction: ' +
+                      self.__omnifunc)
                 return -1
             return complete_pos
         return -1
@@ -81,19 +83,13 @@ class Source(Base):
         if self.__use_previous_result(context):
             return self.__prev_candidates
 
-        omnifunc = get_buffer_config(self.vim, context,
-                                     'b:deoplete_omni_functions',
-                                     'g:deoplete#omni#functions',
-                                     'g:deoplete#omni#_functions')
-        if omnifunc == '':
-            omnifunc = self.vim.eval('&l:omnifunc')
         try:
-            self.debug(omnifunc)
             candidates = self.vim.call(
-                omnifunc, 0, context['complete_str'])
+                self.__omnifunc, 0, context['complete_str'])
         except:
             error(self.vim,
-                  'Error occurred calling omnifunction: ' + omnifunc)
+                  'Error occurred calling omnifunction: ' +
+                  self.__omnifunc)
             candidates = []
         self.__prev_linenr = self.vim.funcs.line('.')
         self.__prev_pos = context['complete_position']
