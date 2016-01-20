@@ -51,9 +51,9 @@ class Source(Base):
 
         for filetype in context['filetypes']:
             omnifunc = get_buffer_config(self.vim, filetype,
-                                        'b:deoplete_omni_functions',
-                                        'g:deoplete#omni#functions',
-                                        'g:deoplete#omni#_functions')
+                                         'b:deoplete_omni_functions',
+                                         'g:deoplete#omni#functions',
+                                         'g:deoplete#omni#_functions')
             if omnifunc == '':
                 omnifunc = self.vim.eval('&l:omnifunc')
             if omnifunc == '' or omnifunc == 'ccomplete#Complete':
@@ -61,21 +61,21 @@ class Source(Base):
             self.__omnifunc = omnifunc
             for input_pattern in convert2list(
                 get_buffer_config(self.vim, filetype,
-                                'b:deoplete_omni_input_patterns',
-                                'g:deoplete#omni#input_patterns',
-                                'g:deoplete#omni#_input_patterns')):
+                                  'b:deoplete_omni_input_patterns',
+                                  'g:deoplete#omni#input_patterns',
+                                  'g:deoplete#omni#_input_patterns')):
 
                 m = re.search('(' + input_pattern + ')$', context['input'])
                 if input_pattern == '' or (context['event'] !=
-                                        'Manual' and m is None):
+                                           'Manual' and m is None):
                     continue
 
                 try:
                     complete_pos = self.vim.call(self.__omnifunc, 1, '')
                 except:
                     error(self.vim,
-                        'Error occurred calling omnifunction: ' +
-                        self.__omnifunc)
+                          'Error occurred calling omnifunction: ' +
+                          self.__omnifunc)
                     return -1
                 return complete_pos
         return -1
