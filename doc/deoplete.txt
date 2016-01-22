@@ -552,6 +552,12 @@ gather_candidates	Function	(Required)
 		Here, {context} is the context information when the source is
 		called(|deoplete-notation-{context}|).
 
+				*deoplete-source-attribute-on_post_filter*
+on_post_filter	Function	(Optional)
+		It is called after the candidates are filtered.
+		It takes {self} and {context} as its parameter and returns a
+		list of {candidate}.
+
 					*deoplete-source-attribute-__*
 __{name}	(Unknown)	(Optional)
 		Additional source information.
@@ -604,6 +610,11 @@ menu		String		(Optional)
 info		String		(Optional)
 		The preview information of a candidate. If 'completeopt'
 		contains "preview", it will be displayed in |preview-window|.
+
+					*deoplete-candidate-attribute-dup*
+dup		Number		(Optional)
+		If it is non zero, the item will be displayed in the popup
+		menu when an item with the same word is already present.
 
 ==============================================================================
 CREATE FILTER					*deoplete-create-filter*
