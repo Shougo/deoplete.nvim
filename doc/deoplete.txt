@@ -551,6 +551,9 @@ gather_candidates	Function	(Required)
 		|deoplete-candidate-attributes|.
 		Here, {context} is the context information when the source is
 		called(|deoplete-notation-{context}|).
+		Note: The source must not filter the candidates by user input.
+		It is |deoplete-filters| work.  If the source filter the
+		candidates, user cannot filter the candidates by fuzzy match.
 
 				*deoplete-source-attribute-on_post_filter*
 on_post_filter	Function	(Optional)
