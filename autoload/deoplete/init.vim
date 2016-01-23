@@ -96,6 +96,8 @@ function! deoplete#init#_variables() abort "{{{
         \ 'g:deoplete#disable_auto_complete', 0)
   call deoplete#util#set_default(
         \ 'g:deoplete#delimiters', ['/', '.', '::', ':', '#'])
+  call deoplete#util#set_default(
+        \ 'g:deoplete#max_list', 100)
 
   call deoplete#util#set_default(
         \ 'g:deoplete#keyword_patterns', {})

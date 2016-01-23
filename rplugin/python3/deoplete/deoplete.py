@@ -226,6 +226,8 @@ class Deoplete(object):
                 candidate['word'] = prefix + candidate['word']
             candidates += context['candidates']
         # self.debug(candidates)
+        if self.vim.vars['deoplete#max_list'] > 0:
+            candidates = candidates[: self.vim.vars['deoplete#max_list']]
         return (complete_position, candidates)
 
     def is_skip(self, context, min_pattern_length, input_pattern):

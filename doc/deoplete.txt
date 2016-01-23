@@ -147,6 +147,13 @@ g:deoplete#delimiters
 
 		Default value: ['/', '.', '::', ':', '#']
 
+				*g:deoplete#max_list*
+g:deoplete#max_list
+		If the list of candidates exceeds the limit, not all
+		candidates will show up.
+
+		Default value: 100
+
 				*g:deoplete#keyword_patterns*
 g:deoplete#keyword_patterns
 		This dictionary records keyword patterns to buffer completion.
