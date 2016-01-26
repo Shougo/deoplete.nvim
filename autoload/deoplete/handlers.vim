@@ -80,10 +80,6 @@ function! s:completion_begin(event) abort "{{{
 endfunction"}}}
 
 function! s:on_insert_leave() abort "{{{
-  if exists('g:deoplete#_context.saved_completeopt')
-    let &completeopt = g:deoplete#_context.saved_completeopt
-    unlet g:deoplete#_context.saved_completeopt
-  endif
   let g:deoplete#_context = {}
 endfunction"}}}
 
@@ -92,11 +88,6 @@ function! s:complete_done() abort "{{{
     " Don't skip completion
     let g:deoplete#_context.refresh = 0
     return
-  endif
-
-  if exists('g:deoplete#_context.saved_completeopt')
-    let &completeopt = g:deoplete#_context.saved_completeopt
-    unlet g:deoplete#_context.saved_completeopt
   endif
 
   let g:deoplete#_context.position = getpos('.')
