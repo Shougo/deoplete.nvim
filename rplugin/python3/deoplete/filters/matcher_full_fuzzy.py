@@ -1,5 +1,5 @@
 # ============================================================================
-# FILE: matcher_fuzzy.py
+# FILE: matcher_full_fuzzy.py
 # AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 # License: MIT license  {{{
 #     Permission is hereby granted, free of charge, to any person obtaining
@@ -32,8 +32,8 @@ class Filter(Base):
     def __init__(self, vim):
         Base.__init__(self, vim)
 
-        self.name = 'matcher_fuzzy'
-        self.description = 'fuzzy matcher'
+        self.name = 'matcher_full_fuzzy'
+        self.description = 'full fuzzy matcher'
 
     def filter(self, context):
         complete_str = context['complete_str']
@@ -44,11 +44,11 @@ class Filter(Base):
         if context['ignorecase']:
             return [x for x in context['candidates']
                     if len(x['word']) > input_len and
-                    p.match(x['word'].lower())]
+                    p.search(x['word'].lower())]
         else:
             return [x for x in context['candidates']
                     if len(x['word']) > input_len and
-                    p.match(x['word'])]
+                    p.search(x['word'])]
 
 
 def fuzzy_escape(string):

@@ -432,6 +432,11 @@ matcher_head	Head matching matcher.
 					*deoplete-filter-matcher_fuzzy*
 matcher_fuzzy	Fuzzy matching matcher.
 
+					*deoplete-filter-matcher_full_fuzzy*
+matcher_full_fuzzy
+		Full fuzzy matching matcher.
+		It accepts partial fuzzy matches like YouCompleteMe.
+
 					*deoplete-filter-sorter_rank*
 sorter_rank	Matched rank order sorter.  The higher the head matched word.
 
