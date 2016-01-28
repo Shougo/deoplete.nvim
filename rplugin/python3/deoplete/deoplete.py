@@ -107,10 +107,13 @@ class Deoplete(object):
             'g:deoplete#ignore_sources',
             '{}')
         for source_name, source in sources:
+            filetypes = get_custom(self.vim, source.name).get(
+                'filetypes', source.filetypes)
+
             in_sources = not context['sources'] or (
                 source_name in context['sources'])
-            in_fts = not source.filetypes or (
-                context['filetype'] in source.filetypes)
+            in_fts = not filetypes or (
+                context['filetype'] in filetypes)
             in_ignore = source_name in ignore_sources
             if not in_sources or not in_fts or in_ignore:
                 continue
