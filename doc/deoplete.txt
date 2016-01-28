@@ -670,6 +670,9 @@ https://github.com/zchee/deoplete-go
 elixir.nvim: elixir source
 https://github.com/awetzel/elixir.nvim
 
+deoplete-jedi: jedi source
+https://github.com/zchee/deoplete-jedi
+
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*
 
@@ -791,13 +794,8 @@ A: You can create the source for it.  Why don't create the source if you need?
 
 Q: I want to use vim-jedi omni completion with deoplete.
 
-A: For vim-jedi configuration is below. >
-
-	autocmd FileType python setlocal omnifunc=jedi#completions
-	let g:jedi#completions_enabled = 0
-	let g:jedi#auto_vim_configuration = 0
-	let g:jedi#smart_auto_mappings = 0
-	let g:jedi#show_call_signatures = 0
+A: You should install deoplete-jedi instead of vim-jedi. >
+https://github.com/zchee/deoplete-jedi
 
 Q: When I press enter, neovim close the popup instead of inserting new line.
 
