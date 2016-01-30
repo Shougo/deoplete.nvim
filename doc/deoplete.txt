@@ -311,6 +311,8 @@ deoplete#custom#source({source-name}, {option-name}, {value})
 		\ 'min_pattern_length', 9999)
 		" Change the source rank
 		call deoplete#custom#set('buffer', 'rank', 9999)
+		" Enable buffer source in C/C++ files only.
+		call deoplete#custom#set('buffer', 'filetypes', ['c', 'cpp'])
 <
 ------------------------------------------------------------------------------
 KEY MAPPINGS 					*deoplete-key-mappings*
@@ -672,6 +674,9 @@ https://github.com/awetzel/elixir.nvim
 
 deoplete-jedi: jedi source
 https://github.com/zchee/deoplete-jedi
+
+perlomni.vim: perlomni source
+https://github.com/c9s/perlomni.vim
 
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*
