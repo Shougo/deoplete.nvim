@@ -586,7 +586,7 @@ __{name}	(Unknown)	(Optional)
 		input			(String)
 			The input string of current line.
 
-		complete_pos		(Number)
+		complete_position	(Number)
 			The complete position of current source.
 
 		complete_str		(String)
