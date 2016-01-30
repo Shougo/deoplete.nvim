@@ -792,9 +792,9 @@ Q: I want to complete AAA using deoplete.
 
 A: You can create the source for it.  Why don't create the source if you need?
 
-Q: I want to use vim-jedi omni completion with deoplete.
+Q: I want to use jedi-vim omni completion with deoplete.
 
-A: You should install deoplete-jedi instead of vim-jedi. >
+A: You should install deoplete-jedi instead of jedi-vim. >
 https://github.com/zchee/deoplete-jedi
 
 Q: When I press enter, neovim close the popup instead of inserting new line.
