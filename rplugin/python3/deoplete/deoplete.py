@@ -24,7 +24,7 @@
 # ============================================================================
 
 from deoplete.util import \
-    globruntime, charpos2bytepos, \
+    error, globruntime, charpos2bytepos, \
     bytepos2charpos, get_custom, get_buffer_config
 
 import deoplete.sources
@@ -35,6 +35,7 @@ import re
 import importlib.machinery
 import os.path
 import copy
+import traceback
 
 deoplete.sources  # silence pyflakes
 deoplete.filters  # silence pyflakes
@@ -48,36 +49,34 @@ class Deoplete(object):
         self.sources = {}
         self.runtimepath = ''
 
-    def debug(self, expr):
-        deoplete.util.debug(self.vim, expr)
+    def completion_begin(self, context):
+        pos = self.vim.current.window.cursor
+        try:
+            complete_position, candidates = self.gather_candidates(context)
+        except Exception:
+            for line in traceback.format_exc().splitlines():
+                error(self.vim, line)
+            error(self.vim,
+                  'An error has occurred. Please execute :messages command.')
+            candidates = []
 
-    def load_sources(self):
-        # Load sources from runtimepath
-        for path in globruntime(self.vim,
-                                'rplugin/python3/deoplete/sources/base.py'
-                                ) + globruntime(
-                                    self.vim,
-                                    'rplugin/python3/deoplete/sources/*.py'):
-            name = os.path.basename(path)[: -3]
-            source = importlib.machinery.SourceFileLoader(
-                'deoplete.sources.' + name, path).load_module()
-            if hasattr(source, 'Source') and name not in self.sources:
-                self.sources[name] = source.Source(self.vim)
-        # self.debug(self.sources)
+        if not candidates or self.vim.funcs.mode() != 'i' \
+                or pos != self.vim.current.window.cursor:
+            self.vim.vars['deoplete#_context'] = {}
+            return
 
-    def load_filters(self):
-        # Load filters from runtimepath
-        for path in globruntime(self.vim,
-                                'rplugin/python3/deoplete/filters/base.py'
-                                ) + globruntime(
-                                    self.vim,
-                                    'rplugin/python3/deoplete/filters/*.py'):
-            name = os.path.basename(path)[: -3]
-            filter = importlib.machinery.SourceFileLoader(
-                'deoplete.filters.' + name, path).load_module()
-            if hasattr(filter, 'Filter') and name not in self.filters:
-                self.filters[name] = filter.Filter(self.vim)
-        # self.debug(self.filters)
+        var_context = {}
+        var_context['complete_position'] = complete_position
+        var_context['changedtick'] = context['changedtick']
+        var_context['candidates'] = candidates
+        self.vim.vars['deoplete#_context'] = var_context
+
+        # Set (and store) current &completeopt setting.  This cannot be done
+        # (currently) from the deoplete_start_complete mapping's function.
+        self.vim.call('deoplete#mappings#_set_completeopt')
+        # Note: cannot use vim.feedkeys()
+        self.vim.command(
+            'call feedkeys("\<Plug>(deoplete_start_complete)")')
 
     def gather_candidates(self, context):
         if self.vim.eval('&runtimepath') != self.runtimepath:
@@ -232,6 +231,37 @@ class Deoplete(object):
         if self.vim.vars['deoplete#max_list'] > 0:
             candidates = candidates[: self.vim.vars['deoplete#max_list']]
         return (complete_position, candidates)
+
+    def debug(self, expr):
+        deoplete.util.debug(self.vim, expr)
+
+    def load_sources(self):
+        # Load sources from runtimepath
+        for path in globruntime(self.vim,
+                                'rplugin/python3/deoplete/sources/base.py'
+                                ) + globruntime(
+                                    self.vim,
+                                    'rplugin/python3/deoplete/sources/*.py'):
+            name = os.path.basename(path)[: -3]
+            source = importlib.machinery.SourceFileLoader(
+                'deoplete.sources.' + name, path).load_module()
+            if hasattr(source, 'Source') and name not in self.sources:
+                self.sources[name] = source.Source(self.vim)
+        # self.debug(self.sources)
+
+    def load_filters(self):
+        # Load filters from runtimepath
+        for path in globruntime(self.vim,
+                                'rplugin/python3/deoplete/filters/base.py'
+                                ) + globruntime(
+                                    self.vim,
+                                    'rplugin/python3/deoplete/filters/*.py'):
+            name = os.path.basename(path)[: -3]
+            filter = importlib.machinery.SourceFileLoader(
+                'deoplete.filters.' + name, path).load_module()
+            if hasattr(filter, 'Filter') and name not in self.filters:
+                self.filters[name] = filter.Filter(self.vim)
+        # self.debug(self.filters)
 
     def is_skip(self, context, min_pattern_length, input_pattern):
         return (input_pattern == '' or

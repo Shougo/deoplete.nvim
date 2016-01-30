@@ -24,10 +24,8 @@
 # ============================================================================
 
 import neovim
-import traceback
 
 from deoplete.deoplete import Deoplete
-from deoplete.util import error
 
 
 @neovim.plugin
@@ -43,31 +41,4 @@ class DeopleteHandlers(object):
 
     @neovim.rpc_export('completion_begin')
     def completion_begin(self, context):
-        pos = self.vim.current.window.cursor
-        try:
-            complete_position, candidates = self.deoplete.gather_candidates(
-                context)
-        except Exception:
-            for line in traceback.format_exc().splitlines():
-                error(self.vim, line)
-            error(self.vim,
-                  'An error has occurred. Please execute :messages command.')
-            candidates = []
-
-        if not candidates or self.vim.funcs.mode() != 'i' \
-                or pos != self.vim.current.window.cursor:
-            self.vim.vars['deoplete#_context'] = {}
-            return
-
-        var_context = {}
-        var_context['complete_position'] = complete_position
-        var_context['changedtick'] = context['changedtick']
-        var_context['candidates'] = candidates
-        self.vim.vars['deoplete#_context'] = var_context
-
-        # Set (and store) current &completeopt setting.  This cannot be done
-        # (currently) from the deoplete_start_complete mapping's function.
-        self.vim.call('deoplete#mappings#_set_completeopt')
-        # Note: cannot use vim.feedkeys()
-        self.vim.command(
-            'call feedkeys("\<Plug>(deoplete_start_complete)")')
+        self.deoplete.completion_begin(context)
