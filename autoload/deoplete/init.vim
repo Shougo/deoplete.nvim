@@ -82,6 +82,7 @@ endfunction"}}}
 
 function! deoplete#init#_variables() abort "{{{
   let g:deoplete#_context = {}
+  let g:deoplete#_rank = {}
 
   " User vairables
   call deoplete#util#set_default(

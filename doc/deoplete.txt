@@ -440,7 +440,8 @@ matcher_full_fuzzy
 		It accepts partial fuzzy matches like YouCompleteMe.
 
 					*deoplete-filter-sorter_rank*
-sorter_rank	Matched rank order sorter.  The higher the head matched word.
+sorter_rank	Matched rank order sorter.  The higher the head matched word
+		or already selected.
 
 				*deoplete-filter-converter_remove_overlap*
 converter_remove_overlap

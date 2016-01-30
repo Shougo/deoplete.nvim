@@ -84,6 +84,15 @@ function! s:on_insert_leave() abort "{{{
 endfunction"}}}
 
 function! s:complete_done() abort "{{{
+  if !empty(v:completed_item)
+    let word = v:completed_item.word
+    if !has_key(g:deoplete#_rank, word)
+      let g:deoplete#_rank[word] = 1
+    else
+      let g:deoplete#_rank[word] += 1
+    endif
+  endif
+
   if get(g:deoplete#_context, 'refresh', 0)
     " Don't skip completion
     let g:deoplete#_context.refresh = 0
