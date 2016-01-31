@@ -84,7 +84,7 @@ function! s:on_insert_leave() abort "{{{
 endfunction"}}}
 
 function! s:complete_done() abort "{{{
-  if !empty(v:completed_item)
+  if get(v:completed_item, 'word', '') != ''
     let word = v:completed_item.word
     if !has_key(g:deoplete#_rank, word)
       let g:deoplete#_rank[word] = 1
