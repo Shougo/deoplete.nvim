@@ -87,6 +87,10 @@ class Source(Base):
         try:
             candidates = self.vim.call(
                 self.__omnifunc, 0, context['complete_str'])
+            if candidates is dict:
+                candidates = candidates['words']
+            elif candidates is int:
+                candidates = []
         except:
             error(self.vim,
                   'Error occurred calling omnifunction: ' +
