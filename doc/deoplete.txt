@@ -707,7 +707,7 @@ https://github.com/Konfekt/FastFold
 ==============================================================================
 FAQ						*deoplete-faq*
 
-Q: deoplete deos not work.
+Q: deoplete does not work.
 
 A:
   1. Please update neovim to latest version.
