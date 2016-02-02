@@ -96,10 +96,12 @@ class Source(Base):
                   'Error occurred calling omnifunction: ' +
                   self.__omnifunc)
             candidates = []
-        self.__prev_linenr = self.vim.funcs.line('.')
-        self.__prev_pos = context['complete_position']
-        self.__prev_input = context['input']
-        self.__prev_candidates = candidates
+
+        if context['event'] != 'Manual':
+            self.__prev_linenr = self.vim.funcs.line('.')
+            self.__prev_pos = context['complete_position']
+            self.__prev_input = context['input']
+            self.__prev_candidates = candidates
 
         return candidates
 
