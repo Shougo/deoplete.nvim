@@ -37,22 +37,7 @@ endfunction"}}}
 function! s:completion_begin(event) abort "{{{
   let context = deoplete#init#_context(a:event, [])
 
-  let disable_auto_complete =
-        \ deoplete#util#get_simple_buffer_config(
-        \   'b:deoplete_disable_auto_complete',
-        \   'g:deoplete#disable_auto_complete')
-
-  " Skip
-  if &paste
-        \ || (a:event !=# 'Manual' && disable_auto_complete)
-        \ || (&l:completefunc != '' && &l:buftype =~# 'nofile')
-        \ || (context.position ==# get(g:deoplete#_context, 'position', [])
-        \      && (get(v:completed_item, 'word', '') == ''
-        \         || empty(filter(copy(g:deoplete#delimiters),
-        \         'strridx(v:completed_item.word, v:val)
-        \          == (len(v:completed_item.word) - len(v:val))'))))
-        \ || (a:event ==# 'InsertEnter'
-        \     && has_key(g:deoplete#_context, 'position'))
+  if s:is_skip(a:event, context)
     return
   endif
 
@@ -77,6 +62,31 @@ function! s:completion_begin(event) abort "{{{
   endfor
 
   call rpcnotify(g:deoplete#_channel_id, 'completion_begin', context)
+endfunction"}}}
+function! s:is_skip(event, context) abort "{{{
+  let disable_auto_complete =
+        \ deoplete#util#get_simple_buffer_config(
+        \   'b:deoplete_disable_auto_complete',
+        \   'g:deoplete#disable_auto_complete')
+
+  if &paste
+        \ || (a:event !=# 'Manual' && disable_auto_complete)
+        \ || (&l:completefunc != '' && &l:buftype =~# 'nofile')
+        \ || (a:event ==# 'InsertEnter'
+        \     && has_key(g:deoplete#_context, 'position'))
+    return 1
+  endif
+
+  if a:context.position ==# get(g:deoplete#_context, 'position', [])
+    let word = get(v:completed_item, 'word', '')
+    let delimiters = filter(copy(g:deoplete#delimiters),
+        \         'strridx(word, v:val) == (len(word) - len(v:val))')
+    if word == '' || empty(delimiters)
+      return 1
+    endif
+  endif
+
+  return 0
 endfunction"}}}
 
 function! s:on_insert_leave() abort "{{{
