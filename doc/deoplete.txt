@@ -457,6 +457,10 @@ converter_auto_paren
 		It is useful if you use |neopairs.vim| or |neosnippet.vim|
 		plugins.
 
+				*deoplete-filter-converter_remove_paren*
+converter_remove_paren
+		It removes parenthes character in a candidate's word.
+
 ==============================================================================
 CREATE SOURCE					*deoplete-create-source*
 
