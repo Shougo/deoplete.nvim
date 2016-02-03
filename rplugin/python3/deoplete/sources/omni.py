@@ -97,11 +97,10 @@ class Source(Base):
                   self.__omnifunc)
             candidates = []
 
-        if context['event'] != 'Manual':
-            self.__prev_linenr = self.vim.funcs.line('.')
-            self.__prev_pos = context['complete_position']
-            self.__prev_input = context['input']
-            self.__prev_candidates = candidates
+        self.__prev_linenr = self.vim.funcs.line('.')
+        self.__prev_pos = context['complete_position']
+        self.__prev_input = context['input']
+        self.__prev_candidates = candidates
 
         return candidates
 
@@ -109,4 +108,5 @@ class Source(Base):
         return (self.vim.funcs.line('.') == self.__prev_linenr and
                 re.sub(r'\w+$', '', context['input']) == re.sub(
                     r'\w+$', '', self.__prev_input) and
+                len(context['input']) > len(self.__prev_input) and
                 context['input'].find(self.__prev_input) == 0)
