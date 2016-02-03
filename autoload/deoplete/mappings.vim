@@ -48,8 +48,8 @@ endfunction"}}}
 
 function! deoplete#mappings#manual_complete(...) abort "{{{
   " Start complete.
-  return pumvisible() ? '' :
-        \ "\<C-r>=deoplete#mappings#_rpcnotify_wrapper("
+  return (pumvisible() ? "\<C-e>" : '')
+        \ . "\<C-r>=deoplete#mappings#_rpcnotify_wrapper("
         \ . string(get(a:000, 0, [])) . ")\<CR>"
 endfunction"}}}
 function! deoplete#mappings#_rpcnotify_wrapper(sources) abort "{{{
