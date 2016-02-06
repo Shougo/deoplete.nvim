@@ -124,8 +124,8 @@ class Deoplete(object):
             cont['complete_str'] = cont['input'][charpos:]
             cont['complete_position'] = charpos2bytepos(
                 self.vim, cont['input'], charpos)
-            # self.debug(source.rank)
-            # self.debug(source_name)
+            self.debug(source.rank)
+            self.debug(source_name)
             # self.debug(cont['input'])
             # self.debug(charpos)
             # self.debug(cont['complete_position'])
@@ -214,11 +214,10 @@ class Deoplete(object):
         for result in results:
             context = result['context']
             if context['complete_position'] <= complete_position:
-                complete_position = context['complete_position']
                 candidates += context['candidates']
                 continue
-            prefix = context['input'][context[
-                'complete_position'] - complete_position:]
+            prefix = context['input'][complete_position :
+                context['complete_position']]
 
             context['complete_position'] = complete_position
             context['complete_str'] = prefix
