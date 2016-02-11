@@ -68,8 +68,8 @@ class Source(Base):
                                   'g:deoplete#omni#_input_patterns')):
 
                 m = re.search('(' + input_pattern + ')$', context['input'])
-                self.debug(filetype)
-                self.debug(input_pattern)
+                # self.debug(filetype)
+                # self.debug(input_pattern)
                 if input_pattern == '' or (context['event'] !=
                                            'Manual' and m is None):
                     continue
