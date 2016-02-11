@@ -40,6 +40,7 @@ class Source(Base):
         self.name = 'file'
         self.mark = '[F]'
         self.min_pattern_length = 0
+        self.rank = 150
 
         set_default(self.vim, 'g:deoplete#file#enable_buffer_path', 0)
 
