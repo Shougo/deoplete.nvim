@@ -56,7 +56,9 @@ class Source(Base):
                                          'g:deoplete#omni#_functions')
             if omnifunc == '':
                 omnifunc = self.vim.eval('&l:omnifunc')
-            if omnifunc == '' or omnifunc == 'ccomplete#Complete':
+            if omnifunc == '' or [x for x in [
+                    'ccomplete#Complete', 'htmlcomplete#CompleteTags']
+                                  if x == omnifunc]:
                 continue
             self.__omnifunc = omnifunc
             for input_pattern in convert2list(
@@ -66,6 +68,8 @@ class Source(Base):
                                   'g:deoplete#omni#_input_patterns')):
 
                 m = re.search('(' + input_pattern + ')$', context['input'])
+                self.debug(filetype)
+                self.debug(input_pattern)
                 if input_pattern == '' or (context['event'] !=
                                            'Manual' and m is None):
                     continue
