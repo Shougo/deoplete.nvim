@@ -78,3 +78,6 @@ def bytepos2charpos(vim, input, pos):
 
 def get_custom(vim, source_name):
     return vim.call('deoplete#custom#get', source_name)
+
+def get_syn_name(vim):
+    return vim.call('deoplete#util#get_syn_name')

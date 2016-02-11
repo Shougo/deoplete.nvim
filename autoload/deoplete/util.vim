@@ -143,4 +143,10 @@ function! deoplete#util#uniq(list) abort "{{{
   return map(list, 'v:val[0]')
 endfunction"}}}
 
+function! deoplete#util#get_syn_name() abort "{{{
+  return len(getline('.')) < 200 ?
+        \ synIDattr(synIDtrans(synID(line('.'), mode() ==# 'i' ?
+        \          col('.')-1 : col('.'), 1)), 'name') : ''
+endfunction"}}}
+
 " vim: foldmethod=marker
