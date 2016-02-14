@@ -25,6 +25,8 @@
 # ============================================================================
 
 import re
+import functools
+import operator
 from os.path import getmtime, exists
 from collections import namedtuple
 from .base import Base
@@ -63,8 +65,6 @@ class Source(Base):
 
 def parse_tags(f):
     p = re.compile('^[a-zA-Z_]\w*(?=\t)')
-    candidates = []
-
-    for l in f.readlines():
-        candidates += p.findall(l)
-    return list(set(candidates))
+    return list(set(functools.reduce(operator.add, [
+        p.findall(x) for x in f.readlines()
+    ])))
