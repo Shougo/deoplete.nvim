@@ -57,7 +57,10 @@ def globruntime(vim, path):
 
 
 def debug(vim, expr):
-    vim.command('echomsg string(\'' + escape(json.dumps(expr)) + '\')')
+    if vim.vars['deoplete#debug']:
+        vim.command('echomsg string(\'' + escape(json.dumps(expr)) + '\')')
+    else:
+        error(vim, "not in debug mode, but debug called")
 
 
 def error(vim, msg):
