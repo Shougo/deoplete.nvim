@@ -170,16 +170,16 @@ class Deoplete(object):
                 'converters', source.converters)
 
             ignorecase = context['ignorecase']
+            smartcase = context['smartcase']
             try:
                 # Set ignorecase
-                if context['smartcase'] and re.match(r'[A-Z]',
-                                                     context['complete_str']):
+                if smartcase and re.match(r'[A-Z]', context['complete_str']):
                     context['ignorecase'] = 0
 
-                for filter_name in matchers + sorters + converters:
-                    if filter_name in self.filters:
-                        context['candidates'] = self.filters[
-                            filter_name].filter(context)
+                for filter in [self.filters[x] for x
+                               in matchers + sorters + converters
+                               if x in self.filters]:
+                    context['candidates'] = filter.filter(context)
             finally:
                 context['ignorecase'] = ignorecase
             # self.debug(context['candidates'])
@@ -188,17 +188,14 @@ class Deoplete(object):
             if hasattr(source, 'on_post_filter'):
                 context['candidates'] = source.on_post_filter(context)
 
-            if context['candidates'] and (
-                    not re.match(r'\[.*\]',
-                                 context['candidates'][0].get('menu', ''))):
+            if context['candidates'] and not (
+                    re.match(r'\[.*\]',
+                             context['candidates'][0].get('menu', ''))):
                 # Set default menu
                 for candidate in context['candidates']:
                     candidate['menu'] = source.mark + ' ' + candidate.get(
                         'menu', '')
 
-            # Set icase
-            for candidate in context['candidates']:
-                candidate['icase'] = 1
             # self.debug(context['candidates'])
         return results
 
@@ -229,6 +226,10 @@ class Deoplete(object):
         # self.debug(candidates)
         if self.vim.vars['deoplete#max_list'] > 0:
             candidates = candidates[: self.vim.vars['deoplete#max_list']]
+
+        # Set icase
+        for candidate in context['candidates']:
+            candidate['icase'] = 1
         return (complete_position, candidates)
 
     def debug(self, expr):
