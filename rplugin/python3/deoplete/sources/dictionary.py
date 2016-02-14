@@ -24,6 +24,8 @@
 # ============================================================================
 
 import re
+import functools
+import operator
 from os.path import getmtime, exists
 from collections import namedtuple
 from .base import Base
@@ -61,11 +63,9 @@ class Source(Base):
 
 def parse_dictionary(f, keyword_patterns):
     p = re.compile(keyword_patterns)
-    candidates = []
-
-    for l in f.readlines():
-        candidates += p.findall(l)
-    return list(set(candidates))
+    return list(set(functools.reduce(operator.add, [
+        p.findall(x) for x in f.readlines()
+    ])))
 
 
 def get_dictionaries(vim, filetype):

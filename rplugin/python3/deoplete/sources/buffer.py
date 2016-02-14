@@ -24,8 +24,8 @@
 # ============================================================================
 
 import re
-import operator
 import functools
+import operator
 from .base import Base
 
 
