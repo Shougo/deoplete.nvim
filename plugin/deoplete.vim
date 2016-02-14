@@ -36,6 +36,11 @@ if get(g:, 'deoplete#enable_at_startup', 0)
   augroup deoplete
     autocmd CursorHold,InsertEnter * call deoplete#init#enable()
   augroup END
-endif"}}}
+endif
+
+if !exists("g:deoplete#debug")
+  let g:deoplete#debug = 1
+endif
+"}}}
 
 " vim: foldmethod=marker
