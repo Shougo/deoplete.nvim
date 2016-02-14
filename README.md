@@ -1,6 +1,8 @@
 deoplete
 ========
 
+[![Join the chat at https://gitter.im/Shougo/deoplete.nvim](https://badges.gitter.im/Shougo/deoplete.nvim.svg)](https://gitter.im/Shougo/deoplete.nvim?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Deoplete is the abbreviation of "dark powered neo-completion".  It
 provides an asynchronous keyword completion system in the
 current buffer.  Deoplete currently has few features and limited customization.
