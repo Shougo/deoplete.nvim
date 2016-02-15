@@ -40,6 +40,7 @@ Create filter		|deoplete-create-filter|
 FILTERS			|deoplete-filters|
 External sources	|deoplete-external-sources|
 External plugins	|deoplete-external-plugins|
+External omnifuncs	|deoplete-external-omnifuncs|
 FAQ			|deoplete-faq|
 
 ==============================================================================
@@ -710,6 +711,15 @@ https://github.com/Shougo/neoinclude.vim
 FastFold:
 Speed up the updating folds when you use auto completion plugins.
 https://github.com/Konfekt/FastFold
+
+==============================================================================
+EXTERNAL OMNIFUNCS				*deoplete-external-omnifuncs*
+
+These are my recommended omnifuncs for deoplete.
+
+vim-dutly: Vim omnifunc
+
+phpcompleted-extended: PHP omnifunc
 
 ==============================================================================
 FAQ						*deoplete-faq*
