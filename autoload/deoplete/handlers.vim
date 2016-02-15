@@ -70,6 +70,7 @@ function! s:is_skip(event, context) abort "{{{
         \   'g:deoplete#disable_auto_complete')
 
   if &paste
+        \ || col('.') != virtcol('.')
         \ || (a:event !=# 'Manual' && disable_auto_complete)
         \ || (&l:completefunc != '' && &l:buftype =~# 'nofile')
         \ || (a:event ==# 'InsertEnter'
