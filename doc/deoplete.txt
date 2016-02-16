@@ -332,6 +332,9 @@ deoplete#custom#source({source-name}, {option-name}, {value})
 		call deoplete#custom#set('buffer', 'rank', 9999)
 		" Enable buffer source in C/C++ files only.
 		call deoplete#custom#set('buffer', 'filetypes', ['c', 'cpp'])
+		" Disable the candidates in Comment/String syntaxes.
+		call deoplete#custom#set('_',
+		\ 'disabled_syntaxes', ['Comment', 'String'])
 <
 ------------------------------------------------------------------------------
 KEY MAPPINGS 					*deoplete-key-mappings*
@@ -566,6 +569,13 @@ converters	List			(Optional)
 		Source default converters list.
 
 		If you omit it, |deoplete-filter-converter_default| is used.
+
+				*deoplete-source-attribute-disabled_syntaxes*
+disabled_syntaxes
+		List			(Optional)
+		Source disabled syntaxes list.
+
+		If you omit it, this feature is ignored.
 
 			*deoplete-source-attribute-get_complete_position*
 get_complete_position	Function	(Optional)

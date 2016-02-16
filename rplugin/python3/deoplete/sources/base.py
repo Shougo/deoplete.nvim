@@ -43,6 +43,7 @@ class Base(object):
         self.filetypes = []
         self.is_bytepos = False
         self.rank = 100
+        self.disabled_syntaxes = []
 
     def get_complete_position(self, context):
         m = re.search(

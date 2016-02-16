@@ -25,7 +25,7 @@
 
 from deoplete.util import \
     error, globruntime, charpos2bytepos, \
-    bytepos2charpos, get_custom, get_buffer_config
+    bytepos2charpos, get_custom, get_buffer_config, get_syn_name
 
 import deoplete.sources
 import deoplete.filters
@@ -117,6 +117,10 @@ class Deoplete(object):
             in_ignore = source_name in ignore_sources
             if not in_sources or not in_fts or in_ignore:
                 continue
+            disabled_syntaxes = get_custom(self.__vim, source.name).get(
+                'disabled_syntaxes', source.disabled_syntaxes)
+            if disabled_syntaxes and 'syntax_name' not in context:
+                context['syntax_name'] = get_syn_name(self.__vim)
             cont = copy.deepcopy(context)
             charpos = source.get_complete_position(cont)
             if charpos >= 0 and source.is_bytepos:
@@ -140,7 +144,7 @@ class Deoplete(object):
             input_pattern = get_custom(self.__vim, source.name).get(
                 'input_pattern', source.input_pattern)
 
-            if charpos < 0 or self.is_skip(cont,
+            if charpos < 0 or self.is_skip(cont, disabled_syntaxes,
                                            min_pattern_length,
                                            input_pattern):
                 # Skip
@@ -280,8 +284,12 @@ class Deoplete(object):
                 self.__filters[name] = filter.Filter(self.__vim)
         # self.debug(self.__filters)
 
-    def is_skip(self, context, min_pattern_length, input_pattern):
-        return (input_pattern == '' or
-                not re.search(input_pattern + '$', context['input'])
-                ) and (context['event'] != 'Manual' and
-                       len(context['complete_str']) < min_pattern_length)
+    def is_skip(self, context, disabled_syntaxes,
+                min_pattern_length, input_pattern):
+        if (input_pattern != '' and
+                re.search(input_pattern + '$', context['input'])):
+            return 0
+        return (disabled_syntaxes and
+                context['syntax_name'] in disabled_syntaxes) or (
+                    context['event'] != 'Manual' and
+                    len(context['complete_str']) < min_pattern_length)
