@@ -36,6 +36,7 @@ import importlib.machinery
 import os.path
 import copy
 import traceback
+import time
 
 deoplete.sources  # silence pyflakes
 deoplete.filters  # silence pyflakes
@@ -48,6 +49,7 @@ class Deoplete(object):
         self.filters = {}
         self.sources = {}
         self.runtimepath = ''
+        self.__profile_start = 0
 
     def completion_begin(self, context):
         pos = self.vim.current.window.cursor
@@ -154,7 +156,9 @@ class Deoplete(object):
             source = result['source']
 
             # self.debug(source.name)
+            self.profile_start(source.name)
             context['candidates'] = source.gather_candidates(context)
+            self.profile_end(source.name)
             if context['candidates'] and isinstance(
                     context['candidates'][0], str):
                 # Convert to dict
@@ -178,7 +182,9 @@ class Deoplete(object):
                 for filter in [self.filters[x] for x
                                in matchers + sorters + converters
                                if x in self.filters]:
+                    self.profile_start(filter.name)
                     context['candidates'] = filter.filter(context)
+                    self.profile_end(filter.name)
             finally:
                 context['ignorecase'] = ignorecase
             # self.debug(context['candidates'])
@@ -233,6 +239,18 @@ class Deoplete(object):
 
     def debug(self, expr):
         deoplete.util.debug(self.vim, expr)
+
+    def profile_start(self, name):
+        if self.vim.vars['deoplete#enable_profile']:
+            self.vim.command(
+                'echomsg \'profile start: {0}\''.format(name))
+            self.__profile_start = time.clock()
+
+    def profile_end(self, name):
+        if self.vim.vars['deoplete#enable_profile']:
+            self.vim.command(
+                'echomsg \'profile end  : {0}, time={1}\''.format(
+                    name, time.clock() - self.__profile_start))
 
     def load_sources(self):
         # Load sources from runtimepath

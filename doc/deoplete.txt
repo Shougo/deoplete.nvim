@@ -142,6 +142,16 @@ g:deoplete#disable_auto_complete
 b:deoplete_disable_auto_complete
 		Buffer local variable of |g:deoplete#disable_auto_complete|.
 
+				*g:deoplete#enable_debug*
+g:deoplete#enable_debug
+		It enables deoplete debug mode.  The debug print feature is
+		enabled.
+
+				*g:deoplete#enable_profile*
+g:deoplete#enable_profile
+		It enables deoplete profile mode.
+		If it is 1, deoplete will print the time information.
+
 				*g:deoplete#delimiters*
 g:deoplete#delimiters
 		Delimiters list.
