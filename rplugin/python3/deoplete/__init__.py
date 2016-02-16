@@ -36,9 +36,9 @@ class DeopleteHandlers(object):
 
     @neovim.command('DeopleteInitializePython', sync=True, nargs=0)
     def init_python(self):
-        self.deoplete = Deoplete(self.__vim)
+        self.__deoplete = Deoplete(self.__vim)
         self.__vim.vars['deoplete#_channel_id'] = self.__vim.channel_id
 
     @neovim.rpc_export('completion_begin')
     def completion_begin(self, context):
-        self.deoplete.completion_begin(context)
+        self.__deoplete.completion_begin(context)
