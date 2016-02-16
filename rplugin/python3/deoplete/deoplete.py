@@ -79,11 +79,11 @@ class Deoplete(object):
             'call feedkeys("\<Plug>(deoplete_start_complete)")')
 
     def gather_candidates(self, context):
-        if self.vim.eval('&runtimepath') != self.runtimepath:
+        if self.vim.options['runtimepath'] != self.runtimepath:
             # Recache
             self.load_sources()
             self.load_filters()
-            self.runtimepath = self.vim.eval('&runtimepath')
+            self.runtimepath = self.vim.options['runtimepath']
 
         # self.debug(context)
 
@@ -98,8 +98,7 @@ class Deoplete(object):
                              'rank', x[1].rank),
                          reverse=True)
         results = []
-        start_length = self.vim.eval(
-            'g:deoplete#auto_completion_start_length')
+        start_length = self.vim.vars['deoplete#auto_completion_start_length']
         ignore_sources = get_buffer_config(
             self.vim, context['filetype'],
             'b:deoplete_ignore_sources',

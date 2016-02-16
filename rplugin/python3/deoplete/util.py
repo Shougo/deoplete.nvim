@@ -53,7 +53,7 @@ def convert2list(expr):
 
 
 def globruntime(vim, path):
-    return vim.funcs.globpath(vim.eval('&runtimepath'), path, 1, 1)
+    return vim.funcs.globpath(vim.options['runtimepath'], path, 1, 1)
 
 
 def debug(vim, expr):
@@ -72,7 +72,7 @@ def escape(expr):
 
 
 def charpos2bytepos(vim, input, pos):
-    return len(bytes(input[: pos], vim.eval('&encoding')))
+    return len(bytes(input[: pos], vim.options['encoding']))
 
 
 def bytepos2charpos(vim, input, pos):

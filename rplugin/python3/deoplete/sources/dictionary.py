@@ -69,4 +69,4 @@ def parse_dictionary(f, keyword_patterns):
 
 
 def get_dictionaries(vim, filetype):
-    return vim.eval('&l:dictionary').split(',')
+    return vim.current.buffer.options.get('dictionary', '').split(',')
