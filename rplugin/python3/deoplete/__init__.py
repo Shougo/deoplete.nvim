@@ -32,12 +32,12 @@ from deoplete.deoplete import Deoplete
 class DeopleteHandlers(object):
 
     def __init__(self, vim):
-        self.vim = vim
+        self.__vim = vim
 
     @neovim.command('DeopleteInitializePython', sync=True, nargs=0)
     def init_python(self):
-        self.deoplete = Deoplete(self.vim)
-        self.vim.vars['deoplete#_channel_id'] = self.vim.channel_id
+        self.deoplete = Deoplete(self.__vim)
+        self.__vim.vars['deoplete#_channel_id'] = self.__vim.channel_id
 
     @neovim.rpc_export('completion_begin')
     def completion_begin(self, context):
