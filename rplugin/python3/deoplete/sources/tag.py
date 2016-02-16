@@ -27,7 +27,7 @@
 import re
 import functools
 import operator
-from os.path import getmtime, exists
+from os.path import getmtime, exists, getsize
 from collections import namedtuple
 from .base import Base
 
@@ -46,10 +46,12 @@ class Source(Base):
 
     def gather_candidates(self, context):
         candidates = []
+        limit = self.vim.vars['deoplete#tag#cache_limit_size']
         for filename in [x for x in self.vim.eval(
                 'map(tagfiles() + (get(g:, "loaded_neoinclude", 0) ? ' +
                 ' neoinclude#include#get_tag_files() : []), ' +
-                '"fnamemodify(v:val, \\":p\\")")') if exists(x)]:
+                '"fnamemodify(v:val, \\":p\\")")')
+                         if exists(x) and getsize(x) < limit]:
             mtime = getmtime(filename)
             if filename not in self.__cache or self.__cache[
                     filename].mtime != mtime:
