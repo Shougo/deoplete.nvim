@@ -47,10 +47,12 @@ class Source(Base):
     def gather_candidates(self, context):
         candidates = []
         limit = self.vim.vars['deoplete#tag#cache_limit_size']
-        for filename in [x for x in self.vim.eval(
-                'map(tagfiles() + (get(g:, "loaded_neoinclude", 0) ? ' +
-                ' neoinclude#include#get_tag_files() : []), ' +
-                '"fnamemodify(v:val, \\":p\\")")')
+        include_files = self.vim.call(
+            'neoinclude#include#get_tag_files') if self.vim.call(
+                'exists', '*neoinclude#include#get_tag_files') else []
+        for filename in [x for x in self.vim.call(
+                'map', self.vim.call('tagfiles') + include_files,
+                'fnamemodify(v:val, ":p")')
                          if exists(x) and getsize(x) < limit]:
             mtime = getmtime(filename)
             if filename not in self.__cache or self.__cache[
