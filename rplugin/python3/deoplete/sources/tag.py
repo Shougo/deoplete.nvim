@@ -24,11 +24,9 @@
 # }}}
 # ============================================================================
 
-import re
-import functools
-import operator
 from os.path import getmtime, exists, getsize
 from collections import namedtuple
+from deoplete.util import parse_file_pattern
 from .base import Base
 
 TagsCacheItem = namedtuple('TagsCacheItem', 'mtime candidates')
@@ -58,7 +56,8 @@ class Source(Base):
             if filename not in self.__cache or self.__cache[
                     filename].mtime != mtime:
                 with open(filename, 'r', errors='replace') as f:
-                    new_candidates = parse_tags(f)
+                    new_candidates = parse_file_pattern(
+                        f, '^[a-zA-Z_]\w*(?=\t)')
                     candidates += new_candidates
                     self.__cache[filename] = TagsCacheItem(
                         mtime, new_candidates)
@@ -66,10 +65,3 @@ class Source(Base):
             else:
                 candidates += self.__cache[filename].candidates
         return [{'word': x} for x in candidates]
-
-
-def parse_tags(f):
-    p = re.compile('^[a-zA-Z_]\w*(?=\t)')
-    return list(set(functools.reduce(operator.add, [
-        p.findall(x) for x in f.readlines()
-    ])))

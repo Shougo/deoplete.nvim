@@ -23,11 +23,9 @@
 # }}}
 # ============================================================================
 
-import re
-import functools
-import operator
 from os.path import getmtime, exists
 from collections import namedtuple
+from deoplete.util import parse_file_pattern
 from .base import Base
 
 DictCacheItem = namedtuple('DictCacheItem', 'mtime candidates')
@@ -51,7 +49,7 @@ class Source(Base):
             if filename not in self.__cache or self.__cache[
                     filename].mtime != mtime:
                 with open(filename, 'r', errors='replace') as f:
-                    new_candidates = parse_dictionary(
+                    new_candidates = parse_file_pattern(
                         f, context['keyword_patterns'])
                     candidates += new_candidates
                 self.__cache[filename] = DictCacheItem(
@@ -59,13 +57,6 @@ class Source(Base):
             else:
                 candidates += self.__cache[filename].candidates
         return [{'word': x} for x in candidates]
-
-
-def parse_dictionary(f, keyword_patterns):
-    p = re.compile(keyword_patterns)
-    return list(set(functools.reduce(operator.add, [
-        p.findall(x) for x in f.readlines()
-    ])))
 
 
 def get_dictionaries(vim, filetype):

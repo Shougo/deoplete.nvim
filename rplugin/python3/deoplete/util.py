@@ -23,7 +23,10 @@
 # }}}
 # ============================================================================
 
+import re
 import json
+import functools
+import operator
 
 
 def get_buffer_config(vim, filetype, buffer_var, user_var, default_var):
@@ -85,3 +88,13 @@ def get_custom(vim, source_name):
 
 def get_syn_name(vim):
     return vim.call('deoplete#util#get_syn_name')
+
+
+def parse_file_pattern(f, pattern):
+    lines = f.readlines()
+    if not lines:
+        return []
+    p = re.compile(pattern)
+    return list(set(functools.reduce(operator.add, [
+        p.findall(x) for x in lines
+    ])))
