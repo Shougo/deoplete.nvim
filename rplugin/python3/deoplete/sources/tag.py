@@ -62,6 +62,7 @@ class Source(Base):
                     candidates += new_candidates
                     self.__cache[filename] = TagsCacheItem(
                         mtime, new_candidates)
+                    limit -= getsize(filename)
             else:
                 candidates += self.__cache[filename].candidates
         return [{'word': x} for x in candidates]
