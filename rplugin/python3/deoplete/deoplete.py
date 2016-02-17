@@ -141,11 +141,14 @@ class Deoplete(object):
             if min_pattern_length < 0:
                 # Use default value
                 min_pattern_length = start_length
+            max_pattern_length = get_custom(self.__vim, source.name).get(
+                'max_pattern_length', source.max_pattern_length)
             input_pattern = get_custom(self.__vim, source.name).get(
                 'input_pattern', source.input_pattern)
 
             if charpos < 0 or self.is_skip(cont, disabled_syntaxes,
                                            min_pattern_length,
+                                           max_pattern_length,
                                            input_pattern):
                 # Skip
                 continue
@@ -285,11 +288,13 @@ class Deoplete(object):
         # self.debug(self.__filters)
 
     def is_skip(self, context, disabled_syntaxes,
-                min_pattern_length, input_pattern):
+                min_pattern_length, max_pattern_length, input_pattern):
         if (input_pattern != '' and
                 re.search(input_pattern + '$', context['input'])):
             return 0
+        skip_length = (context['event'] != 'Manual' and
+                       not (min_pattern_length <=
+                            len(context['complete_str']) <=
+                            max_pattern_length))
         return (disabled_syntaxes and
-                context['syntax_name'] in disabled_syntaxes) or (
-                    context['event'] != 'Manual' and
-                    len(context['complete_str']) < min_pattern_length)
+                context['syntax_name'] in disabled_syntaxes) or skip_length

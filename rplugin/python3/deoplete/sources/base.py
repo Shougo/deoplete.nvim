@@ -36,6 +36,7 @@ class Base(object):
         self.description = ''
         self.mark = ''
         self.min_pattern_length = -1
+        self.max_pattern_length = 80
         self.input_pattern = ''
         self.matchers = ['matcher_fuzzy']
         self.sorters = ['sorter_rank']

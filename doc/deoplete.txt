@@ -530,6 +530,14 @@ min_pattern_length
 		If you omit it, it is set
 		|g:deoplete#auto_completion_start_length| value.
 
+				*deoplete-source-attribute-max_pattern_length*
+max_pattern_length
+		Number				(Optional)
+		Ignored pattern length for completion.
+		It is useful to edit BASE64 files.
+
+		If you omit it, it is set "80" value.
+
 				*deoplete-source-attribute-input_pattern*
 input_pattern
 		String				(Optional)
