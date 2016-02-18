@@ -69,12 +69,15 @@ function! s:is_skip(event, context) abort "{{{
         \   'b:deoplete_disable_auto_complete',
         \   'g:deoplete#disable_auto_complete')
 
+  let is_virtual = virtcol('.') !=
+        \ (strdisplaywidth(deoplete#util#get_input(a:event)) + 1)
+
   if &paste
         \ || (a:event !=# 'Manual' && disable_auto_complete)
         \ || (&l:completefunc != '' && &l:buftype =~# 'nofile')
+        \ || is_virtual
         \ || (a:event ==# 'InsertEnter'
-        \     && (col('.') != virtcol('.')
-        \         || has_key(g:deoplete#_context, 'position')))
+        \     && has_key(g:deoplete#_context, 'position'))
     return 1
   endif
 
