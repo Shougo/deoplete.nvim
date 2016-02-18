@@ -1,22 +1,30 @@
 # Problems summary
 
+
 ## Expected
 
+
 ## Environment Information
+
  * OS:
  * Neovim version:
 
+
 ## Provide a minimal init.vim with less than 50 lines (Required!)
 
-    " Your minimal init.vim
-    set runtimepath+=~/path/to/deoplete.nvim/
-    let g:deoplete#enable_at_startup = 1
+```vim
+" Your minimal init.vim
+set runtimepath+=~/path/to/deoplete.nvim/
+let g:deoplete#enable_at_startup = 1
+```
+
 
 ## The reproduce ways from neovim starting (Required!)
 
- 1.
- 2.
- 3.
+ 1. foo
+ 2. bar
+ 3. baz
+
 
 ## Generate a logfile if appropriate
 
@@ -26,6 +34,8 @@
  4. some works
  5. cat /tmp/log_{PID}
 
+
 ## Screen shot (if possible)
+
 
 ## Upload the log file
