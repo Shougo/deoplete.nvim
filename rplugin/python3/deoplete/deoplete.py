@@ -183,7 +183,7 @@ class Deoplete(object):
             smartcase = context['smartcase']
             try:
                 # Set ignorecase
-                if smartcase and re.match(r'[A-Z]', context['complete_str']):
+                if smartcase and re.search(r'[A-Z]', context['complete_str']):
                     context['ignorecase'] = 0
 
                 for filter in [self.__filters[x] for x
