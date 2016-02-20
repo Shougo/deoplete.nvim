@@ -69,10 +69,12 @@ function! s:is_skip(event, context) abort "{{{
         \   'b:deoplete_disable_auto_complete',
         \   'g:deoplete#disable_auto_complete')
 
-  let is_virtual = virtcol('.') !=
-        \ (strdisplaywidth(deoplete#util#get_input(a:event)) + 1)
+  let displaywidth = strdisplaywidth(deoplete#util#get_input(a:event)) + 1
+  let is_virtual = virtcol('.') != displaywidth
 
   if &paste
+        \ || (&l:formatoptions =~# '[tca]' && &l:textwidth > 0
+        \     && displaywidth >= &l:textwidth)
         \ || (a:event !=# 'Manual' && disable_auto_complete)
         \ || (&l:completefunc != '' && &l:buftype =~# 'nofile')
         \ || is_virtual
