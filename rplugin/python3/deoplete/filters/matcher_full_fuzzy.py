@@ -40,15 +40,12 @@ class Filter(Base):
         if context['ignorecase']:
             complete_str = complete_str.lower()
         p = re.compile(fuzzy_escape(complete_str))
-        input_len = len(complete_str)
         if context['ignorecase']:
             return [x for x in context['candidates']
-                    if len(x['word']) > input_len and
-                    p.search(x['word'].lower())]
+                    if p.search(x['word'].lower())]
         else:
             return [x for x in context['candidates']
-                    if len(x['word']) > input_len and
-                    p.search(x['word'])]
+                    if p.search(x['word'])]
 
 
 def fuzzy_escape(string):

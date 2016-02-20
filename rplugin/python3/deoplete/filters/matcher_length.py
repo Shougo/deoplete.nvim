@@ -1,5 +1,5 @@
 # ============================================================================
-# FILE: matcher_fuzzy.py
+# FILE: matcher_length.py
 # AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 # License: MIT license  {{{
 #     Permission is hereby granted, free of charge, to any person obtaining
@@ -23,7 +23,6 @@
 # }}}
 # ============================================================================
 
-import re
 from .base import Base
 
 
@@ -32,22 +31,10 @@ class Filter(Base):
     def __init__(self, vim):
         Base.__init__(self, vim)
 
-        self.name = 'matcher_fuzzy'
-        self.description = 'fuzzy matcher'
+        self.name = 'matcher_length'
+        self.description = 'length matcher'
 
     def filter(self, context):
-        complete_str = context['complete_str']
-        if context['ignorecase']:
-            complete_str = complete_str.lower()
-        p = re.compile(fuzzy_escape(complete_str))
-        if context['ignorecase']:
-            return [x for x in context['candidates']
-                    if p.match(x['word'].lower())]
-        else:
-            return [x for x in context['candidates']
-                    if p.match(x['word'])]
-
-
-def fuzzy_escape(string):
-    # Escape string for python regexp.
-    return re.sub(r'([a-zA-Z0-9_])', r'\1.*', re.escape(string))
+        input_len = len(context['complete_str'])
+        return [x for x in context['candidates']
+                if len(x['word']) > input_len]

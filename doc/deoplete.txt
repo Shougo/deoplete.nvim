@@ -436,7 +436,7 @@ USER SOURCES 					*deoplete-user-sources*
 FILTERS						*deoplete-filters*
 
 					*deoplete-filter-matcher_default*
-Default matchers: ['matcher_fuzzy']
+Default matchers: ['matcher_length', 'matcher_fuzzy']
 	
 	You can change it by |deoplete#custom#set()|.
 
@@ -460,6 +460,11 @@ matcher_fuzzy	Fuzzy matching matcher.
 matcher_full_fuzzy
 		Full fuzzy matching matcher.
 		It accepts partial fuzzy matches like YouCompleteMe.
+
+					*deoplete-filter-matcher_length*
+matcher_length
+		Length matching matcher.
+		It removes shorter candidates than user input.
 
 					*deoplete-filter-sorter_rank*
 sorter_rank	Matched rank order sorter.  The higher the head matched word
