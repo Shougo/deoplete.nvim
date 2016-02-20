@@ -42,21 +42,24 @@ class Source(Base):
     def gather_candidates(self, context):
         p = re.compile(context['keyword_patterns'])
 
-        if (self.vim.current.buffer.number in self.__buffers) and len(
-                self.vim.current.buffer) > self.__max_lines:
-            line = self.vim.current.window.cursor[0]
-            self.__buffers[self.vim.current.buffer.number][
-                'candidates'] += functools.reduce(operator.add, [
-                    p.findall(x) for x in self.vim.current.buffer[
-                        max([0, line - 500]): line + 500]
-                ])
-        else:
-            self.__buffers[self.vim.current.buffer.number] = {
-                'filetype': context['filetype'],
-                'candidates': functools.reduce(operator.add, [
-                    p.findall(x) for x in self.vim.current.buffer
-                ]),
-            }
+        try:
+            if (self.vim.current.buffer.number in self.__buffers) and len(
+                    self.vim.current.buffer) > self.__max_lines:
+                line = self.vim.current.window.cursor[0]
+                self.__buffers[self.vim.current.buffer.number][
+                    'candidates'] += functools.reduce(operator.add, [
+                        p.findall(x) for x in self.vim.current.buffer[
+                            max([0, line - 500]): line + 500]
+                    ])
+            else:
+                self.__buffers[self.vim.current.buffer.number] = {
+                    'filetype': context['filetype'],
+                    'candidates': functools.reduce(operator.add, [
+                        p.findall(x) for x in self.vim.current.buffer
+                    ]),
+                }
+        except UnicodeDecodeError:
+            return []
 
         return [{'word': x} for x in
                 functools.reduce(operator.add, [
