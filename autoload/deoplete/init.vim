@@ -90,6 +90,8 @@ function! deoplete#init#_variables() abort "{{{
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_smart_case', &smartcase)
   call deoplete#util#set_default(
+        \ 'g:deoplete#enable_camel_case', 0)
+  call deoplete#util#set_default(
         \ 'g:deoplete#enable_refresh_always', 0)
   call deoplete#util#set_default(
         \ 'g:deoplete#auto_completion_start_length', 2)
@@ -235,6 +237,7 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \ 'filetypes': filetypes,
         \ 'ignorecase': g:deoplete#enable_ignore_case,
         \ 'smartcase': g:deoplete#enable_smart_case,
+        \ 'camelcase': g:deoplete#enable_camel_case,
         \ 'sources': sources,
         \ 'keyword_patterns': keyword_patterns,
         \ }

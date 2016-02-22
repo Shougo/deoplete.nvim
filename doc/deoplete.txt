@@ -115,6 +115,17 @@ g:deoplete#enable_smart_case
 
 		Default value: same with your 'smartcase' value
 
+				*g:deoplete#enable_camel_case*
+g:deoplete#enable_camel_case
+		When a capital letter is matched with the uppercase, but a
+		lower letter is matched with the upper- and lowercase.
+		Ex: "foB" is matched with "FooBar" not "foobar".
+		Note: This feature is only available in
+		|deoplete-filter-matcher_fuzzy| or
+		|deoplete-filter-matcher_full_fuzzy|.
+
+		Default value: 0
+
 				*g:deoplete#enable_refresh_always*
 g:deoplete#enable_refresh_always
 		Deoplete refreshes the candidates automatically if this value
