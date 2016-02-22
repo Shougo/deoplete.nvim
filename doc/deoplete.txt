@@ -728,6 +728,9 @@ https://github.com/c9s/perlomni.vim
 deoplete-typescript: typescript source
 https://github.com/mhartington/deoplete-typescript
 
+deoplete-clang: clang source for C/C++
+https://github.com/zchee/deoplete-clang
+
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*
 
@@ -823,10 +826,10 @@ https://github.com/osyo-manga/vim-monster
 
 Q: I want to use C/C++ omni completion with deoplete.
 
-A: You can use |clang_complete| or |vim-marching|.
+A: You can use |clang_complete| or |deoplete-clang|.
 
 https://github.com/Rip-Rip/clang_complete
-https://github.com/osyo-manga/vim-marching
+https://github.com/zchee/deoplete-clang
 
 For clang_complete configuration is below. >
 
