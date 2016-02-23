@@ -323,8 +323,8 @@ deoplete#initialize()			*deoplete#initialize()*
 		User customization for deoplete must be set before
 		initialization of deoplete.
 
-						*deoplete#custom#source()*
-deoplete#custom#source({source-name}, {option-name}, {value})
+						*deoplete#custom#set()*
+deoplete#custom#set({source-name}, {option-name}, {value})
 		Set {source-name} source specialized {option-name}
 		to {value}. You may specify multiple sources with
 		separating "," in {source-name}.
