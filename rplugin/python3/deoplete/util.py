@@ -23,10 +23,12 @@
 # }}}
 # ============================================================================
 
-import re
-import json
 import functools
+import json
 import operator
+import os
+import re
+import sys
 
 
 def get_buffer_config(vim, filetype, buffer_var, user_var, default_var):
@@ -107,3 +109,9 @@ def fuzzy_escape(string, camelcase):
         p = re.sub(r'([a-z])', (lambda pat:
                                 '['+pat.group(1)+pat.group(1).upper()+']'), p)
     return p
+
+
+def load_external_module(file, module):
+    current = os.path.dirname(os.path.abspath(file))
+    module_dir = os.path.join(os.path.dirname(current), module)
+    sys.path.insert(0, module_dir)
