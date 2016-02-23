@@ -63,15 +63,15 @@ function! deoplete#init#enable() abort "{{{
     endtry
   endif
 
-  if !exists(':DeopleteInitializePython')
+  try
+    call _deoplete()
+  catch
     call deoplete#util#print_error(
           \ 'deoplete.nvim is not registered as Neovim remote plugins.')
     call deoplete#util#print_error(
           \ 'Please execute :UpdateRemotePlugins command and restart Neovim.')
     return
-  endif
-
-  DeopleteInitializePython
+  endtry
 
   let s:is_enabled = 1
 
