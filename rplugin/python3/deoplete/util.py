@@ -23,11 +23,11 @@
 # }}}
 # ============================================================================
 
-import re
-import json
 import functools
+import json
 import operator
 import os
+import re
 import sys
 
 
