@@ -697,7 +697,7 @@ CREATE FILTER					*deoplete-create-filter*
 ==============================================================================
 EXTERNAL SOURCES				*deoplete-external-sources*
 
-neco-vim: vim source
+neco-vim: vim source for Vim script
 https://github.com/Shougo/neco-vim
 
 neosnippet: neosnippet source
@@ -709,38 +709,41 @@ https://github.com/Shougo/neoinclude.vim
 neco-syntax: syntax source
 https://github.com/Shougo/neco-syntax
 
-vimshell: vimshell source
+vimshell: vimshell source for vimshell
 https://github.com/Shougo/vimshell.vim
 
-neco-ghc: ghc source
+neco-ghc: ghc source for Haskell
 https://github.com/eagletmt/neco-ghc
 
-vim-racer: racer source
+vim-racer: racer source for Rust
 https://github.com/racer-rust/vim-racer
 
-UltiSnips source: ultisnips source
+UltiSnips source: ultisnips source for UltiSnips
 https://github.com/SirVer/ultisnips
 
-clang-complete: clang_complete source
+clang-complete: clang_complete source for C/C++/Objective-C
 https://github.com/Rip-Rip/clang_complete
 
-deoplete-go: go source
+deoplete-go: go source for Go
 https://github.com/zchee/deoplete-go
 
-elixir.nvim: elixir source
+elixir.nvim: elixir source for Elixir
 https://github.com/awetzel/elixir.nvim
 
-deoplete-jedi: jedi source
+deoplete-jedi: jedi source for Python
 https://github.com/zchee/deoplete-jedi
 
-perlomni.vim: perlomni source
+perlomni.vim: perlomni source for Perl
 https://github.com/c9s/perlomni.vim
 
-deoplete-typescript: typescript source
+deoplete-typescript: typescript source for typescript
 https://github.com/mhartington/deoplete-typescript
 
 deoplete-clang: clang source for C/C++
 https://github.com/zchee/deoplete-clang
+
+async-clj-omni: async_clj source for Clojure
+https://github.com/SevereOverfl0w/async-clj-omni
 
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*
