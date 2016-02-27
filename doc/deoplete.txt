@@ -745,6 +745,9 @@ https://github.com/zchee/deoplete-clang
 async-clj-omni: async_clj source for Clojure
 https://github.com/SevereOverfl0w/async-clj-omni
 
+deoplete-ternjs: ternjs source for JavaScript
+https://github.com/carlitux/deoplete-ternjs
+
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*
 
