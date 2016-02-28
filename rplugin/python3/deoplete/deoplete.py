@@ -242,7 +242,7 @@ class Deoplete(object):
             candidates = candidates[: self.__vim.vars['deoplete#max_list']]
 
         # Set icase
-        for candidate in context['candidates']:
+        for candidate in candidates:
             candidate['icase'] = 1
         return (complete_position, candidates)
 
