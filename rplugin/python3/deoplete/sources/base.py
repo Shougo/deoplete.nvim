@@ -47,10 +47,8 @@ class Base(object):
         self.disabled_syntaxes = []
 
     def get_complete_position(self, context):
-        pattern = context['keyword_patterns']
-        if self.input_pattern != '':
-            pattern = self.input_pattern + '|' + pattern
-        m = re.search('(' + pattern + ')$', context['input'])
+        m = re.search('(' + context['keyword_patterns'] + ')$',
+                      context['input'])
         return m.start() if m else -1
 
     @abstractmethod

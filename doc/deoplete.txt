@@ -560,6 +560,8 @@ input_pattern
 		If it is matched, deoplete ignores
 		|deoplete-source-attribute-min_pattern_length|.
 		It is useful for omni function sources.
+		Note: If the source set the attribute, it must define
+		|deoplete-source-attribute-get_complete_position| attribute.
 		Note: It is Python3 regexp.
 
 		If you omit it, this feature is ignored.
