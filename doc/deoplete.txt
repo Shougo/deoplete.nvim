@@ -440,9 +440,6 @@ omni						*deoplete-source-omni*
 dictionary					*deoplete-source-dictionary*
 		This source collects keywords from 'dictionary'.
 
-------------------------------------------------------------------------------
-USER SOURCES 					*deoplete-user-sources*
-
 ==============================================================================
 FILTERS						*deoplete-filters*
 
@@ -525,6 +522,7 @@ __init__	Function
 				*deoplete-source-attribute-name*
 name		String				(Required)
 		The name of a source.
+		Note: It must be same of the source filaname.
 
 				*deoplete-source-attribute-filetypes*
 filetypes	List			(Optional)
