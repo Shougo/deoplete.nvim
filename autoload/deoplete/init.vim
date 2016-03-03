@@ -201,7 +201,7 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \                     deoplete#util#uniq([&filetype]
         \                          + split(&filetype, '\.'))
 
-  let sources = a:sources
+  let sources = deoplete#util#convert2list(a:sources)
   if a:event !=# 'Manual' && empty(sources)
     " Use default sources
     let sources = deoplete#util#get_buffer_config(
