@@ -750,6 +750,9 @@ https://github.com/SevereOverfl0w/async-clj-omni
 deoplete-ternjs: ternjs source for JavaScript
 https://github.com/carlitux/deoplete-ternjs
 
+deoplete-swift: swift source for Swift
+https://github.com/landaire/deoplete-swift
+
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*
 

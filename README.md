@@ -5,7 +5,7 @@ deoplete
 
 Deoplete is the abbreviation of "dark powered neo-completion".  It
 provides an asynchronous keyword completion system in the
-current buffer.  Deoplete currently has few features and limited customization.
+current buffer.
 To view the current options, please consult the
 [documentation](https://github.com/Shougo/deoplete.nvim/blob/master/doc%2Fdeoplete.txt).
 
