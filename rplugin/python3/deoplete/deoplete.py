@@ -71,6 +71,7 @@ class Deoplete(object):
         var_context['complete_position'] = complete_position
         var_context['changedtick'] = context['changedtick']
         var_context['candidates'] = candidates
+        var_context['event'] = context['event']
         self.__vim.vars['deoplete#_context'] = var_context
 
         # Set (and store) current &completeopt setting.  This cannot be done

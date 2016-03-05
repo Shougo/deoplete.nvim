@@ -223,9 +223,12 @@ function! deoplete#init#_context(event, sources) abort "{{{
   let keyword_patterns = substitute(keyword_patterns,
         \ '\\k', '\=pattern', 'g')
 
+  let event = (deoplete#util#get_prev_event() ==# 'refresh') ?
+        \ 'Manual' : a:event
+
   return {
         \ 'changedtick': b:changedtick,
-        \ 'event': a:event,
+        \ 'event': event,
         \ 'input': deoplete#util#get_input(a:event),
         \ 'next_input': deoplete#util#get_next_input(a:event),
         \ 'complete_str': '',
