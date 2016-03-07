@@ -38,6 +38,10 @@ function! deoplete#mappings#_do_complete(context) abort "{{{
   return ''
 endfunction"}}}
 function! deoplete#mappings#_set_completeopt() abort "{{{
+  if exists('g:deoplete#_saved_completeopt')
+    return
+  endif
+  let g:deoplete#_saved_completeopt = &completeopt
   set completeopt-=longest
   set completeopt+=menuone
   set completeopt-=menu
