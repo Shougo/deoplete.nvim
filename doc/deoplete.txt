@@ -781,9 +781,11 @@ EXTERNAL OMNIFUNCS				*deoplete-external-omnifuncs*
 
 These are my recommended omnifuncs for deoplete.
 
-vim-dutly: Vim omnifunc
+vim-dutly: D language omnifunc
+https://github.com/idanarye/vim-dutyl
 
 phpcompleted-extended: PHP omnifunc
+https://github.com/m2mdas/phpcomplete-extended
 
 ==============================================================================
 FAQ						*deoplete-faq*
