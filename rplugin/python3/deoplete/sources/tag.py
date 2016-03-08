@@ -24,9 +24,12 @@
 # }}}
 # ============================================================================
 
-from os.path import getmtime, exists, getsize
+import re
 from collections import namedtuple
+from os.path import exists, getmtime, getsize
+
 from deoplete.util import parse_file_pattern
+
 from .base import Base
 
 TagsCacheItem = namedtuple('TagsCacheItem', 'mtime candidates')
@@ -57,11 +60,13 @@ class Source(Base):
                     filename].mtime != mtime:
                 with open(filename, 'r', errors='replace') as f:
                     new_candidates = parse_file_pattern(
-                        f, '^[a-zA-Z_]\w*(?=\t)')
+                        f, '^[^!][^\t]+')
                     candidates += new_candidates
                     self.__cache[filename] = TagsCacheItem(
                         mtime, new_candidates)
                     limit -= getsize(filename)
             else:
                 candidates += self.__cache[filename].candidates
-        return [{'word': x} for x in candidates]
+
+        p = re.compile('(?:{})$'.format(context['keyword_patterns']))
+        return [{'word': x} for x in candidates if p.match(x)]
