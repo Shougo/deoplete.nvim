@@ -101,6 +101,10 @@ function! s:is_skip(event, context) abort "{{{
 endfunction"}}}
 
 function! s:on_insert_leave() abort "{{{
+  if exists('g:deoplete#_saved_completeopt')
+    let &completeopt = g:deoplete#_saved_completeopt
+    unlet g:deoplete#_saved_completeopt
+  endif
   let g:deoplete#_context = {}
 endfunction"}}}
 
