@@ -29,8 +29,21 @@ function! deoplete#handlers#_init() abort "{{{
     autocmd CompleteDone * call s:complete_done()
     autocmd InsertCharPre * call s:on_insert_char_pre()
 
-    autocmd TextChangedI * call s:completion_begin("TextChangedI")
     autocmd InsertEnter * call s:completion_begin("InsertEnter")
+    if get(g:, 'deoplete#auto_complete_delay', 500) > 0
+        autocmd TextChangedI * let b:_deoplete_textchanged = 1
+        autocmd InsertEnter <buffer> let b:_deoplete_orig_updatetime = &updatetime
+              \ | let &updatetime = get(g:, 'deoplete#auto_complete_delay', 500)
+        autocmd InsertLeave <buffer> if exists('b:_deoplete_orig_updatetime')
+              \ |   let &updatetime = b:_deoplete_orig_updatetime
+              \ |   unlet b:_deoplete_orig_updatetime
+              \ | endif
+        autocmd CursorHoldI <buffer> if b:_deoplete_textchanged
+              \ | call s:completion_begin("TextChangedI")
+              \ | unlet b:_deoplete_textchanged | endif
+    else
+        autocmd TextChangedI * call s:completion_begin("TextChangedI")
+    endif
   augroup END
 endfunction"}}}
 
