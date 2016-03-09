@@ -67,12 +67,12 @@ class Deoplete(object):
             self.__vim.vars['deoplete#_context'] = {}
             return
 
-        var_context = {}
-        var_context['complete_position'] = complete_position
-        var_context['changedtick'] = context['changedtick']
-        var_context['candidates'] = candidates
-        var_context['event'] = context['event']
-        self.__vim.vars['deoplete#_context'] = var_context
+        self.__vim.vars['deoplete#_context'] = {
+            'complete_position': complete_position,
+            'changedtick': context['changedtick'],
+            'candidates': candidates,
+            'event': context['event'],
+        }
 
         # Set (and store) current &completeopt setting.  This cannot be done
         # (currently) from the deoplete_start_complete mapping's function.
