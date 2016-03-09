@@ -39,6 +39,6 @@ class DeopleteHandlers(object):
         self.__deoplete = Deoplete(self.__vim)
         self.__vim.vars['deoplete#_channel_id'] = self.__vim.channel_id
 
-    @neovim.rpc_export('completion_begin')
+    @neovim.rpc_export('deoplete_completion_begin')
     def completion_begin(self, context):
         self.__deoplete.completion_begin(context)

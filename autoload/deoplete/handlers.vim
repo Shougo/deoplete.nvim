@@ -61,7 +61,8 @@ function! s:completion_begin(event) abort "{{{
     endfor
   endfor
 
-  call rpcnotify(g:deoplete#_channel_id, 'completion_begin', context)
+  call rpcnotify(g:deoplete#_channel_id,
+        \ 'deoplete_completion_begin', context)
 endfunction"}}}
 function! s:is_skip(event, context) abort "{{{
   let displaywidth = strdisplaywidth(deoplete#util#get_input(a:event)) + 1
