@@ -134,8 +134,8 @@ g:deoplete#enable_refresh_always
 
 		Default value: 0
 
-				*g:deoplete#auto_completion_start_length*
-g:deoplete#auto_completion_start_length
+				*g:deoplete#auto_complete_start_length*
+g:deoplete#auto_complete_start_length
 		This variable controls the number of the input completion
 		at the time of key input automatically.
 
@@ -549,7 +549,7 @@ min_pattern_length
 		Required pattern length for completion.
 
 		If you omit it, it is set
-		|g:deoplete#auto_completion_start_length| value.
+		|g:deoplete#auto_complete_start_length| value.
 
 				*deoplete-source-attribute-max_pattern_length*
 max_pattern_length
