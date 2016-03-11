@@ -53,6 +53,12 @@ class Deoplete(object):
 
     def completion_begin(self, context):
         pos = self.__vim.current.window.cursor
+
+        if context['event'] != 'Manual' and context['delay'] > 0:
+            time.sleep(context['delay'] / 1000.0)
+            if self.check_position(pos):
+                return
+
         try:
             complete_position, candidates = self.gather_candidates(context)
         except Exception:
@@ -62,8 +68,7 @@ class Deoplete(object):
                   'An error has occurred. Please execute :messages command.')
             candidates = []
 
-        if not candidates or self.__vim.funcs.mode() != 'i' \
-                or pos != self.__vim.current.window.cursor:
+        if not candidates or self.check_position(pos):
             self.__vim.vars['deoplete#_context'] = {}
             return
 
@@ -301,3 +306,7 @@ class Deoplete(object):
                             max_pattern_length))
         return (disabled_syntaxes and
                 context['syntax_name'] in disabled_syntaxes) or skip_length
+
+    def check_position(self, pos):
+        return self.__vim.funcs.mode(
+            ) != 'i' or pos != self.__vim.current.window.cursor

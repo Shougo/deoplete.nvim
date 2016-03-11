@@ -105,6 +105,8 @@ function! deoplete#init#_variables() abort "{{{
         \ 'g:deoplete#enable_debug', 0)
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_profile', 0)
+  call deoplete#util#set_default(
+        \ 'g:deoplete#auto_complete_delay', 0)
 
   call deoplete#util#set_default(
         \ 'g:deoplete#keyword_patterns', {})
@@ -238,6 +240,7 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \ 'ignorecase': g:deoplete#enable_ignore_case,
         \ 'smartcase': g:deoplete#enable_smart_case,
         \ 'camelcase': g:deoplete#enable_camel_case,
+        \ 'delay': g:deoplete#auto_complete_delay,
         \ 'sources': sources,
         \ 'keyword_patterns': keyword_patterns,
         \ }
