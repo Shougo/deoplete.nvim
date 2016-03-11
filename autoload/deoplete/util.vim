@@ -146,6 +146,16 @@ function! deoplete#util#uniq(list) abort "{{{
   return map(list, 'v:val[0]')
 endfunction"}}}
 
+function! deoplete#util#redir(cmd) abort "{{{
+  let [save_verbose, save_verbosefile] = [&verbose, &verbosefile]
+  set verbose=0 verbosefile=
+  redir => res
+  silent! execute a:cmd
+  redir END
+  let [&verbose, &verbosefile] = [save_verbose, save_verbosefile]
+  return res
+endfunction"}}}
+
 function! deoplete#util#get_syn_name() abort "{{{
   return len(getline('.')) < 200 ?
         \ synIDattr(synIDtrans(synID(line('.'), mode() ==# 'i' ?

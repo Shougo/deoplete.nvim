@@ -98,6 +98,19 @@ function! s:is_skip(event, context) abort "{{{
     endif
   endif
 
+  " Detect foldmethod.
+  if a:event != 'Manual'
+        \ && (&l:foldmethod ==# 'expr' || &l:foldmethod ==# 'syntax')
+    call deoplete#util#print_error(
+          \ printf('foldmethod = "%s" is detected.', &foldmethod))
+    for msg in split(deoplete#util#redir(
+          \ 'verbose setlocal foldmethod?'), "\n")
+      call deoplete#util#print_error(msg)
+    endfor
+    call deoplete#util#print_error(
+          \ 'You should disable it or install FastFold plugin.')
+  endif
+
   return 0
 endfunction"}}}
 
