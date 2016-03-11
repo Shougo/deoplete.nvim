@@ -29,10 +29,21 @@ function! deoplete#handlers#_init() abort "{{{
     autocmd CompleteDone * call s:complete_done()
     autocmd InsertCharPre * call s:on_insert_char_pre()
 
-    autocmd TextChangedI * call s:completion_begin("TextChangedI")
     autocmd InsertEnter * call s:completion_begin("InsertEnter")
+    autocmd TextChangedI * call s:on_textchangedi()
   augroup END
 endfunction"}}}
+
+function! s:on_textchangedi()
+  let curtime = str2float(reltimestr(reltime()))
+  if exists('b:_deoplete_textchangedi_s')
+    if curtime > b:_deoplete_textchangedi_s
+          \ + get(g:, 'deoplete#auto_complete_delay', 0.5)
+      call s:completion_begin("TextChangedI")
+    endif
+  endif
+  let b:_deoplete_textchangedi_s = curtime
+endfunction
 
 function! s:completion_begin(event) abort "{{{
   let context = deoplete#init#_context(a:event, [])
