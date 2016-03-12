@@ -62,7 +62,7 @@ class Source(Base):
             return []
 
         buffers = [x['candidates'] for x in self.__buffers.values()
-                      if x['filetype'] in context['filetypes']]
+                   if x['filetype'] in context['filetypes']]
         if not buffers:
             return []
 
