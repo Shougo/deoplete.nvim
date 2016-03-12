@@ -61,7 +61,10 @@ class Source(Base):
         except UnicodeDecodeError:
             return []
 
+        buffers = [x['candidates'] for x in self.__buffers.values()
+                      if x['filetype'] in context['filetypes']]
+        if not buffers:
+            return []
+
         return [{'word': x} for x in
-                functools.reduce(operator.add, [
-                    x['candidates'] for x in self.__buffers.values()
-                    if x['filetype'] in context['filetypes']])]
+                functools.reduce(operator.add, buffers)]
