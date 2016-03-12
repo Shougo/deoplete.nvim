@@ -57,7 +57,7 @@ function! deoplete#mappings#manual_complete(...) abort "{{{
         \ . string(get(a:000, 0, [])) . ")\<CR>"
 endfunction"}}}
 function! deoplete#mappings#_rpcnotify_wrapper(sources) abort "{{{
-  call rpcnotify(g:deoplete#_channel_id, 'completion_begin',
+  call rpcnotify(g:deoplete#_channel_id, 'deoplete_completion_begin',
         \  deoplete#init#_context('Manual', a:sources))
   return ''
 endfunction"}}}
