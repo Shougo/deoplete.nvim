@@ -28,13 +28,14 @@ if exists('g:loaded_deoplete')
 endif
 let g:loaded_deoplete = 1
 
-command! -nargs=0 -bar DeopleteEnable
-      \ call deoplete#init#enable()
+command! -nargs=0 -bar DeopleteEnable call deoplete#init#enable()
 
 " Global options definition. "{{{
 if get(g:, 'deoplete#enable_at_startup', 0)
   augroup deoplete
-    autocmd CursorHold,InsertEnter * call deoplete#init#enable()
+    autocmd CursorHold * call deoplete#init#enable()
+    autocmd InsertEnter * call deoplete#init#enable()
+          \ | doautocmd <nomodeline> deoplete InsertEnter
   augroup END
 endif
 "}}}
