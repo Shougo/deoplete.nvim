@@ -61,11 +61,6 @@ endfunction"}}}
 function! deoplete#util#print_warning(string) abort "{{{
   echohl WarningMsg | echomsg '[deoplete] ' . a:string | echohl None
 endfunction"}}}
-function! deoplete#util#is_eskk_convertion() abort "{{{
-  return exists('*eskk#is_enabled') && eskk#is_enabled()
-        \   && eskk#get_preedit().get_henkan_phase() !=#
-        \             g:eskk#preedit#PHASE_NORMAL
-endfunction"}}}
 
 function! deoplete#util#convert2list(expr) abort "{{{
   return type(a:expr) ==# type([]) ? a:expr : [a:expr]

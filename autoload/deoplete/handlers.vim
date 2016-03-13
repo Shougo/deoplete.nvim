@@ -51,9 +51,8 @@ function! s:completion_begin(event) abort "{{{
           \ 'b:deoplete_omni_patterns',
           \ 'g:deoplete#omni_patterns',
           \ 'g:deoplete#_omni_patterns'))
-      if deoplete#util#is_eskk_convertion()
-            \ || (pattern != '' && &l:omnifunc != ''
-            \ && context.input =~# '\%('.pattern.'\)$')
+      if pattern != '' && &l:omnifunc != ''
+            \ && context.input =~# '\%('.pattern.'\)$'
         call deoplete#mappings#_set_completeopt()
         call feedkeys("\<C-x>\<C-o>", 'n')
         return

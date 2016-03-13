@@ -81,7 +81,8 @@ def charpos2bytepos(vim, input, pos):
 
 
 def bytepos2charpos(vim, input, pos):
-    return len(vim.funcs.substitute(input[: pos], '.', 'x', 'g'))
+    return len(vim.funcs.substitute(
+        vim.funcs.strpart(input, 0, pos), '.', 'x', 'g'))
 
 
 def get_custom(vim, source_name):
