@@ -78,6 +78,8 @@ function! deoplete#init#enable() abort "{{{
   call deoplete#init#_variables()
   call deoplete#handlers#_init()
   call deoplete#mappings#_init()
+
+  doautocmd <nomodeline> deoplete InsertEnter
 endfunction"}}}
 
 function! deoplete#init#_variables() abort "{{{
