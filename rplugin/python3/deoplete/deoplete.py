@@ -49,6 +49,7 @@ class Deoplete(object):
         self.__filters = {}
         self.__sources = {}
         self.__runtimepath = ''
+        self.__profile_flag = None
         self.__profile_start = 0
 
     def completion_begin(self, context):
@@ -256,13 +257,20 @@ class Deoplete(object):
         deoplete.util.debug(self.__vim, expr)
 
     def profile_start(self, name):
-        if self.__vim.vars['deoplete#enable_profile']:
+        if self.__profile_flag is 0:
+            return
+        elif self.__profile_flag is None:
+            if self.__vim.vars['deoplete#enable_profile']:
+                self.__profile_flag = 1
+            else:
+                self.__profile_flag = 0
+        elif self.__profile_flag:
             self.__vim.command(
                 'echomsg \'profile start: {0}\''.format(name))
             self.__profile_start = time.clock()
 
     def profile_end(self, name):
-        if self.__vim.vars['deoplete#enable_profile']:
+        if self.__profile_start:
             self.__vim.command(
                 'echomsg \'profile end  : {0}, time={1}\''.format(
                     name, time.clock() - self.__profile_start))
