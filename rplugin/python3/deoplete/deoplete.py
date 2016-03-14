@@ -260,10 +260,7 @@ class Deoplete(object):
         if self.__profile_flag is 0:
             return
         elif self.__profile_flag is None:
-            if self.__vim.vars['deoplete#enable_profile']:
-                self.__profile_flag = 1
-            else:
-                self.__profile_flag = 0
+            self.__profile_flag = self.__vim.vars['deoplete#enable_profile']
         elif self.__profile_flag:
             self.__vim.command(
                 'echomsg \'profile start: {0}\''.format(name))
