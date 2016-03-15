@@ -57,7 +57,7 @@ Improvements in deoplete in comparison to |neocomplete|:
 1. Real asynchronous completion behavior like |YouCompleteMe| by default.
 2. Uses Python3 to implement sources.
 3. Removes legacy interface.
-4. Requires |if_python3|.
+4. Requires |+python3|.
 
 ==============================================================================
 INSTALL						*deoplete-install*
@@ -379,7 +379,7 @@ deoplete#mappings#manual_complete([{sources}])
 		\ deoplete#mappings#manual_complete()
 <
 
-					*deoplete#mappings#smart_close_popup()*
+				*deoplete#mappings#smart_close_popup()*
 deoplete#mappings#smart_close_popup()
 		Insert candidate and re-generate popup menu for deoplete.
 >
@@ -501,7 +501,7 @@ converter_auto_delimiter
 				*deoplete-filter-converter_auto_paren*
 converter_auto_paren
 		It adds parenthes character in a candidate's word.
-		It is useful if you use |neopairs.vim| or |neosnippet.vim|
+		It is useful if you use |neopairs| or |neosnippet|
 		plugins.
 
 				*deoplete-filter-converter_remove_paren*
@@ -672,7 +672,7 @@ __{name}	(Unknown)	(Optional)
 			filetypes and composite filetypes.
 
 ------------------------------------------------------------------------------
-CANDIDATE ATTRIBUTES				*deoplete-candidate-attributes*
+CANDIDATE ATTRIBUTES			*deoplete-candidate-attributes*
 
 					*deoplete-candidate-attribute-name*
 word		String		(Required)
