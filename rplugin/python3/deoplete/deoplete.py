@@ -80,9 +80,12 @@ class Deoplete(object):
             'event': context['event'],
         }
 
-        # Set (and store) current &completeopt setting.  This cannot be done
-        # (currently) from the deoplete_start_complete mapping's function.
-        self.__vim.call('deoplete#mappings#_set_completeopt')
+        if context['event'] != 'Manual':
+            # Set (and store) current &completeopt setting.  This cannot be
+            # done (currently) from the deoplete_start_complete mapping's
+            # function.
+            self.__vim.call('deoplete#mappings#_set_completeopt')
+
         # Note: cannot use vim.feedkeys()
         self.__vim.command(
             'call feedkeys("\<Plug>(deoplete_start_complete)")')
