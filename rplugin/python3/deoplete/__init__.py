@@ -41,8 +41,10 @@ class DeopleteHandlers(object):
 
     @neovim.rpc_export('deoplete_auto_completion_begin')
     def completion_begin(self, context):
+        context['rpc'] = 'deoplete_auto_completion_begin'
         self.__deoplete.completion_begin(context)
 
     @neovim.rpc_export('deoplete_manual_completion_begin', sync=True)
     def manual_completion_begin(self, context):
+        context['rpc'] = 'deoplete_manual_completion_begin'
         self.__deoplete.completion_begin(context)
