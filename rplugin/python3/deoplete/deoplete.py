@@ -311,8 +311,8 @@ class Deoplete(object):
                        not (min_pattern_length <=
                             len(context['complete_str']) <=
                             max_pattern_length))
-        return (disabled_syntaxes and
-                context['syntax_name'] in disabled_syntaxes) or skip_length
+        return skip_length or any(context['syntax_name'].endswith(s)
+                                  for s in disabled_syntaxes)
 
     def check_position(self, pos):
         return self.__vim.funcs.mode(
