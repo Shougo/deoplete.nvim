@@ -6,10 +6,10 @@
 
 import re
 from abc import abstractmethod
-import deoplete.util
+from deoplete.logger import LoggingMixin
 
 
-class Base(object):
+class Base(LoggingMixin):
 
     def __init__(self, vim):
         self.vim = vim
@@ -35,6 +35,3 @@ class Base(object):
     @abstractmethod
     def gather_candidate(self, context):
         pass
-
-    def debug(self, expr):
-        deoplete.util.debug(self.vim, expr)
