@@ -51,6 +51,10 @@ function! deoplete#mappings#_set_completeopt() abort "{{{
 endfunction"}}}
 
 function! deoplete#mappings#manual_complete(...) abort "{{{
+  if !deoplete#init#is_enabled()
+    call deoplete#init#enable()
+  endif
+
   " Start complete.
   return (pumvisible() ? "\<C-e>" : '')
         \ . "\<C-r>=deoplete#mappings#_rpcnotify_wrapper("
