@@ -57,7 +57,7 @@ class Deoplete(object):
 
         if context['event'] != 'Manual' and context['delay'] > 0:
             time.sleep(context['delay'] / 1000.0)
-            if self.check_position(pos):
+            if self.position_has_changed(pos):
                 return
 
         try:
@@ -69,7 +69,7 @@ class Deoplete(object):
                   'An error has occurred. Please execute :messages command.')
             candidates = []
 
-        if not candidates or self.check_position(pos):
+        if not candidates or self.position_has_changed(pos):
             self.__vim.vars['deoplete#_context'] = {}
             return
 
@@ -317,6 +317,6 @@ class Deoplete(object):
         return (disabled_syntaxes and
                 context['syntax_name'] in disabled_syntaxes) or skip_length
 
-    def check_position(self, pos):
-        return self.__vim.funcs.mode(
-            ) != 'i' or pos != self.__vim.current.window.cursor
+    def position_has_changed(self, pos):
+        return (pos != self.__vim.current.window.cursor or
+                self.__vim.funcs.mode() != 'i')
