@@ -45,7 +45,7 @@ class Source(Base):
         try:
             if (self.vim.current.buffer.number in self.__buffers) and len(
                     self.vim.current.buffer) > self.__max_lines:
-                line = self.vim.current.window.cursor[0]
+                line = context['position'][1]
                 self.__buffers[self.vim.current.buffer.number][
                     'candidates'] += functools.reduce(operator.add, [
                         p.findall(x) for x in self.vim.current.buffer[
