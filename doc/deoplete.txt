@@ -341,6 +341,7 @@ deoplete#custom#set({source-name}, {option-name}, {value})
 		separating "," in {source-name}.
 		If {source-name} is "_", sources default option will be
 		change.
+		Note: You must call it before using deoplete.
 >
 		" Examples:
 		" Use head matcher instead of fuzzy matcher
