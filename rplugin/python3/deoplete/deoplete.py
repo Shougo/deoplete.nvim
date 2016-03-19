@@ -314,8 +314,8 @@ class Deoplete(object):
                        not (min_pattern_length <=
                             len(context['complete_str']) <=
                             max_pattern_length))
-        return (disabled_syntaxes and
-                context['syntax_name'] in disabled_syntaxes) or skip_length
+        return skip_length or ('syntax_name' in context and
+                               context['syntax_name'] in disabled_syntaxes)
 
     def position_has_changed(self, pos):
         return (pos != self.__vim.current.window.cursor or
