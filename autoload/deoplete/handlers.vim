@@ -98,7 +98,8 @@ function! s:is_skip(event, context) abort "{{{
   endif
 
   " Detect foldmethod.
-  if a:event != 'Manual' && !exists('b:deoplete_detected_foldmethod')
+  if a:event !=# 'Manual' && a:event !=# 'InsertEnter'
+        \ && !exists('b:deoplete_detected_foldmethod')
         \ && (&l:foldmethod ==# 'expr' || &l:foldmethod ==# 'syntax')
     let b:deoplete_detected_foldmethod = 1
     call deoplete#util#print_error(
