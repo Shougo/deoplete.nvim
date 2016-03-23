@@ -6,6 +6,7 @@
 
 import neovim
 
+from deoplete import logger
 from deoplete.deoplete import Deoplete
 
 
@@ -19,6 +20,11 @@ class DeopleteHandlers(object):
     def init_python(self, args):
         self.__deoplete = Deoplete(self.__vim)
         self.__vim.vars['deoplete#_channel_id'] = self.__vim.channel_id
+
+    @neovim.rpc_export('deoplete_enable_logging', sync=True)
+    def enable_logging(self, level, logfile):
+        logger.setup(self.__vim, level, logfile)
+        self.__deoplete.debug_enabled = True
 
     @neovim.rpc_export('deoplete_auto_completion_begin')
     def completion_begin(self, context):

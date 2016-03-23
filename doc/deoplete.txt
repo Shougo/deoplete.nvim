@@ -341,6 +341,14 @@ deoplete#custom#set({source-name}, {option-name}, {value})
 		call deoplete#custom#set('_',
 		\ 'disabled_syntaxes', ['Comment', 'String'])
 <
+					*deoplete#util#enable_logging()*
+deoplete#util#enable_logging({level}, {logfile})
+		Enable logging for debugging purposes.
+		Set {level} to DEBUG, INFO, WARNING, ERROR, or CRITICAL.
+		{logfile} is the file where log messages are written.
+		Messages are appended to this file.  Each log session will
+		start with "--- Deoplete Log Start ---".
+
 ------------------------------------------------------------------------------
 KEY MAPPINGS 					*deoplete-key-mappings*
 
@@ -440,7 +448,7 @@ FILTERS						*deoplete-filters*
 
 					*deoplete-filter-matcher_default*
 Default matchers: ['matcher_length', 'matcher_fuzzy']
-	
+
 	You can change it by |deoplete#custom#set()|.
 
 					*deoplete-filter-sorter_default*
