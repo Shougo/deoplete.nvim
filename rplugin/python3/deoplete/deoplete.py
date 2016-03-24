@@ -33,7 +33,7 @@ class Deoplete(logger.LoggingMixin):
         self.__runtimepath = ''
         self.__profile_flag = None
         self.__profile_start = 0
-        self.__logname = 'core'
+        self.name = 'core'
 
     def completion_begin(self, context):
         pos = self.__vim.current.window.cursor

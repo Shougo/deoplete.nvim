@@ -69,8 +69,7 @@ def logmethod(func):
         if not init or not self.debug_enabled:
             return
         if self._logger is None:
-            self._logger = getLogger(
-                getattr(self, '__logname', getattr(self, 'name', 'unknown')))
+            self._logger = getLogger(getattr(self, 'name', 'unknown'))
         return func(self, *args, **kwargs)
     return wrapper
 
