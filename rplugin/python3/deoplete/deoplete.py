@@ -33,7 +33,7 @@ class Deoplete(logger.LoggingMixin):
         self.__runtimepath = ''
         self.__profile_flag = None
         self.__profile_start = 0
-        self.__logname = 'core'
+        self.name = 'core'
 
     def completion_begin(self, context):
         pos = self.__vim.current.window.cursor
@@ -225,7 +225,7 @@ class Deoplete(logger.LoggingMixin):
         return (complete_position, candidates)
 
     def profile_start(self, name):
-        if self.__profile_flag is 0:
+        if self.__profile_flag is 0 or not self.debug_enabled:
             return
 
         if self.__profile_flag is None:
@@ -234,15 +234,13 @@ class Deoplete(logger.LoggingMixin):
             if self.__profile_flag:
                 return self.profile_start(name)
         elif self.__profile_flag:
-            self.__vim.command(
-                'echomsg \'profile start: {0}\''.format(name))
+            self.debug('Profile Start: {0}'.format(name))
             self.__profile_start = time.clock()
 
     def profile_end(self, name):
         if self.__profile_start:
-            self.__vim.command(
-                'echomsg \'profile end  : {0}, time={1}\''.format(
-                    name, time.clock() - self.__profile_start))
+            self.debug('Profile End  : {0:<25} time={1:2.10f}'.format(
+                name, time.clock() - self.__profile_start))
 
     def load_sources(self):
         # Load sources from runtimepath

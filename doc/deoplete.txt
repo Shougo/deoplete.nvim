@@ -143,7 +143,8 @@ g:deoplete#enable_debug
 				*g:deoplete#enable_profile*
 g:deoplete#enable_profile
 		It enables deoplete profile mode.
-		If it is 1, deoplete will print the time information.
+		If it is 1, deoplete will print the time information to
+		|deoplete#enable_logging()| logfile.
 		Must be set in init.vim before to start the Neovim.
 		Does not support command line.
 
