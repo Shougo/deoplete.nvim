@@ -96,6 +96,7 @@ def fuzzy_escape(string, camelcase):
     if camelcase and re.search(r'[A-Z]', string):
         p = re.sub(r'([a-z])', (lambda pat:
                                 '['+pat.group(1)+pat.group(1).upper()+']'), p)
+    p = re.sub(r'([a-zA-Z0-9_])\.\*', r'\1[^\1]*', p)
     return p
 
 

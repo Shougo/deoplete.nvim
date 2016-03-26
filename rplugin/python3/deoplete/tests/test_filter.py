@@ -7,9 +7,9 @@ from deoplete.filters.converter_remove_overlap import overlap_length
 class FilterTestCase(TestCase):
 
     def test_fuzzy_escapse(self):
-        eq_(fuzzy_escape('foo', 0), 'f.*o.*o.*')
-        eq_(fuzzy_escape('foo', 1), 'f.*o.*o.*')
-        eq_(fuzzy_escape('Foo', 1), 'F.*[oO].*[oO].*')
+        eq_(fuzzy_escape('foo', 0), 'f[^f]*o[^o]*o[^o]*')
+        eq_(fuzzy_escape('foo', 1), 'f[^f]*o[^o]*o[^o]*')
+        eq_(fuzzy_escape('Foo', 1), 'F[^F]*[oO].*[oO].*')
 
     def test_overlap_length(self):
         eq_(overlap_length('foo bar', 'bar baz'), 3)
