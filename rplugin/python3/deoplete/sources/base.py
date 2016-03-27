@@ -19,9 +19,11 @@ class Base(LoggingMixin):
         self.min_pattern_length = -1
         self.max_pattern_length = 80
         self.input_pattern = ''
-        self.matchers = ['matcher_length', 'matcher_fuzzy']
+        self.matchers = [
+            'matcher_length', 'matcher_fuzzy']
         self.sorters = ['sorter_rank']
-        self.converters = ['converter_remove_overlap']
+        self.converters = [
+            'converter_remove_overlap', 'converter_truncate_abbr']
         self.filetypes = []
         self.is_bytepos = False
         self.rank = 100

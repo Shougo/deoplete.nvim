@@ -84,6 +84,8 @@ function! deoplete#init#_variables() abort "{{{
   call deoplete#util#set_default(
         \ 'g:deoplete#max_list', 100)
   call deoplete#util#set_default(
+        \ 'g:deoplete#max_abbr_width', 80)
+  call deoplete#util#set_default(
         \ 'g:deoplete#enable_debug', 0)
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_profile', 0)
@@ -218,6 +220,7 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \ 'delay': g:deoplete#auto_complete_delay,
         \ 'sources': sources,
         \ 'keyword_patterns': keyword_patterns,
+        \ 'max_abbr_width': g:deoplete#max_abbr_width,
         \ }
 endfunction"}}}
 
