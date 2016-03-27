@@ -4,7 +4,6 @@
 # License: MIT license
 # ============================================================================
 
-import re
 from .base import Base
 from deoplete.util import truncate_skipping
 
