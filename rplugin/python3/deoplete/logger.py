@@ -10,8 +10,6 @@ import logging
 from functools import wraps
 from collections import defaultdict
 
-import pkg_resources
-
 log_format = '%(asctime)s %(levelname)-8s (%(name)s) %(message)s'
 log_message_cooldown = 0.5
 
@@ -47,12 +45,18 @@ def setup(vim, level, output_file=None):
             level = 'DEBUG'
         root.setLevel(getattr(logging, level))
 
+        try:
+            import pkg_resources
+            neovim_version = pkg_resources.get_distribution('neovim').version
+        except ImportError:
+            neovim_version = 'unknown'
+
         log = getLogger('logging')
         log.info('--- Deoplete Log Start ---')
         log.info('%s, Python %s, neovim client %s',
                  vim.call('deoplete#util#neovim_version'),
                  '.'.join(map(str, sys.version_info[:3])),
-                 pkg_resources.get_distribution('neovim').version)
+                 neovim_version)
         vim.call('deoplete#util#print_warning', 'Logging to %s' % output_file)
 
 
