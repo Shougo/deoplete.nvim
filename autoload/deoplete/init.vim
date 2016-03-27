@@ -220,7 +220,8 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \ 'delay': g:deoplete#auto_complete_delay,
         \ 'sources': sources,
         \ 'keyword_patterns': keyword_patterns,
-        \ 'max_abbr_width': g:deoplete#max_abbr_width,
+        \ 'max_abbr_width':
+        \   min([g:deoplete#max_abbr_width, winwidth(0)]),
         \ }
 endfunction"}}}
 
