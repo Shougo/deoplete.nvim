@@ -10,6 +10,7 @@ import operator
 import os
 import re
 import sys
+import unicodedata
 
 
 def get_buffer_config(vim, filetype, buffer_var, user_var, default_var):
@@ -104,3 +105,43 @@ def load_external_module(file, module):
     current = os.path.dirname(os.path.abspath(file))
     module_dir = os.path.join(os.path.dirname(current), module)
     sys.path.insert(0, module_dir)
+
+
+def truncate_skipping(string, max, footer, footer_len):
+    if len(string) <= max/2:
+        return string
+    if strwidth(string) <= max:
+        return string
+
+    footer += string[
+            -len(truncate(string[::-1], footer_len)):]
+    return truncate(string, max - strwidth(footer)) + footer
+
+
+def truncate(string, max):
+    if len(string) <= max/2:
+        return string
+    if strwidth(string) <= max:
+        return string
+
+    width = 0
+    ret = ''
+    for c in string:
+        wc = charwidth(c)
+        if width + wc > max:
+            break
+        ret += c
+        width += wc
+    return ret
+
+
+def strwidth(string):
+    width = 0
+    for c in string:
+        width += charwidth(c)
+    return width
+
+
+def charwidth(c):
+    wc = unicodedata.east_asian_width(c)
+    return 2 if wc == 'F' or wc == 'W' else 1
