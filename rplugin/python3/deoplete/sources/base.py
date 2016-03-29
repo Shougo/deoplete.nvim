@@ -23,7 +23,9 @@ class Base(LoggingMixin):
             'matcher_length', 'matcher_fuzzy']
         self.sorters = ['sorter_rank']
         self.converters = [
-            'converter_remove_overlap', 'converter_truncate_abbr']
+            'converter_remove_overlap',
+            'converter_truncate_abbr',
+            'converter_truncate_menu']
         self.filetypes = []
         self.is_bytepos = False
         self.rank = 100
