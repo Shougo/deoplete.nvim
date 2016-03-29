@@ -45,6 +45,9 @@ function! deoplete#init#enable() abort "{{{
   endif
 
   try
+    if !exists('g:loaded_remote_plugins')
+      runtime! plugin/rplugin.vim
+    endif
     call _deoplete()
   catch
     call deoplete#util#print_error(
