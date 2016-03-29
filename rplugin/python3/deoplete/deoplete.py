@@ -280,7 +280,7 @@ class Deoplete(logger.LoggingMixin):
             source.converters = get_custom(self.__vim, source.name).get(
                 'converters', source.converters)
 
-            self.__sources[name] = source
+            self.__sources[source.name] = source
             self.debug('Loaded Source: %s (%s)', name, module.__file__)
         # self.debug(self.__sources)
 
@@ -292,11 +292,12 @@ class Deoplete(logger.LoggingMixin):
                                     self.__vim,
                                     'rplugin/python3/deoplete/filters/*.py'):
             name = os.path.basename(path)[: -3]
-            filter = importlib.machinery.SourceFileLoader(
+            module = importlib.machinery.SourceFileLoader(
                 'deoplete.filters.' + name, path).load_module()
-            if hasattr(filter, 'Filter') and name not in self.__filters:
-                self.__filters[name] = filter.Filter(self.__vim)
-                self.debug('Loaded Filter: %s (%s)', name, filter.__file__)
+            if hasattr(module, 'Filter') and name not in self.__filters:
+                filter = module.Filter(self.__vim)
+                self.__filters[filter.name] = filter
+                self.debug('Loaded Filter: %s (%s)', name, module.__file__)
         # self.debug(self.__filters)
 
     def is_skip(self, context, disabled_syntaxes,
