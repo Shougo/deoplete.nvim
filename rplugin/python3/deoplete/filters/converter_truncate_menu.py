@@ -19,6 +19,7 @@ class Filter(Base):
         max_width = context['max_menu_width']
         footer_width = max_width / 3
         for candidate in context['candidates']:
-            candidate['menu'] = truncate_skipping(candidate.get('menu', ''),
+            candidate['menu'] = truncate_skipping(
+                candidate.get('menu', ''),
                 max_width, '..', footer_width)
         return context['candidates']
