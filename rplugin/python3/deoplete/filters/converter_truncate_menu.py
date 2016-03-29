@@ -16,6 +16,10 @@ class Filter(Base):
         self.description = 'truncate menu converter'
 
     def filter(self, context):
+        if not context['candidates'] or 'menu' not in context[
+                'candidates'][0]:
+            return context['candidates']
+
         max_width = context['max_menu_width']
         footer_width = max_width / 3
         for candidate in context['candidates']:
