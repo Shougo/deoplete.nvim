@@ -92,6 +92,10 @@ function! deoplete#init#_variables() abort "{{{
         \ 'g:deoplete#enable_profile', 0)
   call deoplete#util#set_default(
         \ 'g:deoplete#auto_complete_delay', 0)
+  call deoplete#util#set_default(
+        \ 'g:deoplete#max_abbr_width', 80)
+  call deoplete#util#set_default(
+        \ 'g:deoplete#max_menu_width', 20)
 
   call deoplete#util#set_default(
         \ 'g:deoplete#keyword_patterns', {})
@@ -225,8 +229,10 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \ 'delay': g:deoplete#auto_complete_delay,
         \ 'sources': sources,
         \ 'keyword_patterns': keyword_patterns,
-        \ 'max_abbr_width': max([20, width * 2 / 3]),
-        \ 'max_menu_width': max([10, width / 3]),
+        \ 'max_abbr_width':
+        \   max([20, min([g:deoplete#max_abbr_width, width * 2 / 3])]),
+        \ 'max_menu_width':
+        \   max([10, min([g:deoplete#max_menu_width, width / 3])]),
         \ }
 endfunction"}}}
 
