@@ -9,7 +9,6 @@ CONTENTS					*deoplete-contents*
 Introduction		|deoplete-introduction|
 Install			|deoplete-install|
 Interface		|deoplete-interface|
-  Commands		  |deoplete-commands|
   Variables		  |deoplete-variables|
   Key mappings		  |deoplete-key-mappings|
   Functions		  |deoplete-functions|
@@ -64,12 +63,6 @@ you should read |nvim-python|.
 
 ==============================================================================
 INTERFACE					*deoplete-interface*
-
-------------------------------------------------------------------------------
-COMMANDS 					*deoplete-commands*
-
-:DeopleteEnable				*:DeopleteEnable*
-		Validate deoplete and initialize it.
 
 ------------------------------------------------------------------------------
 VARIABLES 					*deoplete-variables*
@@ -326,10 +319,21 @@ FUNCTIONS 					*deoplete-functions*
 
 deoplete#initialize()			*deoplete#initialize()*
 		Initialize deoplete and sources.
-		Note: It enables deoplete.
 		Note: You should call it in |VimEnter| autocmd.
 		User customization for deoplete must be set before
 		initialization of deoplete.
+
+deoplete#enable()			*deoplete#enable()*
+		Enable deoplete auto completion.
+		Note: It is the global state.
+
+deoplete#disable()			*deoplete#disable()*
+		Disable deoplete auto completion.
+		Note: It is the global state.
+
+deoplete#toggle()			*deoplete#toggle()*
+		Toggle deoplete auto completion.
+		Note: It is the global state.
 
 						*deoplete#custom#set()*
 deoplete#custom#set({source-name}, {option-name}, {value})

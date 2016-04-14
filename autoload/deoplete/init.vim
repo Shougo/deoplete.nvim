@@ -8,12 +8,15 @@ if !exists('s:is_enabled')
   let s:is_enabled = 0
 endif
 
-function! deoplete#init#is_enabled() abort "{{{
+function! deoplete#init#_is_enabled() abort "{{{
   return s:is_enabled
 endfunction"}}}
+function! s:is_initialized() abort "{{{
+  return exists('g:deoplete#_channel_id')
+endfunction"}}}
 
-function! deoplete#init#enable() abort "{{{
-  if deoplete#init#is_enabled()
+function! deoplete#init#_initialize() abort "{{{
+  if s:is_initialized()
     return
   endif
 
@@ -57,11 +60,25 @@ function! deoplete#init#enable() abort "{{{
     return
   endtry
 
-  let s:is_enabled = 1
-
-  call deoplete#init#_variables()
-  call deoplete#handlers#_init()
   call deoplete#mappings#_init()
+  call deoplete#init#_variables()
+
+  let s:is_enabled = g:deoplete#enable_at_startup
+  if s:is_enabled
+    call deoplete#init#_enable()
+  else
+    call deoplete#init#_disable()
+  endif
+endfunction"}}}
+function! deoplete#init#_enable() abort "{{{
+  call deoplete#handlers#_init()
+  let s:is_enabled = 1
+endfunction"}}}
+function! deoplete#init#_disable() abort "{{{
+  augroup deoplete
+    autocmd!
+  augroup END
+  let s:is_enabled = 0
 endfunction"}}}
 
 function! deoplete#init#_variables() abort "{{{
@@ -69,6 +86,8 @@ function! deoplete#init#_variables() abort "{{{
   let g:deoplete#_rank = {}
 
   " User vairables
+  call deoplete#util#set_default(
+        \ 'g:deoplete#enable_at_startup', 0)
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_ignore_case', &ignorecase)
   call deoplete#util#set_default(

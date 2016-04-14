@@ -6,6 +6,7 @@
 
 function! deoplete#handlers#_init() abort "{{{
   augroup deoplete
+    autocmd!
     autocmd InsertLeave * call s:on_insert_leave()
     autocmd CompleteDone * call s:complete_done()
     autocmd InsertCharPre * call s:on_insert_char_pre()

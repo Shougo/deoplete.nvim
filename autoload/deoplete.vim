@@ -5,14 +5,23 @@
 "=============================================================================
 
 function! deoplete#initialize() abort "{{{
-  return deoplete#init#enable()
+  return deoplete#init#_initialize()
+endfunction"}}}
+function! deoplete#enable() abort "{{{
+  call deoplete#init#_initialize()
+  return deoplete#init#_enable()
+endfunction"}}}
+function! deoplete#disable() abort "{{{
+  return deoplete#init#_disable()
+endfunction"}}}
+function! deoplete#toggle() abort "{{{
+  return deoplete#init#_is_enabled() ?
+        \ deoplete#disable() : deoplete#enable()
 endfunction"}}}
 
 function! deoplete#enable_logging(level, logfile) abort "{{{
-  if !deoplete#init#is_enabled()
-    " Enable to allow logging before completions start.
-    call deoplete#init#enable()
-  endif
+  " Enable to allow logging before completions start.
+  call deoplete#init#_initialize()
 
   call rpcrequest(g:deoplete#_channel_id,
         \ 'deoplete_enable_logging', a:level, a:logfile)
