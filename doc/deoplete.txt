@@ -787,6 +787,9 @@ https://github.com/landaire/deoplete-swift
 neovim-intellij-complete-deoplete: intellij source for Intellij IDE
 https://github.com/vhakulinen/neovim-intellij-complete-deoplete
 
+tmux-complete: tmuxcomplete source for tmux panes.
+https://github.com/wellle/tmux-complete.vim
+
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*
 
