@@ -39,22 +39,25 @@ class Source(Base):
 
     def __make_cache(self, context, bufnr):
         p = re.compile(context['keyword_patterns'])
+        buffer = self.vim.current.buffer
+        for b in reversed(self.vim.buffers):
+            if b.number < bufnr:
+                buffer = b
+                break
 
-        bufnr -= 1
         try:
-            if (bufnr in self.__buffers) and len(
-                    self.vim.buffers[bufnr]) > self.__max_lines:
+            if (bufnr in self.__buffers) and len(buffer) > self.__max_lines:
                 line = context['position'][1]
                 self.__buffers[bufnr][
                     'candidates'] += functools.reduce(operator.add, [
-                        p.findall(x) for x in self.vim.buffers[bufnr][
-                            max([0, line - 500]): line + 500]
+                        p.findall(x) for x in
+                        buffer[max([0, line-500]):line+500]
                     ])
             else:
                 self.__buffers[bufnr] = {
                     'filetype': context['filetype'],
                     'candidates': functools.reduce(operator.add, [
-                        p.findall(x) for x in self.vim.buffers[bufnr]
+                        p.findall(x) for x in buffer
                     ]),
                 }
         except UnicodeDecodeError:
