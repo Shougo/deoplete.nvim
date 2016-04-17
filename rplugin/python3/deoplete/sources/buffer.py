@@ -35,6 +35,7 @@ class Source(Base):
     def __check_cache(self, context):
         for bufnr in [x.number for x in self.vim.buffers
                       if x.number not in self.__buffers and
+                      x.options['buflisted'] and
                       x.options['filetype'] in context['filetypes']]:
             self.__make_cache(context, bufnr)
 
