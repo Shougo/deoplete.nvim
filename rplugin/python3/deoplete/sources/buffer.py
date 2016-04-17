@@ -22,7 +22,7 @@ class Source(Base):
 
     def gather_candidates(self, context):
         self.__make_cache(context, self.vim.current.buffer.number)
-        self.__check_cache(context)
+        #self.__check_cache(context)
 
         buffers = [x['candidates'] for x in self.__buffers.values()
                    if x['filetype'] in context['filetypes']]
@@ -45,7 +45,7 @@ class Source(Base):
         bufnr -= 1
         try:
             if (bufnr in self.__buffers) and len(
-                    self.vim.current.buffer) > self.__max_lines:
+                    self.vim.buffers[bufnr]) > self.__max_lines:
                 line = context['position'][1]
                 self.__buffers[bufnr][
                     'candidates'] += functools.reduce(operator.add, [
