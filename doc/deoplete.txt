@@ -360,6 +360,10 @@ deoplete#custom#set({source-name}, {option-name}, {value})
 		" Disable the candidates in Comment/String syntaxes.
 		call deoplete#custom#set('_',
 		\ 'disabled_syntaxes', ['Comment', 'String'])
+		call deoplete#custom#set('javacomplete2',
+		\ 'max_abbr_width', 20)
+		call deoplete#custom#set('javacomplete2',
+		\ 'max_menu_width', 80)
 <
 					*deoplete#enable_logging()*
 deoplete#enable_logging({level}, {logfile})
@@ -584,6 +588,22 @@ max_pattern_length
 		It is useful to edit BASE64 files.
 
 		If you omit it, it is set "80" value.
+
+				*deoplete-source-attribute-max_abbr_width*
+max_abbr_width
+		Number				(Optional)
+		If the candidate abbr length exceeds the length it will be cut
+		down.
+
+		If you omit it, it is set |g:deoplete#max_abbr_width| value.
+
+				*deoplete-source-attribute-max_menu_width*
+max_menu_width
+		Number				(Optional)
+		If the candidate menu length exceeds the length it will be cut
+		down.
+
+		If you omit it, it is set |g:deoplete#max_menu_width| value.
 
 				*deoplete-source-attribute-input_pattern*
 input_pattern

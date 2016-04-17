@@ -248,10 +248,8 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \ 'delay': g:deoplete#auto_complete_delay,
         \ 'sources': sources,
         \ 'keyword_patterns': keyword_patterns,
-        \ 'max_abbr_width':
-        \   max([20, min([g:deoplete#max_abbr_width, width * 2 / 3])]),
-        \ 'max_menu_width':
-        \   max([10, min([g:deoplete#max_menu_width, width / 3])]),
+        \ 'max_abbr_width': (width * 2 / 3),
+        \ 'max_menu_width': (width / 3),
         \ }
 endfunction"}}}
 

@@ -117,6 +117,10 @@ class Deoplete(logger.LoggingMixin):
             cont['complete_str'] = cont['input'][charpos:]
             cont['complete_position'] = charpos2bytepos(
                 self.__vim, cont['input'], charpos)
+            cont['max_abbr_width'] = max(20, min(source.max_abbr_width,
+                                                 cont['max_abbr_width']))
+            cont['max_menu_width'] = max(10, min(source.max_menu_width,
+                                                 cont['max_menu_width']))
             # self.debug(source.rank)
             # self.debug(source_name)
             # self.debug(cont['input'])
@@ -273,6 +277,12 @@ class Deoplete(logger.LoggingMixin):
             source.max_pattern_length = get_custom(
                 self.__vim, source.name).get(
                     'max_pattern_length', source.max_pattern_length)
+            source.max_abbr_width = get_custom(
+                self.__vim, source.name).get(
+                    'max_abbr_width', source.max_abbr_width)
+            source.max_menu_width = get_custom(
+                self.__vim, source.name).get(
+                    'max_menu_width', source.max_menu_width)
             source.matchers = get_custom(
                 self.__vim, source.name).get('matchers', source.matchers)
             source.sorters = get_custom(self.__vim, source.name).get(
