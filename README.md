@@ -21,6 +21,18 @@ See [requirements](#requirements) if you aren't sure whether you have this.
 3. Execute the `:DeopleteEnable` command or set `let g:deoplete#enable_at_startup = 1`
    in your `$XDG_CONFIG_HOME/nvim/init.vim`
 
+For vim-plug
+
+    function! DoRemote(arg)
+      UpdateRemotePlugins
+    endfunction
+    Plug 'Shougo/deoplete.nvim' { 'do': function('DoRemote') }
+
+For dein.vim
+
+    call dein#add('Shougo/deoplete.nvim')
+
+
 ## Requirements
 
 deoplete requires Neovim with if\_python3.
@@ -31,7 +43,8 @@ You can enable Python3 interface with pip:
     pip3 install neovim
 
 If you want to read the Neovim-python/python3 interface install documentation,
-you should read `:help nvim-python`.
+you should read `:help nvim-python` and the Wiki.
+https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
 
 ## Screenshots
 

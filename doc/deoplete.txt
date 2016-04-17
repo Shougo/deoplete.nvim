@@ -59,7 +59,8 @@ You can enable Python3 interface with pip: >
     sudo pip3 install neovim
 
 If you want to read for Neovim-python/python3 interface install documentation,
-you should read |nvim-python|.
+you should read |nvim-python| and the Wiki.
+https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
 
 ==============================================================================
 INTERFACE					*deoplete-interface*
@@ -325,15 +326,15 @@ deoplete#initialize()			*deoplete#initialize()*
 
 deoplete#enable()			*deoplete#enable()*
 		Enable deoplete auto completion.
-		Note: It is the global state.
+		Note: It changes the global state.
 
 deoplete#disable()			*deoplete#disable()*
 		Disable deoplete auto completion.
-		Note: It is the global state.
+		Note: It changes the global state.
 
 deoplete#toggle()			*deoplete#toggle()*
 		Toggle deoplete auto completion.
-		Note: It is the global state.
+		Note: It changes the global state.
 
 						*deoplete#custom#set()*
 deoplete#custom#set({source-name}, {option-name}, {value})
