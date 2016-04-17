@@ -21,7 +21,7 @@ class Source(Base):
         self.__max_lines = 5000
 
     def gather_candidates(self, context):
-        self.__make_cache(context, self.vim.current.buffer.number)
+        self.__make_cache(context, self.vim.current.buffer)
 
         buffers = [x['candidates'] for x in self.__buffers.values()
                    if x['filetype'] in context['filetypes']]
@@ -35,16 +35,11 @@ class Source(Base):
         if (self.vim.current.buffer.number
                 not in self.__buffers and
                 self.vim.current.buffer.options['modifiable']):
-            self.__make_cache(context, self.vim.current.buffer.number)
+            self.__make_cache(context, self.vim.current.buffer)
 
-    def __make_cache(self, context, bufnr):
+    def __make_cache(self, context, buffer):
         p = re.compile(context['keyword_patterns'])
-        buffer = self.vim.current.buffer
-        for b in reversed(self.vim.buffers):
-            if b.number < bufnr:
-                buffer = b
-                break
-
+        bufnr = buffer.number
         try:
             if (bufnr in self.__buffers) and len(buffer) > self.__max_lines:
                 line = context['position'][1]
