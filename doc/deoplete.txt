@@ -630,6 +630,11 @@ is_bytepos
 		Because Vim script string uses byte position.  Python string
 		uses character position.
 
+				*deoplete-source-attribute-debug_enabled*
+debug_enabled
+		Bool				(Optional)
+		If it is True, the debug log feature is enabled in the source.
+
 					*deoplete-source-attribute-matchers*
 matchers	List			(Optional)
 		Source default matchers list.
