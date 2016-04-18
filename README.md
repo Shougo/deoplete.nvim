@@ -26,7 +26,7 @@ For vim-plug
     function! DoRemote(arg)
       UpdateRemotePlugins
     endfunction
-    Plug 'Shougo/deoplete.nvim' { 'do': function('DoRemote') }
+    Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
 
 For dein.vim
 
