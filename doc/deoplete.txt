@@ -999,6 +999,9 @@ Q: I want to close the preview window after completion is done.
 A: >
 	autocmd CompleteDone * pclose!
 
+Note: It conflicts with iabbr.
+https://github.com/Shougo/deoplete.nvim/issues/234
+
 Q: I want to see the typed word in the completion menu.
 
 A: You should remove |deoplete-filter-matcher_length| from the matchers.
