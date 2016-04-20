@@ -147,24 +147,3 @@ def charwidth(c):
     return 2 if wc == 'F' or wc == 'W' else 1
 
 
-def itersource(vim, context, sources):
-    filetypes = context['filetype'].split('.')
-    ignore_sources = set()
-    for ft in filetypes:
-        ignores = get_buffer_config(vim, ft, 'b:deoplete_ignore_sources',
-                                    'g:deoplete#ignore_sources', '{}')
-        if isinstance(ignores, dict):
-            ignore_sources.update(ignores.get(ft, []))
-        elif isinstance(ignores, list):
-            ignore_sources.update(ignores)
-
-    for source_name, source in sources:
-        if (source_name in ignore_sources):
-            continue
-        if context['sources'] and source_name not in context['souces']:
-            continue
-        if source.filetypes and not any(x in filetypes
-                                        for x in source.filetypes):
-            continue
-
-        yield source_name, source
