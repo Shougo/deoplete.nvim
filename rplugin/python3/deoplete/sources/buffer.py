@@ -29,7 +29,8 @@ class Source(Base):
             return []
 
         return [{'word': x} for x in
-                functools.reduce(operator.add, buffers)]
+                functools.reduce(operator.add, buffers)
+                if x != context['complete_str']]
 
     def on_buffer(self, context):
         if (self.vim.current.buffer.number

@@ -45,4 +45,4 @@ class Source(Base):
         return [{'word': x} for x in
                 functools.reduce(operator.add, [
                     p.findall(x) for x in self.vim.current.buffer
-                ])]
+                ]) if x != context['complete_str']]
