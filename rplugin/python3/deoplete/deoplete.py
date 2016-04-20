@@ -6,7 +6,7 @@
 
 from deoplete.util import \
     error, globruntime, charpos2bytepos, \
-    bytepos2charpos, get_custom, get_syn_name, itersource
+    bytepos2charpos, get_custom, get_syn_name, get_buffer_config
 
 import deoplete.sources
 import deoplete.filters
@@ -94,7 +94,7 @@ class Deoplete(logger.LoggingMixin):
                          reverse=True)
         results = []
         start_length = self.__vim.vars['deoplete#auto_complete_start_length']
-        for source_name, source in itersource(self.__vim, context, sources):
+        for source_name, source in self.itersource(context, sources):
             if source.disabled_syntaxes and 'syntax_name' not in context:
                 context['syntax_name'] = get_syn_name(self.__vim)
             cont = copy.deepcopy(context)
@@ -186,6 +186,27 @@ class Deoplete(logger.LoggingMixin):
 
             # self.debug(context['candidates'])
         return results
+
+    def itersource(self, context, sources):
+        filetypes = context['filetypes']
+        ignore_sources = set()
+        for ft in filetypes:
+            ignore_sources.update(
+                get_buffer_config(self.__vim, ft,
+                                  'b:deoplete_ignore_sources',
+                                  'g:deoplete#ignore_sources',
+                                  '{}'))
+
+        for source_name, source in sources:
+            if (source_name in ignore_sources):
+                continue
+            if context['sources'] and source_name not in context['souces']:
+                continue
+            if source.filetypes and not any(x in filetypes
+                                            for x in source.filetypes):
+                continue
+
+            yield source_name, source
 
     def merge_results(self, results):
         results = [x for x in results if x['context']['candidates']]
