@@ -46,14 +46,8 @@ function! s:completion_begin(event) abort "{{{
         \ 'deoplete_auto_completion_begin', context)
 endfunction"}}}
 function! s:is_skip(event, context) abort "{{{
-  let displaywidth = strdisplaywidth(deoplete#util#get_input(a:event)) + 1
-
-  if &l:formatoptions =~# '[tca]' && &l:textwidth > 0
-        \     && displaywidth >= &l:textwidth
-    if &l:formatoptions =~# '[ta]'
-          \ || deoplete#util#get_syn_name() ==# 'Comment'
-      return
-    endif
+  if s:is_skip_textwidth(deoplete#util#get_input(a:event))
+    return 1
   endif
 
   let disable_auto_complete =
@@ -61,8 +55,7 @@ function! s:is_skip(event, context) abort "{{{
         \   'b:deoplete_disable_auto_complete',
         \   'g:deoplete#disable_auto_complete')
 
-  let is_virtual = virtcol('.') != displaywidth
-  if &paste || is_virtual
+  if &paste
         \ || (a:event !=# 'Manual' && disable_auto_complete)
         \ || (&l:completefunc != '' && &l:buftype =~# 'nofile')
         \ || (a:event ==# 'InsertEnter'
@@ -96,6 +89,18 @@ function! s:is_skip(event, context) abort "{{{
 
   return 0
 endfunction"}}}
+function! s:is_skip_textwidth(input) abort "{{{
+  let displaywidth = strdisplaywidth(a:input) + 1
+
+  if &l:formatoptions =~# '[tca]' && &l:textwidth > 0
+        \     && displaywidth >= &l:textwidth
+    if &l:formatoptions =~# '[ta]'
+          \ || deoplete#util#get_syn_name() ==# 'Comment'
+      return 1
+    endif
+  endif
+  return virtcol('.') != displaywidth
+endfunction"}}}
 
 function! s:on_insert_leave() abort "{{{
   if exists('g:deoplete#_saved_completeopt')
@@ -128,8 +133,10 @@ function! s:complete_done() abort "{{{
 endfunction"}}}
 
 function! s:on_insert_char_pre() abort "{{{
-  if !pumvisible() || !g:deoplete#enable_refresh_always
-    return
+  if !pumvisible()
+        \ || !g:deoplete#enable_refresh_always
+        \ || s:is_skip_textwidth(deoplete#util#get_input('InsertCharPre'))
+    return 1
   endif
 
   " Auto refresh
