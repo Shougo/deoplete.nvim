@@ -233,6 +233,7 @@ g:deoplete#sources		*g:deoplete#sources*
 <
 b:deoplete_sources		*b:deoplete_sources*
 		Buffer local variable of |g:deoplete#sources|.
+		It must be the source names list.
 >
 		" Examples:
 		" In cmdwin, only use buffer source.
@@ -244,6 +245,7 @@ g:deoplete#ignore_sources	*g:deoplete#ignore_sources*
 
 b:deoplete_ignore_sources	*b:deoplete_ignore_sources*
 		Buffer local variable of |g:deoplete#ignore_sources|.
+		It must be the source names list.
 
 				*g:deoplete#member#prefix_patterns*
 g:deoplete#member#prefix_patterns
