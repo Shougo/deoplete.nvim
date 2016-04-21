@@ -29,7 +29,7 @@ function! deoplete#init#_initialize() abort "{{{
           \ 'deoplete.nvim does not work with this version.')
     call deoplete#util#print_error(
           \ 'It requires Neovim with Python3 support("+python3").')
-    return
+    return 1
   endif
 
   if &completeopt !~# 'noinsert\|noselect'
@@ -41,7 +41,7 @@ function! deoplete#init#_initialize() abort "{{{
             \ 'deoplete.nvim does not work with this version.')
       call deoplete#util#print_error(
             \ 'Please update neovim to latest version.')
-      return
+      return 1
     finally
       let &completeopt = save_completeopt
     endtry
@@ -57,7 +57,7 @@ function! deoplete#init#_initialize() abort "{{{
           \ 'deoplete.nvim is not registered as Neovim remote plugins.')
     call deoplete#util#print_error(
           \ 'Please execute :UpdateRemotePlugins command and restart Neovim.')
-    return
+    return 1
   endtry
 
   call deoplete#mappings#_init()

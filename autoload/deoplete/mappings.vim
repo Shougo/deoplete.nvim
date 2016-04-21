@@ -32,7 +32,9 @@ function! deoplete#mappings#_set_completeopt() abort "{{{
 endfunction"}}}
 
 function! deoplete#mappings#manual_complete(...) abort "{{{
-  call deoplete#init#_initialize()
+  if deoplete#initialize()
+    return
+  endif
 
   " Start complete.
   return (pumvisible() ? "\<C-e>" : '')
