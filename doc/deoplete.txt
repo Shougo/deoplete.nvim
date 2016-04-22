@@ -47,10 +47,9 @@ Note: deoplete requires Neovim(latest is recommended) with Python3 enabled.
 
 1. Extract the files and put them in your Neovim directory
    (usually `$XDG_CONFIG_HOME/nvim/`).
-2. Execute the |:UpdateRemotePlugins| or |:NeoBundleRemotePlugins| (for using
-   NeoBundle) and restart Neovim.
-3. Execute the |:DeopleteEnable| command or
-   set "let g:deoplete#enable_at_startup = 1" in your `init.vim`
+2. Execute the |:UpdateRemotePlugins| and restart Neovim.
+3. Call |deoplete#enable()| or set "let g:deoplete#enable_at_startup = 1" in
+   your `init.vim`
 
 If ":echo has('python3')" returns `1`, then you're done; otherwise, see below.
 
@@ -61,6 +60,9 @@ You can enable Python3 interface with pip: >
 If you want to read for Neovim-python/python3 interface install documentation,
 you should read |nvim-python| and the Wiki.
 https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
+
+You can check the Python3 installation by nvim-python-doctor.
+https://github.com/tweekmonster/nvim-python-doctor
 
 ==============================================================================
 INTERFACE					*deoplete-interface*
