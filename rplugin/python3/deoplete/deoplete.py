@@ -74,11 +74,7 @@ class Deoplete(logger.LoggingMixin):
             'call feedkeys("\<Plug>(deoplete_start_complete)")')
 
     def gather_candidates(self, context):
-        if self.__vim.options['runtimepath'] != self.__runtimepath:
-            # Recache
-            self.load_sources()
-            self.load_filters()
-            self.__runtimepath = self.__vim.options['runtimepath']
+        self.check_recache()
 
         # self.debug(context)
 
@@ -88,13 +84,9 @@ class Deoplete(logger.LoggingMixin):
     def gather_results(self, context):
         # sources = ['buffer', 'neosnippet']
         # sources = ['buffer']
-        sources = sorted(self.__sources.items(),
-                         key=lambda x: get_custom(self.__vim, x[1].name).get(
-                             'rank', x[1].rank),
-                         reverse=True)
         results = []
         start_length = self.__vim.vars['deoplete#auto_complete_start_length']
-        for source_name, source in self.itersource(context, sources):
+        for source_name, source in self.itersource(context):
             if source.disabled_syntaxes and 'syntax_name' not in context:
                 context['syntax_name'] = get_syn_name(self.__vim)
             cont = copy.deepcopy(context)
@@ -187,7 +179,11 @@ class Deoplete(logger.LoggingMixin):
             # self.debug(context['candidates'])
         return results
 
-    def itersource(self, context, sources):
+    def itersource(self, context):
+        sources = sorted(self.__sources.items(),
+                         key=lambda x: get_custom(self.__vim, x[1].name).get(
+                             'rank', x[1].rank),
+                         reverse=True)
         filetypes = context['filetypes']
         ignore_sources = set()
         for ft in filetypes:
@@ -338,3 +334,17 @@ class Deoplete(logger.LoggingMixin):
     def position_has_changed(self, pos):
         return (pos != self.__vim.current.window.cursor or
                 self.__vim.funcs.mode() != 'i')
+
+    def check_recache(self):
+        if self.__vim.options['runtimepath'] != self.__runtimepath:
+            # Recache
+            self.load_sources()
+            self.load_filters()
+            self.__runtimepath = self.__vim.options['runtimepath']
+
+    def on_buffer(self, context):
+        self.check_recache()
+
+        for source_name, source in self.itersource(context):
+            if hasattr(source, 'on_buffer'):
+                source.on_buffer(context)

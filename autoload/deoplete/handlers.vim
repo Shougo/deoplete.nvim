@@ -13,6 +13,8 @@ function! deoplete#handlers#_init() abort "{{{
 
     autocmd TextChangedI * call s:completion_begin("TextChangedI")
     autocmd InsertEnter * call s:completion_begin("InsertEnter")
+    autocmd BufEnter,BufRead,BufNewFile,BufNew,BufWinEnter,BufWritePost
+          \ * call s:on_buffer()
   augroup END
 endfunction"}}}
 
@@ -100,6 +102,13 @@ function! s:is_skip_textwidth(input) abort "{{{
     endif
   endif
   return virtcol('.') != displaywidth
+endfunction"}}}
+
+function! s:on_buffer() abort "{{{
+  let context = deoplete#init#_context('BufEnter', [])
+  echomsg string(bufname('%'))
+  call rpcnotify(g:deoplete#_channel_id,
+        \ 'deoplete_on_buffer', context)
 endfunction"}}}
 
 function! s:on_insert_leave() abort "{{{

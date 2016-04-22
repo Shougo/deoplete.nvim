@@ -695,6 +695,12 @@ on_post_filter	Function	(Optional)
 		It takes {self} and {context} as its parameter and returns a
 		list of {candidate}.
 
+				*deoplete-source-attribute-on_buffer*
+on_buffer	Function	(Optional)
+		It is called after the buffer is opened.
+		It is useful to make cache.
+		It takes {self} and {context} as its parameter.
+
 					*deoplete-source-attribute-__*
 __{name}	(Unknown)	(Optional)
 		Additional source information.
