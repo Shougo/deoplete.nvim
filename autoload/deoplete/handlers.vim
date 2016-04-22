@@ -106,7 +106,6 @@ endfunction"}}}
 
 function! s:on_buffer() abort "{{{
   let context = deoplete#init#_context('BufEnter', [])
-  echomsg string(bufname('%'))
   call rpcnotify(g:deoplete#_channel_id,
         \ 'deoplete_on_buffer', context)
 endfunction"}}}
