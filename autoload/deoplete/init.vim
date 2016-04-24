@@ -249,7 +249,7 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \ 'sources': sources,
         \ 'keyword_patterns': keyword_patterns,
         \ 'max_abbr_width': (width * 2 / 3),
-        \ 'max_menu_width': (width / 3),
+        \ 'max_menu_width': (width * 2 / 3),
         \ }
 endfunction"}}}
 
