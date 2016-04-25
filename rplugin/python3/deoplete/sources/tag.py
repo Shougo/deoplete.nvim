@@ -26,28 +26,35 @@ class Source(Base):
 
         self.__cache = {}
 
+    def on_buffer(self, context):
+        self.__make_cache(context)
+
     def gather_candidates(self, context):
+        self.__make_cache(context)
+
         candidates = []
-        limit = self.vim.vars['deoplete#tag#cache_limit_size']
-        include_files = self.vim.call(
-            'neoinclude#include#get_tag_files') if self.vim.call(
-                'exists', '*neoinclude#include#get_tag_files') else []
-        for filename in [x for x in self.vim.call(
-                'map', self.vim.call('tagfiles') + include_files,
-                'fnamemodify(v:val, ":p")')
-                         if exists(x) and getsize(x) < limit]:
+        for filename in [x for x in self.__get_tagfiles()
+                         if x in self.__cache]:
+            candidates += self.__cache[filename].candidates
+
+        p = re.compile('(?:{})$'.format(context['keyword_patterns']))
+        return [{'word': x} for x in candidates if p.match(x)]
+
+    def __make_cache(self, context):
+        for filename in self.__get_tagfiles():
             mtime = getmtime(filename)
             if filename not in self.__cache or self.__cache[
                     filename].mtime != mtime:
                 with open(filename, 'r', errors='replace') as f:
-                    new_candidates = parse_file_pattern(
-                        f, '^[^!][^\t]+')
-                    candidates += new_candidates
                     self.__cache[filename] = TagsCacheItem(
-                        mtime, new_candidates)
-                    limit -= getsize(filename)
-            else:
-                candidates += self.__cache[filename].candidates
+                        mtime, parse_file_pattern(f, '^[^!][^\t]+'))
 
-        p = re.compile('(?:{})$'.format(context['keyword_patterns']))
-        return [{'word': x} for x in candidates if p.match(x)]
+    def __get_tagfiles(self):
+        limit = self.vim.vars['deoplete#tag#cache_limit_size']
+        include_files = self.vim.call(
+            'neoinclude#include#get_tag_files') if self.vim.call(
+                'exists', '*neoinclude#include#get_tag_files') else []
+        return [x for x in self.vim.call(
+                'map', self.vim.call('tagfiles') + include_files,
+                'fnamemodify(v:val, ":p")')
+                if exists(x) and getsize(x) < limit]

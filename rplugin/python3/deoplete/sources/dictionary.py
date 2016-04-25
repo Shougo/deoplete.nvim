@@ -22,23 +22,31 @@ class Source(Base):
 
         self.__cache = {}
 
+    def on_buffer(self, context):
+        self.__make_cache(context)
+
     def gather_candidates(self, context):
+        self.__make_cache(context)
+
         candidates = []
-        for filename in [x for x in get_dictionaries(
-                self.vim, context['filetype']) if exists(x)]:
+        for filename in [x for x in self.__get_dictionaries()
+                         if x in self.__cache]:
+            candidates += self.__cache[filename].candidates
+
+        return [{'word': x} for x in candidates]
+
+    def __make_cache(self, context):
+        for filename in self.__get_dictionaries():
             mtime = getmtime(filename)
             if filename not in self.__cache or self.__cache[
                     filename].mtime != mtime:
                 with open(filename, 'r', errors='replace') as f:
-                    new_candidates = parse_file_pattern(
-                        f, context['keyword_patterns'])
-                    candidates += new_candidates
-                self.__cache[filename] = DictCacheItem(
-                    mtime, new_candidates)
-            else:
-                candidates += self.__cache[filename].candidates
-        return [{'word': x} for x in candidates]
+                    self.__cache[filename] = DictCacheItem(
+                        mtime, parse_file_pattern(
+                            f, context['keyword_patterns']))
 
-
-def get_dictionaries(vim, filetype):
-    return vim.current.buffer.options.get('dictionary', '').split(',')
+    def __get_dictionaries(self):
+        return [x for x in
+                self.vim.current.buffer.options.get(
+                    'dictionary', '').split(',')
+                if exists(x)]

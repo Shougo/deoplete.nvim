@@ -20,6 +20,12 @@ class Source(Base):
         self.__buffers = {}
         self.__max_lines = 5000
 
+    def on_buffer(self, context):
+        if (self.vim.current.buffer.number
+                not in self.__buffers and
+                self.vim.current.buffer.options['modifiable']):
+            self.__make_cache(context, self.vim.current.buffer)
+
     def gather_candidates(self, context):
         self.__make_cache(context, self.vim.current.buffer)
 
@@ -31,12 +37,6 @@ class Source(Base):
         return [{'word': x} for x in
                 functools.reduce(operator.add, buffers)
                 if x != context['complete_str']]
-
-    def on_buffer(self, context):
-        if (self.vim.current.buffer.number
-                not in self.__buffers and
-                self.vim.current.buffer.options['modifiable']):
-            self.__make_cache(context, self.vim.current.buffer)
 
     def __make_cache(self, context, buffer):
         p = re.compile(context['keyword_patterns'])
