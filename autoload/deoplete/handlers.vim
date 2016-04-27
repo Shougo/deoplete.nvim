@@ -101,7 +101,7 @@ function! s:is_skip_textwidth(input) abort "{{{
       return 1
     endif
   endif
-  return virtcol('.') != displaywidth
+  return !pumvisible() && virtcol('.') != displaywidth
 endfunction"}}}
 
 function! s:on_buffer() abort "{{{
