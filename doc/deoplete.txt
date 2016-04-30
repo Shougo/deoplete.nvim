@@ -368,6 +368,8 @@ deoplete#custom#set({source-name}, {option-name}, {value})
 		\ 'max_abbr_width', 20)
 		call deoplete#custom#set('javacomplete2',
 		\ 'max_menu_width', 80)
+		call deoplete#custom#set('buffer',
+		\ 'mark', '*')
 <
 					*deoplete#enable_logging()*
 deoplete#enable_logging({level}, {logfile})

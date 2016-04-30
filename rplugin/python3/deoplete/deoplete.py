@@ -298,6 +298,8 @@ class Deoplete(logger.LoggingMixin):
                 'sorters', source.sorters)
             source.converters = get_custom(self.__vim, source.name).get(
                 'converters', source.converters)
+            source.mark = get_custom(self.__vim, source.name).get(
+                'mark', source.mark)
 
             self.__sources[source.name] = source
             self.debug('Loaded Source: %s (%s)', name, module.__file__)
