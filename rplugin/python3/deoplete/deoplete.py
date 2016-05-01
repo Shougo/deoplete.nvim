@@ -168,11 +168,11 @@ class Deoplete(logger.LoggingMixin):
             if hasattr(source, 'on_post_filter'):
                 context['candidates'] = source.on_post_filter(context)
 
-            if context['candidates'] and not (
-                    re.match(r'\[.*\]',
-                             context['candidates'][0].get('menu', ''))):
+            candidates = context['candidates']
+            if candidates and candidates[0].get(
+                    'menu', '').find(source.mark) != 0:
                 # Set default menu
-                for candidate in context['candidates']:
+                for candidate in candidates:
                     candidate['menu'] = source.mark + ' ' + candidate.get(
                         'menu', '')
 
