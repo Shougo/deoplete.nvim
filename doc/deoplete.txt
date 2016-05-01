@@ -350,26 +350,40 @@ deoplete#custom#set({source-name}, {option-name}, {value})
 		Note: You must call it before using deoplete.
 >
 		" Examples:
+
 		" Use head matcher instead of fuzzy matcher
 		call deoplete#custom#set('_', 'matchers', ['matcher_head'])
+
 		" Use auto delimiter feature
 		call deoplete#custom#set('_', 'converters',
 		\ ['converter_auto_delimiter', 'remove_overlap'])
-		call deoplete#custom#set('buffer',
-		\ 'min_pattern_length', 9999)
+
+		call deoplete#custom#set('buffer', 'min_pattern_length', 9999)
+
 		" Change the source rank
 		call deoplete#custom#set('buffer', 'rank', 9999)
+
 		" Enable buffer source in C/C++ files only.
 		call deoplete#custom#set('buffer', 'filetypes', ['c', 'cpp'])
+
 		" Disable the candidates in Comment/String syntaxes.
 		call deoplete#custom#set('_',
 		\ 'disabled_syntaxes', ['Comment', 'String'])
+
+		" Change the truncate width.
 		call deoplete#custom#set('javacomplete2',
 		\ 'max_abbr_width', 20)
 		call deoplete#custom#set('javacomplete2',
 		\ 'max_menu_width', 80)
-		call deoplete#custom#set('buffer',
-		\ 'mark', '*')
+
+		" Disable the truncate feature.
+		call deoplete#custom#set('javacomplete2',
+		\ 'max_abbr_width', 0)
+		call deoplete#custom#set('javacomplete2',
+		\ 'max_menu_width', 0)
+
+		" Change the source mark.
+		call deoplete#custom#set('buffer', 'mark', '*')
 <
 					*deoplete#enable_logging()*
 deoplete#enable_logging({level}, {logfile})
