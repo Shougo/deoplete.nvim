@@ -18,7 +18,7 @@ class Filter(Base):
     def filter(self, context):
         max_width = context['max_menu_width']
         if not context['candidates'] or 'menu' not in context[
-                'candidates'][0] or max_width < 0:
+                'candidates'][0] or max_width <= 0:
             return context['candidates']
 
         footer_width = max_width / 3
