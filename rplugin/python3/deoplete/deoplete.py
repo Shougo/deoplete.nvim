@@ -169,7 +169,7 @@ class Deoplete(logger.LoggingMixin):
                 context['candidates'] = source.on_post_filter(context)
 
             candidates = context['candidates']
-            if candidates and candidates[0].get(
+            if candidates and source.mark != '' and candidates[0].get(
                     'menu', '').find(source.mark) != 0:
                 # Set default menu
                 for candidate in candidates:
