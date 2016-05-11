@@ -5,13 +5,12 @@
 # License: MIT license
 # ============================================================================
 
+from .base import Base
+
 import re
 from collections import namedtuple
 from os.path import exists, getmtime, getsize
-
 from deoplete.util import parse_file_pattern
-
-from .base import Base
 
 TagsCacheItem = namedtuple('TagsCacheItem', 'mtime candidates')
 

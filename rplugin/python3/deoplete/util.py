@@ -4,11 +4,9 @@
 # License: MIT license
 # ============================================================================
 
-import functools
 import json
-import operator
-import os
 import re
+import os
 import sys
 import unicodedata
 
@@ -82,13 +80,13 @@ def get_syn_name(vim):
 
 
 def parse_file_pattern(f, pattern):
-    lines = f.readlines()
-    if not lines:
-        return []
     p = re.compile(pattern)
-    return list(set(functools.reduce(operator.add, [
-        p.findall(x) for x in lines
-    ])))
+    return list(set(p.findall('\n'.join(f.read()))))
+
+
+def parse_buffer_pattern(b, pattern):
+    p = re.compile(pattern)
+    return p.findall('\n'.join(b))
 
 
 def fuzzy_escape(string, camelcase):

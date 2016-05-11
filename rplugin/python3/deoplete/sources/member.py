@@ -4,12 +4,11 @@
 # License: MIT license
 # ============================================================================
 
-import re
-import operator
-import functools
-from deoplete.util import \
-    get_buffer_config, convert2list
 from .base import Base
+
+import re
+from deoplete.util import \
+    get_buffer_config, convert2list, parse_buffer_pattern
 
 
 class Source(Base):
@@ -40,9 +39,8 @@ class Source(Base):
         return -1
 
     def gather_candidates(self, context):
-        p = re.compile(r'(?<=' + re.escape(self.__prefix) + r')\w+(?:\(\)?)?')
-
         return [{'word': x} for x in
-                functools.reduce(operator.add, [
-                    p.findall(x) for x in self.vim.current.buffer
-                ]) if x != context['complete_str']]
+                parse_buffer_pattern(
+                    self.vim.current.buffer,
+                    r'(?<=' + re.escape(self.__prefix) + r')\w+(?:\(\)?)?')
+                if x != context['complete_str']]
