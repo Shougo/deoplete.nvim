@@ -327,7 +327,7 @@ class Deoplete(logger.LoggingMixin):
                 context['syntax_name'] in disabled_syntaxes):
             return 1
         if (input_pattern != '' and
-                re.search(input_pattern + '$', context['input'])):
+                re.search('(' + input_pattern + ')$', context['input'])):
             return 0
         skip_length = (context['event'] != 'Manual' and
                        not (min_pattern_length <=
