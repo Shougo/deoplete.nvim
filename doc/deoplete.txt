@@ -785,64 +785,64 @@ CREATE FILTER					*deoplete-create-filter*
 ==============================================================================
 EXTERNAL SOURCES				*deoplete-external-sources*
 
-neco-vim: vim source for Vim script
+neco-vim: "vim" source for Vim script
 https://github.com/Shougo/neco-vim
 
-neosnippet: neosnippet source
+neosnippet: "neosnippet" source
 https://github.com/Shougo/neosnippet.vim
 
-neoinclude: include and file/include sources
+neoinclude: "include" and "file/include" sources
 https://github.com/Shougo/neoinclude.vim
 
-neco-syntax: syntax source
+neco-syntax: "syntax" source
 https://github.com/Shougo/neco-syntax
 
-vimshell: vimshell source for vimshell
+vimshell: "vimshell" source for vimshell
 https://github.com/Shougo/vimshell.vim
 
-neco-ghc: ghc source for Haskell
+neco-ghc: "ghc" source for Haskell
 https://github.com/eagletmt/neco-ghc
 
-vim-racer: racer source for Rust
+vim-racer: "racer" source for Rust
 https://github.com/racer-rust/vim-racer
 
-UltiSnips source: ultisnips source for UltiSnips
+UltiSnips source: "ultisnips" source for UltiSnips
 https://github.com/SirVer/ultisnips
 
-clang-complete: clang_complete source for C/C++/Objective-C
+clang-complete: "clang_complete" source for C/C++/Objective-C
 https://github.com/Rip-Rip/clang_complete
 
-deoplete-go: go source for Go
+deoplete-go: "go" source for Go
 https://github.com/zchee/deoplete-go
 
-elixir.nvim: elixir source for Elixir
+elixir.nvim: "elixir" source for Elixir
 https://github.com/awetzel/elixir.nvim
 
-deoplete-jedi: jedi source for Python
+deoplete-jedi: "jedi" source for Python
 https://github.com/zchee/deoplete-jedi
 
-perlomni.vim: perlomni source for Perl
+perlomni.vim: "perlomni" source for Perl
 https://github.com/c9s/perlomni.vim
 
-deoplete-typescript: typescript source for typescript
+deoplete-typescript: "typescript" source for typescript
 https://github.com/mhartington/deoplete-typescript
 
-deoplete-clang: clang source for C/C++
+deoplete-clang: "clang" source for C/C++
 https://github.com/zchee/deoplete-clang
 
-async-clj-omni: async_clj source for Clojure
+async-clj-omni: "async_clj" source for Clojure
 https://github.com/SevereOverfl0w/async-clj-omni
 
-deoplete-ternjs: ternjs source for JavaScript
+deoplete-ternjs: "ternjs" source for JavaScript
 https://github.com/carlitux/deoplete-ternjs
 
-deoplete-swift: swift source for Swift
+deoplete-swift: "swift" source for Swift
 https://github.com/landaire/deoplete-swift
 
-neovim-intellij-complete-deoplete: intellij source for Intellij IDE
+neovim-intellij-complete-deoplete: "intellij" source for Intellij IDE
 https://github.com/vhakulinen/neovim-intellij-complete-deoplete
 
-tmux-complete: tmuxcomplete source for tmux panes.
+tmux-complete: "tmuxcomplete" source for tmux panes.
 https://github.com/wellle/tmux-complete.vim
 
 ==============================================================================
