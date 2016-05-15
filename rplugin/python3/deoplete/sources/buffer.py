@@ -21,10 +21,11 @@ class Source(Base):
         self.__buffers = {}
         self.__max_lines = 5000
 
-    def on_buffer(self, context):
-        if (self.vim.current.buffer.number
-                not in self.__buffers and
-                self.vim.current.buffer.options['modifiable']):
+    def on_event(self, context):
+        if not self.vim.current.buffer.options['modifiable']:
+            return
+        if ((self.vim.current.buffer.number not in self.__buffers) or
+                context['event'] == 'BufWritePost'):
             self.__make_cache(context, self.vim.current.buffer)
 
     def gather_candidates(self, context):
@@ -42,7 +43,9 @@ class Source(Base):
     def __make_cache(self, context, buffer):
         bufnr = buffer.number
         try:
-            if (bufnr in self.__buffers) and len(buffer) > self.__max_lines:
+            if (bufnr in self.__buffers and
+                    context['event'] != 'BufWritePost' and
+                    len(buffer) > self.__max_lines):
                 line = context['position'][1]
                 self.__buffers[bufnr][
                     'candidates'] += parse_buffer_pattern(

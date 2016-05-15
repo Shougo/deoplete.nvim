@@ -13,9 +13,14 @@ function! deoplete#handlers#_init() abort "{{{
 
     autocmd TextChangedI * call s:completion_begin("TextChangedI")
     autocmd InsertEnter * call s:completion_begin("InsertEnter")
-    autocmd BufEnter,BufRead,BufNewFile,BufNew,BufWinEnter,BufWritePost
-          \ * call s:on_buffer()
   augroup END
+
+  for event in [
+        \ 'BufEnter', 'BufRead', 'BufNewFile', 'BufNew', 'BufWinEnter',
+        \ 'BufWritePost'
+        \ ]
+    execute 'autocmd deoplete' event '* call s:on_event('.string(event).')'
+  endfor
 endfunction"}}}
 
 function! s:completion_begin(event) abort "{{{
@@ -104,10 +109,9 @@ function! s:is_skip_textwidth(input) abort "{{{
   return !pumvisible() && virtcol('.') != displaywidth
 endfunction"}}}
 
-function! s:on_buffer() abort "{{{
-  let context = deoplete#init#_context('BufEnter', [])
-  call rpcnotify(g:deoplete#_channel_id,
-        \ 'deoplete_on_buffer', context)
+function! s:on_event(event) abort "{{{
+  let context = deoplete#init#_context(a:event, [])
+  call rpcnotify(g:deoplete#_channel_id, 'deoplete_on_event', context)
 endfunction"}}}
 
 function! s:on_insert_leave() abort "{{{

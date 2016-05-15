@@ -25,7 +25,7 @@ class Source(Base):
 
         self.__cache = {}
 
-    def on_buffer(self, context):
+    def on_event(self, context):
         self.__make_cache(context)
 
     def gather_candidates(self, context):

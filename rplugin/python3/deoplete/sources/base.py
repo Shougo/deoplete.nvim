@@ -42,5 +42,5 @@ class Base(LoggingMixin):
     def gather_candidate(self, context):
         pass
 
-    def on_buffer(self, context):
+    def on_event(self, context):
         pass
