@@ -37,8 +37,7 @@ class Source(Base):
             return []
 
         return [{'word': x} for x in
-                functools.reduce(operator.add, buffers)
-                if x != context['complete_str']]
+                functools.reduce(operator.add, buffers)]
 
     def __make_cache(self, context, buffer):
         bufnr = buffer.number
@@ -50,14 +49,17 @@ class Source(Base):
                 self.__buffers[bufnr][
                     'candidates'] += parse_buffer_pattern(
                         buffer[max([0, line-500]):line+500],
-                        context['keyword_patterns'])
+                        context['keyword_patterns'],
+                        context['complete_str'])
                 self.__buffers[bufnr]['candidates'] = list(
                     set(self.__buffers[bufnr]['candidates']))
             else:
                 self.__buffers[bufnr] = {
                     'filetype': context['filetype'],
                     'candidates': parse_buffer_pattern(
-                        buffer, context['keyword_patterns']),
+                        buffer,
+                        context['keyword_patterns'],
+                        context['complete_str'])
                 }
         except UnicodeDecodeError:
             return []

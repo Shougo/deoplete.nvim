@@ -84,9 +84,9 @@ def parse_file_pattern(f, pattern):
     return list(set(p.findall('\n'.join(f.read()))))
 
 
-def parse_buffer_pattern(b, pattern):
+def parse_buffer_pattern(b, pattern, complete_str):
     p = re.compile(pattern)
-    return p.findall('\n'.join(b))
+    return [x for x in p.findall('\n'.join(b)) if x != complete_str]
 
 
 def fuzzy_escape(string, camelcase):

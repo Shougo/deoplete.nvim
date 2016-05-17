@@ -42,5 +42,7 @@ class Source(Base):
         return [{'word': x} for x in
                 parse_buffer_pattern(
                     self.vim.current.buffer,
-                    r'(?<=' + re.escape(self.__prefix) + r')\w+(?:\(\)?)?')
+                    r'(?<=' + re.escape(self.__prefix) + r')\w+(?:\(\)?)?',
+                    context['complete_str']
+                )
                 if x != context['complete_str']]
