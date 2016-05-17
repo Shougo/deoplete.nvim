@@ -85,7 +85,6 @@ class Deoplete(logger.LoggingMixin):
         # sources = ['buffer', 'neosnippet']
         # sources = ['buffer']
         results = []
-        start_length = self.__vim.vars['deoplete#auto_complete_start_length']
         for source_name, source in self.itersource(context):
             if source.disabled_syntaxes and 'syntax_name' not in context:
                 context['syntax_name'] = get_syn_name(self.__vim)
@@ -112,13 +111,8 @@ class Deoplete(logger.LoggingMixin):
             # self.debug(cont['complete_position'])
             # self.debug(cont['complete_str'])
 
-            min_pattern_length = source.min_pattern_length
-            if min_pattern_length < 0:
-                # Use default value
-                min_pattern_length = start_length
-
             if charpos < 0 or self.is_skip(cont, source.disabled_syntaxes,
-                                           min_pattern_length,
+                                           source.min_pattern_length,
                                            source.max_pattern_length,
                                            source.input_pattern):
                 # Skip

@@ -97,9 +97,6 @@ function! deoplete#init#_variables() abort "{{{
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_refresh_always', 0)
   call deoplete#util#set_default(
-        \ 'g:deoplete#auto_complete_start_length', 2,
-        \ 'g:deoplete#auto_completion_start_length')
-  call deoplete#util#set_default(
         \ 'g:deoplete#disable_auto_complete', 0)
   call deoplete#util#set_default(
         \ 'g:deoplete#delimiters', ['/', '.', '::', ':', '#'])
@@ -192,6 +189,11 @@ function! deoplete#init#_variables() abort "{{{
         \ g:deoplete#member#_prefix_patterns,
         \ 'lua', ['\.', ':'])
   "}}}
+
+  if exists('g:deoplete#auto_complete_start_length')
+    call deoplete#custom#set('_', 'min_pattern_length',
+          \ g:deoplete#auto_complete_start_length)
+  endif
 endfunction"}}}
 
 function! deoplete#init#_context(event, sources) abort "{{{

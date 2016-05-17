@@ -16,7 +16,7 @@ class Base(LoggingMixin):
         self.name = 'base'
         self.description = ''
         self.mark = ''
-        self.min_pattern_length = -1
+        self.min_pattern_length = 2
         self.max_pattern_length = 80
         self.max_abbr_width = self.vim.vars['deoplete#max_abbr_width']
         self.max_menu_width = self.vim.vars['deoplete#max_menu_width']
