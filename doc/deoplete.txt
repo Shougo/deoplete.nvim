@@ -4,7 +4,7 @@ Version: 1.2
 Author: Shougo <Shougo.Matsu at gmail.com>
 License: MIT license
 
-CONTENTS					*deoplete-contents*
+CONTENTS						*deoplete-contents*
 
 Introduction		|deoplete-introduction|
 Install			|deoplete-install|
@@ -41,7 +41,7 @@ Improvements in deoplete in comparison to |neocomplete|:
 4. Requires |+python3|.
 
 ==============================================================================
-INSTALL						*deoplete-install*
+INSTALL							*deoplete-install*
 
 Note: deoplete requires Neovim(latest is recommended) with Python3 enabled.
 
@@ -65,12 +65,12 @@ You can check the Python3 installation by nvim-python-doctor.
 https://github.com/tweekmonster/nvim-python-doctor
 
 ==============================================================================
-INTERFACE					*deoplete-interface*
+INTERFACE						*deoplete-interface*
 
 ------------------------------------------------------------------------------
-VARIABLES 					*deoplete-variables*
+VARIABLES	 					*deoplete-variables*
 
-				*g:deoplete#enable_at_startup*
+						*g:deoplete#enable_at_startup*
 g:deoplete#enable_at_startup
 		Deoplete gets started automatically when Neovim starts if
 		this value is 1.
@@ -78,7 +78,7 @@ g:deoplete#enable_at_startup
 		With the default value 0, you cannot use deoplete
 		unless you start it manually.
 
-				*g:deoplete#enable_ignore_case*
+					*g:deoplete#enable_ignore_case*
 g:deoplete#enable_ignore_case
 		When deoplete looks for candidate completion, this
 		variable controls whether deoplete ignores the upper-
@@ -86,14 +86,14 @@ g:deoplete#enable_ignore_case
 
 		Default value: same with your 'ignorecase' value
 
-				*g:deoplete#enable_smart_case*
+						*g:deoplete#enable_smart_case*
 g:deoplete#enable_smart_case
 		When a capital letter is included in input, deoplete does
 		not ignore the upper- and lowercase.
 
 		Default value: same with your 'smartcase' value
 
-				*g:deoplete#enable_camel_case*
+						*g:deoplete#enable_camel_case*
 g:deoplete#enable_camel_case
 		When a capital letter is matched with the uppercase, but a
 		lower letter is matched with the upper- and lowercase.
@@ -104,7 +104,7 @@ g:deoplete#enable_camel_case
 
 		Default value: 0
 
-				*g:deoplete#enable_refresh_always*
+					*g:deoplete#enable_refresh_always*
 g:deoplete#enable_refresh_always
 		Deoplete refreshes the candidates automatically if this value
 		is 1.
@@ -119,7 +119,7 @@ g:deoplete#auto_complete_start_length
 		Note: It is the deprecated option.  You should change
 		|deoplete-source-attribute-min_pattern_length|.
 
-				*g:deoplete#disable_auto_complete*
+					*g:deoplete#disable_auto_complete*
 g:deoplete#disable_auto_complete
 		It controls whether you invalidate automatic completion.  If
 		it is 1, automatic completion becomes invalid, but can use the
@@ -127,16 +127,16 @@ g:deoplete#disable_auto_complete
 
 		Default value: 0
 
-				*b:deoplete_disable_auto_complete*
+					*b:deoplete_disable_auto_complete*
 b:deoplete_disable_auto_complete
 		Buffer local variable of |g:deoplete#disable_auto_complete|.
 
-				*g:deoplete#enable_debug*
+						*g:deoplete#enable_debug*
 g:deoplete#enable_debug
 		It enables deoplete debug mode.  The debug print feature is
 		enabled.
 
-				*g:deoplete#enable_profile*
+						*g:deoplete#enable_profile*
 g:deoplete#enable_profile
 		It enables deoplete profile mode.
 		If it is 1, deoplete will print the time information to
@@ -146,20 +146,20 @@ g:deoplete#enable_profile
 
 		Default value: 0
 
-				*g:deoplete#delimiters*
+						*g:deoplete#delimiters*
 g:deoplete#delimiters
 		Delimiters list.
 
 		Default value: ['/', '.', '::', ':', '#']
 
-				*g:deoplete#max_list*
+							*g:deoplete#max_list*
 g:deoplete#max_list
 		If the list of candidates exceeds the limit, not all
 		candidates will show up.
 
 		Default value: 100
 
-				*g:deoplete#max_abbr_width*
+						*g:deoplete#max_abbr_width*
 g:deoplete#max_abbr_width
 		If the candidate abbr length exceeds the length it will be cut
 		down.  If it is less than equal 0, this feature will be
@@ -167,7 +167,7 @@ g:deoplete#max_abbr_width
 
 		Default value: 80
 
-				*g:deoplete#max_menu_width*
+						*g:deoplete#max_menu_width*
 g:deoplete#max_menu_width
 		If the candidate menu length exceeds the length it will be cut
 		down.  If it is less than equal 0, this feature will be
@@ -175,14 +175,14 @@ g:deoplete#max_menu_width
 
 		Default value: 40
 
-				*g:deoplete#auto_complete_delay*
+					*g:deoplete#auto_complete_delay*
 g:deoplete#auto_complete_delay
 		It is the auto completion delay time after your input.
 		The unit is ms.
 
 		Default value: 0
 
-				*g:deoplete#keyword_patterns*
+						*g:deoplete#keyword_patterns*
 g:deoplete#keyword_patterns
 		This dictionary records keyword patterns to buffer completion.
 		This is appointed in regular expression string or list every
@@ -195,11 +195,11 @@ g:deoplete#keyword_patterns
 <
 		Default value: in g:deoplete#_keyword_patterns
 
-				*b:deoplete_keyword_patterns*
+						*b:deoplete_keyword_patterns*
 b:deoplete_keyword_patterns
 		Buffer local variable of |g:deoplete#keyword_patterns|.
 
-				*g:deoplete#omni_patterns*
+						*g:deoplete#omni_patterns*
 g:deoplete#omni_patterns
 		This dictionary records keyword patterns to Omni completion.
 		This is appointed in regular expression string or list every
@@ -217,11 +217,12 @@ g:deoplete#omni_patterns
 <
 		Default value: in g:deoplete#_omni_patterns
 
-				*b:deoplete_omni_patterns*
+						*b:deoplete_omni_patterns*
 b:deoplete_omni_patterns
 		Buffer local variable of |g:deoplete#omni_patterns|.
 
-g:deoplete#sources		*g:deoplete#sources*
+							*g:deoplete#sources*
+g:deoplete#sources
 		It is a dictionary to decide use source names.  The key is
 		filetype and the value is source names list.  If the key is
 		"_", the value will be used for default filetypes.  For
@@ -234,24 +235,27 @@ g:deoplete#sources		*g:deoplete#sources*
 		let g:deoplete#sources = {}
 		let g:deoplete#sources._ = ['buffer']
 		let g:deoplete#sources.cpp = ['buffer', 'tag']
-<
-b:deoplete_sources		*b:deoplete_sources*
+
+<							*b:deoplete_sources*
+b:deoplete_sources
 		Buffer local variable of |g:deoplete#sources|.
 		It must be the source names list.
 >
 		" Examples:
 		" In cmdwin, only use buffer source.
 		autocmd CmdwinEnter * let b:deoplete_sources = ['buffer']
-<
-g:deoplete#ignore_sources	*g:deoplete#ignore_sources*
+
+<						*g:deoplete#ignore_sources*
+g:deoplete#ignore_sources
 		It is a dictionary to decide ignore source names.
 		Default value: {}
 
-b:deoplete_ignore_sources	*b:deoplete_ignore_sources*
+						*b:deoplete_ignore_sources*
+b:deoplete_ignore_sources
 		Buffer local variable of |g:deoplete#ignore_sources|.
 		It must be the source names list.
 
-				*g:deoplete#member#prefix_patterns*
+					*g:deoplete#member#prefix_patterns*
 g:deoplete#member#prefix_patterns
 		This dictionary records prefix patterns to member completion.
 		This is appointed in regular expression string or list every
@@ -262,11 +266,11 @@ g:deoplete#member#prefix_patterns
 
 		Default value: in g:deoplete#member#_prefix_patterns
 
-				*b:deoplete_member_prefix_patterns*
+					*b:deoplete_member_prefix_patterns*
 b:deoplete_member_prefix_patterns
 		Buffer local variable of |g:deoplete#member#prefix_patterns|.
 
-				*g:deoplete#omni#input_patterns*
+					*g:deoplete#omni#input_patterns*
 g:deoplete#omni#input_patterns
 		This dictionary records keyword patterns to Omni completion.
 		This is appointed in regular expression string or list every
@@ -284,11 +288,11 @@ g:deoplete#omni#input_patterns
 <
 		Default value: in g:deoplete#omni#_input_patterns
 
-				*b:deoplete_omni_input_patterns*
+					*b:deoplete_omni_input_patterns*
 b:deoplete_omni_input_patterns
 		Buffer local variable of |g:deoplete#omni#input_patterns|.
 
-				*g:deoplete#omni#functions*
+						*g:deoplete#omni#functions*
 g:deoplete#omni#functions
 		This dictionary records the functions to Omni completion.
 		This is the omnifunc name list every file type.
@@ -298,22 +302,22 @@ g:deoplete#omni#functions
 		'omnifunc'.  You can call the omnifunc in the embedded
 		language.
 
-				*b:deoplete_omni_functions*
+						*b:deoplete_omni_functions*
 b:deoplete_omni_functions
 		Buffer local variable of |g:deoplete#omni#functions|.
 
-				*g:deoplete#file#enable_buffer_path*
+					*g:deoplete#file#enable_buffer_path*
 g:deoplete#file#enable_buffer_path
 		If it is 1, file source complete the files from the buffer
 		path instead of the current directory.
 
 		Default value: 0
 
-				*b:deoplete_file_enable_buffer_path*
+					*b:deoplete_file_enable_buffer_path*
 b:deoplete_file_enable_buffer_path
 		Buffer local variable of |g:deoplete#file#enable_buffer_path|.
 
-				*g:deoplete#tag#cache_limit_size*
+					*g:deoplete#tag#cache_limit_size*
 g:deoplete#tag#cache_limit_size
 		It sets file size to make a cache of a file in
 		tag source.  If a tag file is bigger than this size,
@@ -322,23 +326,27 @@ g:deoplete#tag#cache_limit_size
 		Default value: 500000
 
 ------------------------------------------------------------------------------
-FUNCTIONS 					*deoplete-functions*
+FUNCTIONS 						*deoplete-functions*
 
-deoplete#initialize()			*deoplete#initialize()*
+						*deoplete#initialize()*
+deoplete#initialize()
 		Initialize deoplete and sources.
 		Note: You should call it in |VimEnter| autocmd.
 		User customization for deoplete must be set before
 		initialization of deoplete.
 
-deoplete#enable()			*deoplete#enable()*
+							*deoplete#enable()*
+deoplete#enable()
 		Enable deoplete auto completion.
 		Note: It changes the global state.
 
-deoplete#disable()			*deoplete#disable()*
+							*deoplete#disable()*
+deoplete#disable()
 		Disable deoplete auto completion.
 		Note: It changes the global state.
 
-deoplete#toggle()			*deoplete#toggle()*
+							*deoplete#toggle()*
+deoplete#toggle()
 		Toggle deoplete auto completion.
 		Note: It changes the global state.
 
@@ -387,7 +395,7 @@ deoplete#custom#set({source-name}, {option-name}, {value})
 		" Change the source mark.
 		call deoplete#custom#set('buffer', 'mark', '*')
 <
-					*deoplete#enable_logging()*
+						*deoplete#enable_logging()*
 deoplete#enable_logging({level}, {logfile})
 		Enable logging for debugging purposes.
 		Set {level} to "DEBUG", "INFO", "WARNING", "ERROR", or
@@ -447,7 +455,7 @@ deoplete#mappings#refresh()
 		inoremap <expr><C-l>     deoplete#mappings#refresh()
 <
 ==============================================================================
-EXAMPLES					*deoplete-examples*
+EXAMPLES						*deoplete-examples*
 >
 	" Use deoplete.
 	let g:deoplete#enable_at_startup = 1
@@ -465,7 +473,7 @@ EXAMPLES					*deoplete-examples*
 	endfunction
 <
 ==============================================================================
-SOURCES						*deoplete-sources*
+SOURCES							*deoplete-sources*
 
 buffer						*deoplete-source-buffer*
 		It collects keywords from current buffer and the buffers which
@@ -476,14 +484,14 @@ buffer						*deoplete-source-buffer*
 member						*deoplete-source-member*
 		It collects members from current buffer.
 
-tag						*deoplete-source-tag*
+tag							*deoplete-source-tag*
 		It collects keywords from |ctags| files.
 		Note: It only supports UTF-8 encoding tag file.
 
-file						*deoplete-source-file*
+file							*deoplete-source-file*
 		This source collects keywords from local files.
 
-omni						*deoplete-source-omni*
+omni							*deoplete-source-omni*
 		This source collects keywords from 'omnifunc'.
 		Note: It is not asynchronous.
 
@@ -491,7 +499,7 @@ dictionary					*deoplete-source-dictionary*
 		This source collects keywords from 'dictionary'.
 
 ==============================================================================
-FILTERS						*deoplete-filters*
+FILTERS							*deoplete-filters*
 
 					*deoplete-filter-matcher_default*
 Default matchers: ['matcher_length', 'matcher_fuzzy']
@@ -509,7 +517,7 @@ Default converters: ['converter_remove_overlap', 'converter_truncate_abbr',
 
 	You can change it by |deoplete#custom#set()|.
 
-					*deoplete-filter-matcher_head*
+						*deoplete-filter-matcher_head*
 matcher_head	Head matching matcher.
 
 					*deoplete-filter-matcher_fuzzy*
@@ -525,7 +533,7 @@ matcher_length
 		Length matching matcher.
 		It removes shorter candidates than user input.
 
-					*deoplete-filter-sorter_rank*
+						*deoplete-filter-sorter_rank*
 sorter_rank	Matched rank order sorter.  The higher the head matched word
 		or already selected.
 
@@ -572,39 +580,39 @@ Note: If you call Vim functions in your source, it is not asynchronous.
 ------------------------------------------------------------------------------
 SOURCE ATTRIBUTES				*deoplete-source-attributes*
 
-				*deoplete-source-attribute-__init__*
-__init__	Function
+					*deoplete-source-attribute-__init__*
+__init__	(Function)
 		Source constructor.  It will be called in initializing.  It
 		must call Base constructor.  This function takes {self} and
 		{vim} as its parameters.
 
-				*deoplete-source-attribute-name*
-name		String				(Required)
+					*deoplete-source-attribute-name*
+name		(String)			(Required)
 		The name of a source.
 		Note: It must be same of the source filaname.
 
-				*deoplete-source-attribute-filetypes*
-filetypes	List			(Optional)
+					*deoplete-source-attribute-filetypes*
+filetypes	(List)				(Optional)
 		Available filetype list.
 
 		If you omit it, this source available in all filetypes.
 
-				*deoplete-source-attribute-rank*
-rank		Number				(Optional)
+					*deoplete-source-attribute-rank*
+rank		(Number)			(Optional)
 		Source priority.  Higher values imply higher priority.
 		If you omit it, it is set 100.
 		Note: It is high priority than match position.
 
 				*deoplete-source-attribute-min_pattern_length*
 min_pattern_length
-		Number				(Optional)
+		(Number)			(Optional)
 		Required pattern length for completion.
 
 		If you omit it, it is set "2" value.
 
 				*deoplete-source-attribute-max_pattern_length*
 max_pattern_length
-		Number				(Optional)
+		(Number)			(Optional)
 		Ignored pattern length for completion.
 		It is useful to edit BASE64 files.
 
@@ -612,7 +620,7 @@ max_pattern_length
 
 				*deoplete-source-attribute-max_abbr_width*
 max_abbr_width
-		Number				(Optional)
+		(Number)			(Optional)
 		If the candidate abbr length exceeds the length it will be cut
 		down.
 		It it is less than or equal 0, it will be disabled.
@@ -621,7 +629,7 @@ max_abbr_width
 
 				*deoplete-source-attribute-max_menu_width*
 max_menu_width
-		Number				(Optional)
+		(Number)			(Optional)
 		If the candidate menu length exceeds the length it will be cut
 		down.
 		It it is less than or equal 0, it will be disabled.
@@ -630,7 +638,7 @@ max_menu_width
 
 				*deoplete-source-attribute-input_pattern*
 input_pattern
-		String				(Optional)
+		(String)			(Optional)
 		If it is matched, deoplete ignores
 		|deoplete-source-attribute-min_pattern_length|.
 		It is useful for omni function sources.
@@ -640,9 +648,9 @@ input_pattern
 
 		If you omit it, this feature is ignored.
 
-				*deoplete-source-attribute-is_bytepos*
+					*deoplete-source-attribute-is_bytepos*
 is_bytepos
-		Bool				(Optional)
+		(Bool)				(Optional)
 		If it is True,
 		|deoplete-source-attribute-get_complete_position|
 		returns byteposition instead of character position.
@@ -653,37 +661,38 @@ is_bytepos
 
 				*deoplete-source-attribute-debug_enabled*
 debug_enabled
-		Bool				(Optional)
+		(Bool)				(Optional)
 		If it is True, the debug log feature is enabled in the source.
 
 					*deoplete-source-attribute-matchers*
-matchers	List			(Optional)
+matchers	(List)				(Optional)
 		Source default matchers list.
 
 		If you omit it, |deoplete-filter-matcher_default| is used.
 
 					*deoplete-source-attribute-sorters*
-sorters		List			(Optional)
+sorters		(List)				(Optional)
 		Source default sorters list.
 
 		If you omit it, |deoplete-filter-sorter_default| is
 		used.
 
 					*deoplete-source-attribute-converters*
-converters	List			(Optional)
+converters	(List)				(Optional)
 		Source default converters list.
 
 		If you omit it, |deoplete-filter-converter_default| is used.
 
 				*deoplete-source-attribute-disabled_syntaxes*
 disabled_syntaxes
-		List			(Optional)
+		(List)				(Optional)
 		Source disabled syntaxes list.
 
 		If you omit it, this feature is ignored.
 
 			*deoplete-source-attribute-get_complete_position*
-get_complete_position	Function	(Optional)
+get_complete_position
+		(Function)			(Optional)
 		It is called to get complete position.
 		It takes {self} and {context} as its parameter and returns
 		complete position in current line.
@@ -696,7 +705,8 @@ get_complete_position	Function	(Optional)
 		return byte position.
 
 				*deoplete-source-attribute-gather_candidates*
-gather_candidates	Function	(Required)
+gather_candidates
+		(Function)			(Required)
 		It is called to gather candidates.
 		It takes {self} and {context} as its parameter and returns a
 		list of {candidate}.
@@ -709,25 +719,26 @@ gather_candidates	Function	(Required)
 		candidates, user cannot filter the candidates by fuzzy match.
 
 				*deoplete-source-attribute-on_post_filter*
-on_post_filter	Function	(Optional)
+on_post_filter
+		(Function)			(Optional)
 		It is called after the candidates are filtered.
 		It takes {self} and {context} as its parameter and returns a
 		list of {candidate}.
 
-				*deoplete-source-attribute-on_event*
-on_event	Function	(Optional)
+					*deoplete-source-attribute-on_event*
+on_event	(Function)			(Optional)
 		It is called when |BufEnter|, |BufRead|, |BufNewFile|,
 		|BufNew|, |BufWinEnter|, |BufWritePost|.
 		It is useful to make cache.
 		It takes {self} and {context} as its parameter.
 
-					*deoplete-source-attribute-__*
-__{name}	(Unknown)	(Optional)
+						*deoplete-source-attribute-__*
+__{name}	(Unknown)			(Optional)
 		Additional source information.
 		Note: Recommend sources save variables instead of
 		global variables.
 
-{context}				*deoplete-notation-{context}*
+{context}					*deoplete-notation-{context}*
 		A dictionary to give context information.
 		The followings are the primary information.
 
@@ -751,31 +762,31 @@ __{name}	(Unknown)	(Optional)
 CANDIDATE ATTRIBUTES			*deoplete-candidate-attributes*
 
 					*deoplete-candidate-attribute-name*
-word		String		(Required)
+word		(String)			(Required)
 		The completion word of a candidate. It is used for matching
 		inputs.
 
 					*deoplete-candidate-attribute-abbr*
-abbr		String		(Optional)
+abbr		(String)			(Optional)
 		The abbreviation of a candidate. It is displayed in popup
 		window.
 
 					*deoplete-candidate-attribute-kind*
-kind		String		(Optional)
+kind		(String)			(Optional)
 		The kind of a candidate. It is displayed in popup window.
 
 					*deoplete-candidate-attribute-menu*
-menu		String		(Optional)
+menu		(String)			(Optional)
 		The menu information of a candidate. It is displayed in popup
 		window.
 
 					*deoplete-candidate-attribute-info*
-info		String		(Optional)
+info		(String)			(Optional)
 		The preview information of a candidate. If 'completeopt'
 		contains "preview", it will be displayed in |preview-window|.
 
 					*deoplete-candidate-attribute-dup*
-dup		Number		(Optional)
+dup		(Number)			(Optional)
 		If it is non zero, the item will be displayed in the popup
 		menu when an item with the same word is already present.
 
@@ -882,7 +893,7 @@ phpcompleted-extended: PHP omnifunc
 https://github.com/m2mdas/phpcomplete-extended
 
 ==============================================================================
-FAQ						*deoplete-faq*
+FAQ							*deoplete-faq*
 
 Q: deoplete does not work.
 
