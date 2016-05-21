@@ -190,9 +190,6 @@ function! deoplete#init#_variables() abort "{{{
         \ 'lua', ['\.', ':'])
   "}}}
 
-  " Deprecated variables
-  call deoplete#util#set_default(
-        \ 'g:deoplete#auto_complete_start_length', 2)
   if exists('g:deoplete#auto_complete_start_length')
     call deoplete#custom#set('_', 'min_pattern_length',
           \ g:deoplete#auto_complete_start_length)
