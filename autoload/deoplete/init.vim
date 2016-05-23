@@ -157,9 +157,6 @@ function! deoplete#init#_variables() abort "{{{
 
   call deoplete#util#set_pattern(
         \ g:deoplete#omni#_input_patterns,
-        \ 'java', ['[^. \t0-9]\.\w*'])
-  call deoplete#util#set_pattern(
-        \ g:deoplete#omni#_input_patterns,
         \ 'css,scss,sass', ['\w+', '\w+[):;]?\s+\w*', '[@!]'])
   call deoplete#util#set_pattern(
         \ g:deoplete#omni#_input_patterns,
