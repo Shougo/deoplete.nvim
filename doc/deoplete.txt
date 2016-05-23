@@ -119,6 +119,8 @@ g:deoplete#auto_complete_start_length
 		Note: It is the deprecated option.  You should change
 		|deoplete-source-attribute-min_pattern_length|.
 
+		Default: 2
+
 					*g:deoplete#disable_auto_complete*
 g:deoplete#disable_auto_complete
 		It controls whether you invalidate automatic completion.  If
