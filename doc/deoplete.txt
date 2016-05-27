@@ -539,6 +539,9 @@ matcher_length
 sorter_rank	Matched rank order sorter.  The higher the head matched word
 		or already selected.
 
+						*deoplete-filter-sorter_word*
+sorter_word	Word order sorter.
+
 				*deoplete-filter-converter_remove_overlap*
 converter_remove_overlap
 		It removes overlapped text in a candidate's word.
