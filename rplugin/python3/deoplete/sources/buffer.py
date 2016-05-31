@@ -40,21 +40,20 @@ class Source(Base):
                 functools.reduce(operator.add, buffers)]
 
     def __make_cache(self, context, buffer):
-        bufnr = buffer.number
         try:
-            if (bufnr in self.__buffers and
+            if (context['bufnr'] in self.__buffers and
                     context['event'] != 'BufWritePost' and
                     len(buffer) > self.__max_lines):
                 line = context['position'][1]
-                self.__buffers[bufnr][
+                self.__buffers[context['bufnr']][
                     'candidates'] += parse_buffer_pattern(
                         buffer[max([0, line-500]):line+500],
                         context['keyword_patterns'],
                         context['complete_str'])
-                self.__buffers[bufnr]['candidates'] = list(
-                    set(self.__buffers[bufnr]['candidates']))
+                self.__buffers[context['bufnr']]['candidates'] = list(
+                    set(self.__buffers[context['bufnr']]['candidates']))
             else:
-                self.__buffers[bufnr] = {
+                self.__buffers[context['bufnr']] = {
                     'filetype': context['filetype'],
                     'candidates': parse_buffer_pattern(
                         buffer,

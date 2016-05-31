@@ -247,6 +247,7 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \ 'max_abbr_width': (width * 2 / 3),
         \ 'max_menu_width': (width * 2 / 3),
         \ 'runtimepath': &runtimepath,
+        \ 'bufnr': bufnr('%'),
         \ }
 endfunction"}}}
 
