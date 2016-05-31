@@ -74,7 +74,7 @@ class Deoplete(logger.LoggingMixin):
             'call feedkeys("\<Plug>(deoplete_start_complete)")')
 
     def gather_candidates(self, context):
-        self.check_recache()
+        self.check_recache(context)
 
         # self.debug(context)
 
@@ -333,15 +333,15 @@ class Deoplete(logger.LoggingMixin):
         return (pos != self.__vim.current.window.cursor or
                 self.__vim.funcs.mode() != 'i')
 
-    def check_recache(self):
-        if self.__vim.options['runtimepath'] != self.__runtimepath:
+    def check_recache(self, context):
+        if context['runtimepath'] != self.__runtimepath:
             # Recache
             self.load_sources()
             self.load_filters()
-            self.__runtimepath = self.__vim.options['runtimepath']
+            self.__runtimepath = context['runtimepath']
 
     def on_event(self, context):
-        self.check_recache()
+        self.check_recache(context)
 
         for source_name, source in self.itersource(context):
             if hasattr(source, 'on_event'):
