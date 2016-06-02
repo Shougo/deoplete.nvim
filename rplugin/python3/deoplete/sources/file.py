@@ -37,14 +37,18 @@ class Source(Base):
         if not os.path.isdir(complete_str):
             return []
         hidden = context['complete_str'].find('.') == 0
-        dirs = [x for x in os.listdir(complete_str)
-                if os.path.isdir(complete_str + x) and
-                (hidden or x[0] != '.')]
-        files = [x for x in os.listdir(complete_str)
-                 if not os.path.isdir(complete_str + x) and
-                 (hidden or x[0] != '.')]
-        return [{'word': x, 'abbr': x + '/'} for x in sorted(dirs)
-                ] + [{'word': x} for x in sorted(files)]
+        contents = [[], []]
+        try:
+            for item in sorted(os.listdir(complete_str), key=str.lower):
+                if not hidden and item[0] == '.':
+                    continue
+                contents[not os.path.isdir(complete_str + item)].append(item)
+        except PermissionError:
+            pass
+
+        dirs, files = contents
+        return [{'word': x, 'abbr': x + '/'} for x in dirs
+                ] + [{'word': x} for x in files]
 
     def __longest_path_that_exists(self, input_str):
         data = re.split(self.vim.call(
