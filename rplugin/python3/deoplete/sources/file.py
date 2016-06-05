@@ -30,10 +30,10 @@ class Source(Base):
         return pos if pos < 0 else pos + 1
 
     def gather_candidates(self, context):
-        p = self.__longest_path_that_exists(context['input'])
+        p = self.__longest_path_that_exists(context, context['input'])
         if p in (None, []) or p == '/' or re.search('//+$', p):
             return []
-        complete_str = self.__substitute_path(dirname(p) + '/')
+        complete_str = self.__substitute_path(context, dirname(p) + '/')
         if not os.path.isdir(complete_str):
             return []
         hidden = context['complete_str'].find('.') == 0
@@ -50,22 +50,22 @@ class Source(Base):
         return [{'word': x, 'abbr': x + '/'} for x in dirs
                 ] + [{'word': x} for x in files]
 
-    def __longest_path_that_exists(self, input_str):
+    def __longest_path_that_exists(self, context, input_str):
         data = re.split(self.vim.call(
             'deoplete#util#vimoption2python_not',
             self.vim.options['isfname']), input_str)
         pos = [" ".join(data[i:]) for i in range(len(data))]
         existing_paths = list(filter(lambda x: exists(
-            dirname(self.__substitute_path(x))), pos))
+            dirname(self.__substitute_path(context, x))), pos))
         if existing_paths and len(existing_paths) > 0:
             return sorted(existing_paths)[-1]
         return None
 
-    def __substitute_path(self, path):
+    def __substitute_path(self, context, path):
         buffer_path = get_simple_buffer_config(
-            self.vim,
-            'b:deoplete_file_enable_buffer_path',
-            'g:deoplete#file#enable_buffer_path')
+            context,
+            'deoplete_file_enable_buffer_path',
+            'deoplete#file#enable_buffer_path')
         m = re.match(r'(\.+)/', path)
         if m:
             h = self.vim.funcs.repeat(':h', len(m.group(1)))
