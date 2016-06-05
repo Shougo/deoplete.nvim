@@ -36,7 +36,7 @@ class Source(Base):
                                          'deoplete#omni#functions',
                                          'deoplete#omni#_functions')
             if omnifunc == '':
-                omnifunc = self.vim.current.buffer.options.get('omnifunc', '')
+                omnifunc = context['omni__omnifunc']
             if omnifunc == '' or [x for x in [
                     'ccomplete#Complete', 'htmlcomplete#CompleteTags']
                                   if x == omnifunc]:
