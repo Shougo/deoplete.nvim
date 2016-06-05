@@ -129,7 +129,7 @@ class Deoplete(logger.LoggingMixin):
             source = result['source']
 
             # self.debug(source.name)
-            self.profile_start(source.name)
+            self.profile_start(context, source.name)
             context['candidates'] = source.gather_candidates(context)
             self.profile_end(source.name)
             if context['candidates'] and isinstance(
@@ -152,7 +152,7 @@ class Deoplete(logger.LoggingMixin):
                                source.sorters +
                                source.converters
                                if x in self.__filters]:
-                    self.profile_start(filter.name)
+                    self.profile_start(context, filter.name)
                     context['candidates'] = filter.filter(context)
                     self.profile_end(filter.name)
             finally:
@@ -229,14 +229,14 @@ class Deoplete(logger.LoggingMixin):
 
         return (complete_position, candidates)
 
-    def profile_start(self, name):
+    def profile_start(self, context, name):
         if self.__profile_flag is 0 or not self.debug_enabled:
             return
 
         if self.__profile_flag is None:
             self.__profile_flag = context['vars']['deoplete#enable_profile']
             if self.__profile_flag:
-                return self.profile_start(name)
+                return self.profile_start(context, name)
         elif self.__profile_flag:
             self.debug('Profile Start: {0}'.format(name))
             self.__profile_start = time.clock()
