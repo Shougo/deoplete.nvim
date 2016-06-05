@@ -29,14 +29,14 @@ class Source(Base):
         self.__make_cache(context)
 
         candidates = []
-        for filename in [x for x in self.__get_dictionaries()
+        for filename in [x for x in self.__get_dictionaries(context)
                          if x in self.__cache]:
             candidates += self.__cache[filename].candidates
 
         return [{'word': x} for x in candidates]
 
     def __make_cache(self, context):
-        for filename in self.__get_dictionaries():
+        for filename in self.__get_dictionaries(context):
             mtime = getmtime(filename)
             if filename not in self.__cache or self.__cache[
                     filename].mtime != mtime:
@@ -45,8 +45,6 @@ class Source(Base):
                         mtime, parse_file_pattern(
                             f, context['keyword_patterns']))
 
-    def __get_dictionaries(self):
-        return [x for x in
-                self.vim.current.buffer.options.get(
-                    'dictionary', '').split(',')
+    def __get_dictionaries(self, context):
+        return [x for x in context['dict__dictionary'].split(',')
                 if exists(x)]

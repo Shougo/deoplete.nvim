@@ -253,6 +253,7 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \ 'vars': filter(copy(g:), "stridx(v:key, 'deoplete#') == 0"),
         \ 'bufvars': filter(copy(b:), "stridx(v:key, 'deoplete#') == 0"),
         \ 'omni__omnifunc': &l:omnifunc,
+        \ 'dict__dictionary': &l:dictionary,
         \ }
 endfunction"}}}
 
