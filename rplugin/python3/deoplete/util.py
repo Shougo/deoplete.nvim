@@ -11,9 +11,14 @@ import sys
 import unicodedata
 
 
-def get_buffer_config(vim, filetype, buffer_var, user_var, default_var):
-    return vim.call('deoplete#util#get_buffer_config',
-                    filetype, buffer_var, user_var, default_var)
+def get_buffer_config(context, filetype, buffer_var, user_var, default_var):
+    if buffer_var in context['bufvars']:
+        return context['bufvars'][buffer_var]
+
+    ft = filetype if (filetype in context['vars'][user_var] or
+                      filetype in context['vars'][default_var]) else '_'
+    default = context['vars'][default_var].get(ft, '')
+    return context['vars'][user_var].get(filetype, default)
 
 
 def get_simple_buffer_config(context, buffer_var, user_var):

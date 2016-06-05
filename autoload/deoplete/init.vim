@@ -127,6 +127,8 @@ function! deoplete#init#_variables() abort "{{{
         \ 'g:deoplete#sources', {})
   call deoplete#util#set_default(
         \ 'g:deoplete#ignore_sources', {})
+  call deoplete#util#set_default(
+        \ 'g:deoplete#_ignore_sources', {})
 
   " Source variables
   call deoplete#util#set_default(

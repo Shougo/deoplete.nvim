@@ -31,10 +31,10 @@ class Source(Base):
             return self.__prev_pos
 
         for filetype in context['filetypes']:
-            omnifunc = get_buffer_config(self.vim, filetype,
-                                         'b:deoplete_omni_functions',
-                                         'g:deoplete#omni#functions',
-                                         'g:deoplete#omni#_functions')
+            omnifunc = get_buffer_config(context, filetype,
+                                         'deoplete_omni_functions',
+                                         'deoplete#omni#functions',
+                                         'deoplete#omni#_functions')
             if omnifunc == '':
                 omnifunc = self.vim.current.buffer.options.get('omnifunc', '')
             if omnifunc == '' or [x for x in [
@@ -43,10 +43,10 @@ class Source(Base):
                 continue
             self.__omnifunc = omnifunc
             for input_pattern in convert2list(
-                get_buffer_config(self.vim, filetype,
-                                  'b:deoplete_omni_input_patterns',
-                                  'g:deoplete#omni#input_patterns',
-                                  'g:deoplete#omni#_input_patterns')):
+                get_buffer_config(context, filetype,
+                                  'deoplete_omni_input_patterns',
+                                  'deoplete#omni#input_patterns',
+                                  'deoplete#omni#_input_patterns')):
 
                 m = re.search('(' + input_pattern + ')$', context['input'])
                 # self.debug(filetype)

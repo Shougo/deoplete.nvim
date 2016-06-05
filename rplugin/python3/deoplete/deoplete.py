@@ -183,10 +183,10 @@ class Deoplete(logger.LoggingMixin):
         ignore_sources = set()
         for ft in filetypes:
             ignore_sources.update(
-                get_buffer_config(self.__vim, ft,
-                                  'b:deoplete_ignore_sources',
-                                  'g:deoplete#ignore_sources',
-                                  '{}'))
+                get_buffer_config(context, ft,
+                                  'deoplete_ignore_sources',
+                                  'deoplete#ignore_sources',
+                                  'deoplete#_ignore_sources'))
 
         for source_name, source in sources:
             if (source_name in ignore_sources):
