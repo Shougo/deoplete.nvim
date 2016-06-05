@@ -29,8 +29,6 @@ class Source(Base):
         self.__make_cache(context)
 
     def gather_candidates(self, context):
-        self.__make_cache(context)
-
         candidates = []
         for filename in [x for x in self.__get_tagfiles(context)
                          if x in self.__cache]:
