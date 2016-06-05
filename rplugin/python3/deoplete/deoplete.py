@@ -273,16 +273,23 @@ class Deoplete(logger.LoggingMixin):
                     'input_pattern', source.input_pattern)
             source.min_pattern_length = get_custom(
                 self.__vim, source.name).get(
-                    'min_pattern_length', source.min_pattern_length)
+                    'min_pattern_length',
+                    getattr(source, 'min_pattern_length',
+                            context['vars'][
+                                'deoplete#auto_complete_start_length']))
             source.max_pattern_length = get_custom(
                 self.__vim, source.name).get(
                     'max_pattern_length', source.max_pattern_length)
             source.max_abbr_width = get_custom(
                 self.__vim, source.name).get(
-                    'max_abbr_width', source.max_abbr_width)
+                    'max_abbr_width',
+                    getattr(source, 'max_abbr_width',
+                            context['vars']['deoplete#max_abbr_width']))
             source.max_menu_width = get_custom(
                 self.__vim, source.name).get(
-                    'max_menu_width', source.max_menu_width)
+                    'max_menu_width',
+                    getattr(source, 'max_menu_width',
+                            context['vars']['deoplete#max_menu_width']))
             source.matchers = get_custom(
                 self.__vim, source.name).get('matchers', source.matchers)
             source.sorters = get_custom(self.__vim, source.name).get(
