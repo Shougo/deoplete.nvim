@@ -43,8 +43,8 @@ def convert2list(expr):
     return (expr if isinstance(expr, list) else [expr])
 
 
-def globruntime(vim, path):
-    return vim.funcs.globpath(vim.options['runtimepath'], path, 1, 1)
+def globruntime(vim, runtimepath, path):
+    return vim.funcs.globpath(runtimepath, path, 1, 1)
 
 
 def debug(vim, expr):

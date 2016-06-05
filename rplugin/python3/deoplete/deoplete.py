@@ -246,12 +246,12 @@ class Deoplete(logger.LoggingMixin):
             self.debug('Profile End  : {0:<25} time={1:2.10f}'.format(
                 name, time.clock() - self.__profile_start))
 
-    def load_sources(self):
+    def load_sources(self, context):
         # Load sources from runtimepath
-        for path in globruntime(self.__vim,
+        for path in globruntime(self.__vim, context['runtimepath'],
                                 'rplugin/python3/deoplete/sources/base.py'
                                 ) + globruntime(
-                                    self.__vim,
+                                    self.__vim, context['runtimepath'],
                                     'rplugin/python3/deoplete/sources/*.py'):
             name = os.path.basename(path)[: -3]
             module = importlib.machinery.SourceFileLoader(
@@ -298,12 +298,12 @@ class Deoplete(logger.LoggingMixin):
             self.debug('Loaded Source: %s (%s)', name, module.__file__)
         # self.debug(self.__sources)
 
-    def load_filters(self):
+    def load_filters(self, context):
         # Load filters from runtimepath
-        for path in globruntime(self.__vim,
+        for path in globruntime(self.__vim, context['runtimepath'],
                                 'rplugin/python3/deoplete/filters/base.py'
                                 ) + globruntime(
-                                    self.__vim,
+                                    self.__vim, context['runtimepath'],
                                     'rplugin/python3/deoplete/filters/*.py'):
             name = os.path.basename(path)[: -3]
             module = importlib.machinery.SourceFileLoader(
@@ -335,8 +335,8 @@ class Deoplete(logger.LoggingMixin):
     def check_recache(self, context):
         if context['runtimepath'] != self.__runtimepath:
             # Recache
-            self.load_sources()
-            self.load_filters()
+            self.load_sources(context)
+            self.load_filters(context)
             self.__runtimepath = context['runtimepath']
 
     def on_event(self, context):
