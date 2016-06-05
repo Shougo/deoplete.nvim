@@ -249,6 +249,7 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \ 'runtimepath': &runtimepath,
         \ 'bufnr': bufnr('%'),
         \ 'vars': filter(copy(g:), "stridx(v:key, 'deoplete#') == 0"),
+        \ 'bufvars': filter(copy(b:), "stridx(v:key, 'deoplete#') == 0"),
         \ }
 endfunction"}}}
 
