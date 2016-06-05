@@ -62,8 +62,8 @@ def escape(expr):
     return expr.replace("'", "''")
 
 
-def charpos2bytepos(vim, input, pos):
-    return len(bytes(input[: pos], vim.options['encoding']))
+def charpos2bytepos(vim, encoding, input, pos):
+    return len(bytes(input[: pos], encoding))
 
 
 def bytepos2charpos(vim, input, pos):
