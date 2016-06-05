@@ -248,6 +248,7 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \ 'max_menu_width': (width * 2 / 3),
         \ 'runtimepath': &runtimepath,
         \ 'bufnr': bufnr('%'),
+        \ 'vars': filter(copy(g:), "stridx(v:key, 'deoplete#') == 0"),
         \ }
 endfunction"}}}
 
