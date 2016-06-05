@@ -223,8 +223,8 @@ class Deoplete(logger.LoggingMixin):
                 candidate['word'] = prefix + candidate['word']
             candidates += context['candidates']
         # self.debug(candidates)
-        if self.__vim.vars['deoplete#max_list'] > 0:
-            candidates = candidates[: self.__vim.vars['deoplete#max_list']]
+        if context['vars']['deoplete#max_list'] > 0:
+            candidates = candidates[: context['vars']['deoplete#max_list']]
 
         return (complete_position, candidates)
 
@@ -233,8 +233,7 @@ class Deoplete(logger.LoggingMixin):
             return
 
         if self.__profile_flag is None:
-            self.__profile_flag = self.__vim.vars[
-                'deoplete#enable_profile']
+            self.__profile_flag = context['vars']['deoplete#enable_profile']
             if self.__profile_flag:
                 return self.profile_start(name)
         elif self.__profile_flag:

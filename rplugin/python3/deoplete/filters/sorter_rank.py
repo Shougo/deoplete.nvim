@@ -16,7 +16,7 @@ class Filter(Base):
         self.description = 'rank sorter'
 
     def filter(self, context):
-        rank = self.vim.vars['deoplete#_rank']
+        rank = context['vars']['deoplete#_rank']
         complete_str = context['complete_str'].lower()
         input_len = len(complete_str)
         return sorted(context['candidates'],

@@ -15,7 +15,7 @@ class Filter(Base):
         self.description = 'auto delimiter converter'
 
     def filter(self, context):
-        delimiters = self.vim.vars['deoplete#delimiters']
+        delimiters = context['vars']['deoplete#delimiters']
         for candidate, delimiter in [
                 [x, last_find(x['abbr'], delimiters)]
                 for x in context['candidates']

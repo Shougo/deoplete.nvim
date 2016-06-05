@@ -32,7 +32,7 @@ class Source(Base):
         self.__make_cache(context)
 
         candidates = []
-        for filename in [x for x in self.__get_tagfiles()
+        for filename in [x for x in self.__get_tagfiles(context)
                          if x in self.__cache]:
             candidates += self.__cache[filename].candidates
 
@@ -40,7 +40,7 @@ class Source(Base):
         return [{'word': x} for x in candidates if p.match(x)]
 
     def __make_cache(self, context):
-        for filename in self.__get_tagfiles():
+        for filename in self.__get_tagfiles(context):
             mtime = getmtime(filename)
             if filename not in self.__cache or self.__cache[
                     filename].mtime != mtime:
@@ -48,8 +48,8 @@ class Source(Base):
                     self.__cache[filename] = TagsCacheItem(
                         mtime, parse_file_pattern(f, '^[^!][^\t]+'))
 
-    def __get_tagfiles(self):
-        limit = self.vim.vars['deoplete#tag#cache_limit_size']
+    def __get_tagfiles(self, context):
+        limit = context['vars']['deoplete#tag#cache_limit_size']
         include_files = self.vim.call(
             'neoinclude#include#get_tag_files') if self.vim.call(
                 'exists', '*neoinclude#include#get_tag_files') else []
