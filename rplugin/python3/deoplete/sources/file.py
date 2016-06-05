@@ -22,8 +22,14 @@ class Source(Base):
         self.mark = '[F]'
         self.min_pattern_length = 0
         self.rank = 150
+        self.__isfname = ''
 
         set_default(self.vim, 'g:deoplete#file#enable_buffer_path', 0)
+
+    def on_event(self, context):
+        self.__isfname = self.vim.call(
+            'deoplete#util#vimoption2python_not',
+            self.vim.options['isfname'])
 
     def get_complete_position(self, context):
         pos = context['input'].rfind('/')
@@ -51,9 +57,7 @@ class Source(Base):
                 ] + [{'word': x} for x in files]
 
     def __longest_path_that_exists(self, context, input_str):
-        data = re.split(self.vim.call(
-            'deoplete#util#vimoption2python_not',
-            self.vim.options['isfname']), input_str)
+        data = re.split(self.__isfname, input_str)
         pos = [" ".join(data[i:]) for i in range(len(data))]
         existing_paths = list(filter(lambda x: exists(
             dirname(self.__substitute_path(context, x))), pos))
