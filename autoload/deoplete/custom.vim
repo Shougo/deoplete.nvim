@@ -4,22 +4,23 @@
 " License: MIT license
 "=============================================================================
 
-function! deoplete#custom#get(source_name) abort "{{{
-  let source = copy(deoplete#custom#get_source_var(a:source_name))
-  return extend(source, s:custom._, 'keep')
-endfunction"}}}
-
-function! deoplete#custom#get_source_var(source_name) abort "{{{
+function! deoplete#custom#get() abort "{{{
   if !exists('s:custom')
     let s:custom = {}
     let s:custom._ = {}
   endif
 
-  if !has_key(s:custom, a:source_name)
-    let s:custom[a:source_name] = {}
+  return s:custom
+endfunction"}}}
+
+function! deoplete#custom#get_source_var(source_name) abort "{{{
+  let custom = deoplete#custom#get()
+
+  if !has_key(custom, a:source_name)
+    let custom[a:source_name] = {}
   endif
 
-  return s:custom[a:source_name]
+  return custom[a:source_name]
 endfunction"}}}
 
 function! deoplete#custom#set(source_name, option_name, value) abort "{{{

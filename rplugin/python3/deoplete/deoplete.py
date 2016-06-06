@@ -177,8 +177,9 @@ class Deoplete(logger.LoggingMixin):
 
     def itersource(self, context):
         sources = sorted(self.__sources.items(),
-                         key=lambda x: get_custom(self.__vim, x[1].name).get(
-                             'rank', x[1].rank),
+                         key=lambda x: get_custom(
+                             context['custom'],
+                             x[1].name, 'rank', x[1].rank),
                          reverse=True)
         filetypes = context['filetypes']
         ignore_sources = set()
@@ -264,40 +265,44 @@ class Deoplete(logger.LoggingMixin):
 
             # Set the source attributes.
             source.filetypes = get_custom(
-                self.__vim, source.name).get(
-                    'filetypes', source.filetypes)
+                context['custom'], source.name,
+                'filetypes', source.filetypes)
             source.disabled_syntaxes = get_custom(
-                self.__vim, source.name).get(
-                    'disabled_syntaxes', source.disabled_syntaxes)
+                context['custom'], source.name,
+                'disabled_syntaxes', source.disabled_syntaxes)
             source.input_pattern = get_custom(
-                self.__vim, source.name).get(
-                    'input_pattern', source.input_pattern)
+                context['custom'], source.name,
+                'input_pattern', source.input_pattern)
             source.min_pattern_length = get_custom(
-                self.__vim, source.name).get(
-                    'min_pattern_length',
-                    getattr(source, 'min_pattern_length',
-                            context['vars'][
-                                'deoplete#auto_complete_start_length']))
+                context['custom'], source.name,
+                'min_pattern_length',
+                getattr(source, 'min_pattern_length',
+                        context['vars'][
+                            'deoplete#auto_complete_start_length']))
             source.max_pattern_length = get_custom(
-                self.__vim, source.name).get(
-                    'max_pattern_length', source.max_pattern_length)
+                context['custom'], source.name,
+                'max_pattern_length', source.max_pattern_length)
             source.max_abbr_width = get_custom(
-                self.__vim, source.name).get(
-                    'max_abbr_width',
-                    getattr(source, 'max_abbr_width',
-                            context['vars']['deoplete#max_abbr_width']))
+                context['custom'], source.name,
+                'max_abbr_width',
+                getattr(source, 'max_abbr_width',
+                        context['vars']['deoplete#max_abbr_width']))
             source.max_menu_width = get_custom(
-                self.__vim, source.name).get(
-                    'max_menu_width',
-                    getattr(source, 'max_menu_width',
-                            context['vars']['deoplete#max_menu_width']))
+                context['custom'], source.name,
+                'max_menu_width',
+                getattr(source, 'max_menu_width',
+                        context['vars']['deoplete#max_menu_width']))
             source.matchers = get_custom(
-                self.__vim, source.name).get('matchers', source.matchers)
-            source.sorters = get_custom(self.__vim, source.name).get(
+                context['custom'], source.name,
+                'matchers', source.matchers)
+            source.sorters = get_custom(
+                context['custom'], source.name,
                 'sorters', source.sorters)
-            source.converters = get_custom(self.__vim, source.name).get(
+            source.converters = get_custom(
+                context['custom'], source.name,
                 'converters', source.converters)
-            source.mark = get_custom(self.__vim, source.name).get(
+            source.mark = get_custom(
+                context['custom'], source.name,
                 'mark', source.mark)
 
             self.__sources[source.name] = source

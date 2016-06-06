@@ -76,8 +76,11 @@ def bytepos2charpos(encoding, input, pos):
     return len(str(bytes(input[: pos], encoding)))
 
 
-def get_custom(vim, source_name):
-    return vim.call('deoplete#custom#get', source_name)
+def get_custom(custom, source_name, key, default):
+    if source_name not in custom:
+        return get_custom(custom, '_', key, default)
+    return (custom[source_name][key]
+            if key in custom[source_name] else default)
 
 
 def get_syn_name(vim):
