@@ -397,6 +397,8 @@ deoplete#custom#set({source-name}, {option-name}, {value})
 
 		" Change the source mark.
 		call deoplete#custom#set('buffer', 'mark', '*')
+		" Disable the source mark.
+		call deoplete#custom#set('omni', 'mark', '')
 <
 						*deoplete#enable_logging()*
 deoplete#enable_logging({level}, {logfile})

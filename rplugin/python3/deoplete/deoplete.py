@@ -168,7 +168,8 @@ class Deoplete(logger.LoggingMixin):
             mark = source.mark + ' '
             for candidate in candidates:
                 candidate['icase'] = 1
-                if candidate.get('menu', '').find(mark) != 0:
+                if source.mark != '' and candidate.get(
+                        'menu', '').find(mark) != 0:
                     candidate['menu'] = mark + candidate.get('menu', '')
 
             # self.debug(context['candidates'])
@@ -298,8 +299,6 @@ class Deoplete(logger.LoggingMixin):
                 'converters', source.converters)
             source.mark = get_custom(self.__vim, source.name).get(
                 'mark', source.mark)
-            if source.mark == '':
-                source.mark = '[' + source.name + ']'
 
             self.__sources[source.name] = source
             self.debug('Loaded Source: %s (%s)', name, module.__file__)
