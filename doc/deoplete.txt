@@ -250,6 +250,7 @@ b:deoplete_sources
 <						*g:deoplete#ignore_sources*
 g:deoplete#ignore_sources
 		It is a dictionary to decide ignore source names.
+		The key is filetype and the value is source names list.
 		Default value: {}
 
 						*b:deoplete_ignore_sources*
