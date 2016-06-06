@@ -51,6 +51,7 @@ function! s:completion_begin(event) abort "{{{
     endfor
   endfor
 
+  call deoplete#mappings#_set_completeopt()
   call rpcnotify(g:deoplete#_channel_id,
         \ 'deoplete_auto_completion_begin', context)
 endfunction"}}}
