@@ -37,11 +37,9 @@ class Deoplete(logger.LoggingMixin):
         self.name = 'core'
 
     def completion_begin(self, context):
-        pos = self.__vim.current.window.cursor
-
         if context['event'] != 'Manual' and context['delay'] > 0:
             time.sleep(context['delay'] / 1000.0)
-            if self.position_has_changed(pos):
+            if self.position_has_changed(context['changedtick']):
                 return
 
         try:
@@ -53,8 +51,8 @@ class Deoplete(logger.LoggingMixin):
                   'An error has occurred. Please execute :messages command.')
             candidates = []
 
-        if not candidates or self.position_has_changed(pos):
-            self.__vim.vars['deoplete#_context'] = {}
+        if not candidates or self.position_has_changed(
+                context['changedtick']):
             return
 
         self.__vim.vars['deoplete#_context'] = {
@@ -339,9 +337,8 @@ class Deoplete(logger.LoggingMixin):
                             max_pattern_length))
         return skip_length
 
-    def position_has_changed(self, pos):
-        return (pos != self.__vim.current.window.cursor or
-                self.__vim.funcs.mode() != 'i')
+    def position_has_changed(self, tick):
+        return tick != self.__vim.eval('b:changedtick')
 
     def check_recache(self, context):
         if context['runtimepath'] != self.__runtimepath:
