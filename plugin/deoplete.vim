@@ -14,7 +14,7 @@ if get(g:, 'deoplete#enable_at_startup', 0) && !exists('#deoplete')
   augroup deoplete
     autocmd CursorHold * call deoplete#enable()
     autocmd InsertEnter * call deoplete#enable()
-          \ | doautocmd <nomodeline> deoplete InsertEnter
+          \ | silent! doautocmd <nomodeline> deoplete InsertEnter
   augroup END
 endif
 "}}}
