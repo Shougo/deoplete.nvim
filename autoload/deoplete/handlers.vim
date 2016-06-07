@@ -88,8 +88,9 @@ function! s:is_skip(event, context) abort "{{{
     let b:deoplete_detected_foldmethod = 1
     call deoplete#util#print_error(
           \ printf('foldmethod = "%s" is detected.', &foldmethod))
-    for msg in split(deoplete#util#redir(
-          \ 'verbose setlocal foldmethod?'), "\n")
+    let msg = substitute(deoplete#util#redir(
+          \ 'verbose setlocal foldmethod?'), '\t', '', 'g')
+    for msg in split(msg, "\n")
       call deoplete#util#print_error(msg)
     endfor
     call deoplete#util#print_error(
