@@ -73,7 +73,7 @@ def charpos2bytepos(encoding, input, pos):
 
 
 def bytepos2charpos(encoding, input, pos):
-    return len(str(bytes(input[: pos], encoding)))
+    return len(bytes(input, encoding)[: pos].decode(encoding))
 
 
 def get_custom(custom, source_name, key, default):
