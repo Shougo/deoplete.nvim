@@ -16,8 +16,7 @@ function! deoplete#handlers#_init() abort "{{{
   augroup END
 
   for event in [
-        \ 'BufEnter', 'BufRead', 'BufNewFile', 'BufNew', 'BufWinEnter',
-        \ 'BufWritePost'
+        \ 'BufNewFile', 'BufNew', 'BufRead', 'BufWritePost'
         \ ]
     execute 'autocmd deoplete' event '* call s:on_event('.string(event).')'
   endfor
