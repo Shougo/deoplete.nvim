@@ -79,8 +79,12 @@ def bytepos2charpos(encoding, input, pos):
 def get_custom(custom, source_name, key, default):
     if source_name not in custom:
         return get_custom(custom, '_', key, default)
-    return (custom[source_name][key]
-            if key in custom[source_name] else default)
+    elif key in custom[source_name]:
+        return custom[source_name][key]
+    elif key in custom['_']:
+        return custom['_'][key]
+    else:
+        return default
 
 
 def get_syn_name(vim):
