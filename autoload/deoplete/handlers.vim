@@ -138,10 +138,6 @@ function! s:complete_done() abort "{{{
   if get(g:deoplete#_context, 'refresh', 0)
     " Don't skip completion
     let g:deoplete#_context.refresh = 0
-    if deoplete#util#get_prev_event() ==# 'Manual'
-      let g:deoplete#_context.event = 'refresh'
-    endif
-    return
   endif
 
   let g:deoplete#_context.position = getpos('.')
