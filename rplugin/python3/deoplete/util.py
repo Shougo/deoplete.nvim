@@ -93,7 +93,10 @@ def get_syn_name(vim):
 
 def parse_file_pattern(f, pattern):
     p = re.compile(pattern)
-    return list(set(p.findall('\n'.join(f.read()))))
+    ret = []
+    for l in f:
+        ret += p.findall(l)
+    return list(set(ret))
 
 
 def parse_buffer_pattern(b, pattern, complete_str):
