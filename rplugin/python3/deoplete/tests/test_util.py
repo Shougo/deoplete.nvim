@@ -1,7 +1,7 @@
 from unittest import TestCase
 from nose.tools import eq_
 from deoplete.util import (
-    bytepos2charpos, charpos2bytepos, get_custom)
+    bytepos2charpos, charpos2bytepos, get_custom, globruntime)
 
 
 class UtilTestCase(TestCase):
@@ -18,3 +18,6 @@ class UtilTestCase(TestCase):
         eq_(get_custom(custom, 'java', 'converters', 'foobar'), [])
         eq_(get_custom(custom, 'foo', 'mark', 'foobar'), '')
         eq_(get_custom(custom, 'foo', 'converters', 'foobar'), 'foobar')
+
+    def test_globruntime(self):
+        eq_(globruntime('/usr', 'lib'), ['/usr/lib'])

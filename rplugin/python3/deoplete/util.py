@@ -9,6 +9,7 @@ import re
 import os
 import sys
 import unicodedata
+import glob
 
 
 def get_buffer_config(context, filetype, buffer_var, user_var, default_var):
@@ -43,8 +44,11 @@ def convert2list(expr):
     return (expr if isinstance(expr, list) else [expr])
 
 
-def globruntime(vim, runtimepath, path):
-    return vim.funcs.globpath(runtimepath, path, 1, 1)
+def globruntime(runtimepath, path):
+    ret = []
+    for rtp in re.split(',', runtimepath):
+        ret += glob.glob(rtp + '/' + path)
+    return ret
 
 
 def debug(vim, expr):
