@@ -296,6 +296,9 @@ class Deoplete(logger.LoggingMixin):
             source.mark = get_custom(
                 context['custom'], source.name,
                 'mark', source.mark)
+            source.debug_enabled = get_custom(
+                context['custom'], source.name,
+                'debug_enabled', source.debug_enabled)
 
             self.__sources[source.name] = source
             self.debug('Loaded Source: %s (%s)', name, module.__file__)

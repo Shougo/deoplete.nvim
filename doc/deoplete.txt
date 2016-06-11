@@ -137,6 +137,9 @@ b:deoplete_disable_auto_complete
 g:deoplete#enable_debug
 		It enables deoplete debug mode.  The debug print feature is
 		enabled.
+		Note: You must enable
+		|deoplete-source-attribute-debug_enabled| to debug the
+		sources.
 
 						*g:deoplete#enable_profile*
 g:deoplete#enable_profile
@@ -399,6 +402,9 @@ deoplete#custom#set({source-name}, {option-name}, {value})
 		call deoplete#custom#set('buffer', 'mark', '*')
 		" Disable the source mark.
 		call deoplete#custom#set('omni', 'mark', '')
+
+		" Enable jedi source debug messages
+		call deoplete#custom#set('jedi', 'debug_enabled', 1)
 <
 						*deoplete#enable_logging()*
 deoplete#enable_logging({level}, {logfile})
