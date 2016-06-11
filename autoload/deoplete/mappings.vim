@@ -63,7 +63,9 @@ function! deoplete#mappings#cancel_popup() abort "{{{
 endfunction"}}}
 function! deoplete#mappings#refresh() abort "{{{
   let g:deoplete#_context.refresh = 1
-  let g:deoplete#_context.event = 'Refresh'
+  if g:deoplete#_context.event ==# 'Manual'
+    let g:deoplete#_context.event = 'Refresh'
+  endif
   return pumvisible() ? "\<C-e>" : ''
 endfunction"}}}
 
