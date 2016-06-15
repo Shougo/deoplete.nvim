@@ -61,7 +61,8 @@ If you want to read for Neovim-python/python3 interface install documentation,
 you should read |nvim-python| and the Wiki.
 https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
 
-You can check the Python3 installation by nvim-python-doctor.
+You can check the Python3 installation by nvim-python-doctor or |:CheckHealth|
+command.
 https://github.com/tweekmonster/nvim-python-doctor
 
 ==============================================================================

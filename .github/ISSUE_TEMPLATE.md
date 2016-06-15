@@ -8,7 +8,7 @@
 
  * OS:
 
- * nvim-python-doctor result:
+ * nvim-python-doctor result or `:CheckHealth` result(neovim ver.0.1.5-452+):
 https://github.com/tweekmonster/nvim-python-doctor
 
 ```
