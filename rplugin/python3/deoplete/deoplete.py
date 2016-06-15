@@ -31,6 +31,7 @@ class Deoplete(logger.LoggingMixin):
         self.__filters = {}
         self.__sources = {}
         self.__runtimepath = ''
+        self.__custom = []
         self.__profile_flag = None
         self.__profile_start = 0
         self.__encoding = self.__vim.options['encoding']
@@ -255,8 +256,42 @@ class Deoplete(logger.LoggingMixin):
                 continue
 
             source = module.Source(self.__vim)
+            source.name = name
+            source.min_pattern_length = getattr(
+                source, 'min_pattern_length',
+                context['vars']['deoplete#auto_complete_start_length'])
+            source.max_abbr_width = getattr(
+                source, 'max_abbr_width',
+                context['vars']['deoplete#max_abbr_width'])
+            source.max_menu_width = getattr(
+                source, 'max_menu_width',
+                context['vars']['deoplete#max_menu_width'])
 
-            # Set the source attributes.
+            self.__sources[name] = source
+            self.debug('Loaded Source: %s (%s)', name, module.__file__)
+
+        self.set_source_attributes(context)
+        self.__custom = context['custom']
+        # self.debug(self.__sources)
+
+    def load_filters(self, context):
+        # Load filters from runtimepath
+        for path in globruntime(context['runtimepath'],
+                                'rplugin/python3/deoplete/filters/base.py'
+                                ) + globruntime(
+                                    context['runtimepath'],
+                                    'rplugin/python3/deoplete/filters/*.py'):
+            name = os.path.basename(path)[: -3]
+            module = importlib.machinery.SourceFileLoader(
+                'deoplete.filters.' + name, path).load_module()
+            if hasattr(module, 'Filter') and name not in self.__filters:
+                filter = module.Filter(self.__vim)
+                self.__filters[filter.name] = filter
+                self.debug('Loaded Filter: %s (%s)', name, module.__file__)
+        # self.debug(self.__filters)
+
+    def set_source_attributes(self, context):
+        for source in self.__sources.values():
             source.filetypes = get_custom(
                 context['custom'], source.name,
                 'filetypes', source.filetypes)
@@ -301,26 +336,6 @@ class Deoplete(logger.LoggingMixin):
                 context['custom'], source.name,
                 'debug_enabled', source.debug_enabled)
 
-            self.__sources[source.name] = source
-            self.debug('Loaded Source: %s (%s)', name, module.__file__)
-        # self.debug(self.__sources)
-
-    def load_filters(self, context):
-        # Load filters from runtimepath
-        for path in globruntime(context['runtimepath'],
-                                'rplugin/python3/deoplete/filters/base.py'
-                                ) + globruntime(
-                                    context['runtimepath'],
-                                    'rplugin/python3/deoplete/filters/*.py'):
-            name = os.path.basename(path)[: -3]
-            module = importlib.machinery.SourceFileLoader(
-                'deoplete.filters.' + name, path).load_module()
-            if hasattr(module, 'Filter') and name not in self.__filters:
-                filter = module.Filter(self.__vim)
-                self.__filters[filter.name] = filter
-                self.debug('Loaded Filter: %s (%s)', name, module.__file__)
-        # self.debug(self.__filters)
-
     def is_skip(self, context, disabled_syntaxes,
                 min_pattern_length, max_pattern_length, input_pattern):
         if ('syntax_name' in context and
@@ -340,10 +355,12 @@ class Deoplete(logger.LoggingMixin):
 
     def check_recache(self, context):
         if context['runtimepath'] != self.__runtimepath:
-            # Recache
             self.load_sources(context)
             self.load_filters(context)
             self.__runtimepath = context['runtimepath']
+        elif context['custom'] != self.__custom:
+            self.set_source_attributes(context)
+            self.__custom = context['custom']
 
     def on_event(self, context):
         self.check_recache(context)
