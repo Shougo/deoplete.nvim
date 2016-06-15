@@ -72,7 +72,8 @@ function! s:is_skip(event, context) abort "{{{
     return 1
   endif
 
-  if a:context.position ==# get(g:deoplete#_context, 'position', [])
+  if !get(g:deoplete#_context, 'refresh', 0)
+        \ && a:context.position ==# get(g:deoplete#_context, 'position', [])
     let word = get(v:completed_item, 'word', '')
     let delimiters = filter(copy(g:deoplete#delimiters),
         \         'strridx(word, v:val) == (len(word) - len(v:val))')
