@@ -63,9 +63,7 @@ class Deoplete(logger.LoggingMixin):
             'event': context['event'],
         }
 
-        # Note: cannot use vim.feedkeys()
-        self.__vim.command(
-            'call feedkeys("\<Plug>(deoplete_start_complete)")')
+        self.__vim.feedkeys(context['start_complete'])
 
     def gather_candidates(self, context):
         self.check_recache(context)

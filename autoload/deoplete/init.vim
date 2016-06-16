@@ -252,6 +252,7 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \ 'bufnr': bufnr('%'),
         \ 'bufname': bufname('%'),
         \ 'cwd': getcwd(),
+        \ 'start_complete': "\<Plug>(deoplete_start_complete)",
         \ 'vars': filter(copy(g:), "stridx(v:key, 'deoplete#') == 0"),
         \ 'bufvars': filter(copy(b:), "stridx(v:key, 'deoplete#') == 0"),
         \ 'custom': deoplete#custom#get(),
