@@ -34,6 +34,8 @@ function! s:completion_begin(event) abort "{{{
   " Save the previous position
   let g:deoplete#_context.position = context.position
 
+  let g:deoplete#_context.refresh = 0
+
   " Call omni completion
   for filetype in context.filetypes
     for pattern in deoplete#util#convert2list(
@@ -134,11 +136,6 @@ function! s:complete_done() abort "{{{
     else
       let g:deoplete#_rank[word] += 1
     endif
-  endif
-
-  if get(g:deoplete#_context, 'refresh', 0)
-    " Don't skip completion
-    let g:deoplete#_context.refresh = 0
   endif
 
   let g:deoplete#_context.position = getpos('.')
