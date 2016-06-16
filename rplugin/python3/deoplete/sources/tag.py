@@ -24,27 +24,29 @@ class Source(Base):
         self.mark = '[T]'
 
         self.__cache = {}
+        self.__tagfiles = {}
 
     def on_event(self, context):
-        self.__make_cache(context)
+        self.__tagfiles[context['bufnr']] = self.__get_tagfiles(context)
 
-    def gather_candidates(self, context):
-        candidates = []
-        for filename in [x for x in self.__get_tagfiles(context)
-                         if x in self.__cache]:
-            candidates += self.__cache[filename].candidates
-
-        p = re.compile('(?:{})$'.format(context['keyword_patterns']))
-        return [{'word': x} for x in candidates if p.match(x)]
-
-    def __make_cache(self, context):
-        for filename in self.__get_tagfiles(context):
+        # Make cache
+        for filename in self.__tagfiles[context['bufnr']]:
             mtime = getmtime(filename)
             if filename not in self.__cache or self.__cache[
                     filename].mtime != mtime:
                 with open(filename, 'r', errors='replace') as f:
                     self.__cache[filename] = TagsCacheItem(
                         mtime, parse_file_pattern(f, '^[^!][^\t]+'))
+
+    def gather_candidates(self, context):
+        candidates = []
+        for filename in [
+                x for x in self.__tagfiles.get(context['bufnr'], [])
+                if x in self.__cache]:
+            candidates += self.__cache[filename].candidates
+
+        p = re.compile('(?:{})$'.format(context['keyword_patterns']))
+        return [{'word': x} for x in candidates if p.match(x)]
 
     def __get_tagfiles(self, context):
         limit = context['vars']['deoplete#tag#cache_limit_size']
