@@ -868,8 +868,24 @@ https://github.com/landaire/deoplete-swift
 neovim-intellij-complete-deoplete: "intellij" source for Intellij IDE
 https://github.com/vhakulinen/neovim-intellij-complete-deoplete
 
-tmux-complete: "tmuxcomplete" source for tmux panes.
+tmux-complete: "tmuxcomplete" source for tmux panes
 https://github.com/wellle/tmux-complete.vim
+
+deoplete-cpp: "cmake" and "cpp" and "identifier" sources for "cmake", "c",
+"cpp", "objc", "objcpp" and "arduino" filetypes
+https://github.com/kiddos/deoplete-cpp
+
+deoplete-github: "github" source for "gitcommit" filetype
+https://github.com/SevereOverfl0w/deoplete-github
+
+deoplete-flow: "flow" source for JavaScript
+https://github.com/steelsojka/deoplete-flow
+
+deoplete-d: "d" source for D language
+https://github.com/landaire/deoplete-d
+
+deoplete-rtags: "rtags" source for "c", "cpp", "objc" and "objcpp" filetypes.
+https://github.com/LuXuryPro/deoplete-rtags
 
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*
