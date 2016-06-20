@@ -43,13 +43,12 @@ class Source(Base):
                     context['event'] != 'BufWritePost' and
                     len(self.vim.current.buffer) > self.__max_lines):
                 line = context['position'][1]
-                self.__buffers[context['bufnr']][
-                    'candidates'] += parse_buffer_pattern(
+                buffer = self.__buffers[context['bufnr']]
+                buffer['candidates'] += parse_buffer_pattern(
                         self.vim.current.buffer[max([0, line-500]):line+500],
                         context['keyword_patterns'],
                         context['complete_str'])
-                self.__buffers[context['bufnr']]['candidates'] = list(
-                    set(self.__buffers[context['bufnr']]['candidates']))
+                buffer['candidates'] = list(set(buffer['candidates']))
             else:
                 self.__buffers[context['bufnr']] = {
                     'filetype': context['filetype'],
