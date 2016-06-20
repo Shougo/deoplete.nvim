@@ -13,7 +13,6 @@ class Base(LoggingMixin):
 
     def __init__(self, vim):
         self.vim = vim
-        self.name = 'base'
         self.description = ''
         self.mark = ''
         self.max_pattern_length = 80

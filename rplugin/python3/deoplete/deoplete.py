@@ -246,15 +246,16 @@ class Deoplete(logger.LoggingMixin):
                                 ) + globruntime(
                                     context['runtimepath'],
                                     'rplugin/python3/deoplete/sources/*.py'):
-            name = os.path.basename(path)[: -3]
+            filename = os.path.basename(path)[: -3]
             module = importlib.machinery.SourceFileLoader(
-                'deoplete.sources.' + name, path).load_module()
+                'deoplete.sources.' + filename, path).load_module()
             self.debug(path)
-            if not hasattr(module, 'Source') or name in self.__sources:
+            if not hasattr(module, 'Source') or filename in self.__sources:
                 continue
 
             source = module.Source(self.__vim)
-            source.name = name
+            source.name = getattr(
+                source, 'name', filename)
             source.min_pattern_length = getattr(
                 source, 'min_pattern_length',
                 context['vars']['deoplete#auto_complete_start_length'])
@@ -265,8 +266,9 @@ class Deoplete(logger.LoggingMixin):
                 source, 'max_menu_width',
                 context['vars']['deoplete#max_menu_width'])
 
-            self.__sources[name] = source
-            self.debug('Loaded Source: %s (%s)', name, module.__file__)
+            self.__sources[source.name] = source
+            self.debug('Loaded Source: %s (%s)',
+                       source.name, module.__file__)
 
         self.set_source_attributes(context)
         self.__custom = context['custom']
@@ -279,13 +281,14 @@ class Deoplete(logger.LoggingMixin):
                                 ) + globruntime(
                                     context['runtimepath'],
                                     'rplugin/python3/deoplete/filters/*.py'):
-            name = os.path.basename(path)[: -3]
+            filename = os.path.basename(path)[: -3]
             module = importlib.machinery.SourceFileLoader(
-                'deoplete.filters.' + name, path).load_module()
-            if hasattr(module, 'Filter') and name not in self.__filters:
+                'deoplete.filters.' + filename, path).load_module()
+            if hasattr(module, 'Filter') and filename not in self.__filters:
                 filter = module.Filter(self.__vim)
                 self.__filters[filter.name] = filter
-                self.debug('Loaded Filter: %s (%s)', name, module.__file__)
+                self.debug('Loaded Filter: %s (%s)',
+                           filter.name, module.__file__)
         # self.debug(self.__filters)
 
     def set_source_attributes(self, context):
