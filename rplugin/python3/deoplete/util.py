@@ -52,16 +52,12 @@ def globruntime(runtimepath, path):
 
 
 def debug(vim, expr):
-    if vim.vars['deoplete#enable_debug']:
-        try:
-            json_data = json.dumps(str(expr).strip())
-        except Exception:
-            vim.command('echomsg string(\'' + str(expr).strip() + '\')')
-        else:
-            vim.command('echomsg string(\'' + escape(json_data) + '\')')
-
+    try:
+        json_data = json.dumps(str(expr).strip())
+    except Exception:
+        vim.command('echomsg string(\'' + str(expr).strip() + '\')')
     else:
-        error(vim, "not in debug mode, but debug called")
+        vim.command('echomsg string(\'' + escape(json_data) + '\')')
 
 
 def error(vim, msg):

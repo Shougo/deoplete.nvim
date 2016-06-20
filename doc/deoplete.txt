@@ -134,14 +134,6 @@ g:deoplete#disable_auto_complete
 b:deoplete_disable_auto_complete
 		Buffer local variable of |g:deoplete#disable_auto_complete|.
 
-						*g:deoplete#enable_debug*
-g:deoplete#enable_debug
-		It enables deoplete debug mode.  The debug print feature is
-		enabled.
-		Note: You must enable
-		|deoplete-source-attribute-debug_enabled| to debug the
-		sources.
-
 						*g:deoplete#enable_profile*
 g:deoplete#enable_profile
 		It enables deoplete profile mode.
@@ -415,6 +407,10 @@ deoplete#enable_logging({level}, {logfile})
 		{logfile} is the file where log messages are written.
 		Messages are appended to this file.  Each log session will
 		start with "--- Deoplete Log Start ---".
+		Note: You must enable
+		|deoplete-source-attribute-debug_enabled| to debug the
+		sources.
+
 
 ------------------------------------------------------------------------------
 KEY MAPPINGS 					*deoplete-key-mappings*

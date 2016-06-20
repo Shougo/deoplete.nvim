@@ -63,8 +63,7 @@ def setup(vim, level, output_file=None):
 def logmethod(func):
     """Decorator for setting up the logger in LoggingMixin subclasses.
 
-    This does not guarantee that log messages will be generated.  It is
-    contingent on g:deoplete#enable_debug being set by the user.  If
+    This does not guarantee that log messages will be generated.  If
     `LoggingMixin.debug_enabled` is True, it will be propagated up to the root
     'deoplete' logger.
     """
