@@ -364,8 +364,10 @@ class Deoplete(logger.LoggingMixin):
             self.__custom = context['custom']
 
     def on_event(self, context):
+        self.debug('on_event: ', context['event'])
         self.check_recache(context)
 
         for source_name, source in self.itersource(context):
             if hasattr(source, 'on_event'):
+                self.debug('on_event Source: %s (%s)', source_name)
                 source.on_event(context)
