@@ -359,6 +359,9 @@ class Deoplete(logger.LoggingMixin):
             self.load_sources(context)
             self.load_filters(context)
             self.__runtimepath = context['runtimepath']
+
+            if context['rpc'] != 'deoplete_on_event':
+                self.on_event(context)
         elif context['custom'] != self.__custom:
             self.set_source_attributes(context)
             self.__custom = context['custom']
