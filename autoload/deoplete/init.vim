@@ -83,7 +83,7 @@ function! deoplete#init#_initialize() abort "{{{
   endif
 endfunction"}}}
 function! deoplete#init#_enable() abort "{{{
-  call deoplete#handlers#_init()
+  call deoplete#handler#_init()
   let s:is_enabled = 1
 endfunction"}}}
 function! deoplete#init#_disable() abort "{{{

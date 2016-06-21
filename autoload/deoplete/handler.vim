@@ -1,10 +1,10 @@
 "=============================================================================
-" FILE: handlers.vim
+" FILE: handler.vim
 " AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 " License: MIT license
 "=============================================================================
 
-function! deoplete#handlers#_init() abort "{{{
+function! deoplete#handler#_init() abort "{{{
   augroup deoplete
     autocmd!
     autocmd InsertLeave * call s:on_insert_leave()
