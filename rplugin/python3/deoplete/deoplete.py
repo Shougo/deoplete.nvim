@@ -8,8 +8,8 @@ from deoplete.util import \
     error, globruntime, charpos2bytepos, \
     bytepos2charpos, get_custom, get_syn_name, get_buffer_config
 
-import deoplete.sources
-import deoplete.filters
+import deoplete.source
+import deoplete.filter
 import deoplete.util
 from deoplete import logger
 
@@ -20,8 +20,8 @@ import copy
 import traceback
 import time
 
-deoplete.sources  # silence pyflakes
-deoplete.filters  # silence pyflakes
+deoplete.source  # silence pyflakes
+deoplete.filter  # silence pyflakes
 
 
 class Deoplete(logger.LoggingMixin):
@@ -242,13 +242,17 @@ class Deoplete(logger.LoggingMixin):
     def load_sources(self, context):
         # Load sources from runtimepath
         for path in globruntime(context['runtimepath'],
-                                'rplugin/python3/deoplete/sources/base.py'
+                                'rplugin/python3/deoplete/source/base.py'
                                 ) + globruntime(
                                     context['runtimepath'],
-                                    'rplugin/python3/deoplete/sources/*.py'):
+                                    'rplugin/python3/deoplete/source/*.py'
+                                ) + globruntime(
+                                    context['runtimepath'],
+                                    'rplugin/python3/deoplete/sources/*.py'
+                                ):
             filename = os.path.basename(path)[: -3]
             module = importlib.machinery.SourceFileLoader(
-                'deoplete.sources.' + filename, path).load_module()
+                'deoplete.source.' + filename, path).load_module()
             self.debug(path)
             if not hasattr(module, 'Source') or filename in self.__sources:
                 continue
@@ -277,13 +281,13 @@ class Deoplete(logger.LoggingMixin):
     def load_filters(self, context):
         # Load filters from runtimepath
         for path in globruntime(context['runtimepath'],
-                                'rplugin/python3/deoplete/filters/base.py'
+                                'rplugin/python3/deoplete/filter/base.py'
                                 ) + globruntime(
                                     context['runtimepath'],
-                                    'rplugin/python3/deoplete/filters/*.py'):
+                                    'rplugin/python3/deoplete/filter/*.py'):
             filename = os.path.basename(path)[: -3]
             module = importlib.machinery.SourceFileLoader(
-                'deoplete.filters.' + filename, path).load_module()
+                'deoplete.filter.' + filename, path).load_module()
             if hasattr(module, 'Filter') and filename not in self.__filters:
                 filter = module.Filter(self.__vim)
                 self.__filters[filter.name] = filter

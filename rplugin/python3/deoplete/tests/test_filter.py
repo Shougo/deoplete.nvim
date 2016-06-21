@@ -2,7 +2,7 @@ from unittest import TestCase
 from nose.tools import eq_
 from deoplete.util import (
     fuzzy_escape, charwidth, strwidth, truncate, truncate_skipping)
-from deoplete.filters.converter_remove_overlap import overlap_length
+from deoplete.filter.converter_remove_overlap import overlap_length
 
 
 class FilterTestCase(TestCase):
