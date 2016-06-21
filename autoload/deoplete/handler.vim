@@ -45,14 +45,14 @@ function! s:completion_begin(event) abort "{{{
           \ 'g:deoplete#_omni_patterns'))
       if pattern != '' && &l:omnifunc != ''
             \ && context.input =~# '\%('.pattern.'\)$'
-        call deoplete#mappings#_set_completeopt()
+        call deoplete#mapping#_set_completeopt()
         call feedkeys("\<C-x>\<C-o>", 'n')
         return
       endif
     endfor
   endfor
 
-  call deoplete#mappings#_set_completeopt()
+  call deoplete#mapping#_set_completeopt()
   call rpcnotify(g:deoplete#_channel_id,
         \ 'deoplete_auto_completion_begin', context)
 endfunction"}}}

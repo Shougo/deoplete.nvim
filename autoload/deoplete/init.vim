@@ -72,7 +72,7 @@ function! deoplete#init#_initialize() abort "{{{
     return 1
   endif
 
-  call deoplete#mappings#_init()
+  call deoplete#mapping#_init()
   call deoplete#init#_variables()
 
   let s:is_enabled = g:deoplete#enable_at_startup
