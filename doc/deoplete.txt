@@ -55,8 +55,13 @@ If ":echo has('python3')" returns `1`, then you're done; otherwise, see below.
 
 You can enable Python3 interface with pip: >
 
-    sudo pip3 install neovim
+    pip3 install neovim
 
+Note: deoplete needs neovim-python ver.0.18+.
+You need update neovim-python module.
+>
+    pip3 install --upgrade neovim
+<
 If you want to read for Neovim-python/python3 interface install documentation,
 you should read |provider-python| and the Wiki.
 https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
@@ -1150,6 +1155,15 @@ Q: I want to change the UltiSnips source order.
 
 A: >
 	call deoplete#custom#set('ultisnips', 'rank', 1000)
+<
+
+Q: Unicode decode error is occurred.
+https://github.com/Shougo/deoplete.nvim/issues/297
+
+A: Your neovim-python module is old.
+deoplete needs neovim-python 0.18+.  You must update it.
+>
+    pip3 install --upgrade neovim
 <
 
 ==============================================================================

@@ -46,6 +46,11 @@ You can enable Python3 interface with pip:
 
     pip3 install neovim
 
+## Note: deoplete needs neovim-python ver.0.18+.
+You need update neovim-python module.
+
+    pip3 install --upgrade neovim
+
 If you want to read the Neovim-python/python3 interface install documentation,
 you should read `:help provider-python` and the Wiki.
 https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
