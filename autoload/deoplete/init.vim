@@ -32,21 +32,6 @@ function! deoplete#init#_initialize() abort "{{{
     return 1
   endif
 
-  if &completeopt !~# 'noinsert\|noselect'
-    let save_completeopt = &completeopt
-    try
-      set completeopt+=noselect
-    catch
-      call deoplete#util#print_error(
-            \ 'deoplete.nvim does not work with this version.')
-      call deoplete#util#print_error(
-            \ 'Please update neovim to latest version.')
-      return 1
-    finally
-      let &completeopt = save_completeopt
-    endtry
-  endif
-
   try
     if !exists('g:loaded_remote_plugins')
       runtime! plugin/rplugin.vim
