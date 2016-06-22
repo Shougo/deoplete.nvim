@@ -57,7 +57,7 @@ You can enable Python3 interface with pip: >
 
     pip3 install neovim
 
-Note: deoplete needs neovim-python ver.0.18+.
+Note: deoplete needs neovim-python ver.0.1.8+.
 You need update neovim-python module.
 >
     pip3 install --upgrade neovim
@@ -1161,7 +1161,7 @@ Q: Unicode decode error is occurred.
 https://github.com/Shougo/deoplete.nvim/issues/297
 
 A: Your neovim-python module is old.
-deoplete needs neovim-python 0.18+.  You must update it.
+deoplete needs neovim-python 0.1.8+.  You must update it.
 >
     pip3 install --upgrade neovim
 <
