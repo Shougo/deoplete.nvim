@@ -60,6 +60,18 @@ function! deoplete#init#_initialize() abort "{{{
     return 1
   endtry
 
+  " neovim module version check.
+  if g:deoplete#_neovim_python_version < '0.1.8'
+    call deoplete#util#print_error(
+          \ 'Current neovim-python module version: ' .
+          \  g:deoplete#_neovim_python_version)
+    call deoplete#util#print_error(
+          \ 'deoplete.nvim requires neovim-python 0.1.8+.')
+    call deoplete#util#print_error(
+          \ 'Please update neovim-python by "pip3 install --upgrade neovim"')
+    return 1
+  endif
+
   call deoplete#mappings#_init()
   call deoplete#init#_variables()
 

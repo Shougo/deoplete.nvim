@@ -5,9 +5,12 @@
 # ============================================================================
 
 import neovim
+import os
+import re
 
 from deoplete import logger
 from deoplete.deoplete import Deoplete
+from glob import glob
 
 
 @neovim.plugin
@@ -20,6 +23,18 @@ class DeopleteHandlers(object):
     def init_python(self, args):
         self.__deoplete = Deoplete(self.__vim)
         self.__vim.vars['deoplete#_channel_id'] = self.__vim.channel_id
+
+        # Check neovim-python version.
+        version = 'unknown'
+        python_dir = os.path.dirname(os.path.dirname(neovim.__file__))
+        base = python_dir + '/neovim-*/'
+        for metadata in glob(base + 'PKG-INFO') + glob(base + '/METADATA'):
+            with open(metadata, 'r', errors='replace') as f:
+                for line in f:
+                    m = re.match('Version: (.+)', line)
+                    if m:
+                        version = m.group(1)
+        self.__vim.vars['deoplete#_neovim_python_version'] = version
 
     @neovim.rpc_export('deoplete_enable_logging', sync=True)
     def enable_logging(self, level, logfile):
