@@ -131,7 +131,7 @@ g:deoplete#auto_complete_start_length
 g:deoplete#disable_auto_complete
 		It controls whether you invalidate automatic completion.  If
 		it is 1, automatic completion becomes invalid, but can use the
-		manual completion by |deoplete#mappings#manual_complete()|.
+		manual completion by |deoplete#manual_complete()|.
 
 		Default value: 0
 
@@ -288,7 +288,7 @@ g:deoplete#omni#input_patterns
 		\ ['[^. *\t]\.\w*', '[a-zA-Z_]\w*::']
 		let g:deoplete#omni#input_patterns.java = '[^. *\t]\.\w*'
 		let g:deoplete#omni#input_patterns.php =
-		\ '\w+|[^. \t]->\w*\|\w+::\w*'
+		\ '\w+|[^. \t]->\w*|\w+::\w*'
 <
 		Default value: in g:deoplete#omni#_input_patterns
 
@@ -420,8 +420,8 @@ deoplete#enable_logging({level}, {logfile})
 ------------------------------------------------------------------------------
 KEY MAPPINGS 					*deoplete-key-mappings*
 
-					*deoplete#mappings#manual_complete()*
-deoplete#mappings#manual_complete([{sources}])
+					*deoplete#manual_complete()*
+deoplete#manual_complete([{sources}])
 		Use this function with |:inoremap| <expr> (|:map-expression|).
 		It calls the completion of deoplete.  You can use it with
 		custom completion setups.
@@ -434,38 +434,37 @@ deoplete#mappings#manual_complete([{sources}])
 		typically.
 >
 		inoremap <silent><expr> <Tab>
-		\ pumvisible() ? "\<C-n>" :
-		\ deoplete#mappings#manual_complete()
+		\ pumvisible() ? "\<C-n>" : deoplete#manual_complete()
 <
 
-				*deoplete#mappings#smart_close_popup()*
-deoplete#mappings#smart_close_popup()
+				*deoplete#smart_close_popup()*
+deoplete#smart_close_popup()
 		Insert candidate and re-generate popup menu for deoplete.
 >
 		inoremap <expr><C-h>
-		\ deoplete#mappings#smart_close_popup()."\<C-h>"
+		\ deoplete#smart_close_popup()."\<C-h>"
 		inoremap <expr><BS>
-		\ deoplete#mappings#smart_close_popup()."\<C-h>"
+		\ deoplete#smart_close_popup()."\<C-h>"
 <
 		Note: This mapping is conflicted with |SuperTab| or |endwise|
 		plugins.
 		Note: This key mapping is for <C-h> or <BS> keymappings.
 
-					*deoplete#mappings#close_popup()*
-deoplete#mappings#close_popup()
+					*deoplete#close_popup()*
+deoplete#close_popup()
 		Insert candidate and close popup menu for deoplete.
 
-					*deoplete#mappings#undo_completion()*
-deoplete#mappings#undo_completion()
+					*deoplete#undo_completion()*
+deoplete#undo_completion()
 		Undo inputted candidate. >
 
-		inoremap <expr><C-g>     deoplete#mappings#undo_completion()
+		inoremap <expr><C-g>     deoplete#undo_completion()
 <
-					*deoplete#mappings#refresh()*
-deoplete#mappings#refresh()
+					*deoplete#refresh()*
+deoplete#refresh()
 		Refresh the candidates.
 >
-		inoremap <expr><C-l>     deoplete#mappings#refresh()
+		inoremap <expr><C-l>     deoplete#refresh()
 <
 ==============================================================================
 EXAMPLES						*deoplete-examples*
@@ -476,13 +475,13 @@ EXAMPLES						*deoplete-examples*
 	let g:deoplete#enable_smart_case = 1
 
 	" <C-h>, <BS>: close popup and delete backword char.
-	inoremap <expr><C-h> deoplete#mappings#smart_close_popup()."\<C-h>"
-	inoremap <expr><BS>  deoplete#mappings#smart_close_popup()."\<C-h>"
+	inoremap <expr><C-h> deoplete#smart_close_popup()."\<C-h>"
+	inoremap <expr><BS>  deoplete#smart_close_popup()."\<C-h>"
 
 	" <CR>: close popup and save indent.
 	inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 	function! s:my_cr_function() abort
-	  return deoplete#mappings#close_popup() . "\<CR>"
+	  return deoplete#close_popup() . "\<CR>"
 	endfunction
 <
 ==============================================================================
@@ -583,10 +582,10 @@ converter_truncate_menu
 CREATE SOURCE					*deoplete-create-source*
 
 To create source, you should read default sources implementation in
-rplugin/python3/deoplete/sources/*.py.
+rplugin/python3/deoplete/source/*.py.
 
-The files in rplugin/python3/deoplete/sources/*.py are automatically loaded
-and deoplete creates new Source class object.
+The files are automatically loaded and deoplete creates new Source class
+object.
 Source class must extend Base class in ".base".
 
 Note: The sources must be created by Python3 language.
@@ -1027,7 +1026,7 @@ new line, you should map <CR>. >
 
 	inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 	function! s:my_cr_function() abort
-	  return deoplete#mappings#close_popup() . "\<CR>"
+	  return deoplete#close_popup() . "\<CR>"
 	endfunction
 
 Q: I want to use "vim-lua-ftplugin".

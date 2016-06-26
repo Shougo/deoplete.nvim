@@ -1,10 +1,10 @@
 "=============================================================================
-" FILE: handlers.vim
+" FILE: handler.vim
 " AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 " License: MIT license
 "=============================================================================
 
-function! deoplete#handlers#_init() abort "{{{
+function! deoplete#handler#_init() abort "{{{
   augroup deoplete
     autocmd!
     autocmd InsertLeave * call s:on_insert_leave()
@@ -45,14 +45,14 @@ function! s:completion_begin(event) abort "{{{
           \ 'g:deoplete#_omni_patterns'))
       if pattern != '' && &l:omnifunc != ''
             \ && context.input =~# '\%('.pattern.'\)$'
-        call deoplete#mappings#_set_completeopt()
+        call deoplete#mapping#_set_completeopt()
         call feedkeys("\<C-x>\<C-o>", 'n')
         return
       endif
     endfor
   endfor
 
-  call deoplete#mappings#_set_completeopt()
+  call deoplete#mapping#_set_completeopt()
   call rpcnotify(g:deoplete#_channel_id,
         \ 'deoplete_auto_completion_begin', context)
 endfunction"}}}

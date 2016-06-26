@@ -31,4 +31,49 @@ function! deoplete#enable_logging(level, logfile) abort "{{{
         \ 'deoplete_enable_logging', a:level, a:logfile)
 endfunction"}}}
 
+function! deoplete#manual_complete(...) abort "{{{
+  if deoplete#initialize()
+    return
+  endif
+
+  " Start complete.
+  return (pumvisible() ? "\<C-e>" : '')
+        \ . "\<C-r>=deoplete#mapping#_rpcnotify_wrapper("
+        \ . string(get(a:000, 0, [])) . ")\<CR>"
+endfunction"}}}
+function! deoplete#close_popup() abort "{{{
+  let g:deoplete#_context.position = getpos('.')
+  return pumvisible() ? "\<C-y>" : ''
+endfunction"}}}
+function! deoplete#smart_close_popup() abort "{{{
+  let g:deoplete#_context.position = getpos('.')
+  return pumvisible() ? "\<C-e>" : ''
+endfunction"}}}
+function! deoplete#cancel_popup() abort "{{{
+  let g:deoplete#_context.position = getpos('.')
+  return pumvisible() ? "\<C-e>" : ''
+endfunction"}}}
+function! deoplete#refresh() abort "{{{
+  let g:deoplete#_context.refresh = 1
+  if g:deoplete#_context.event ==# 'Manual'
+    let g:deoplete#_context.event = 'Refresh'
+  endif
+  return pumvisible() ? "\<C-e>" : ''
+endfunction"}}}
+
+function! deoplete#undo_completion() abort "{{{
+  if !exists('v:completed_item') || empty(v:completed_item)
+    return ''
+  endif
+
+  let input = deoplete#util#get_input('')
+  if strridx(input, v:completed_item.word) !=
+        \ len(input) - len(v:completed_item.word)
+    return ''
+  endif
+
+  return deoplete#mapping#smart_close_popup() .
+        \  repeat("\<C-h>", strchars(v:completed_item.word))
+endfunction"}}}
+
 " vim: foldmethod=marker

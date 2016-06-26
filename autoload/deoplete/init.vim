@@ -32,21 +32,6 @@ function! deoplete#init#_initialize() abort "{{{
     return 1
   endif
 
-  if &completeopt !~# 'noinsert\|noselect'
-    let save_completeopt = &completeopt
-    try
-      set completeopt+=noselect
-    catch
-      call deoplete#util#print_error(
-            \ 'deoplete.nvim does not work with this version.')
-      call deoplete#util#print_error(
-            \ 'Please update neovim to latest version.')
-      return 1
-    finally
-      let &completeopt = save_completeopt
-    endtry
-  endif
-
   try
     if !exists('g:loaded_remote_plugins')
       runtime! plugin/rplugin.vim
@@ -72,7 +57,7 @@ function! deoplete#init#_initialize() abort "{{{
     return 1
   endif
 
-  call deoplete#mappings#_init()
+  call deoplete#mapping#_init()
   call deoplete#init#_variables()
 
   let s:is_enabled = g:deoplete#enable_at_startup
@@ -83,7 +68,7 @@ function! deoplete#init#_initialize() abort "{{{
   endif
 endfunction"}}}
 function! deoplete#init#_enable() abort "{{{
-  call deoplete#handlers#_init()
+  call deoplete#handler#_init()
   let s:is_enabled = 1
 endfunction"}}}
 function! deoplete#init#_disable() abort "{{{
