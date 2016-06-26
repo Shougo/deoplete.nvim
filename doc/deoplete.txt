@@ -288,7 +288,7 @@ g:deoplete#omni#input_patterns
 		\ ['[^. *\t]\.\w*', '[a-zA-Z_]\w*::']
 		let g:deoplete#omni#input_patterns.java = '[^. *\t]\.\w*'
 		let g:deoplete#omni#input_patterns.php =
-		\ '\w+|[^. \t]->\w*\|\w+::\w*'
+		\ '\w+|[^. \t]->\w*|\w+::\w*'
 <
 		Default value: in g:deoplete#omni#_input_patterns
 
