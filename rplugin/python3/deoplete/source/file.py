@@ -9,8 +9,7 @@ import os
 import re
 from os.path import exists, dirname
 from .base import Base
-from deoplete.util import \
-    set_default, get_simple_buffer_config
+from deoplete.util import get_simple_buffer_config
 
 
 class Source(Base):
@@ -23,8 +22,6 @@ class Source(Base):
         self.min_pattern_length = 0
         self.rank = 150
         self.__isfname = ''
-
-        set_default(self.vim, 'g:deoplete#file#enable_buffer_path', 0)
 
     def on_event(self, context):
         self.__isfname = self.vim.call(
