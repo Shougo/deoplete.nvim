@@ -9,7 +9,6 @@ import os
 import re
 from os.path import exists, dirname
 from .base import Base
-from deoplete.util import get_simple_buffer_config
 
 
 class Source(Base):
