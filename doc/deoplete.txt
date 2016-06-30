@@ -747,6 +747,11 @@ on_event	(Function)			(Optional)
 		It is useful to make cache.
 		It takes {self} and {context} as its parameter.
 
+					*deoplete-source-attribute-on_init*
+on_init		(Function)			(Optional)
+		It is called after the source is initialized.
+		It takes {self} and {context} as its parameter.
+
 						*deoplete-source-attribute-__*
 __{name}	(Unknown)			(Optional)
 		Additional source information.

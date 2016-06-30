@@ -269,6 +269,9 @@ class Deoplete(logger.LoggingMixin):
             source.max_menu_width = getattr(
                 source, 'max_menu_width',
                 context['vars']['deoplete#max_menu_width'])
+            if hasattr(source, 'on_init'):
+                self.debug('on_init Source: %s (%s)', source.name)
+                source.on_init(context)
 
             self.__sources[source.name] = source
             self.debug('Loaded Source: %s (%s)',
