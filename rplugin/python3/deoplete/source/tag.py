@@ -26,6 +26,10 @@ class Source(Base):
         self.__cache = {}
         self.__tagfiles = {}
 
+    def on_init(self, context):
+        self.__limit = context['vars'].get(
+            'deoplete#tag#cache_limit_size', 500000)
+
     def on_event(self, context):
         self.__tagfiles[context['bufnr']] = self.__get_tagfiles(context)
 
@@ -49,11 +53,10 @@ class Source(Base):
         return [{'word': x} for x in candidates if p.match(x)]
 
     def __get_tagfiles(self, context):
-        limit = context['vars']['deoplete#tag#cache_limit_size']
         include_files = self.vim.call(
             'neoinclude#include#get_tag_files') if self.vim.call(
                 'exists', '*neoinclude#include#get_tag_files') else []
         return [x for x in self.vim.call(
                 'map', self.vim.call('tagfiles') + include_files,
                 'fnamemodify(v:val, ":p")')
-                if exists(x) and getsize(x) < limit]
+                if exists(x) and getsize(x) < self.__limit]
