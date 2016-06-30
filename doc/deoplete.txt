@@ -317,10 +317,6 @@ g:deoplete#file#enable_buffer_path
 
 		Default value: 0
 
-					*b:deoplete_file_enable_buffer_path*
-b:deoplete_file_enable_buffer_path
-		Buffer local variable of |g:deoplete#file#enable_buffer_path|.
-
 					*g:deoplete#tag#cache_limit_size*
 g:deoplete#tag#cache_limit_size
 		It sets file size to make a cache of a file in

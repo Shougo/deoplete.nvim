@@ -23,6 +23,10 @@ class Source(Base):
         self.rank = 150
         self.__isfname = ''
 
+    def on_init(self, context):
+        self.__buffer_path = context['vars'].get(
+            'deoplete#file#enable_buffer_path', 0)
+
     def on_event(self, context):
         self.__isfname = self.vim.call(
             'deoplete#util#vimoption2python_not',
@@ -66,17 +70,13 @@ class Source(Base):
         return None
 
     def __substitute_path(self, context, path):
-        buffer_path = get_simple_buffer_config(
-            context,
-            'deoplete_file_enable_buffer_path',
-            'deoplete#file#enable_buffer_path')
         m = re.match(r'(\.+)/', path)
         if m:
             h = self.vim.funcs.repeat(':h', len(m.group(1)))
             return re.sub(r'^\.+',
                           self.vim.funcs.fnamemodify(
                               (context['bufname']
-                               if buffer_path
+                               if self.__buffer_path
                                else context['cwd']), ':p' + h),
                           path)
         m = re.match(r'~/', path)

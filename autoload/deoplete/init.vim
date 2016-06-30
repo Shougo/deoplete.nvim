@@ -140,8 +140,6 @@ function! deoplete#init#_variables() abort "{{{
         \ 'g:deoplete#member#_prefix_patterns', {})
   call deoplete#util#set_default(
         \ 'g:deoplete#tag#cache_limit_size', 500000)
-  call deoplete#util#set_default(
-        \ 'g:deoplete#file#enable_buffer_path', 0)
 
   " Initialize default keyword pattern. "{{{
   call deoplete#util#set_pattern(
