@@ -742,8 +742,7 @@ on_post_filter
 
 					*deoplete-source-attribute-on_event*
 on_event	(Function)			(Optional)
-		It is called when |BufEnter|, |BufRead|, |BufNewFile|,
-		|BufNew|, |BufWinEnter|, |BufWritePost|.
+		It is called when |BufRead|, |BufNewFile|, |BufNew|, |BufWritePost|.
 		It is useful to make cache.
 		It takes {self} and {context} as its parameter.
 
