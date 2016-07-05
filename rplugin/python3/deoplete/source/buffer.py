@@ -53,7 +53,7 @@ class Source(Base):
                 self.__buffers[context['bufnr']] = {
                     'filetype': context['filetype'],
                     'candidates': parse_buffer_pattern(
-                        self.vim.current.buffer,
+                        self.vim.current.buffer[:],
                         context['keyword_patterns'],
                         context['complete_str'])
                 }

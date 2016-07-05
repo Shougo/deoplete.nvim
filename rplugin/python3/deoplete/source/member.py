@@ -41,7 +41,7 @@ class Source(Base):
     def gather_candidates(self, context):
         return [{'word': x} for x in
                 parse_buffer_pattern(
-                    self.vim.current.buffer,
+                    self.vim.current.buffer[:],
                     r'(?<=' + re.escape(self.__prefix) + r')\w+(?:\(\)?)?',
                     context['complete_str']
                 )
