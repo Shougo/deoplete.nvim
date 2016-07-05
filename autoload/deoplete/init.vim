@@ -122,22 +122,14 @@ function! deoplete#init#_variables() abort "{{{
         \ 'g:deoplete#sources', {})
   call deoplete#util#set_default(
         \ 'g:deoplete#ignore_sources', {})
-  call deoplete#util#set_default(
-        \ 'g:deoplete#_ignore_sources', {})
 
   " Source variables
   call deoplete#util#set_default(
         \ 'g:deoplete#omni#input_patterns', {})
   call deoplete#util#set_default(
-        \ 'g:deoplete#omni#_input_patterns', {})
-  call deoplete#util#set_default(
         \ 'g:deoplete#omni#functions', {})
   call deoplete#util#set_default(
-        \ 'g:deoplete#omni#_functions', { '_': '' })
-  call deoplete#util#set_default(
         \ 'g:deoplete#member#prefix_patterns', {})
-  call deoplete#util#set_default(
-        \ 'g:deoplete#member#_prefix_patterns', {})
 
   " Initialize default keyword pattern. "{{{
   call deoplete#util#set_pattern(
@@ -151,37 +143,6 @@ function! deoplete#init#_variables() abort "{{{
   call deoplete#util#set_pattern(
         \ g:deoplete#_omni_patterns,
         \ 'html,xhtml,xml,markdown,mkd', ['<', '<[^>]*\s[[:alnum:]-]*'])
-
-  call deoplete#util#set_pattern(
-        \ g:deoplete#omni#_input_patterns,
-        \ 'css,less,scss,sass', ['\w+', '\w+[):;]?\s+\w*', '[@!]'])
-  call deoplete#util#set_pattern(
-        \ g:deoplete#omni#_input_patterns,
-        \ 'ruby', ['[^. \t0-9]\.\w*', '[a-zA-Z_]\w*::\w*'])
-  call deoplete#util#set_pattern(
-        \ g:deoplete#omni#_input_patterns,
-        \ 'lua', ['\w+[.:]', 'require\s*\(?["'']\w*'])
-  "}}}
-
-  " Initialize member prefix pattern. "{{{
-  call deoplete#util#set_pattern(
-        \ g:deoplete#member#_prefix_patterns,
-        \ '_', '\.')
-  call deoplete#util#set_pattern(
-        \ g:deoplete#member#_prefix_patterns,
-        \ 'c,objc', ['\.', '->'])
-  call deoplete#util#set_pattern(
-        \ g:deoplete#member#_prefix_patterns,
-        \ 'cpp,objcpp', ['\.', '->', '::'])
-  call deoplete#util#set_pattern(
-        \ g:deoplete#member#_prefix_patterns,
-        \ 'perl,php', ['->'])
-  call deoplete#util#set_pattern(
-        \ g:deoplete#member#_prefix_patterns,
-        \ 'ruby', ['\.', '::'])
-  call deoplete#util#set_pattern(
-        \ g:deoplete#member#_prefix_patterns,
-        \ 'lua', ['\.', ':'])
   "}}}
 endfunction"}}}
 

@@ -8,7 +8,7 @@ from .base import Base
 
 import re
 from deoplete.util import \
-    get_buffer_config, convert2list, parse_buffer_pattern
+    get_buffer_config, convert2list, parse_buffer_pattern, set_pattern
 
 
 class Source(Base):
@@ -23,13 +23,27 @@ class Source(Base):
         self.__object_pattern = r'[a-zA-Z_]\w*(?:\(\)?)?'
         self.__prefix = ''
 
+        self.__prefix_patterns = {}
+        set_pattern(self.__prefix_patterns,
+                    '_', '\.')
+        set_pattern(self.__prefix_patterns,
+                    'c,objc', ['\.', '->'])
+        set_pattern(self.__prefix_patterns,
+                    'cpp,objcpp', ['\.', '->', '::'])
+        set_pattern(self.__prefix_patterns,
+                    'perl,php', ['->'])
+        set_pattern(self.__prefix_patterns,
+                    'ruby', ['\.', '::'])
+        set_pattern(self.__prefix_patterns,
+                    'lua', ['\.', ':'])
+
     def get_complete_position(self, context):
         # Check member prefix pattern.
         for prefix_pattern in convert2list(
                 get_buffer_config(context, context['filetype'],
                                   'deoplete_member_prefix_patterns',
                                   'deoplete#member#prefix_patterns',
-                                  'deoplete#member#_prefix_patterns')):
+                                  self.__prefix_patterns)):
             m = re.search(self.__object_pattern + prefix_pattern + r'\w*$',
                           context['input'])
             if m is None or prefix_pattern == '':

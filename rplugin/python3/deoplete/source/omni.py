@@ -7,7 +7,7 @@
 import re
 from .base import Base
 from deoplete.util import \
-    get_buffer_config, error, convert2list
+    get_buffer_config, error, convert2list, set_pattern
 
 
 class Source(Base):
@@ -26,6 +26,14 @@ class Source(Base):
         self.__prev_input = ''
         self.__prev_candidates = []
 
+        self.__input_patterns = {}
+        set_pattern(self.__input_patterns, 'css,less,scss,sass',
+                    ['\w+', r'\w+[):;]?\s+\w*', r'[@!]'])
+        set_pattern(self.__input_patterns, 'ruby',
+                    [r'[^. \t0-9]\.\w*', r'[a-zA-Z_]\w*::\w*'])
+        set_pattern(self.__input_patterns, 'lua',
+                    [r'\w+[.:]', r'require\s*\(?["'']\w*'])
+
     def get_complete_position(self, context):
         if self.__use_previous_result(context):
             return self.__prev_pos
@@ -34,7 +42,7 @@ class Source(Base):
             omnifunc = get_buffer_config(context, filetype,
                                          'deoplete_omni_functions',
                                          'deoplete#omni#functions',
-                                         'deoplete#omni#_functions')
+                                         {'_': ''})
             if omnifunc == '':
                 omnifunc = context['omni__omnifunc']
             if omnifunc == '' or [x for x in [
@@ -46,7 +54,7 @@ class Source(Base):
                 get_buffer_config(context, filetype,
                                   'deoplete_omni_input_patterns',
                                   'deoplete#omni#input_patterns',
-                                  'deoplete#omni#_input_patterns')):
+                                  self.__input_patterns)):
 
                 m = re.search('(' + input_pattern + ')$', context['input'])
                 # self.debug(filetype)

@@ -179,7 +179,7 @@ class Deoplete(logger.LoggingMixin):
                 get_buffer_config(context, ft,
                                   'deoplete_ignore_sources',
                                   'deoplete#ignore_sources',
-                                  'deoplete#_ignore_sources'))
+                                  {}))
 
         for source_name, source in sources:
             if (source_name in ignore_sources):

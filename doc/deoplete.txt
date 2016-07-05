@@ -266,7 +266,7 @@ g:deoplete#member#prefix_patterns
 		does not complete member candidates.
 		Note: It is Python3 regexp.
 
-		Default value: in g:deoplete#member#_prefix_patterns
+		Default value: defined in member.py
 
 					*b:deoplete_member_prefix_patterns*
 b:deoplete_member_prefix_patterns
@@ -290,7 +290,7 @@ g:deoplete#omni#input_patterns
 		let g:deoplete#omni#input_patterns.php =
 		\ '\w+|[^. \t]->\w*|\w+::\w*'
 <
-		Default value: in g:deoplete#omni#_input_patterns
+		Default value: defined in omni.py.
 
 					*b:deoplete_omni_input_patterns*
 b:deoplete_omni_input_patterns
