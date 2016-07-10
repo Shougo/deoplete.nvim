@@ -47,7 +47,7 @@ Note: deoplete requires Neovim(latest is recommended) with Python3 enabled.
 
 1. Extract the files and put them in your Neovim directory
    (usually `$XDG_CONFIG_HOME/nvim/`).
-2. Execute the |:UpdateRemotePlugins| and restart Neovim.
+2. Execute the ":UpdateRemotePlugins" and restart Neovim.
 3. Call |deoplete#enable()| or set "let g:deoplete#enable_at_startup = 1" in
    your `init.vim`
 
@@ -738,7 +738,8 @@ on_post_filter
 
 					*deoplete-source-attribute-on_event*
 on_event	(Function)			(Optional)
-		It is called when |BufRead|, |BufNewFile|, |BufNew|, |BufWritePost|.
+		It is called when |BufRead|, |BufNewFile|, |BufNew|,
+		|BufWritePost|.
 		It is useful to make cache.
 		It takes {self} and {context} as its parameter.
 
@@ -932,7 +933,7 @@ A:
 >
 	$ sudo pip3 install neovim --upgrade
 <
-  3. Please execute |:UpdateRemotePlugins| or |:NeoBundleRemotePlugins| (for
+  3. Please execute ":UpdateRemotePlugins" or ":NeoBundleRemotePlugins" (for
   using NeoBundle) command manually.
 
   4. Please check if Python3 interface works.  You can check it by ":echo
