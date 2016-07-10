@@ -191,6 +191,7 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \ 'input': input,
         \ 'next_input': deoplete#util#get_next_input(a:event),
         \ 'complete_str': '',
+        \ 'encoding': &encoding,
         \ 'position': getpos('.'),
         \ 'filetype': filetype,
         \ 'filetypes': filetypes,

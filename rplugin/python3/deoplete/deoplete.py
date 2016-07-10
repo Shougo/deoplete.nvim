@@ -34,7 +34,6 @@ class Deoplete(logger.LoggingMixin):
         self.__custom = []
         self.__profile_flag = None
         self.__profile_start = 0
-        self.__encoding = self.__vim.options['encoding']
         self.name = 'core'
 
     def completion_begin(self, context):
@@ -84,10 +83,10 @@ class Deoplete(logger.LoggingMixin):
             charpos = source.get_complete_position(cont)
             if charpos >= 0 and source.is_bytepos:
                 charpos = bytepos2charpos(
-                    self.__encoding, cont['input'], charpos)
+                    cont['encoding'], cont['input'], charpos)
             cont['complete_str'] = cont['input'][charpos:]
             cont['complete_position'] = charpos2bytepos(
-                self.__encoding, cont['input'], charpos)
+                cont['encoding'], cont['input'], charpos)
             cont['max_abbr_width'] = min(source.max_abbr_width,
                                          cont['max_abbr_width'])
             cont['max_menu_width'] = min(source.max_menu_width,
