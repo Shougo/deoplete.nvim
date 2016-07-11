@@ -24,7 +24,25 @@ function! deoplete#handler#_init() abort "{{{
   call s:on_event('')
 endfunction"}}}
 
-function! s:completion_begin(event) abort "{{{
+function! s:completion_begin_delayed(timer) abort "{{{
+  unlet! s:completion_delay
+  call s:completion_begin(s:delayed_event, 1)
+endfunction"}}}
+
+function! s:completion_begin(event, ...) abort "{{{
+  if has('timers') && !a:0 && g:deoplete#auto_complete_delay > 0
+    if exists('s:completion_delay')
+      call timer_stop(s:completion_delay)
+    endif
+
+    if a:event != 'Manual'
+      let s:delayed_event = a:event
+      let s:completion_delay = timer_start(g:deoplete#auto_complete_delay,
+            \ 's:completion_begin_delayed')
+      return
+    endif
+  endif
+
   let context = deoplete#init#_context(a:event, [])
 
   if s:is_skip(a:event, context)

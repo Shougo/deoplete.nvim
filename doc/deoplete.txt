@@ -180,8 +180,8 @@ g:deoplete#max_menu_width
 
 					*g:deoplete#auto_complete_delay*
 g:deoplete#auto_complete_delay
-		It is the auto completion delay time after your input.
-		The unit is ms.
+		Delay the completion after input in milliseconds.
+		Requires |+timers| (Neovim 0.1.5)
 
 		Default value: 0
 
