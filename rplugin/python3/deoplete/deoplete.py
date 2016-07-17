@@ -7,6 +7,7 @@
 from deoplete.util import \
     error, globruntime, charpos2bytepos, \
     bytepos2charpos, get_custom, get_syn_name, get_buffer_config
+from deoplete.delay import DelayTimer
 
 import deoplete.source
 import deoplete.filter
@@ -34,13 +35,13 @@ class Deoplete(logger.LoggingMixin):
         self.__custom = []
         self.__profile_flag = None
         self.__profile_start = 0
+        self.__delay = DelayTimer(vim)
         self.name = 'core'
 
     def completion_begin(self, context):
         if context['event'] != 'Manual' and context['delay'] > 0:
-            time.sleep(context['delay'] / 1000.0)
-            if self.position_has_changed(context['changedtick']):
-                return
+            self.__delay.start(context['delay'] / 1000.0)
+            return
 
         try:
             complete_position, candidates = self.gather_candidates(context)
