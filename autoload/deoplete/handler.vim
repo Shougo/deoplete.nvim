@@ -11,8 +11,8 @@ function! deoplete#handler#_init() abort "{{{
     autocmd CompleteDone * call s:complete_done()
     autocmd InsertCharPre * call s:on_insert_char_pre()
 
-    autocmd TextChangedI * call s:completion_begin('TextChangedI')
-    autocmd InsertEnter * call s:completion_begin('InsertEnter')
+    autocmd TextChangedI * call s:completion_check('TextChangedI')
+    autocmd InsertEnter * call s:completion_check('InsertEnter')
   augroup END
 
   for event in [
@@ -24,25 +24,30 @@ function! deoplete#handler#_init() abort "{{{
   call s:on_event('')
 endfunction"}}}
 
-function! s:completion_begin_delayed(timer) abort "{{{
-  unlet! s:completion_delay
-  call s:completion_begin(s:delayed_event, 1)
+function! s:completion_delayed(timer) abort "{{{
+  let timer = s:timer
+  unlet! s:timer
+  call s:completion_begin(timer.event)
 endfunction"}}}
 
-function! s:completion_begin(event, ...) abort "{{{
-  if has('timers') && !a:0 && g:deoplete#auto_complete_delay > 0
-    if exists('s:completion_delay')
-      call timer_stop(s:completion_delay)
+function! s:completion_check(event) abort "{{{
+  if has('timers') && g:deoplete#auto_complete_delay > 0
+    if exists('s:timer')
+      call timer_stop(s:timer.id)
     endif
 
     if a:event != 'Manual'
-      let s:delayed_event = a:event
-      let s:completion_delay = timer_start(g:deoplete#auto_complete_delay,
-            \ 's:completion_begin_delayed')
+      let s:timer = { 'event': a:event }
+      let s:timer.id = timer_start(g:deoplete#auto_complete_delay,
+            \ 's:completion_delayed')
       return
     endif
   endif
 
+  return s:completion_begin(a:event)
+endfunction"}}}
+
+function! s:completion_begin(event) abort "{{{
   let context = deoplete#init#_context(a:event, [])
 
   if s:is_skip(a:event, context)
