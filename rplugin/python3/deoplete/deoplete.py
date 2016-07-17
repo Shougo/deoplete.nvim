@@ -52,7 +52,7 @@ class Deoplete(logger.LoggingMixin):
             candidates = []
 
         if not candidates or self.position_has_changed(
-                context['changedtick']):
+                context['changedtick']) or self.__vim.funcs.mode() != 'i':
             return
 
         self.__vim.vars['deoplete#_context'] = {
