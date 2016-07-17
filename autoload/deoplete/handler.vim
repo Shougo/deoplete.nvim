@@ -11,8 +11,8 @@ function! deoplete#handler#_init() abort "{{{
     autocmd CompleteDone * call s:complete_done()
     autocmd InsertCharPre * call s:on_insert_char_pre()
 
-    autocmd TextChangedI * call s:completion_begin("TextChangedI")
-    autocmd InsertEnter * call s:completion_begin("InsertEnter")
+    autocmd TextChangedI * call s:completion_begin('TextChangedI')
+    autocmd InsertEnter * call s:completion_begin('InsertEnter')
   augroup END
 
   for event in [
