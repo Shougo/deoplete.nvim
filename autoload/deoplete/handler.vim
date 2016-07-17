@@ -11,8 +11,8 @@ function! deoplete#handler#_init() abort "{{{
     autocmd CompleteDone * call s:complete_done()
     autocmd InsertCharPre * call s:on_insert_char_pre()
 
-    autocmd TextChangedI * call s:completion_begin("TextChangedI", 0)
-    autocmd InsertEnter * call s:completion_begin("InsertEnter", 0)
+    autocmd TextChangedI * call s:completion_begin("TextChangedI")
+    autocmd InsertEnter * call s:completion_begin("InsertEnter")
   augroup END
 
   for event in [
@@ -24,14 +24,10 @@ function! deoplete#handler#_init() abort "{{{
   call s:on_event('')
 endfunction"}}}
 
-function! deoplete#handler#_delay_trigger() abort "{{{
-  call s:completion_begin('TextChangedI', 1)
-endfunction"}}}
-
-function! s:completion_begin(event, delayed) abort "{{{
+function! s:completion_begin(event) abort "{{{
   let context = deoplete#init#_context(a:event, [])
 
-  if !a:delayed && s:is_skip(a:event, context)
+  if s:is_skip(a:event, context)
     return
   endif
 
@@ -39,10 +35,6 @@ function! s:completion_begin(event, delayed) abort "{{{
   let g:deoplete#_context.position = context.position
 
   let g:deoplete#_context.refresh = 0
-
-  if a:delayed
-    let context.delay = 0
-  endif
 
   " Call omni completion
   for filetype in context.filetypes
