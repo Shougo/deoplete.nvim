@@ -37,11 +37,6 @@ class Deoplete(logger.LoggingMixin):
         self.name = 'core'
 
     def completion_begin(self, context):
-        if context['event'] != 'Manual' and context['delay'] > 0:
-            time.sleep(context['delay'] / 1000.0)
-            if self.position_has_changed(context['changedtick']):
-                return
-
         try:
             complete_position, candidates = self.gather_candidates(context)
         except Exception:
