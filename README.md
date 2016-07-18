@@ -73,3 +73,11 @@ https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
 ```
+
+## Issues
+
+If you setup sources to tags and you still can not see your suggestions, try to increase the cache size:
+
+```vim
+let deoplete#tag#cache_limit_size = 5000000
+```
