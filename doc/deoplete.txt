@@ -429,10 +429,15 @@ deoplete#manual_complete([{sources}])
 		|g:deoplete#disable_auto_complete|, which should be 1 then
 		typically.
 >
-		inoremap <silent><expr> <Tab>
-		\ pumvisible() ? "\<C-n>" : deoplete#manual_complete()
+		inoremap <silent><expr> <TAB>
+		\ pumvisible() ? "\<C-n>" :
+		\ <SID>check_back_space() ? "\<TAB>" :
+		\ deoplete#mappings#manual_complete()
+		function! s:check_back_space() abort "{{{
+		let col = col('.') - 1
+		return !col || getline('.')[col - 1]  =~ '\s'
+		endfunction"}}}
 <
-
 				*deoplete#smart_close_popup()*
 deoplete#smart_close_popup()
 		Insert candidate and re-generate popup menu for deoplete.
