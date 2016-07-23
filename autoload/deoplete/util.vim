@@ -139,10 +139,20 @@ function! deoplete#util#redir(cmd) abort "{{{
   endif
 endfunction"}}}
 
-function! deoplete#util#get_syn_name() abort "{{{
-  return len(getline('.')) < 200 ?
-        \ synIDattr(synIDtrans(synID(line('.'), mode() ==# 'i' ?
-        \          col('.')-1 : col('.'), 1)), 'name') : ''
+function! deoplete#util#get_syn_names() abort "{{{
+  if col('$') >= 200
+    return []
+  endif
+
+  let names = []
+  for id in synstack(line('.'), (mode() ==# 'i' ? col('.')-1 : col('.')))
+    let name = synIDattr(id, 'name')
+    call add(names, name)
+    if synIDattr(synIDtrans(id), 'name') !=# name
+      call add(names, synIDattr(synIDtrans(id), 'name'))
+    endif
+  endfor
+  return names
 endfunction"}}}
 
 function! deoplete#util#neovim_version() abort "{{{

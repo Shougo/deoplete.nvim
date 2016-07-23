@@ -6,7 +6,7 @@
 
 from deoplete.util import \
     error, globruntime, charpos2bytepos, \
-    bytepos2charpos, get_custom, get_syn_name, get_buffer_config
+    bytepos2charpos, get_custom, get_syn_names, get_buffer_config
 
 import deoplete.source
 import deoplete.filter
@@ -72,8 +72,8 @@ class Deoplete(logger.LoggingMixin):
         # sources = ['buffer']
         results = []
         for source_name, source in self.itersource(context):
-            if source.disabled_syntaxes and 'syntax_name' not in context:
-                context['syntax_name'] = get_syn_name(self.__vim)
+            if source.disabled_syntaxes and 'syntax_names' not in context:
+                context['syntax_names'] = get_syn_names(self.__vim)
             cont = copy.deepcopy(context)
             charpos = source.get_complete_position(cont)
             if charpos >= 0 and source.is_bytepos:
@@ -340,9 +340,11 @@ class Deoplete(logger.LoggingMixin):
 
     def is_skip(self, context, disabled_syntaxes,
                 min_pattern_length, max_pattern_length, input_pattern):
-        if ('syntax_name' in context and
-                context['syntax_name'] in disabled_syntaxes):
-            return 1
+        if 'syntax_names' in context:
+            pattern = '('+'|'.join(disabled_syntaxes)+')$'
+            if [x for x in context['syntax_names']
+                    if re.search(pattern, x)]:
+                return 1
         if (input_pattern != '' and
                 re.search('(' + input_pattern + ')$', context['input'])):
             return 0

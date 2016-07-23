@@ -88,8 +88,8 @@ def get_custom(custom, source_name, key, default):
         return default
 
 
-def get_syn_name(vim):
-    return vim.call('deoplete#util#get_syn_name')
+def get_syn_names(vim):
+    return vim.call('deoplete#util#get_syn_names')
 
 
 def parse_file_pattern(f, pattern):
