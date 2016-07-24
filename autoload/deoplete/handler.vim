@@ -132,7 +132,7 @@ function! s:is_skip_textwidth(input) abort "{{{
   if &l:formatoptions =~# '[tca]' && &l:textwidth > 0
         \     && displaywidth >= &l:textwidth
     if &l:formatoptions =~# '[ta]'
-          \ || deoplete#util#get_syn_name() ==# 'Comment'
+          \ || len(filter(deoplete#util#get_syn_names(), 'v:val ==# "Comment"'))
       return 1
     endif
   endif
