@@ -145,13 +145,18 @@ function! deoplete#util#get_syn_names() abort "{{{
   endif
 
   let names = []
-  for id in synstack(line('.'), (mode() ==# 'i' ? col('.')-1 : col('.')))
-    let name = synIDattr(id, 'name')
-    call add(names, name)
-    if synIDattr(synIDtrans(id), 'name') !=# name
-      call add(names, synIDattr(synIDtrans(id), 'name'))
-    endif
-  endfor
+  try
+    " Note: synstack() seems broken in concealed text.
+    for id in synstack(line('.'), (mode() ==# 'i' ? col('.')-1 : col('.')))
+      let name = synIDattr(id, 'name')
+      call add(names, name)
+      if synIDattr(synIDtrans(id), 'name') !=# name
+        call add(names, synIDattr(synIDtrans(id), 'name'))
+      endif
+    endfor
+  catch
+    " Ignore error
+  endtry
   return names
 endfunction"}}}
 
