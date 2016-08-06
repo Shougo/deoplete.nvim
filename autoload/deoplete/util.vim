@@ -126,8 +126,8 @@ function! deoplete#util#uniq(list) abort "{{{
 endfunction"}}}
 
 function! deoplete#util#redir(cmd) abort "{{{
-  if exists('*capture')
-    return capture(a:cmd)
+  if exists('*execute')
+    return execute(a:cmd)
   else
     let [save_verbose, save_verbosefile] = [&verbose, &verbosefile]
     set verbose=0 verbosefile=
