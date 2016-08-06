@@ -72,7 +72,7 @@ function! deoplete#undo_completion() abort "{{{
     return ''
   endif
 
-  return deoplete#mapping#smart_close_popup() .
+  return deoplete#smart_close_popup() .
         \  repeat("\<C-h>", strchars(v:completed_item.word))
 endfunction"}}}
 
