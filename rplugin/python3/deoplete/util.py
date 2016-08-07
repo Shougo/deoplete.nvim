@@ -10,6 +10,9 @@ import os
 import sys
 import unicodedata
 import glob
+import traceback
+
+from importlib.machinery import SourceFileLoader
 
 
 def get_buffer_config(context, filetype, buffer_var, user_var, default_var):
@@ -52,6 +55,45 @@ def globruntime(runtimepath, path):
     return ret
 
 
+def find_rplugins(context, source):
+    """Search for base.py or *.py
+
+    Searches $VIMRUNTIME/*/rplugin/python3/deoplete/$source[s]/
+    """
+    rtp = context.get('runtimepath', '').split(',')
+    if not rtp:
+        return
+
+    sources = (
+        os.path.join('rplugin/python3/deoplete', source, 'base.py'),
+        os.path.join('rplugin/python3/deoplete', source, '*.py'),
+        os.path.join('rplugin/python3/deoplete', source + 's', '*.py'),
+    )
+
+    for src in sources:
+        for path in rtp:
+            yield from glob.iglob(os.path.join(path, src))
+
+
+def import_plugin(path, source, classname):
+    """Import Deoplete plugin source class.
+
+    If the class exists, add its directory to sys.path.
+    """
+    name = os.path.splitext(os.path.basename(path))[0]
+    module_name = 'deoplete.%s.%s' % (source, name)
+
+    module = SourceFileLoader(module_name, path).load_module()
+    cls = getattr(module, classname, None)
+    if not cls:
+        return None
+
+    dirname = os.path.dirname(path)
+    if dirname not in sys.path:
+        sys.path.insert(0, dirname)
+    return cls
+
+
 def debug(vim, expr):
     try:
         json_data = json.dumps(str(expr).strip())
@@ -63,6 +105,12 @@ def debug(vim, expr):
 
 def error(vim, msg):
     vim.call('deoplete#util#print_error', msg)
+
+
+def error_tb(vim, msg):
+    for line in traceback.format_exc().splitlines():
+        error(vim, str(line))
+    error(vim, '%s.  Use :messages for error details.' % msg)
 
 
 def escape(expr):
@@ -118,7 +166,8 @@ def fuzzy_escape(string, camelcase):
 def load_external_module(file, module):
     current = os.path.dirname(os.path.abspath(file))
     module_dir = os.path.join(os.path.dirname(current), module)
-    sys.path.insert(0, module_dir)
+    if module_dir not in sys.path:
+        sys.path.insert(0, module_dir)
 
 
 def truncate_skipping(string, max, footer, footer_len):

@@ -5,23 +5,20 @@
 # ============================================================================
 
 from deoplete.util import \
-    error, globruntime, charpos2bytepos, \
+    error, error_tb, find_rplugins, import_plugin, charpos2bytepos, \
     bytepos2charpos, get_custom, get_syn_names, get_buffer_config
 
-import deoplete.source
-import deoplete.filter
-import deoplete.util
+import deoplete.source  # noqa
+import deoplete.filter  # noqa
+import deoplete.util  # noqa
 from deoplete import logger
 
 import re
-import importlib.machinery
 import os.path
 import copy
-import traceback
 import time
 
-deoplete.source  # silence pyflakes
-deoplete.filter  # silence pyflakes
+from collections import defaultdict
 
 
 class Deoplete(logger.LoggingMixin):
@@ -34,16 +31,15 @@ class Deoplete(logger.LoggingMixin):
         self.__custom = []
         self.__profile_flag = None
         self.__profile_start = 0
+        self.__source_errors = defaultdict(int)
+        self.__filter_errors = defaultdict(int)
         self.name = 'core'
 
     def completion_begin(self, context):
         try:
             complete_position, candidates = self.gather_candidates(context)
         except Exception:
-            for line in traceback.format_exc().splitlines():
-                error(self.__vim, line)
-            error(self.__vim,
-                  'An error has occurred. Please execute :messages command.')
+            error_tb(self.__vim, 'Error while gathering completions')
             candidates = []
 
         if not candidates or self.position_has_changed(
@@ -68,96 +64,109 @@ class Deoplete(logger.LoggingMixin):
         return self.merge_results(results)
 
     def gather_results(self, context):
-        # sources = ['buffer', 'neosnippet']
-        # sources = ['buffer']
         results = []
+
         for source_name, source in self.itersource(context):
-            if source.disabled_syntaxes and 'syntax_names' not in context:
-                context['syntax_names'] = get_syn_names(self.__vim)
-            cont = copy.deepcopy(context)
-            charpos = source.get_complete_position(cont)
-            if charpos >= 0 and source.is_bytepos:
-                charpos = bytepos2charpos(
-                    cont['encoding'], cont['input'], charpos)
-            cont['complete_str'] = cont['input'][charpos:]
-            cont['complete_position'] = charpos2bytepos(
-                cont['encoding'], cont['input'], charpos)
-            cont['max_abbr_width'] = min(source.max_abbr_width,
-                                         cont['max_abbr_width'])
-            cont['max_menu_width'] = min(source.max_menu_width,
-                                         cont['max_menu_width'])
-            if cont['max_abbr_width'] > 0:
-                cont['max_abbr_width'] = max(20, cont['max_abbr_width'])
-            if cont['max_menu_width'] > 0:
-                cont['max_menu_width'] = max(10, cont['max_menu_width'])
-            # self.debug(source.rank)
-            # self.debug(source_name)
-            # self.debug(cont['input'])
-            # self.debug(charpos)
-            # self.debug(cont['complete_position'])
-            # self.debug(cont['complete_str'])
-
-            if charpos < 0 or self.is_skip(cont, source.disabled_syntaxes,
-                                           source.min_pattern_length,
-                                           source.max_pattern_length,
-                                           source.input_pattern):
-                # Skip
-                continue
-            results.append({
-                'name': source_name,
-                'source': source,
-                'context': cont,
-            })
-
-        for result in results:
-            context = result['context']
-            source = result['source']
-
-            # self.debug(source.name)
-            self.profile_start(context, source.name)
-            context['candidates'] = source.gather_candidates(context)
-            self.profile_end(source.name)
-            if context['candidates'] and isinstance(
-                    context['candidates'][0], str):
-                # Convert to dict
-                context['candidates'] = [{'word': x}
-                                         for x in context['candidates']]
-
-            ignorecase = context['ignorecase']
-            smartcase = context['smartcase']
-            camelcase = context['camelcase']
             try:
+                if source.disabled_syntaxes and 'syntax_names' not in context:
+                    context['syntax_names'] = get_syn_names(self.__vim)
+                ctx = copy.deepcopy(context)
+                charpos = source.get_complete_position(ctx)
+                if charpos >= 0 and source.is_bytepos:
+                    charpos = bytepos2charpos(
+                        ctx['encoding'], ctx['input'], charpos)
+                ctx['complete_str'] = ctx['input'][charpos:]
+                ctx['complete_position'] = charpos2bytepos(
+                    ctx['encoding'], ctx['input'], charpos)
+                ctx['max_abbr_width'] = min(source.max_abbr_width,
+                                            ctx['max_abbr_width'])
+                ctx['max_menu_width'] = min(source.max_menu_width,
+                                            ctx['max_menu_width'])
+                if ctx['max_abbr_width'] > 0:
+                    ctx['max_abbr_width'] = max(20, ctx['max_abbr_width'])
+                if ctx['max_menu_width'] > 0:
+                    ctx['max_menu_width'] = max(10, ctx['max_menu_width'])
+
+                if charpos < 0 or self.is_skip(ctx, source.disabled_syntaxes,
+                                               source.min_pattern_length,
+                                               source.max_pattern_length,
+                                               source.input_pattern):
+                    # Skip
+                    continue
+
+                # Gathering
+                self.profile_start(ctx, source.name)
+                ctx['candidates'] = source.gather_candidates(ctx)
+                self.profile_end(source.name)
+
+                if 'candidates' not in ctx or not ctx['candidates']:
+                    continue
+
+                if ctx['candidates'] and isinstance(ctx['candidates'][0], str):
+                    # Convert to dict
+                    ctx['candidates'] = [{'word': x}
+                                         for x in ctx['candidates']]
+
+                # Filtering
+                ignorecase = ctx['ignorecase']
+                smartcase = ctx['smartcase']
+                camelcase = ctx['camelcase']
+
                 # Set ignorecase
-                if (smartcase or camelcase) and re.search(
-                        r'[A-Z]', context['complete_str']):
-                    context['ignorecase'] = 0
+                if (smartcase or camelcase) and re.search(r'[A-Z]',
+                                                          ctx['complete_str']):
+                    ctx['ignorecase'] = 0
 
                 for filter in [self.__filters[x] for x
                                in source.matchers +
                                source.sorters +
                                source.converters
                                if x in self.__filters]:
-                    self.profile_start(context, filter.name)
-                    context['candidates'] = filter.filter(context)
-                    self.profile_end(filter.name)
-            finally:
-                context['ignorecase'] = ignorecase
-            # self.debug(context['candidates'])
+                    try:
+                        self.profile_start(ctx, filter.name)
+                        ctx['candidates'] = filter.filter(ctx)
+                        self.profile_end(filter.name)
+                    except:
+                        self.__filter_errors[filter.name] += 1
+                        if self.__source_errors[filter.name] > 2:
+                            error(self.__vim, 'Too many errors from "%s". '
+                                  'This filter is disabled until Neovim '
+                                  'is restarted.' % filter.name)
+                            self.__filters.pop(filter.name)
+                            continue
+                        error_tb(self.__vim,
+                                 'Could not filter using: %s' % filter)
 
-            # On post filter
-            if hasattr(source, 'on_post_filter'):
-                context['candidates'] = source.on_post_filter(context)
+                ctx['ignorecase'] = ignorecase
 
-            candidates = context['candidates']
-            # Set default menu and icase
-            mark = source.mark + ' '
-            for candidate in candidates:
-                candidate['icase'] = 1
-                if source.mark != '' and candidate.get(
-                        'menu', '').find(mark) != 0:
-                    candidate['menu'] = mark + candidate.get('menu', '')
+                # On post filter
+                if hasattr(source, 'on_post_filter'):
+                    ctx['candidates'] = source.on_post_filter(ctx)
 
-            # self.debug(context['candidates'])
+                # Set default menu and icase
+                mark = source.mark + ' '
+                for candidate in ctx['candidates']:
+                    candidate['icase'] = 1
+                    if source.mark != '' \
+                            and candidate.get('menu', '').find(mark) != 0:
+                        candidate['menu'] = mark + candidate.get('menu', '')
+
+                results.append({
+                    'name': source_name,
+                    'source': source,
+                    'context': ctx,
+                })
+            except:
+                self.__source_errors[source_name] += 1
+                if self.__source_errors[source_name] > 2:
+                    error(self.__vim, 'Too many errors from "%s". '
+                          'This source is disabled until Neovim '
+                          'is restarted.' % source_name)
+                    self.__sources.pop(source_name)
+                    continue
+                error_tb(self.__vim,
+                         'Could not get completions from: %s' % source_name)
+
         return results
 
     def itersource(self, context):
@@ -235,108 +244,100 @@ class Deoplete(logger.LoggingMixin):
 
     def load_sources(self, context):
         # Load sources from runtimepath
-        for path in globruntime(context['runtimepath'],
-                                'rplugin/python3/deoplete/source/base.py'
-                                ) + globruntime(
-                                    context['runtimepath'],
-                                    'rplugin/python3/deoplete/source/*.py'
-                                ) + globruntime(
-                                    context['runtimepath'],
-                                    'rplugin/python3/deoplete/sources/*.py'
-                                ):
-            filename = os.path.basename(path)[: -3]
-            module = importlib.machinery.SourceFileLoader(
-                'deoplete.source.' + filename, path).load_module()
-            self.debug(path)
-            if not hasattr(module, 'Source') or filename in self.__sources:
+        for path in find_rplugins(context, 'source'):
+            name = os.path.splitext(os.path.basename(path))[0]
+            if name in self.__sources:
                 continue
 
-            source = module.Source(self.__vim)
-            source.name = getattr(
-                source, 'name', filename)
-            source.min_pattern_length = getattr(
-                source, 'min_pattern_length',
-                context['vars']['deoplete#auto_complete_start_length'])
-            source.max_abbr_width = getattr(
-                source, 'max_abbr_width',
-                context['vars']['deoplete#max_abbr_width'])
-            source.max_menu_width = getattr(
-                source, 'max_menu_width',
-                context['vars']['deoplete#max_menu_width'])
-            if hasattr(source, 'on_init'):
-                self.debug('on_init Source: %s (%s)', source.name)
-                source.on_init(context)
+            source = None
 
-            self.__sources[source.name] = source
-            self.debug('Loaded Source: %s (%s)',
-                       source.name, module.__file__)
+            try:
+                Source = import_plugin(path, 'source', 'Source')
+                if Source is None:
+                    continue
+                source = Source(self.__vim)
+                source.name = getattr(source, 'name', name)
+
+                source.min_pattern_length = getattr(
+                    source, 'min_pattern_length',
+                    context['vars']['deoplete#auto_complete_start_length'])
+                source.max_abbr_width = getattr(
+                    source, 'max_abbr_width',
+                    context['vars']['deoplete#max_abbr_width'])
+                source.max_menu_width = getattr(
+                    source, 'max_menu_width',
+                    context['vars']['deoplete#max_menu_width'])
+
+                if hasattr(source, 'on_init'):
+                    self.debug('on_init Source: %s', source.name)
+                    source.on_init(context)
+            except Exception:
+                error_tb(self.__vim, 'Could not load source: %s' % name)
+            finally:
+                if source is not None:
+                    self.__sources[source.name] = source
+                    self.debug('Loaded Source: %s (%s)', source.name, path)
 
         self.set_source_attributes(context)
         self.__custom = context['custom']
-        # self.debug(self.__sources)
 
     def load_filters(self, context):
         # Load filters from runtimepath
-        for path in globruntime(context['runtimepath'],
-                                'rplugin/python3/deoplete/filter/base.py'
-                                ) + globruntime(
-                                    context['runtimepath'],
-                                    'rplugin/python3/deoplete/filter/*.py'):
-            filename = os.path.basename(path)[: -3]
-            module = importlib.machinery.SourceFileLoader(
-                'deoplete.filter.' + filename, path).load_module()
-            if hasattr(module, 'Filter') and filename not in self.__filters:
-                filter = module.Filter(self.__vim)
+        for path in find_rplugins(context, 'filter'):
+            name = os.path.splitext(os.path.basename(path))[0]
+            if name in self.__filters:
+                continue
+
+            filter = None
+
+            try:
+                Filter = import_plugin(path, 'filter', 'Filter')
+                if Filter is None:
+                    continue
+
+                filter = Filter(self.__vim)
+
+                filter.name = getattr(filter, 'name', name)
                 self.__filters[filter.name] = filter
-                self.debug('Loaded Filter: %s (%s)',
-                           filter.name, module.__file__)
-        # self.debug(self.__filters)
+            except Exception:
+                # Exception occurred when loading a filter.  Log stack trace.
+                error_tb(self.__vim, 'Could not load filter: %s' % name)
+            finally:
+                if filter is not None:
+                    self.__filters[filter.name] = filter
+                    self.debug('Loaded Filter: %s (%s)', filter.name, path)
 
     def set_source_attributes(self, context):
-        for source in self.__sources.values():
-            source.filetypes = get_custom(
-                context['custom'], source.name,
-                'filetypes', source.filetypes)
-            source.disabled_syntaxes = get_custom(
-                context['custom'], source.name,
-                'disabled_syntaxes', source.disabled_syntaxes)
-            source.input_pattern = get_custom(
-                context['custom'], source.name,
-                'input_pattern', source.input_pattern)
-            source.min_pattern_length = get_custom(
-                context['custom'], source.name,
-                'min_pattern_length',
-                getattr(source, 'min_pattern_length',
-                        context['vars'][
-                            'deoplete#auto_complete_start_length']))
-            source.max_pattern_length = get_custom(
-                context['custom'], source.name,
-                'max_pattern_length', source.max_pattern_length)
-            source.max_abbr_width = get_custom(
-                context['custom'], source.name,
-                'max_abbr_width',
-                getattr(source, 'max_abbr_width',
-                        context['vars']['deoplete#max_abbr_width']))
-            source.max_menu_width = get_custom(
-                context['custom'], source.name,
-                'max_menu_width',
-                getattr(source, 'max_menu_width',
-                        context['vars']['deoplete#max_menu_width']))
-            source.matchers = get_custom(
-                context['custom'], source.name,
-                'matchers', source.matchers)
-            source.sorters = get_custom(
-                context['custom'], source.name,
-                'sorters', source.sorters)
-            source.converters = get_custom(
-                context['custom'], source.name,
-                'converters', source.converters)
-            source.mark = get_custom(
-                context['custom'], source.name,
-                'mark', source.mark)
-            source.debug_enabled = get_custom(
-                context['custom'], source.name,
-                'debug_enabled', source.debug_enabled)
+        """Set source attributes from the context.
+
+        Each item in `attrs` is the attribute name.  If the default value is in
+        context['vars'] under a different name, use a tuple.
+        """
+        attrs = (
+            'filetypes',
+            'disabled_syntaxes',
+            'input_pattern',
+            ('min_pattern_length', 'deoplete#auto_complete_start_length'),
+            'max_pattern_length',
+            ('max_abbr_width', 'deoplete#max_abbr_width'),
+            ('max_menu_width', 'deoplete#max_menu_width'),
+            'matchers',
+            'sorters',
+            'converters',
+            'mark',
+            'debug_enabled',
+        )
+
+        for name, source in self.__sources.items():
+            for attr in attrs:
+                if isinstance(attr, tuple):
+                    default_val = context['vars'][attr[1]]
+                    attr = attr[0]
+                else:
+                    default_val = None
+                source_attr = getattr(source, attr, default_val)
+                setattr(source, attr, get_custom(context['custom'], name,
+                                                 attr, source_attr))
 
     def is_skip(self, context, disabled_syntaxes,
                 min_pattern_length, max_pattern_length, input_pattern):
@@ -370,7 +371,7 @@ class Deoplete(logger.LoggingMixin):
             self.__custom = context['custom']
 
     def on_event(self, context):
-        self.debug('on_event: ', context['event'])
+        self.debug('on_event: %s', context['event'])
         self.check_recache(context)
 
         for source_name, source in self.itersource(context):
