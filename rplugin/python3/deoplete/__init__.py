@@ -3,14 +3,15 @@
 # AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 # License: MIT license
 # ============================================================================
-
-import neovim
 import os
 import re
 
+from glob import glob
+
+import neovim
+
 from deoplete import logger
 from deoplete.deoplete import Deoplete
-from glob import glob
 
 
 @neovim.plugin

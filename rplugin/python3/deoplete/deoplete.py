@@ -3,22 +3,21 @@
 # AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 # License: MIT license
 # ============================================================================
-
-from deoplete.util import \
-    error, error_tb, find_rplugins, import_plugin, charpos2bytepos, \
-    bytepos2charpos, get_custom, get_syn_names, get_buffer_config
-
-import deoplete.source  # noqa
-import deoplete.filter  # noqa
-import deoplete.util  # noqa
-from deoplete import logger
-
 import re
-import os.path
 import copy
 import time
+import os.path
 
 from collections import defaultdict
+
+import deoplete.util  # noqa
+import deoplete.filter  # noqa
+import deoplete.source  # noqa
+
+from deoplete import logger
+from deoplete.util import (bytepos2charpos, charpos2bytepos, error, error_tb,
+                           find_rplugins, get_buffer_config, get_custom,
+                           get_syn_names, import_plugin)
 
 
 class Deoplete(logger.LoggingMixin):

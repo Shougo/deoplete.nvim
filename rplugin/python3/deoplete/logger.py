@@ -3,10 +3,10 @@
 # AUTHOR: Tommy Allen <tommy at esdf.io>
 # License: MIT license
 # ============================================================================
-
 import sys
 import time
 import logging
+
 from functools import wraps
 from collections import defaultdict
 
@@ -47,6 +47,7 @@ def setup(vim, level, output_file=None):
 
         try:
             import pkg_resources
+
             neovim_version = pkg_resources.get_distribution('neovim').version
         except ImportError:
             neovim_version = 'unknown'
