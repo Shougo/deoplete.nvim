@@ -39,10 +39,6 @@ function! deoplete#init#_initialize() abort "{{{
   endif
 endfunction"}}}
 function! deoplete#init#_channel() abort "{{{
-  if s:is_initialized()
-    return 0
-  endif
-
   if !has('nvim') || !has('python3')
     call deoplete#util#print_error(
           \ 'deoplete.nvim does not work with this version.')
@@ -65,10 +61,11 @@ function! deoplete#init#_channel() abort "{{{
   endtry
 
   " neovim module version check.
-  if g:deoplete#_neovim_python_version < '0.1.8'
+  if empty(g:deoplete#_neovim_python_version) ||
+        \ sort(g:deoplete#_neovim_python_version)[-1] < '0.1.8'
     call deoplete#util#print_error(
           \ 'Current neovim-python module version: ' .
-          \  g:deoplete#_neovim_python_version)
+          \  string(g:deoplete#_neovim_python_version))
     call deoplete#util#print_error(
           \ 'deoplete.nvim requires neovim-python 0.1.8+.')
     call deoplete#util#print_error(

@@ -25,7 +25,7 @@ class DeopleteHandlers(object):
         self.__vim.vars['deoplete#_channel_id'] = self.__vim.channel_id
 
         # Check neovim-python version.
-        version = 'unknown'
+        version = []
         python_dir = os.path.dirname(os.path.dirname(neovim.__file__))
         base = python_dir + '/neovim-*/'
         for metadata in glob(base + 'PKG-INFO') + glob(base + '/METADATA'):
@@ -33,7 +33,7 @@ class DeopleteHandlers(object):
                 for line in f:
                     m = re.match('Version: (.+)', line)
                     if m:
-                        version = m.group(1)
+                        version.append(m.group(1))
         self.__vim.vars['deoplete#_neovim_python_version'] = version
 
     @neovim.rpc_export('deoplete_enable_logging', sync=True)
