@@ -24,6 +24,25 @@ function! deoplete#init#_initialize() abort "{{{
     autocmd!
   augroup END
 
+  if deoplete#init#_channel()
+    return 1
+  endif
+
+  call deoplete#mapping#_init()
+  call deoplete#init#_variables()
+
+  let s:is_enabled = g:deoplete#enable_at_startup
+  if s:is_enabled
+    call deoplete#init#_enable()
+  else
+    call deoplete#init#_disable()
+  endif
+endfunction"}}}
+function! deoplete#init#_channel() abort "{{{
+  if s:is_initialized()
+    return 0
+  endif
+
   if !has('nvim') || !has('python3')
     call deoplete#util#print_error(
           \ 'deoplete.nvim does not work with this version.')
@@ -55,16 +74,6 @@ function! deoplete#init#_initialize() abort "{{{
     call deoplete#util#print_error(
           \ 'Please update neovim-python by "pip3 install --upgrade neovim"')
     return 1
-  endif
-
-  call deoplete#mapping#_init()
-  call deoplete#init#_variables()
-
-  let s:is_enabled = g:deoplete#enable_at_startup
-  if s:is_enabled
-    call deoplete#init#_enable()
-  else
-    call deoplete#init#_disable()
   endif
 endfunction"}}}
 function! deoplete#init#_enable() abort "{{{

@@ -22,9 +22,11 @@ function! deoplete#toggle() abort "{{{
 endfunction"}}}
 
 function! deoplete#enable_logging(level, logfile) abort "{{{
-  " Enable to allow logging before completions start.
-  if deoplete#initialize()
-    return
+  if !exists('g:deoplete#_channel_id')
+    " Enable to allow logging before completions start.
+    if deoplete#init#_channel()
+      return
+    endif
   endif
 
   call rpcrequest(g:deoplete#_channel_id,
