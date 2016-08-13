@@ -20,4 +20,4 @@ class UtilTestCase(TestCase):
         eq_(get_custom(custom, 'foo', 'converters', 'foobar'), 'foobar')
 
     def test_globruntime(self):
-        eq_(globruntime('/usr', 'lib'), ['/usr/lib'])
+        eq_(globruntime('/usr', 'bin'), ['/usr/bin'])
