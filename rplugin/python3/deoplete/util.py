@@ -3,14 +3,13 @@
 # AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 # License: MIT license
 # ============================================================================
-
-import json
-import re
 import os
+import re
 import sys
-import unicodedata
 import glob
+import json
 import traceback
+import unicodedata
 
 from importlib.machinery import SourceFileLoader
 
