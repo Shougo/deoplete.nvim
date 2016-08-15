@@ -57,7 +57,7 @@ function! deoplete#cancel_popup() abort "{{{
 endfunction"}}}
 function! deoplete#refresh() abort "{{{
   let g:deoplete#_context.refresh = 1
-  if g:deoplete#_context.event ==# 'Manual'
+  if get(g:deoplete#_context, 'event', '') ==# 'Manual'
     let g:deoplete#_context.event = 'Refresh'
   endif
   return pumvisible() ? "\<C-e>" : ''
