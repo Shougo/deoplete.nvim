@@ -23,6 +23,7 @@ External sources	|deoplete-external-sources|
 External plugins	|deoplete-external-plugins|
 External omnifuncs	|deoplete-external-omnifuncs|
 FAQ			|deoplete-faq|
+Compatibility		|deoplete-compatibility|
 
 ==============================================================================
 INTRODUCTION					*deoplete-introduction*
@@ -1165,6 +1166,9 @@ Q: tag source does not work.
 https://github.com/Shougo/deoplete.nvim/issues/309
 
 A: Please increase |g:deoplete#tag#cache_limit_size| value.
+
+==============================================================================
+COMPATIBILITY					*deoplete-compatibility*
 
 ==============================================================================
 vim:tw=78:ts=8:ft=help:norl:noet:fen:noet:
