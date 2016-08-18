@@ -24,10 +24,7 @@ See [requirements](#requirements) if you aren't sure whether you have this.
 For vim-plug
 
 ```viml
-function! DoRemote(arg)
-  UpdateRemotePlugins
-endfunction
-Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 ```
 
 For dein.vim
