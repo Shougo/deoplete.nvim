@@ -184,7 +184,7 @@ g:deoplete#auto_complete_delay
 		Delay the completion after input in milliseconds.
 		Requires |+timers| (Neovim 0.1.5)
 
-		Default value: 50
+		Default value: 200
 
 						*g:deoplete#keyword_patterns*
 g:deoplete#keyword_patterns
