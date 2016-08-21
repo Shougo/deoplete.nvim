@@ -186,6 +186,14 @@ g:deoplete#auto_complete_delay
 
 		Default value: 100
 
+					*g:deoplete#auto_refresh_delay*
+g:deoplete#auto_refresh_delay
+		Delay the refresh after input in milliseconds.
+		Requires |+timers| (Neovim 0.1.5) and
+		|g:deoplete#enable_refresh_always|
+
+		Default value: 50
+
 						*g:deoplete#keyword_patterns*
 g:deoplete#keyword_patterns
 		This dictionary records keyword patterns to buffer completion.

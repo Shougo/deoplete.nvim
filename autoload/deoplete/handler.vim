@@ -31,15 +31,16 @@ function! s:completion_delayed(timer) abort "{{{
 endfunction"}}}
 
 function! s:completion_check(event) abort "{{{
-  if has('timers') && g:deoplete#auto_complete_delay > 0
+  let delay = get(g:deoplete#_context, 'refresh', 0) ?
+        \ g:deoplete#auto_refresh_delay : g:deoplete#auto_complete_delay
+  if has('timers') && delay > 0
     if exists('s:timer')
       call timer_stop(s:timer.id)
     endif
 
     if a:event != 'Manual'
       let s:timer = { 'event': a:event }
-      let s:timer.id = timer_start(g:deoplete#auto_complete_delay,
-            \ 's:completion_delayed')
+      let s:timer.id = timer_start(delay, 's:completion_delayed')
       return
     endif
   endif
