@@ -12,7 +12,7 @@ function! deoplete#init#_is_enabled() abort "{{{
   return s:is_enabled
 endfunction"}}}
 function! s:is_initialized() abort "{{{
-  return exists('g:deoplete#_channel_id')
+  return exists('g:deoplete#_context')
 endfunction"}}}
 
 function! deoplete#init#_initialize() abort "{{{
