@@ -901,6 +901,12 @@ https://github.com/LuXuryPro/deoplete-rtags
 deoplete-ruby: "ruby" source for Ruby language
 https://github.com/fishbullet/deoplete-ruby
 
+deoplete-padawan: "padawan" source for padawan.php
+https://github.com/pbogut/deoplete-padawan
+
+webcomplete.vim: "webcomplete" source for browser opened pages
+https://github.com/thalesmello/webcomplete.vim
+
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*
 
