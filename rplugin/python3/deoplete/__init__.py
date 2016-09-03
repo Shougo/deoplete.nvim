@@ -9,6 +9,7 @@ import re
 from glob import glob
 
 import neovim
+import signal
 
 from deoplete import logger
 from deoplete.deoplete import Deoplete
@@ -60,6 +61,7 @@ class DeopleteHandlers(object):
     def on_event(self, context):
         context['rpc'] = 'deoplete_on_event'
         self.__deoplete.on_event(context)
+
 
 def pdb_handler(sig, frame):
     import pdb
