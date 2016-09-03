@@ -20,6 +20,7 @@ class DeopleteHandlers(object):
 
     def __init__(self, vim):
         self.__vim = vim
+        signal.signal(signal.SIGUSR1, pdb_handler)
 
     @neovim.function('_deoplete', sync=True)
     def init_python(self, args):
@@ -66,6 +67,3 @@ class DeopleteHandlers(object):
 def pdb_handler(sig, frame):
     import pdb
     pdb.Pdb().set_trace(frame)
-
-if __name__ == '__main__':
-    signal.signal(signal.SIGUSR1, pdb_handler)
