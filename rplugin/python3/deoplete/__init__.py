@@ -60,3 +60,10 @@ class DeopleteHandlers(object):
     def on_event(self, context):
         context['rpc'] = 'deoplete_on_event'
         self.__deoplete.on_event(context)
+
+def pdb_handler(sig, frame):
+    import pdb
+    pdb.Pdb().set_trace(frame)
+
+if __name__ == '__main__':
+    signal.signal(signal.SIGUSR1, pdb_handler)
