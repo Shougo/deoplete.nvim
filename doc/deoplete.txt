@@ -943,6 +943,12 @@ https://github.com/shawncplus/phpcomplete.vim
 ==============================================================================
 FAQ							*deoplete-faq*
 
+Q: deoplete can support Vim8?
+
+A: To support Vim8, neovim-python compatible API is needed.
+I have not plan to create it.
+But if it is created, I will support it.
+
 Q: deoplete does not work.
 
 A:
