@@ -22,6 +22,7 @@ FILTERS			|deoplete-filters|
 External sources	|deoplete-external-sources|
 External plugins	|deoplete-external-plugins|
 External omnifuncs	|deoplete-external-omnifuncs|
+Vim8 async API support	|deoplete-vim8|
 FAQ			|deoplete-faq|
 Compatibility		|deoplete-compatibility|
 
@@ -941,13 +942,52 @@ phpcomplete: PHP omnifunc
 https://github.com/shawncplus/phpcomplete.vim
 
 ==============================================================================
+VIM8 ASYNC API SUPPORT					*deoplete-vim8*
+
+Current deoplete/denite does not support Vim8 asynchronous API.
+To support Vim8, neovim-python compatible API is needed.
+I have not plan to create it.
+But if it is created, I will support it.
+
+Q: Why neovim-python compatible API is needed?  Vim8 already implements
+asynchronous API.  It optimize your plugins, doesn't it?
+Q: Why neocomplete/unite.vim does not support Vim8 asynchronous API?
+
+A: Vim8 asynchronous API (or neovim job API) does replace vimproc plugin.
+No more vimproc dependency.  But it does not optimize my plugins.
+To optimize my plugins, I must rewrite the plugins and most functions must be
+executed in the separated process.  It is hard way though, it is already done.
+Yes, they are deoplete and denite!
+
+Q: Why does not use the external interfaces?
+
+A: Current all external interfaces block your Vim.  The neovim remote plugin
+feature is not.
+
+Q: Why neovim remote plugin is better?
+
+A: It is the separated process and easy to communicate with Vim like the
+external interfaces.  I think it is the killer feature in neovim.  It is not
+well known though.
+
+Q: neovim-python compatible API can be implemented by Vim8 async API?
+
+A: Yes.  Vim8 implements JSON RPC.  I think you can create Python-Vim
+input/output interface using JSON RPC.  It is like MessagePack-RPC in neovim.
+
+Q: Why don't you implement neovim-python compatibility API using Vim8 JSON
+RPC?
+
+A: I have not much time.  You can implement it.  Why do I need to implement
+the feature?  neovim remote plugin feature already works!  It should be
+implemented by needed person.
+
+==============================================================================
 FAQ							*deoplete-faq*
 
 Q: deoplete can support Vim8?
 
-A: To support Vim8, neovim-python compatible API is needed.
-I have not plan to create it.
-But if it is created, I will support it.
+A: |deoplete-vim8|
 
 Q: deoplete does not work.
 
