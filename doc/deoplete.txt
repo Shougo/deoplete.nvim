@@ -946,7 +946,7 @@ https://github.com/shawncplus/phpcomplete.vim
 ==============================================================================
 VIM8 ASYNC API SUPPORT					*deoplete-vim8*
 
-Current deoplete/denite does not support Vim8 asynchronous API.
+Current deoplete does not support Vim8 asynchronous API.
 To support Vim8, neovim-python compatible API is needed.
 I have not plan to create it.
 But if it is created, I will support it.
@@ -959,7 +959,7 @@ A: Vim8 asynchronous API (or neovim job API) does replace vimproc plugin.
 No more vimproc dependency.  But it does not optimize my plugins.
 To optimize my plugins, I must rewrite the plugins and most functions must be
 executed in the separated process.  It is hard way though, it is already done.
-Yes, they are deoplete and denite!
+Yes, it is deoplete!
 
 Q: Why does not use the external interfaces?
 
