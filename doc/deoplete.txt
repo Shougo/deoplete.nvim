@@ -349,6 +349,8 @@ deoplete#initialize()
 deoplete#enable()
 		Enable deoplete auto completion.
 		Note: It changes the global state.
+		Note: It does not work in lazy loading.  You should use
+		|g:deoplete#enable_at_startup| instead.
 
 							*deoplete#disable()*
 deoplete#disable()
