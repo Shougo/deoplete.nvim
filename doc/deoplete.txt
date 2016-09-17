@@ -617,7 +617,6 @@ __init__	(Function)
 					*deoplete-source-attribute-name*
 name		(String)			(Required)
 		The name of a source.
-		Note: It must be same of the source filaname.
 
 					*deoplete-source-attribute-filetypes*
 filetypes	(List)				(Optional)
@@ -784,6 +783,9 @@ __{name}	(Unknown)			(Optional)
 		complete_str		(String)
 			The complete string of current source.
 
+		candidates		(List)
+			The current candidates.
+
 		filetype		(String)
 			Current 'filetype'.
 
@@ -825,6 +827,38 @@ dup		(Number)			(Optional)
 
 ==============================================================================
 CREATE FILTER					*deoplete-create-filter*
+
+To create filter, you should read default filters implementation in
+rplugin/python3/deoplete/filter/*.py.
+
+The files are automatically loaded and deoplete creates new Filter class object.
+Filter class must extend Base class in ".base".
+
+Note: The filters must be created by Python3 language.
+
+------------------------------------------------------------------------------
+FILTER ATTRIBUTES				*deoplete-filter-attributes*
+
+					*deoplete-filter-attribute-__init__*
+__init__	(Function)
+		Source constructor.  It will be called in initializing.  It
+		must call Base constructor.  This function takes {self} and
+		{vim} as its parameters.
+
+					*deoplete-filter-attribute-name*
+name		(String)			(Required)
+		The name of a source.
+
+					*deoplete-filter-attribute-filter*
+filter
+		(Function)			(Required)
+		It is called to filter candidates.
+		It takes {self} and {context} as its parameter and returns a
+		list of {candidate}.
+		{candidate} must be Dictionary contains
+		|deoplete-candidate-attributes|.
+		Here, {context} is the context information when the source is
+		called(|deoplete-notation-{context}|).
 
 ==============================================================================
 EXTERNAL SOURCES				*deoplete-external-sources*
