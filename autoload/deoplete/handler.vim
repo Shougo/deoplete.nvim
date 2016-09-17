@@ -109,22 +109,6 @@ function! s:is_skip(event, context) abort "{{{
     endif
   endif
 
-  " Detect foldmethod.
-  if a:event !=# 'Manual' && a:event !=# 'InsertEnter'
-        \ && !exists('b:deoplete_detected_foldmethod')
-        \ && (&l:foldmethod ==# 'expr' || &l:foldmethod ==# 'syntax')
-    let b:deoplete_detected_foldmethod = 1
-    call deoplete#util#print_error(
-          \ printf('foldmethod = "%s" is detected.', &foldmethod))
-    let msg = substitute(deoplete#util#redir(
-          \ 'verbose setlocal foldmethod?'), '\t', '', 'g')
-    for msg in split(msg, "\n")
-      call deoplete#util#print_error(msg)
-    endfor
-    call deoplete#util#print_error(
-          \ 'You should disable it or install FastFold plugin.')
-  endif
-
   return 0
 endfunction"}}}
 function! s:is_skip_textwidth(input) abort "{{{
