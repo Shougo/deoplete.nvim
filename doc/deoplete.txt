@@ -1076,10 +1076,11 @@ A: Please use |b:deoplete_disable_auto_complete|.
 
 Q: Ruby omni completion does not work in neovim.
 
-A: It is feature.  Because, the default Ruby omni completion(RubyOmniComplete)
-uses if_ruby feature.  But neovim does not support it.  You should use
-vim-monster plugin for ruby completion.
-https://github.com/osyo-manga/vim-monster
+A: Ruby omni completion support was added to nvim 0.1.5. For it to work you
+will need to install the neovim gem.
+https://github.com/alexgenco/neovim-ruby
+
+	$ gem install neovim
 
 Q: I want to use C/C++ omni completion with deoplete.
 
