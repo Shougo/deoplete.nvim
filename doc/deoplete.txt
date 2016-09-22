@@ -610,7 +610,7 @@ SOURCE ATTRIBUTES				*deoplete-source-attributes*
 
 					*deoplete-source-attribute-__init__*
 __init__	(Function)
-		Source constructor.  It will be called in initializing.  It
+		Source constructor.  It is always called in initializing.  It
 		must call super() constructor.  This function takes {self} and
 		{vim} as its parameters.
 
@@ -761,8 +761,9 @@ on_event	(Function)			(Optional)
 
 					*deoplete-source-attribute-on_init*
 on_init		(Function)			(Optional)
-		It is called after the source is initialized.
+		It will be called before the source attribute is called.
 		It takes {self} and {context} as its parameter.
+		It should be used to initialize the internal variables.
 
 						*deoplete-source-attribute-__*
 __{name}	(Unknown)			(Optional)

@@ -191,6 +191,10 @@ class Deoplete(logger.LoggingMixin):
             if source.filetypes and not any(x in filetypes
                                             for x in source.filetypes):
                 continue
+            if not source.is_initialized and hasattr(source, 'on_init'):
+                self.debug('on_init Source: %s', source.name)
+                source.on_init(context)
+                source.is_initialized = True
 
             yield source_name, source
 
@@ -267,9 +271,6 @@ class Deoplete(logger.LoggingMixin):
                     source, 'max_menu_width',
                     context['vars']['deoplete#max_menu_width'])
 
-                if hasattr(source, 'on_init'):
-                    self.debug('on_init Source: %s', source.name)
-                    source.on_init(context)
             except Exception:
                 error_tb(self.__vim, 'Could not load source: %s' % name)
             finally:

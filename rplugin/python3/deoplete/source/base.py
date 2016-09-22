@@ -26,6 +26,7 @@ class Base(LoggingMixin):
             'converter_truncate_menu']
         self.filetypes = []
         self.is_bytepos = False
+        self.is_initialized = False
         self.rank = 100
         self.disabled_syntaxes = []
 
