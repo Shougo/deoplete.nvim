@@ -410,7 +410,9 @@ deoplete#custom#set({source-name}, {option-name}, {value})
 		call deoplete#custom#set('omni', 'mark', '')
 
 		" Enable jedi source debug messages
-		call deoplete#custom#set('jedi', 'debug_enabled', 1)
+		" let g:deoplete#enable_profile = 1
+		" call deoplete#enable_logging('DEBUG', 'deoplete.log')
+		" call deoplete#custom#set('jedi', 'debug_enabled', 1)
 <
 						*deoplete#enable_logging()*
 deoplete#enable_logging({level}, {logfile})
@@ -1255,6 +1257,14 @@ https://github.com/Shougo/deoplete.nvim/issues/309
 
 A: Please increase |g:deoplete#tag#cache_limit_size| value.
 
+Q: I want to debug the sources.
+
+A: Please enable logging feature like this.
+>
+		let g:deoplete#enable_profile = 1
+		call deoplete#enable_logging('DEBUG', 'deoplete.log')
+		call deoplete#custom#set('jedi', 'debug_enabled', 1)
+<
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
 
