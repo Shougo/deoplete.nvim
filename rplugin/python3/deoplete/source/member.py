@@ -14,7 +14,7 @@ from deoplete.util import \
 class Source(Base):
 
     def __init__(self, vim):
-        Base.__init__(self, vim)
+        super().__init__(vim)
 
         self.name = 'member'
         self.mark = '[M]'

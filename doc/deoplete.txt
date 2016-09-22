@@ -611,7 +611,7 @@ SOURCE ATTRIBUTES				*deoplete-source-attributes*
 					*deoplete-source-attribute-__init__*
 __init__	(Function)
 		Source constructor.  It will be called in initializing.  It
-		must call Base constructor.  This function takes {self} and
+		must call super() constructor.  This function takes {self} and
 		{vim} as its parameters.
 
 					*deoplete-source-attribute-name*

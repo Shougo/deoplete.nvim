@@ -9,7 +9,7 @@ from .base import Base
 
 class Filter(Base):
     def __init__(self, vim):
-        Base.__init__(self, vim)
+        super().__init__(vim)
 
         self.name = 'converter_auto_delimiter'
         self.description = 'auto delimiter converter'
