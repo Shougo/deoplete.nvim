@@ -61,8 +61,7 @@ function! deoplete#init#_channel() abort "{{{
   endtry
 
   " neovim module version check.
-  if empty(g:deoplete#_neovim_python_version) ||
-        \ sort(g:deoplete#_neovim_python_version)[-1] < '0.1.8'
+  if (deoplete#init#_check_neovim_python_version())
     call deoplete#util#print_error(
           \ 'Current neovim-python module version: ' .
           \  string(g:deoplete#_neovim_python_version))
@@ -73,6 +72,40 @@ function! deoplete#init#_channel() abort "{{{
     return 1
   endif
 endfunction"}}}
+
+function! deoplete#init#_check_neovim_python_version() abort "{{{
+    if (empty(g:deoplete#_neovim_python_version))
+        return 1
+    endif
+
+    let required_version = [0, 1, 8] " 0.1.8
+    let neovim_python_version = g:deoplete#_neovim_python_version[0]
+    let version_parts = split(neovim_python_version, '\.')
+
+    " convert version parts into numbers
+    let major_version = 0+version_parts[0]
+    let minor_version = 0+version_parts[1]
+    let patch_version = 0+version_parts[2]
+
+    if (major_version > required_version[0])
+        return 0
+    elseif (major_version < required_version[0])
+        return 1
+    endif
+
+    if (minor_version > required_version[1])
+        return 0
+    elseif (minor_version < required_version[1])
+        return 1
+    endif
+
+    if (patch_version >= required_version[2])
+        return 0
+    endif
+
+    return 1
+endfunction "}}}
+
 function! deoplete#init#_enable() abort "{{{
   call deoplete#handler#_init()
   let s:is_enabled = 1
