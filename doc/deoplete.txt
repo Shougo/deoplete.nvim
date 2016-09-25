@@ -947,6 +947,9 @@ https://github.com/pbogut/deoplete-padawan
 webcomplete.vim: "webcomplete" source for browser opened pages
 https://github.com/thalesmello/webcomplete.vim
 
+deoplete-julia: "julia" source for Julia
+https://github.com/JuliaEditorSupport/deoplete-julia
+
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*
 
