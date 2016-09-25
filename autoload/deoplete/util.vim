@@ -167,4 +167,29 @@ function! deoplete#util#neovim_version() abort "{{{
   return split(v, '\n')[0]
 endfunction"}}}
 
+" Compare versions.  Return values is the distance between versions.  Each
+" version integer (from right to left) is an ascending power of 100.
+"
+" Example:
+" '0.1.10' is (1 * 100) + 10, or 110.
+" '1.2.3' is (1 * 10000) + (2 * 100) + 3, or 10203.
+"
+" Returns:
+" <0 if a < b
+" >0 if a > b
+" 0 if versions are equal.
+function! deoplete#util#versioncmp(a, b) abort "{{{
+  let a = map(split(a:a, '\.'), 'str2nr(v:val)')
+  let b = map(split(a:b, '\.'), 'str2nr(v:val)')
+  let l = min([len(a), len(b)])
+  let d = 0
+
+  " Only compare the parts that are common to both versions.
+  for i in range(l)
+    let d += (a[i] - b[i]) * pow(100, l - i - 1)
+  endfor
+
+  return d
+endfunction"}}}
+
 " vim: foldmethod=marker
