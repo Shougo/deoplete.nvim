@@ -14,6 +14,7 @@ endfunction"}}}
 function! deoplete#mapping#_do_complete(context) abort "{{{
   if b:changedtick == get(a:context, 'changedtick', -1)
         \ && mode() ==# 'i'
+    undojoin
     call complete(a:context.complete_position + 1, a:context.candidates)
   endif
 
