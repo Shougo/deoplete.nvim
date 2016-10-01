@@ -24,12 +24,6 @@ function! deoplete#handler#_init() abort "{{{
   call s:on_event('')
 endfunction"}}}
 
-function! s:completion_delayed(timer) abort "{{{
-  let timer = s:timer
-  unlet! s:timer
-  call s:completion_begin(timer.event)
-endfunction"}}}
-
 function! s:completion_check(event) abort "{{{
   let delay = get(g:deoplete#_context, 'refresh', 0) ?
         \ g:deoplete#auto_refresh_delay : g:deoplete#auto_complete_delay
@@ -39,13 +33,21 @@ function! s:completion_check(event) abort "{{{
     endif
 
     if a:event != 'Manual'
-      let s:timer = { 'event': a:event }
+      let s:timer = { 'event': a:event, 'changedtick': b:changedtick }
       let s:timer.id = timer_start(delay, 's:completion_delayed')
       return
     endif
   endif
 
   return s:completion_begin(a:event)
+endfunction"}}}
+
+function! s:completion_delayed(timer) abort "{{{
+  let timer = s:timer
+  unlet! s:timer
+  if b:changedtick == timer.changedtick
+    call s:completion_begin(timer.event)
+  endif
 endfunction"}}}
 
 function! s:completion_begin(event) abort "{{{
