@@ -577,13 +577,13 @@ converter_auto_delimiter
 
 				*deoplete-filter-converter_auto_paren*
 converter_auto_paren
-		It adds parenthes character in a candidate's word.
+		It adds parentheses character in a candidate's word.
 		It is useful if you use |neopairs| or |neosnippet|
 		plugins.
 
 				*deoplete-filter-converter_remove_paren*
 converter_remove_paren
-		It removes parenthes character in a candidate's word.
+		It removes parentheses character in a candidate's word.
 
 				*deoplete-filter-converter_truncate_abbr*
 converter_truncate_abbr
