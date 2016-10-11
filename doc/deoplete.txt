@@ -950,6 +950,9 @@ https://github.com/thalesmello/webcomplete.vim
 deoplete-julia: "julia" source for Julia
 https://github.com/JuliaEditorSupport/deoplete-julia
 
+acid.nvim: "acid" source for Clojure
+https://github.com/hkupty/acid.nvim
+
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*
 
