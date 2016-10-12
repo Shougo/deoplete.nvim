@@ -45,9 +45,8 @@ class Source(Base):
                                          {'_': ''})
             if omnifunc == '':
                 omnifunc = context['omni__omnifunc']
-            if omnifunc == '' or [x for x in [
-                    'ccomplete#Complete', 'htmlcomplete#CompleteTags']
-                                  if x == omnifunc]:
+            if omnifunc in ['', 'ccomplete#Complete',
+                            'htmlcomplete#CompleteTags']:
                 continue
             self.__omnifunc = omnifunc
             for input_pattern in convert2list(
