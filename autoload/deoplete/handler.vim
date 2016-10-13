@@ -15,9 +15,7 @@ function! deoplete#handler#_init() abort "{{{
     autocmd InsertEnter * call s:completion_check('InsertEnter')
   augroup END
 
-  for event in [
-        \ 'BufNewFile', 'BufNew', 'BufRead', 'BufWritePost'
-        \ ]
+  for event in ['BufNewFile', 'BufNew', 'BufRead', 'BufWritePost']
     execute 'autocmd deoplete' event '* call s:on_event('.string(event).')'
   endfor
 
