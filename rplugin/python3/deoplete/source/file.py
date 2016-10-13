@@ -57,7 +57,8 @@ class Source(Base):
                 ] + [{'word': x} for x in files]
 
     def __longest_path_that_exists(self, context, input_str):
-        data = re.split(r'(%s+)' % self.__isfname, input_str)
+        data = re.split(r'((?:%s+|(?<![\w\s])(?:~|\.{1,2})?/))' %
+                        self.__isfname, input_str)
         data = [''.join(data[i:]) for i in range(len(data))]
         existing_paths = sorted(filter(lambda x: exists(
             dirname(self.__substitute_path(context, x))), data))
