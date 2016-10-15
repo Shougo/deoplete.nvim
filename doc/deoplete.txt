@@ -308,13 +308,26 @@ b:deoplete_omni_input_patterns
 
 						*g:deoplete#omni#functions*
 g:deoplete#omni#functions
-		This dictionary records the functions to Omni completion.
-		This is the omnifunc name list every file type.
-		If this pattern is not defined or empty pattern, deoplete use
-		'omnifunc'.
+		It defines a dictionary for omni completion with deoplete:
+		- `keys` consist of filetypes;
+		- `values` consist of either a string containing a single
+		  omnifunc or a list with omnifuncs to be used for each
+		  filetype.
+		In case there is no omnifunc setting for the current filetype
+		in the dictionary, deoplete will use the 'omnifunc' setting.
+>
+		let g:deoplete#omni#functions = {}
+		let g:deoplete#omni#functions.ruby = 'rubycomplete#Complete'
+		let g:deoplete#omni#functions.javascript = [
+		  \ 'tern#Complete',
+		  \ 'jspc#omni'
+		  \]
+<
 		Note: It supports context filetype feature instead of
 		'omnifunc'.  You can call the omnifunc in the embedded
 		language.
+		Note: For omnifunctions to work with deoplete, it's necessary
+		to setup the g:deoplete#omni#input_patterns setting.
 
 						*b:deoplete_omni_functions*
 b:deoplete_omni_functions
