@@ -39,37 +39,38 @@ class Source(Base):
             return self.__prev_pos
 
         for filetype in context['filetypes']:
-            omnifunc = get_buffer_config(context, filetype,
-                                         'deoplete_omni_functions',
-                                         'deoplete#omni#functions',
-                                         {'_': ''})
-            if omnifunc == '':
-                omnifunc = context['omni__omnifunc']
-            if omnifunc in ['', 'ccomplete#Complete',
-                            'htmlcomplete#CompleteTags']:
-                continue
-            self.__omnifunc = omnifunc
-            for input_pattern in convert2list(
-                get_buffer_config(context, filetype,
-                                  'deoplete_omni_input_patterns',
-                                  'deoplete#omni#input_patterns',
-                                  self.__input_patterns)):
-
-                m = re.search('(' + input_pattern + ')$', context['input'])
-                # self.debug(filetype)
-                # self.debug(input_pattern)
-                if input_pattern == '' or (context['event'] !=
-                                           'Manual' and m is None):
+            for omnifunc in convert2list(
+                    get_buffer_config(context, filetype,
+                                      'deoplete_omni_functions',
+                                      'deoplete#omni#functions',
+                                      {'_': ''})):
+                if omnifunc == '':
+                    omnifunc = context['omni__omnifunc']
+                if omnifunc in ['', 'ccomplete#Complete',
+                                'htmlcomplete#CompleteTags']:
                     continue
+                self.__omnifunc = omnifunc
+                for input_pattern in convert2list(
+                    get_buffer_config(context, filetype,
+                                      'deoplete_omni_input_patterns',
+                                      'deoplete#omni#input_patterns',
+                                      self.__input_patterns)):
 
-                try:
-                    complete_pos = self.vim.call(self.__omnifunc, 1, '')
-                except:
-                    error(self.vim,
-                          'Error occurred calling omnifunction: ' +
-                          self.__omnifunc)
-                    return -1
-                return complete_pos
+                    m = re.search('(' + input_pattern + ')$', context['input'])
+                    # self.debug(filetype)
+                    # self.debug(input_pattern)
+                    if input_pattern == '' or (context['event'] !=
+                                               'Manual' and m is None):
+                        continue
+
+                    try:
+                        complete_pos = self.vim.call(self.__omnifunc, 1, '')
+                    except:
+                        error(self.vim,
+                              'Error occurred calling omnifunction: ' +
+                              self.__omnifunc)
+                        return -1
+                    return complete_pos
         return -1
 
     def gather_candidates(self, context):
