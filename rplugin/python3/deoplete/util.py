@@ -211,3 +211,15 @@ def charwidth(c):
 
 def expand(path):
     return os.path.expandvars(os.path.expanduser(path))
+
+
+def getlines(vim, start=1, end='$'):
+    if end == '$':
+        end = len(vim.current.buffer)
+    max = 5000
+    lines = []
+    current = start
+    while current <= end:
+        lines += vim.call('getline', current, current + max)
+        current += max + 1
+    return lines

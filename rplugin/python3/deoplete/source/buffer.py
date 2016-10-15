@@ -8,7 +8,7 @@ from .base import Base
 
 import functools
 import operator
-from deoplete.util import parse_buffer_pattern
+from deoplete.util import parse_buffer_pattern, getlines
 
 
 class Source(Base):
@@ -45,7 +45,7 @@ class Source(Base):
                 line = context['position'][1]
                 buffer = self.__buffers[context['bufnr']]
                 buffer['candidates'] += parse_buffer_pattern(
-                        self.vim.current.buffer[max([0, line-500]):line+500],
+                        getlines(self.vim, max([1, line-500]), line+500),
                         context['keyword_patterns'],
                         context['complete_str'])
                 buffer['candidates'] = list(set(buffer['candidates']))
@@ -53,7 +53,7 @@ class Source(Base):
                 self.__buffers[context['bufnr']] = {
                     'filetype': context['filetype'],
                     'candidates': parse_buffer_pattern(
-                        self.vim.current.buffer[:],
+                        getlines(self.vim),
                         context['keyword_patterns'],
                         context['complete_str'])
                 }
