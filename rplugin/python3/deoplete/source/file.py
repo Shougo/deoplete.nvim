@@ -9,6 +9,7 @@ import os
 import re
 from os.path import exists, dirname
 from .base import Base
+from deoplete.util import expand
 
 
 class Source(Base):
@@ -76,4 +77,4 @@ class Source(Base):
                 base = dirname(base)
             path = os.path.abspath(os.path.join(base, path[len(m.group(0)):]))
             return path
-        return os.path.expandvars(os.path.expanduser(path))
+        return expand(path)
