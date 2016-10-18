@@ -915,7 +915,7 @@ https://github.com/awetzel/elixir.nvim
 deoplete-jedi: "jedi" source for Python
 https://github.com/zchee/deoplete-jedi
 
-perlomni.vim: "perlomni" source for Perl
+perlomni.vim: "PerlOmni" source for Perl
 https://github.com/c9s/perlomni.vim
 
 deoplete-typescript: "typescript" source for typescript
