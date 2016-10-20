@@ -3,11 +3,11 @@
 # AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 # License: MIT license
 # ============================================================================
+
 import os
 import re
 import sys
 import glob
-import json
 import traceback
 import unicodedata
 
@@ -94,16 +94,19 @@ def import_plugin(path, source, classname):
 
 
 def debug(vim, expr):
-    try:
-        json_data = json.dumps(str(expr).strip())
-    except Exception:
-        vim.command('echomsg string(\'' + str(expr).strip() + '\')')
+    if hasattr(vim, 'out_write'):
+        string = (expr if isinstance(expr, str) else str(expr))
+        return vim.out_write('[deoplete] ' + string + '\n')
     else:
-        vim.command('echomsg string(\'' + escape(json_data) + '\')')
+        vim.call('deoplete#util#print_debug', expr)
 
 
-def error(vim, msg):
-    vim.call('deoplete#util#print_error', msg)
+def error(vim, expr):
+    if hasattr(vim, 'err_write'):
+        string = (expr if isinstance(expr, str) else str(expr))
+        return vim.err_write('[deoplete] ' + string + '\n')
+    else:
+        vim.call('deoplete#util#print_error', expr)
 
 
 def error_tb(vim, msg):
