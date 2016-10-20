@@ -20,6 +20,7 @@ class Source(Base):
         self.mark = '[B]'
         self.__buffers = {}
         self.__max_lines = 5000
+        self.__abort_lines = 1000000
 
     def on_event(self, context):
         if ((context['bufnr'] not in self.__buffers) or
@@ -38,6 +39,9 @@ class Source(Base):
                 functools.reduce(operator.add, buffers)]
 
     def __make_cache(self, context):
+        if (len(self.vim.current.buffer) > self.__abort_lines):
+            return []
+
         try:
             if (context['bufnr'] in self.__buffers and
                     context['event'] != 'BufWritePost' and
