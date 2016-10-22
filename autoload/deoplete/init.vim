@@ -53,10 +53,11 @@ function! deoplete#init#_channel() abort "{{{
     endif
     call _deoplete()
   catch
-    call deoplete#util#print_error(
-          \ 'deoplete.nvim is not registered as Neovim remote plugins.')
-    call deoplete#util#print_error(
-          \ 'Please execute :UpdateRemotePlugins command and restart Neovim.')
+    call deoplete#util#print_error(printf(
+          \ 'deoplete failed to load: %s. '
+          \ .'Try the :UpdateRemotePlugins command and restart Neovim. '
+          \ .'See also :CheckHealth.',
+          \ v:exception))
     return 1
   endtry
 
