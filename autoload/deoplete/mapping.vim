@@ -14,9 +14,6 @@ endfunction"}}}
 function! deoplete#mapping#_do_complete(context) abort "{{{
   if b:changedtick == get(a:context, 'changedtick', -1)
         \ && mode() ==# 'i'
-    if a:context.event ==# 'InsertEnter'
-      silent! undojoin
-    endif
     call complete(a:context.complete_position + 1, a:context.candidates)
   endif
 
