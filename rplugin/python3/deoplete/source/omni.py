@@ -7,7 +7,7 @@
 import re
 from .base import Base
 from deoplete.util import \
-    get_buffer_config, error, convert2list, set_pattern
+    get_buffer_config, error, error_tb, convert2list, set_pattern
 
 
 class Source(Base):
@@ -66,9 +66,11 @@ class Source(Base):
                     try:
                         complete_pos = self.vim.call(self.__omnifunc, 1, '')
                     except:
-                        error(self.vim, self.vim.eval('v:throwpoint'))
-                        error(self.vim, self.vim.eval('v:exception'))
-                        error(self.vim,
+                        error(self.vim, 'v:throwpoint = ' +
+                              self.vim.eval('v:throwpoint'))
+                        error(self.vim, 'v:exception = ' +
+                              self.vim.eval('v:exception'))
+                        error_tb(self.vim,
                               'Error occurred calling omnifunction: ' +
                               self.__omnifunc)
                         return -1
@@ -87,11 +89,13 @@ class Source(Base):
             elif candidates is int:
                 candidates = []
         except:
-            error(self.vim, self.vim.eval('v:throwpoint'))
-            error(self.vim, self.vim.eval('v:exception'))
-            error(self.vim,
-                  'Error occurred calling omnifunction: ' +
-                  self.__omnifunc)
+            error(self.vim, 'v:throwpoint = ' +
+                  self.vim.eval('v:throwpoint'))
+            error(self.vim, 'v:exception = ' +
+                  self.vim.eval('v:exception'))
+            error_tb(self.vim,
+                     'Error occurred calling omnifunction: ' +
+                     self.__omnifunc)
             candidates = []
 
         self.__prev_linenr = context['position'][1]
