@@ -115,6 +115,16 @@ def error_tb(vim, msg):
     error(vim, '%s.  Use :messages for error details.' % msg)
 
 
+def error_vim(vim, msg):
+    throwpoint = vim.eval('v:throwpoint')
+    if throwpoint != '':
+        error(vim, 'v:throwpoint = ' + throwpoint)
+    exception = vim.eval('v:exception')
+    if exception != '':
+        error(vim, 'v:exception = ' + exception)
+    error_tb(vim, msg)
+
+
 def escape(expr):
     return expr.replace("'", "''")
 
