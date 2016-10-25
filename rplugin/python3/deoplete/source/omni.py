@@ -66,6 +66,8 @@ class Source(Base):
                     try:
                         complete_pos = self.vim.call(self.__omnifunc, 1, '')
                     except:
+                        error(self.vim, self.vim.eval('v:throwpoint'))
+                        error(self.vim, self.vim.eval('v:exception'))
                         error(self.vim,
                               'Error occurred calling omnifunction: ' +
                               self.__omnifunc)
@@ -85,6 +87,8 @@ class Source(Base):
             elif candidates is int:
                 candidates = []
         except:
+            error(self.vim, self.vim.eval('v:throwpoint'))
+            error(self.vim, self.vim.eval('v:exception'))
             error(self.vim,
                   'Error occurred calling omnifunction: ' +
                   self.__omnifunc)
