@@ -5,7 +5,7 @@
 "=============================================================================
 
 function! deoplete#mapping#_init() abort "{{{
-  inoremap <silent> <Plug>(deoplete_start_complete)
+  inoremap <silent> <Plug>(deoplete)
         \ <C-r>=deoplete#mapping#_do_complete(g:deoplete#_context)<CR>
   inoremap <silent> <Plug>(deoplete_auto_refresh)
         \ <C-r>=deoplete#refresh()<CR>
