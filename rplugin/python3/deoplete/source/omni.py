@@ -46,8 +46,10 @@ class Source(Base):
                                       {'_': ''})):
                 if omnifunc == '':
                     omnifunc = context['omni__omnifunc']
-                if omnifunc in ['', 'ccomplete#Complete',
-                                'htmlcomplete#CompleteTags']:
+                if omnifunc in [
+                        '', 'ccomplete#Complete',
+                        'htmlcomplete#CompleteTags'] or not self.vim.call(
+                            'deoplete#util#exists_omnifunc', omnifunc):
                     continue
                 self.__omnifunc = omnifunc
                 for input_pattern in convert2list(
