@@ -5,9 +5,10 @@ language: python
 python:
     - 3.3
     - 3.4
+    - 3.5
 
 install:
-    - pip install neovim flake8 nose
+    - pip install neovim flake8 nose mock pytest
 
 before_script:
     - git clone https://github.com/syngan/vim-vimlint /tmp/vim-vimlint
