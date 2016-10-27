@@ -54,6 +54,9 @@ https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
 
 ## Screenshots
 
+Deoplete for JavaScript
+https://www.youtube.com/watch?v=oanoPTpiSF4
+
 ![File Name Completion](https://cloud.githubusercontent.com/assets/7141867/11717027/a99cac54-9f73-11e5-91ce-bce9274692e4.png)
 
 ![Omni Completion](https://cloud.githubusercontent.com/assets/7141867/11717030/ae809a28-9f73-11e5-8c12-79fe9c460401.png)
