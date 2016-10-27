@@ -111,7 +111,7 @@ function! deoplete#init#_variables() abort "{{{
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_profile', 0)
   call deoplete#util#set_default(
-        \ 'g:deoplete#auto_complete_delay', 100)
+        \ 'g:deoplete#auto_complete_delay', 150)
   call deoplete#util#set_default(
         \ 'g:deoplete#auto_refresh_delay', 50)
   call deoplete#util#set_default(
