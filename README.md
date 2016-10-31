@@ -52,6 +52,11 @@ If you want to read the Neovim-python/python3 interface install documentation,
 you should read `:help provider-python` and the Wiki.
 https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
 
+## Note: Python3 must be enabled before updating remote plugins
+If Deoplete was installed prior to Python support being added to Neovim,
+`:UpdateRemotePlugins` should be executed manually in order to enable
+auto-completion.
+
 ## Screenshots
 
 Deoplete for JavaScript
