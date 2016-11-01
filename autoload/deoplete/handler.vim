@@ -23,6 +23,11 @@ function! deoplete#handler#_init() abort "{{{
 endfunction"}}}
 
 function! s:completion_check(event) abort "{{{
+  let context = deoplete#init#_context(a:event, [])
+  if s:is_skip(a:event, context)
+    return
+  endif
+
   let delay = get(g:deoplete#_context, 'refresh', 0) ?
         \ g:deoplete#auto_refresh_delay : g:deoplete#auto_complete_delay
   if has('timers') && delay > 0
@@ -50,7 +55,6 @@ endfunction"}}}
 
 function! s:completion_begin(event) abort "{{{
   let context = deoplete#init#_context(a:event, [])
-
   if s:is_skip(a:event, context)
     return
   endif
