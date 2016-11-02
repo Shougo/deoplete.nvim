@@ -29,8 +29,12 @@ class Source(Base):
     def gather_candidates(self, context):
         self.__make_cache(context)
 
-        buffers = [x['candidates'] for x in self.__buffers.values()
-                   if x['filetype'] in context['filetypes']]
+        buffer_values = self.__buffers.values()
+        if context['vars'].get('require_same_filetype', True):
+          buffer_values = [x for x in buffer_values
+                           if x['filetype'] in context['filetypes']]
+
+        buffers = [x['candidates'] for x in buffer_values]
         if not buffers:
             return []
 
