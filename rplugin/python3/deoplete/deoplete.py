@@ -341,7 +341,7 @@ class Deoplete(logger.LoggingMixin):
 
     def is_skip(self, context, disabled_syntaxes,
                 min_pattern_length, max_pattern_length, input_pattern):
-        if 'syntax_names' in context:
+        if 'syntax_names' in context and disabled_syntaxes:
             pattern = '('+'|'.join(disabled_syntaxes)+')$'
             if [x for x in context['syntax_names']
                     if re.search(pattern, x)]:
