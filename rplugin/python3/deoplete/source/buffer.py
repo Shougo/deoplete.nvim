@@ -6,8 +6,7 @@
 
 from .base import Base
 
-import itertools
-import operator
+from itertools import chain
 from deoplete.util import parse_buffer_pattern, getlines
 
 
@@ -34,7 +33,7 @@ class Source(Base):
         candidates = (x['candidates'] for x in self.__buffers.values()
                       if not same_filetype or
                       x['filetype'] in context['filetypes'])
-        return [{'word': x} for x in itertools.chain(*candidates)]
+        return [{'word': x} for x in chain(*candidates)]
 
     def __make_cache(self, context):
         try:
