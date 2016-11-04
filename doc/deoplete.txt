@@ -348,6 +348,13 @@ g:deoplete#tag#cache_limit_size
 
 		Default value: 500000
 
+				*g:deoplete#buffer#require_same_filetype*
+g:deoplete#buffer#require_same_filetype
+		If it is zero, deoplete collects keywords from buffers of any
+		filetype
+
+		Default value: 1
+
 ------------------------------------------------------------------------------
 FUNCTIONS 						*deoplete-functions*
 

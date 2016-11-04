@@ -29,7 +29,8 @@ class Source(Base):
     def gather_candidates(self, context):
         self.__make_cache(context)
 
-        same_filetype = True
+        same_filetype = context['vars'].get(
+            'deoplete#buffer#require_same_filetype', True)
         candidates = (x['candidates'] for x in self.__buffers.values()
                       if not same_filetype or
                       x['filetype'] in context['filetypes'])
