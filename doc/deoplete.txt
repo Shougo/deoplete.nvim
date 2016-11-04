@@ -519,8 +519,8 @@ buffer						*deoplete-source-buffer*
 		It collects keywords from current buffer and buffers which
 		have same 'filetype', unless you specify this custom setting:
 >
-		" Collect keywords from all buffers, regardless of filetype.
-		call deoplete#custom#set('buffer', 'require_same_filetype', 0)
+		" Collect keywords from buffers of any filetype.
+		let g:deoplete#buffer_require_same_filetype = 0
 <
 		Note: It takes time to get the candidates in the first time if
 		you want to edit the large files(like Vim 22000 lines eval.c).
