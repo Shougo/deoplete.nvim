@@ -6,7 +6,7 @@
 
 from .base import Base
 
-import functools
+import itertools
 import operator
 from deoplete.util import parse_buffer_pattern, getlines
 
@@ -29,13 +29,11 @@ class Source(Base):
     def gather_candidates(self, context):
         self.__make_cache(context)
 
-        buffers = [x['candidates'] for x in self.__buffers.values()
-                   if x['filetype'] in context['filetypes']]
-        if not buffers:
-            return []
-
-        return [{'word': x} for x in
-                functools.reduce(operator.add, buffers)]
+        same_filetype = True
+        candidates = (x['candidates'] for x in self.__buffers.values()
+                      if not same_filetype or
+                      x['filetype'] in context['filetypes'])
+        return [{'word': x} for x in itertools.chain(*candidates)]
 
     def __make_cache(self, context):
         try:
