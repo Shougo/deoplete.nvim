@@ -290,7 +290,7 @@ g:deoplete#omni#input_patterns
 		If this pattern is not defined or empty pattern, deoplete
 		does not call 'omnifunc'.
 		Note: Some omnifuncs which moves the cursor is not worked.
-		For example, htmlcomplete, vim-go, etc...
+		For example, htmlcomplete, phpcomplete, etc...
 		Note: It is Python3 regexp.
 >
 		let g:deoplete#omni#input_patterns = {}
