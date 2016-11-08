@@ -58,7 +58,7 @@ class Source(Base):
                               'omni source does not support omnifunction: ' +
                               omnifunc)
                     error_vim(self.vim,
-                              'You must use g:deoplete#omni#input_patterns' +
+                              'You must use g:deoplete#omni_patterns' +
                               ' instead.')
                     continue
                 self.__omnifunc = omnifunc
