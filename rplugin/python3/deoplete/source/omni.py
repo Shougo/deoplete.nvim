@@ -49,18 +49,6 @@ class Source(Base):
                 if omnifunc == '' or not self.vim.call(
                             'deoplete#util#exists_omnifunc', omnifunc):
                     continue
-                if omnifunc in [
-                        'ccomplete#Complete',
-                        'htmlcomplete#CompleteTags',
-                        'phpcomplete#CompletePHP']:
-                    # In the blacklist
-                    error_vim(self.vim,
-                              'omni source does not support omnifunction: ' +
-                              omnifunc)
-                    error_vim(self.vim,
-                              'You must use g:deoplete#omni_patterns' +
-                              ' instead.')
-                    continue
                 self.__omnifunc = omnifunc
                 for input_pattern in convert2list(
                     get_buffer_config(context, filetype,
@@ -75,6 +63,18 @@ class Source(Base):
                                                'Manual' and m is None):
                         continue
 
+                    if self.__omnifunc in [
+                            'ccomplete#Complete',
+                            'htmlcomplete#CompleteTags',
+                            'phpcomplete#CompletePHP']:
+                        # In the blacklist
+                        error_vim(self.vim,
+                                  'omni source does not support: ' +
+                                  self.__omnifunc)
+                        error_vim(self.vim,
+                                  'You must use g:deoplete#omni_patterns' +
+                                  ' instead.')
+                        return -1
                     try:
                         complete_pos = self.vim.call(self.__omnifunc, 1, '')
                     except:
