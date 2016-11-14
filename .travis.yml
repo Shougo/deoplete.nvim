@@ -8,7 +8,7 @@ python:
     - 3.5
 
 install:
-    - pip install neovim flake8 nose mock pytest
+    - pip install neovim flake8 nose mock pytest mypy-lang
 
 before_script:
     - git clone https://github.com/syngan/vim-vimlint /tmp/vim-vimlint
