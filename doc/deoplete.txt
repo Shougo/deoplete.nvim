@@ -543,7 +543,8 @@ omni							*deoplete-source-omni*
 		Note: It is not asynchronous.
 
 dictionary					*deoplete-source-dictionary*
-		This source collects keywords from 'dictionary'.
+		This source collects |g:deoplete#keyword_patterns| keywords
+		from 'dictionary'.
 
 ==============================================================================
 FILTERS							*deoplete-filters*
