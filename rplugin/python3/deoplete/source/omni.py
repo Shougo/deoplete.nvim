@@ -7,7 +7,7 @@
 import re
 from .base import Base
 from deoplete.util import \
-    get_buffer_config, error_vim, convert2list, set_pattern
+    get_buffer_config, error, error_vim, convert2list, set_pattern
 
 
 class Source(Base):
@@ -38,13 +38,14 @@ class Source(Base):
         if self.__use_previous_result(context):
             return self.__prev_pos
 
+        current_ft = self.vim.eval('&filetype')
         for filetype in context['filetypes']:
             for omnifunc in convert2list(
                     get_buffer_config(context, filetype,
                                       'deoplete_omni_functions',
                                       'deoplete#omni#functions',
                                       {'_': ''})):
-                if omnifunc == '':
+                if omnifunc == '' and filetype == current_ft:
                     omnifunc = context['omni__omnifunc']
                 if omnifunc == '' or not self.vim.call(
                             'deoplete#util#exists_omnifunc', omnifunc):
@@ -68,12 +69,12 @@ class Source(Base):
                             'htmlcomplete#CompleteTags',
                             'phpcomplete#CompletePHP']:
                         # In the blacklist
-                        error_vim(self.vim,
-                                  'omni source does not support: ' +
-                                  self.__omnifunc)
-                        error_vim(self.vim,
-                                  'You must use g:deoplete#omni_patterns' +
-                                  ' instead.')
+                        error(self.vim,
+                              'omni source does not support: ' +
+                              self.__omnifunc)
+                        error(self.vim,
+                              'You must use g:deoplete#omni_patterns' +
+                              ' instead.')
                         return -1
                     try:
                         complete_pos = self.vim.call(self.__omnifunc, 1, '')
