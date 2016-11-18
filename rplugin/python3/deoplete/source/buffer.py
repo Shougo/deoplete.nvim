@@ -32,7 +32,8 @@ class Source(Base):
             'deoplete#buffer#require_same_filetype', True)
         candidates = (x['candidates'] for x in self.__buffers.values()
                       if not same_filetype or
-                      x['filetype'] in context['filetypes'])
+                      x['filetype'] in context['filetypes'] or
+                      x['filetype'] in context['same_filetypes'])
         return [{'word': x} for x in chain(*candidates)]
 
     def __make_cache(self, context):

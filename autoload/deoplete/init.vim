@@ -164,6 +164,8 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \   &filetype == '' ? ['nothing'] :
         \                     deoplete#util#uniq([&filetype]
         \                          + split(&filetype, '\.'))
+  let same_filetypes = exists('*context_filetype#get_same_filetypes') ?
+        \   context_filetype#get_same_filetypes() : []
 
   let sources = deoplete#util#convert2list(a:sources)
   if a:event !=# 'Manual' && empty(sources)
@@ -204,6 +206,7 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \ 'position': getpos('.'),
         \ 'filetype': filetype,
         \ 'filetypes': filetypes,
+        \ 'same_filetypes': same_filetypes,
         \ 'ignorecase': g:deoplete#enable_ignore_case,
         \ 'smartcase': g:deoplete#enable_smart_case,
         \ 'camelcase': g:deoplete#enable_camel_case,
