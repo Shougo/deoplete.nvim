@@ -30,7 +30,7 @@ function! s:completion_check(event) abort "{{{
       call timer_stop(s:timer.id)
     endif
 
-    if a:event != 'Manual'
+    if a:event !=# 'Manual'
       let s:timer = { 'event': a:event, 'changedtick': b:changedtick }
       let s:timer.id = timer_start(delay, 's:completion_delayed')
       return
