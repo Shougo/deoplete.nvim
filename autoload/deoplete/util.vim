@@ -99,6 +99,8 @@ function! s:vimoption2python(option) abort "{{{
     if pattern == ''
       " ,
       call add(patterns, ',')
+    elseif pattern == '\'
+      call add(patterns, '\\')
     elseif pattern == '-'
       let has_dash = 1
     elseif pattern =~ '\d\+'
