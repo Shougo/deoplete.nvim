@@ -30,13 +30,6 @@ function! deoplete#init#_initialize() abort "{{{
 
   call deoplete#mapping#_init()
   call deoplete#init#_variables()
-
-  let s:is_enabled = g:deoplete#enable_at_startup
-  if s:is_enabled
-    call deoplete#init#_enable()
-  else
-    call deoplete#init#_disable()
-  endif
 endfunction"}}}
 function! deoplete#init#_channel() abort "{{{
   if !has('nvim') || !has('python3')
