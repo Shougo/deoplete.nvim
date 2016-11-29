@@ -22,9 +22,6 @@ from deoplete.util import (bytepos2charpos, charpos2bytepos, error, error_tb,
 
 class Deoplete(logger.LoggingMixin):
 
-    __ignored_sources = set()
-    __ignored_filters = set()
-
     def __init__(self, vim):
         self.__vim = vim
         self.__filters = {}
@@ -36,6 +33,8 @@ class Deoplete(logger.LoggingMixin):
         self.__source_errors = defaultdict(int)
         self.__filter_errors = defaultdict(int)
         self.name = 'core'
+        self.__ignored_sources = set()
+        self.__ignored_filters = set()
 
     def completion_begin(self, context):
         try:
@@ -128,7 +127,7 @@ class Deoplete(logger.LoggingMixin):
                         self.profile_start(ctx, filter.name)
                         ctx['candidates'] = filter.filter(ctx)
                         self.profile_end(filter.name)
-                    except Exception as exc:
+                    except Exception:
                         self.__filter_errors[filter.name] += 1
                         if self.__source_errors[filter.name] > 2:
                             error(self.__vim, 'Too many errors from "%s". '
@@ -159,7 +158,7 @@ class Deoplete(logger.LoggingMixin):
                     'source': source,
                     'context': ctx,
                 })
-            except Exception as exc:
+            except Exception:
                 self.__source_errors[source_name] += 1
                 if self.__source_errors[source_name] > 2:
                     error(self.__vim, 'Too many errors from "%s". '
