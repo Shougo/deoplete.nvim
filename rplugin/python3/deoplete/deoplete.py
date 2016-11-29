@@ -259,19 +259,20 @@ class Deoplete(logger.LoggingMixin):
 
     def load_sources(self, context):
         # Load sources from runtimepath
+        loaded_paths = [source.path for source in self.__sources.values()]
         for path in find_rplugins(context, 'source'):
             if path in self.__ignored_sources:
                 continue
-            name = os.path.splitext(os.path.basename(path))[0]
-            if name in self.__sources:
+            if path in loaded_paths:
                 continue
+            name = os.path.splitext(os.path.basename(path))[0]
 
             source = None
-
             try:
                 Source = import_plugin(path, 'source', 'Source')
                 if Source is None:
                     continue
+
                 source = Source(self.__vim)
                 source.name = getattr(source, 'name', name)
                 source.path = path
@@ -284,7 +285,6 @@ class Deoplete(logger.LoggingMixin):
                 source.max_menu_width = getattr(
                     source, 'max_menu_width',
                     context['vars']['deoplete#max_menu_width'])
-
             except Exception:
                 error_tb(self.__vim, 'Could not load source: %s' % name)
             finally:
@@ -297,22 +297,21 @@ class Deoplete(logger.LoggingMixin):
 
     def load_filters(self, context):
         # Load filters from runtimepath
+        loaded_paths = [filter.path for filter in self.__filters.values()]
         for path in find_rplugins(context, 'filter'):
             if path in self.__ignored_filters:
                 continue
-            name = os.path.splitext(os.path.basename(path))[0]
-            if name in self.__filters:
+            if path in loaded_paths:
                 continue
+            name = os.path.splitext(os.path.basename(path))[0]
 
             filter = None
-
             try:
                 Filter = import_plugin(path, 'filter', 'Filter')
                 if Filter is None:
                     continue
 
                 filter = Filter(self.__vim)
-
                 filter.name = getattr(filter, 'name', name)
                 filter.path = path
                 self.__filters[filter.name] = filter
