@@ -55,8 +55,9 @@ function! deoplete#init#_channel() abort "{{{
   endtry
 
   " neovim module version check.
-  if empty(g:deoplete#_neovim_python_version) || deoplete#util#versioncmp(
-        \ sort(g:deoplete#_neovim_python_version)[-1], '0.1.8') < 0
+  if empty(g:deoplete#_neovim_python_version) ||
+        \ empty(filter(copy(g:deoplete#_neovim_python_version),
+        \   "deoplete#util#versioncmp(v:val, '0.1.8') >= 0"))
     call deoplete#util#print_error(
           \ 'Current neovim-python module version: ' .
           \  string(g:deoplete#_neovim_python_version))
