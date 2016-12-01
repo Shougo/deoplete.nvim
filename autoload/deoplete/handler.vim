@@ -117,7 +117,7 @@ function! s:is_skip_textwidth(input) abort "{{{
         \     && displaywidth >= &l:textwidth
     if &l:formatoptions =~# '[ta]'
           \ || !empty(filter(deoplete#util#get_syn_names(),
-          \                  'v:val ==# "Comment"'))
+          \                  "v:val ==# 'Comment'"))
       return 1
     endif
   endif
