@@ -66,7 +66,7 @@ function! s:completion_begin(event) abort "{{{
           \ 'b:deoplete_omni_patterns',
           \ 'g:deoplete#omni_patterns',
           \ 'g:deoplete#_omni_patterns'))
-      if pattern != '' && &l:omnifunc != ''
+      if pattern !=# '' && &l:omnifunc !=# ''
             \ && context.input =~# '\%('.pattern.'\)$'
         call deoplete#mapping#_set_completeopt()
         call feedkeys("\<C-x>\<C-o>", 'n')
@@ -92,7 +92,7 @@ function! s:is_skip(event, context) abort "{{{
   if &paste
         \ || mode() !=# 'i'
         \ || (a:event !=# 'Manual' && disable_auto_complete)
-        \ || (&l:completefunc != '' && &l:buftype =~# 'nofile')
+        \ || (&l:completefunc !=# '' && &l:buftype =~# 'nofile')
         \ || (a:event ==# 'InsertEnter'
         \     && has_key(g:deoplete#_context, 'position'))
     return 1
@@ -103,7 +103,7 @@ function! s:is_skip(event, context) abort "{{{
     let word = get(v:completed_item, 'word', '')
     let delimiters = filter(copy(g:deoplete#delimiters),
         \         'strridx(word, v:val) == (len(word) - len(v:val))')
-    if word == '' || empty(delimiters)
+    if word ==# '' || empty(delimiters)
       return 1
     endif
   endif
@@ -138,7 +138,7 @@ function! s:on_insert_leave() abort "{{{
 endfunction"}}}
 
 function! s:complete_done() abort "{{{
-  if get(v:completed_item, 'word', '') != ''
+  if get(v:completed_item, 'word', '') !=# ''
     let word = v:completed_item.word
     if !has_key(g:deoplete#_rank, word)
       let g:deoplete#_rank[word] = 1

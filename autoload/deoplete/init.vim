@@ -152,10 +152,10 @@ endfunction"}}}
 function! deoplete#init#_context(event, sources) abort "{{{
   let filetype = (exists('*context_filetype#get_filetype') ?
         \   context_filetype#get_filetype() :
-        \   (&filetype == '' ? 'nothing' : &filetype))
+        \   (&filetype ==# '' ? 'nothing' : &filetype))
   let filetypes = exists('*context_filetype#get_filetypes') ?
         \   context_filetype#get_filetypes() :
-        \   &filetype == '' ? ['nothing'] :
+        \   &filetype ==# '' ? ['nothing'] :
         \                     deoplete#util#uniq([&filetype]
         \                          + split(&filetype, '\.'))
   let same_filetypes = exists('*context_filetype#get_same_filetypes') ?
