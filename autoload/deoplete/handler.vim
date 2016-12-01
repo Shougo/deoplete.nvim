@@ -19,7 +19,7 @@ function! deoplete#handler#_init() abort "{{{
     execute 'autocmd deoplete' event '* call s:on_event('.string(event).')'
   endfor
 
-  call s:on_event('')
+  call s:on_event('Init')
 endfunction"}}}
 
 function! s:completion_check(event) abort "{{{
