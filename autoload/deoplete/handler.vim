@@ -155,7 +155,7 @@ endfunction"}}}
 function! s:on_insert_char_pre() abort "{{{
   if !pumvisible()
         \ || !g:deoplete#enable_refresh_always
-        \ || s:is_skip_textwidth(deoplete#util#get_input('InsertCharPre'))
+        \ || s:is_skip_text(deoplete#util#get_input('InsertCharPre'))
     return 1
   endif
 
