@@ -80,7 +80,7 @@ function! s:completion_begin(event) abort "{{{
         \ 'deoplete_auto_completion_begin', context)
 endfunction"}}}
 function! s:is_skip(event, context) abort "{{{
-  if s:is_skip_textwidth(deoplete#util#get_input(a:event))
+  if s:is_skip_text(deoplete#util#get_input(a:event))
     return 1
   endif
 
@@ -110,7 +110,7 @@ function! s:is_skip(event, context) abort "{{{
 
   return 0
 endfunction"}}}
-function! s:is_skip_textwidth(input) abort "{{{
+function! s:is_skip_text(input) abort "{{{
   let displaywidth = strdisplaywidth(a:input) + 1
 
   if &l:formatoptions =~# '[tca]' && &l:textwidth > 0
@@ -121,7 +121,9 @@ function! s:is_skip_textwidth(input) abort "{{{
       return 1
     endif
   endif
-  return !pumvisible() && virtcol('.') != displaywidth
+
+  return (!pumvisible() && virtcol('.') != displaywidth)
+        \ || a:input =~ '[)]$'
 endfunction"}}}
 
 function! s:on_event(event) abort "{{{
