@@ -523,8 +523,14 @@ EXAMPLES						*deoplete-examples*
 SOURCES							*deoplete-sources*
 
 buffer						*deoplete-source-buffer*
-		It collects keywords from current buffer and the buffers which
-		have same 'filetype'.
+		It collects keywords from current buffer and the opened
+		buffers which have same 'filetype'.
+
+		Note: It does not collect keywords from not loaded buffer.
+		For example, if you open file by "nvim A B".  A is already
+		loaded, but B is not loaded.  So buffer source cannot collect
+		the keywords in B until you switch to buffer B.
+
 		Note: It takes time to get the candidates in the first time if
 		you want to edit the large files(like Vim 22000 lines eval.c).
 
