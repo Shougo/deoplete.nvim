@@ -124,7 +124,7 @@ function! s:is_skip_text(event) abort "{{{
   endif
 
   return (!pumvisible() && virtcol('.') != displaywidth)
-        \ || (a:event !=# 'Manual' && input =~ '[)>\]]$')
+        \ || (a:event !=# 'Manual' && input =~ '[})>\]]$')
 endfunction"}}}
 
 function! s:on_event(event) abort "{{{
