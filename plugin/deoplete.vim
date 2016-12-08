@@ -9,7 +9,7 @@ if exists('g:loaded_deoplete')
 endif
 let g:loaded_deoplete = 1
 
-" Global options definition. "{{{
+" Global options definition.
 if get(g:, 'deoplete#enable_at_startup', 0)
   function! s:deoplete_lazy_enable()
     autocmd! deoplete_lazy_enable
@@ -23,6 +23,3 @@ if get(g:, 'deoplete#enable_at_startup', 0)
           \ | silent! doautocmd <nomodeline> deoplete InsertEnter
   augroup END
 endif
-"}}}
-
-" vim: foldmethod=marker

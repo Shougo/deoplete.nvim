@@ -8,14 +8,14 @@ if !exists('s:is_enabled')
   let s:is_enabled = 0
 endif
 
-function! deoplete#init#_is_enabled() abort "{{{
+function! deoplete#init#_is_enabled() abort
   return s:is_enabled
-endfunction"}}}
-function! s:is_initialized() abort "{{{
+endfunction
+function! s:is_initialized() abort
   return exists('g:deoplete#_context')
-endfunction"}}}
+endfunction
 
-function! deoplete#init#_initialize() abort "{{{
+function! deoplete#init#_initialize() abort
   if s:is_initialized()
     return
   endif
@@ -30,8 +30,8 @@ function! deoplete#init#_initialize() abort "{{{
 
   call deoplete#mapping#_init()
   call deoplete#init#_variables()
-endfunction"}}}
-function! deoplete#init#_channel() abort "{{{
+endfunction
+function! deoplete#init#_channel() abort
   if !has('nvim') || !has('python3')
     call deoplete#util#print_error(
           \ 'deoplete.nvim does not work with this version.')
@@ -67,19 +67,19 @@ function! deoplete#init#_channel() abort "{{{
           \ 'Please update neovim-python by "pip3 install --upgrade neovim"')
     return 1
   endif
-endfunction"}}}
-function! deoplete#init#_enable() abort "{{{
+endfunction
+function! deoplete#init#_enable() abort
   call deoplete#handler#_init()
   let s:is_enabled = 1
-endfunction"}}}
-function! deoplete#init#_disable() abort "{{{
+endfunction
+function! deoplete#init#_disable() abort
   augroup deoplete
     autocmd!
   augroup END
   let s:is_enabled = 0
-endfunction"}}}
+endfunction
 
-function! deoplete#init#_variables() abort "{{{
+function! deoplete#init#_variables() abort
   let g:deoplete#_context = {}
   let g:deoplete#_rank = {}
 
@@ -136,22 +136,22 @@ function! deoplete#init#_variables() abort "{{{
   call deoplete#util#set_default(
         \ 'g:deoplete#member#prefix_patterns', {})
 
-  " Initialize default keyword pattern. "{{{
+  " Initialize default keyword pattern.
   call deoplete#util#set_pattern(
         \ g:deoplete#_keyword_patterns,
         \ '_',
         \ '[a-zA-Z_]\k*')
-  "}}}
 
-  " Initialize omni completion pattern. "{{{
+
+  " Initialize omni completion pattern.
   " Note: HTML omni func use search().
   call deoplete#util#set_pattern(
         \ g:deoplete#_omni_patterns,
         \ 'html,xhtml,xml,markdown,mkd', ['<', '<[^>]*\s[[:alnum:]-]*'])
-  "}}}
-endfunction"}}}
 
-function! deoplete#init#_context(event, sources) abort "{{{
+endfunction
+
+function! deoplete#init#_context(event, sources) abort
   let filetype = (exists('*context_filetype#get_filetype') ?
         \   context_filetype#get_filetype() :
         \   (&filetype == '' ? 'nothing' : &filetype))
@@ -222,6 +222,4 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \ 'omni__omnifunc': &l:omnifunc,
         \ 'dict__dictionary': &l:dictionary,
         \ }
-endfunction"}}}
-
-" vim: foldmethod=marker
+endfunction

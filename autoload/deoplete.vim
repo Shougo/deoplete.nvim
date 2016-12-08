@@ -4,24 +4,24 @@
 " License: MIT license
 "=============================================================================
 
-function! deoplete#initialize() abort "{{{
+function! deoplete#initialize() abort
   return deoplete#init#_initialize()
-endfunction"}}}
-function! deoplete#enable() abort "{{{
+endfunction
+function! deoplete#enable() abort
   if deoplete#initialize()
     return 1
   endif
   return deoplete#init#_enable()
-endfunction"}}}
-function! deoplete#disable() abort "{{{
+endfunction
+function! deoplete#disable() abort
   return deoplete#init#_disable()
-endfunction"}}}
-function! deoplete#toggle() abort "{{{
+endfunction
+function! deoplete#toggle() abort
   return deoplete#init#_is_enabled() ?
         \ deoplete#disable() : deoplete#enable()
-endfunction"}}}
+endfunction
 
-function! deoplete#enable_logging(level, logfile) abort "{{{
+function! deoplete#enable_logging(level, logfile) abort
   if !exists('g:deoplete#_channel_id')
     " Enable to allow logging before completions start.
     if deoplete#init#_channel()
@@ -31,9 +31,9 @@ function! deoplete#enable_logging(level, logfile) abort "{{{
 
   call rpcrequest(g:deoplete#_channel_id,
         \ 'deoplete_enable_logging', a:level, a:logfile)
-endfunction"}}}
+endfunction
 
-function! deoplete#manual_complete(...) abort "{{{
+function! deoplete#manual_complete(...) abort
   if deoplete#initialize()
     return
   endif
@@ -42,28 +42,28 @@ function! deoplete#manual_complete(...) abort "{{{
   return (pumvisible() ? "\<C-e>" : '')
         \ . "\<C-r>=deoplete#mapping#_rpcnotify_wrapper("
         \ . string(get(a:000, 0, [])) . ")\<CR>"
-endfunction"}}}
-function! deoplete#close_popup() abort "{{{
+endfunction
+function! deoplete#close_popup() abort
   let g:deoplete#_context.position = getpos('.')
   return pumvisible() ? "\<C-y>" : ''
-endfunction"}}}
-function! deoplete#smart_close_popup() abort "{{{
+endfunction
+function! deoplete#smart_close_popup() abort
   let g:deoplete#_context.position = getpos('.')
   return pumvisible() ? "\<C-e>" : ''
-endfunction"}}}
-function! deoplete#cancel_popup() abort "{{{
+endfunction
+function! deoplete#cancel_popup() abort
   let g:deoplete#_context.position = getpos('.')
   return pumvisible() ? "\<C-e>" : ''
-endfunction"}}}
-function! deoplete#refresh() abort "{{{
+endfunction
+function! deoplete#refresh() abort
   let g:deoplete#_context.refresh = 1
   if get(g:deoplete#_context, 'event', '') ==# 'Manual'
     let g:deoplete#_context.event = 'Refresh'
   endif
   return pumvisible() ? "\<C-e>" : ''
-endfunction"}}}
+endfunction
 
-function! deoplete#undo_completion() abort "{{{
+function! deoplete#undo_completion() abort
   if !exists('v:completed_item') || empty(v:completed_item)
     return ''
   endif
@@ -76,6 +76,4 @@ function! deoplete#undo_completion() abort "{{{
 
   return deoplete#smart_close_popup() .
         \  repeat("\<C-h>", strchars(v:completed_item.word))
-endfunction"}}}
-
-" vim: foldmethod=marker
+endfunction

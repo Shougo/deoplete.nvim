@@ -4,23 +4,23 @@
 " License: MIT license
 "=============================================================================
 
-function! deoplete#util#set_default(var, val, ...)  abort "{{{
+function! deoplete#util#set_default(var, val, ...)  abort
   if !exists(a:var) || type({a:var}) != type(a:val)
     let alternate_var = get(a:000, 0, '')
 
     let {a:var} = exists(alternate_var) ?
           \ {alternate_var} : a:val
   endif
-endfunction"}}}
-function! deoplete#util#set_pattern(variable, keys, pattern) abort "{{{
+endfunction
+function! deoplete#util#set_pattern(variable, keys, pattern) abort
   for key in split(a:keys, '\s*,\s*')
     if !has_key(a:variable, key)
       let a:variable[key] = a:pattern
     endif
   endfor
-endfunction"}}}
+endfunction
 function! deoplete#util#get_buffer_config(
-      \ filetype, buffer_var, user_var, default_var, ...) abort "{{{
+      \ filetype, buffer_var, user_var, default_var, ...) abort
   let default_val = get(a:000, 0, '')
 
   if exists(a:buffer_var)
@@ -32,30 +32,30 @@ function! deoplete#util#get_buffer_config(
 
   return get({a:user_var}, filetype,
         \   get(eval(a:default_var), filetype, default_val))
-endfunction"}}}
-function! deoplete#util#get_simple_buffer_config(buffer_var, user_var) abort "{{{
+endfunction
+function! deoplete#util#get_simple_buffer_config(buffer_var, user_var) abort
   return exists(a:buffer_var) ? {a:buffer_var} : {a:user_var}
-endfunction"}}}
-function! deoplete#util#print_error(string) abort "{{{
+endfunction
+function! deoplete#util#print_error(string) abort
   echohl Error | echomsg '[deoplete] '
         \ . deoplete#util#string(a:string) | echohl None
-endfunction"}}}
-function! deoplete#util#print_warning(string) abort "{{{
+endfunction
+function! deoplete#util#print_warning(string) abort
   echohl WarningMsg | echomsg '[deoplete] '
         \ . deoplete#util#string(a:string) | echohl None
-endfunction"}}}
-function! deoplete#util#print_debug(string) abort "{{{
+endfunction
+function! deoplete#util#print_debug(string) abort
   echomsg '[deoplete] ' . deoplete#util#string(a:string)
-endfunction"}}}
+endfunction
 
-function! deoplete#util#convert2list(expr) abort "{{{
+function! deoplete#util#convert2list(expr) abort
   return type(a:expr) ==# type([]) ? a:expr : [a:expr]
-endfunction"}}}
-function! deoplete#util#string(expr) abort "{{{
+endfunction
+function! deoplete#util#string(expr) abort
   return type(a:expr) ==# type('') ? a:expr : string(a:expr)
-endfunction"}}}
+endfunction
 
-function! deoplete#util#get_input(event) abort "{{{
+function! deoplete#util#get_input(event) abort
   let mode = mode()
   if a:event ==# 'InsertEnter'
     let mode = 'i'
@@ -78,21 +78,21 @@ function! deoplete#util#get_input(event) abort "{{{
   endif
 
   return input . complete_str
-endfunction"}}}
-function! deoplete#util#get_next_input(event) abort "{{{
+endfunction
+function! deoplete#util#get_next_input(event) abort
   return getline('.')[len(deoplete#util#get_input(a:event)) :]
-endfunction"}}}
-function! deoplete#util#get_prev_event() abort "{{{
+endfunction
+function! deoplete#util#get_prev_event() abort
   return get(g:deoplete#_context, 'event', '')
-endfunction"}}}
+endfunction
 
-function! deoplete#util#vimoption2python(option) abort "{{{
+function! deoplete#util#vimoption2python(option) abort
   return '[a-zA-Z' . s:vimoption2python(a:option) . ']'
-endfunction"}}}
-function! deoplete#util#vimoption2python_not(option) abort "{{{
+endfunction
+function! deoplete#util#vimoption2python_not(option) abort
   return '[^a-zA-Z' . s:vimoption2python(a:option) . ']'
-endfunction"}}}
-function! s:vimoption2python(option) abort "{{{
+endfunction
+function! s:vimoption2python(option) abort
   let has_dash = 0
   let patterns = []
   for pattern in split(a:option, ',')
@@ -117,9 +117,9 @@ function! s:vimoption2python(option) abort "{{{
   endif
 
   return join(deoplete#util#uniq(patterns), '')
-endfunction"}}}
+endfunction
 
-function! deoplete#util#uniq(list) abort "{{{
+function! deoplete#util#uniq(list) abort
   let list = map(copy(a:list), '[v:val, v:val]')
   let i = 0
   let seen = {}
@@ -133,9 +133,9 @@ function! deoplete#util#uniq(list) abort "{{{
     endif
   endwhile
   return map(list, 'v:val[0]')
-endfunction"}}}
+endfunction
 
-function! deoplete#util#redir(cmd) abort "{{{
+function! deoplete#util#redir(cmd) abort
   if exists('*execute')
     return execute(a:cmd)
   else
@@ -147,9 +147,9 @@ function! deoplete#util#redir(cmd) abort "{{{
     let [&verbose, &verbosefile] = [save_verbose, save_verbosefile]
     return res
   endif
-endfunction"}}}
+endfunction
 
-function! deoplete#util#get_syn_names() abort "{{{
+function! deoplete#util#get_syn_names() abort
   if col('$') >= 200
     return []
   endif
@@ -168,9 +168,9 @@ function! deoplete#util#get_syn_names() abort "{{{
     " Ignore error
   endtry
   return names
-endfunction"}}}
+endfunction
 
-function! deoplete#util#exists_omnifunc(name) abort "{{{
+function! deoplete#util#exists_omnifunc(name) abort
   if !exists('s:called_omnifuncs')
     let s:called_omnifuncs = {}
   endif
@@ -180,14 +180,14 @@ function! deoplete#util#exists_omnifunc(name) abort "{{{
     let s:called_omnifuncs[a:name] = exists('*' . a:name)
   endif
   return s:called_omnifuncs[a:name]
-endfunction"}}}
+endfunction
 
-function! deoplete#util#neovim_version() abort "{{{
+function! deoplete#util#neovim_version() abort
   redir => v
   silent version
   redir END
   return split(v, '\n')[0]
-endfunction"}}}
+endfunction
 
 " Compare versions.  Return values is the distance between versions.  Each
 " version integer (from right to left) is an ascending power of 100.
@@ -200,7 +200,7 @@ endfunction"}}}
 " <0 if a < b
 " >0 if a > b
 " 0 if versions are equal.
-function! deoplete#util#versioncmp(a, b) abort "{{{
+function! deoplete#util#versioncmp(a, b) abort
   let a = map(split(a:a, '\.'), 'str2nr(v:val)')
   let b = map(split(a:b, '\.'), 'str2nr(v:val)')
   let l = min([len(a), len(b)])
@@ -212,6 +212,4 @@ function! deoplete#util#versioncmp(a, b) abort "{{{
   endfor
 
   return d
-endfunction"}}}
-
-" vim: foldmethod=marker
+endfunction

@@ -25,6 +25,3 @@ function! s:suite.vimoption2python() abort
   call s:assert.equals(
         \ deoplete#util#versioncmp('3.2.1', '0.0.0'), 30201)
 endfunction
-
-
-" vim:foldmethod=marker:fen:

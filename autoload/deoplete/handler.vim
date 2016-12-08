@@ -4,7 +4,7 @@
 " License: MIT license
 "=============================================================================
 
-function! deoplete#handler#_init() abort "{{{
+function! deoplete#handler#_init() abort
   augroup deoplete
     autocmd!
     autocmd InsertLeave * call s:on_insert_leave()
@@ -20,9 +20,9 @@ function! deoplete#handler#_init() abort "{{{
   endfor
 
   call s:on_event('Init')
-endfunction"}}}
+endfunction
 
-function! s:completion_check(event) abort "{{{
+function! s:completion_check(event) abort
   let delay = get(g:deoplete#_context, 'refresh', 0) ?
         \ g:deoplete#auto_refresh_delay : g:deoplete#auto_complete_delay
   if has('timers') && delay > 0
@@ -38,17 +38,17 @@ function! s:completion_check(event) abort "{{{
   endif
 
   return s:completion_begin(a:event)
-endfunction"}}}
+endfunction
 
-function! s:completion_delayed(timer) abort "{{{
+function! s:completion_delayed(timer) abort
   let timer = s:timer
   unlet! s:timer
   if b:changedtick == timer.changedtick
     call s:completion_begin(timer.event)
   endif
-endfunction"}}}
+endfunction
 
-function! s:completion_begin(event) abort "{{{
+function! s:completion_begin(event) abort
   let context = deoplete#init#_context(a:event, [])
   if s:is_skip(a:event, context)
     return
@@ -78,8 +78,8 @@ function! s:completion_begin(event) abort "{{{
   call deoplete#mapping#_set_completeopt()
   call rpcnotify(g:deoplete#_channel_id,
         \ 'deoplete_auto_completion_begin', context)
-endfunction"}}}
-function! s:is_skip(event, context) abort "{{{
+endfunction
+function! s:is_skip(event, context) abort
   if s:is_skip_text(a:event)
     return 1
   endif
@@ -109,8 +109,8 @@ function! s:is_skip(event, context) abort "{{{
   endif
 
   return 0
-endfunction"}}}
-function! s:is_skip_text(event) abort "{{{
+endfunction
+function! s:is_skip_text(event) abort
   let input = deoplete#util#get_input(a:event)
   let displaywidth = strdisplaywidth(input) + 1
 
@@ -129,22 +129,22 @@ function! s:is_skip_text(event) abort "{{{
   return (!pumvisible() && virtcol('.') != displaywidth)
         \ || (a:event !=# 'Manual' && input != ''
         \     && index(skip_chars, input[-1:]) >= 0)
-endfunction"}}}
+endfunction
 
-function! s:on_event(event) abort "{{{
+function! s:on_event(event) abort
   let context = deoplete#init#_context(a:event, [])
   call rpcnotify(g:deoplete#_channel_id, 'deoplete_on_event', context)
-endfunction"}}}
+endfunction
 
-function! s:on_insert_leave() abort "{{{
+function! s:on_insert_leave() abort
   if exists('g:deoplete#_saved_completeopt')
     let &completeopt = g:deoplete#_saved_completeopt
     unlet g:deoplete#_saved_completeopt
   endif
   let g:deoplete#_context = {}
-endfunction"}}}
+endfunction
 
-function! s:complete_done() abort "{{{
+function! s:complete_done() abort
   if get(v:completed_item, 'word', '') != ''
     let word = v:completed_item.word
     if !has_key(g:deoplete#_rank, word)
@@ -155,9 +155,9 @@ function! s:complete_done() abort "{{{
   endif
 
   let g:deoplete#_context.position = getpos('.')
-endfunction"}}}
+endfunction
 
-function! s:on_insert_char_pre() abort "{{{
+function! s:on_insert_char_pre() abort
   if !pumvisible()
         \ || !g:deoplete#enable_refresh_always
         \ || s:is_skip_text('InsertCharPre')
@@ -166,6 +166,4 @@ function! s:on_insert_char_pre() abort "{{{
 
   " Auto refresh
   call feedkeys("\<Plug>(deoplete_auto_refresh)")
-endfunction"}}}
-
-" vim: foldmethod=marker
+endfunction
