@@ -195,6 +195,16 @@ g:deoplete#auto_refresh_delay
 
 		Default value: 50
 
+					*g:deoplete#skip_chars*
+g:deoplete#skip_chars
+		The list of skip characters in the auto completion.
+
+		Default value: []
+
+					*b:deoplete_skip_chars*
+b:deoplete_skip_chars
+		Buffer local variable of |g:deoplete#skip_chars|.
+
 						*g:deoplete#keyword_patterns*
 g:deoplete#keyword_patterns
 		This dictionary records keyword patterns to buffer completion.
