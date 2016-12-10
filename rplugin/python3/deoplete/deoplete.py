@@ -55,6 +55,8 @@ class Deoplete(logger.LoggingMixin):
         }
 
         self.__vim.feedkeys(context['start_complete'])
+        if self.__vim.call('has', 'patch-7.4.1758'):
+            self.__vim.feedkeys('', 'x!')
 
     def gather_candidates(self, context):
         self.check_recache(context)
