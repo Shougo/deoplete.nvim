@@ -17,7 +17,7 @@ See [requirements](#requirements) if you aren't sure whether you have this.
 1. Extract the files and put them in your Neovim directory
    (usually `$XDG_CONFIG_HOME/nvim/`).
 2. Execute the `:UpdateRemotePlugins` and restart Neovim.
-3. Call `deoplete#enable()` or set "let g:deoplete#enable_at_startup = 1" in
+3. Write `call deoplete#enable()` or `let g:deoplete#enable_at_startup = 1` in
    your `init.vim`
 
 
@@ -52,7 +52,15 @@ If you want to read the Neovim-python/python3 interface install documentation,
 you should read `:help provider-python` and the Wiki.
 https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
 
+## Note: Python3 must be enabled before updating remote plugins
+If Deoplete was installed prior to Python support being added to Neovim,
+`:UpdateRemotePlugins` should be executed manually in order to enable
+auto-completion.
+
 ## Screenshots
+
+Deoplete for JavaScript
+https://www.youtube.com/watch?v=oanoPTpiSF4
 
 ![File Name Completion](https://cloud.githubusercontent.com/assets/7141867/11717027/a99cac54-9f73-11e5-91ce-bce9274692e4.png)
 

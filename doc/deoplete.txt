@@ -185,7 +185,7 @@ g:deoplete#auto_complete_delay
 		Delay the completion after input in milliseconds.
 		Requires |+timers| (Neovim 0.1.5)
 
-		Default value: 100
+		Default value: 150
 
 					*g:deoplete#auto_refresh_delay*
 g:deoplete#auto_refresh_delay
@@ -194,6 +194,16 @@ g:deoplete#auto_refresh_delay
 		|g:deoplete#enable_refresh_always|
 
 		Default value: 50
+
+					*g:deoplete#skip_chars*
+g:deoplete#skip_chars
+		The list of skip characters in the auto completion.
+
+		Default value: []
+
+					*b:deoplete_skip_chars*
+b:deoplete_skip_chars
+		Buffer local variable of |g:deoplete#skip_chars|.
 
 						*g:deoplete#keyword_patterns*
 g:deoplete#keyword_patterns
@@ -290,7 +300,7 @@ g:deoplete#omni#input_patterns
 		If this pattern is not defined or empty pattern, deoplete
 		does not call 'omnifunc'.
 		Note: Some omnifuncs which moves the cursor is not worked.
-		For example, htmlcomplete, vim-go, etc...
+		For example, htmlcomplete, phpcomplete, etc...
 		Note: It is Python3 regexp.
 >
 		let g:deoplete#omni#input_patterns = {}
@@ -308,13 +318,26 @@ b:deoplete_omni_input_patterns
 
 						*g:deoplete#omni#functions*
 g:deoplete#omni#functions
-		This dictionary records the functions to Omni completion.
-		This is the omnifunc name list every file type.
-		If this pattern is not defined or empty pattern, deoplete use
-		'omnifunc'.
+		It defines a dictionary for omni completion with deoplete:
+		- `keys` consist of filetypes;
+		- `values` consist of either a string containing a single
+		  omnifunc or a list with omnifuncs to be used for each
+		  filetype.
+		In case there is no omnifunc setting for the current filetype
+		in the dictionary, deoplete will use the 'omnifunc' setting.
+>
+		let g:deoplete#omni#functions = {}
+		let g:deoplete#omni#functions.ruby = 'rubycomplete#Complete'
+		let g:deoplete#omni#functions.javascript = [
+		  \ 'tern#Complete',
+		  \ 'jspc#omni'
+		  \]
+<
 		Note: It supports context filetype feature instead of
 		'omnifunc'.  You can call the omnifunc in the embedded
 		language.
+		Note: For omnifunctions to work with deoplete, it's necessary
+		to setup the g:deoplete#omni#input_patterns setting.
 
 						*b:deoplete_omni_functions*
 b:deoplete_omni_functions
@@ -334,6 +357,13 @@ g:deoplete#tag#cache_limit_size
 		deoplete does not make the tag file cache.
 
 		Default value: 500000
+
+				*g:deoplete#buffer#require_same_filetype*
+g:deoplete#buffer#require_same_filetype
+		If it is zero, deoplete collects keywords from buffers of any
+		filetype
+
+		Default value: 1
 
 ------------------------------------------------------------------------------
 FUNCTIONS 						*deoplete-functions*
@@ -503,8 +533,14 @@ EXAMPLES						*deoplete-examples*
 SOURCES							*deoplete-sources*
 
 buffer						*deoplete-source-buffer*
-		It collects keywords from current buffer and the buffers which
-		have same 'filetype'.
+		It collects keywords from current buffer and the opened
+		buffers which have same 'filetype'.
+
+		Note: It does not collect keywords from not loaded buffer.
+		For example, if you open file by "nvim A B".  A is already
+		loaded, but B is not loaded.  So buffer source cannot collect
+		the keywords in B until you switch to buffer B.
+
 		Note: It takes time to get the candidates in the first time if
 		you want to edit the large files(like Vim 22000 lines eval.c).
 
@@ -523,7 +559,8 @@ omni							*deoplete-source-omni*
 		Note: It is not asynchronous.
 
 dictionary					*deoplete-source-dictionary*
-		This source collects keywords from 'dictionary'.
+		This source collects |g:deoplete#keyword_patterns| keywords
+		from 'dictionary'.
 
 ==============================================================================
 FILTERS							*deoplete-filters*
@@ -577,13 +614,13 @@ converter_auto_delimiter
 
 				*deoplete-filter-converter_auto_paren*
 converter_auto_paren
-		It adds parenthes character in a candidate's word.
+		It adds parentheses character in a candidate's word.
 		It is useful if you use |neopairs| or |neosnippet|
 		plugins.
 
 				*deoplete-filter-converter_remove_paren*
 converter_remove_paren
-		It removes parenthes character in a candidate's word.
+		It removes parentheses character in a candidate's word.
 
 				*deoplete-filter-converter_truncate_abbr*
 converter_truncate_abbr
@@ -756,8 +793,8 @@ on_post_filter
 
 					*deoplete-source-attribute-on_event*
 on_event	(Function)			(Optional)
-		It is called when |BufRead|, |BufNewFile|, |BufNew|,
-		|BufWritePost|.
+		It is called when |BufRead|, |BufNewFile|, |BufWritePost| or
+		deoplete is initialized.
 		It is useful to make cache.
 		It takes {self} and {context} as its parameter.
 
@@ -902,7 +939,7 @@ https://github.com/awetzel/elixir.nvim
 deoplete-jedi: "jedi" source for Python
 https://github.com/zchee/deoplete-jedi
 
-perlomni.vim: "perlomni" source for Perl
+perlomni.vim: "PerlOmni" source for Perl
 https://github.com/c9s/perlomni.vim
 
 deoplete-typescript: "typescript" source for typescript
@@ -946,6 +983,12 @@ https://github.com/pbogut/deoplete-padawan
 
 webcomplete.vim: "webcomplete" source for browser opened pages
 https://github.com/thalesmello/webcomplete.vim
+
+deoplete-julia: "julia" source for Julia
+https://github.com/JuliaEditorSupport/deoplete-julia
+
+acid.nvim: "acid" source for Clojure
+https://github.com/hkupty/acid.nvim
 
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*

@@ -82,7 +82,7 @@ class LoggingMixin(object):
     """Class that adds logging functions to a subclass.
     """
     debug_enabled = False
-    _logger = None
+    _logger = None  # type: logging.Logger
 
     @logmethod
     def debug(self, msg, *args, **kwargs):

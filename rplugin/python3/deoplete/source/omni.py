@@ -7,7 +7,7 @@
 import re
 from .base import Base
 from deoplete.util import \
-    get_buffer_config, error, convert2list, set_pattern
+    get_buffer_config, error, error_vim, convert2list, set_pattern
 
 
 class Source(Base):
@@ -38,39 +38,52 @@ class Source(Base):
         if self.__use_previous_result(context):
             return self.__prev_pos
 
+        current_ft = self.vim.eval('&filetype')
         for filetype in context['filetypes']:
-            omnifunc = get_buffer_config(context, filetype,
-                                         'deoplete_omni_functions',
-                                         'deoplete#omni#functions',
-                                         {'_': ''})
-            if omnifunc == '':
-                omnifunc = context['omni__omnifunc']
-            if omnifunc == '' or [x for x in [
-                    'ccomplete#Complete', 'htmlcomplete#CompleteTags']
-                                  if x == omnifunc]:
-                continue
-            self.__omnifunc = omnifunc
-            for input_pattern in convert2list(
-                get_buffer_config(context, filetype,
-                                  'deoplete_omni_input_patterns',
-                                  'deoplete#omni#input_patterns',
-                                  self.__input_patterns)):
-
-                m = re.search('(' + input_pattern + ')$', context['input'])
-                # self.debug(filetype)
-                # self.debug(input_pattern)
-                if input_pattern == '' or (context['event'] !=
-                                           'Manual' and m is None):
+            for omnifunc in convert2list(
+                    get_buffer_config(context, filetype,
+                                      'deoplete_omni_functions',
+                                      'deoplete#omni#functions',
+                                      {'_': ''})):
+                if omnifunc == '' and filetype == current_ft:
+                    omnifunc = context['omni__omnifunc']
+                if omnifunc == '' or not self.vim.call(
+                            'deoplete#util#exists_omnifunc', omnifunc):
                     continue
+                self.__omnifunc = omnifunc
+                for input_pattern in convert2list(
+                    get_buffer_config(context, filetype,
+                                      'deoplete_omni_input_patterns',
+                                      'deoplete#omni#input_patterns',
+                                      self.__input_patterns)):
 
-                try:
-                    complete_pos = self.vim.call(self.__omnifunc, 1, '')
-                except:
-                    error(self.vim,
-                          'Error occurred calling omnifunction: ' +
-                          self.__omnifunc)
-                    return -1
-                return complete_pos
+                    m = re.search('(' + input_pattern + ')$', context['input'])
+                    # self.debug(filetype)
+                    # self.debug(input_pattern)
+                    if input_pattern == '' or (context['event'] !=
+                                               'Manual' and m is None):
+                        continue
+
+                    if self.__omnifunc in [
+                            'ccomplete#Complete',
+                            'htmlcomplete#CompleteTags',
+                            'phpcomplete#CompletePHP']:
+                        # In the blacklist
+                        error(self.vim,
+                              'omni source does not support: ' +
+                              self.__omnifunc)
+                        error(self.vim,
+                              'You must use g:deoplete#omni_patterns' +
+                              ' instead.')
+                        return -1
+                    try:
+                        complete_pos = self.vim.call(self.__omnifunc, 1, '')
+                    except:
+                        error_vim(self.vim,
+                                  'Error occurred calling omnifunction: ' +
+                                  self.__omnifunc)
+                        return -1
+                    return complete_pos
         return -1
 
     def gather_candidates(self, context):
@@ -85,9 +98,9 @@ class Source(Base):
             elif candidates is int:
                 candidates = []
         except:
-            error(self.vim,
-                  'Error occurred calling omnifunction: ' +
-                  self.__omnifunc)
+            error_vim(self.vim,
+                      'Error occurred calling omnifunction: ' +
+                      self.__omnifunc)
             candidates = []
 
         self.__prev_linenr = context['position'][1]

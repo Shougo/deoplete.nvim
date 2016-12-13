@@ -3,11 +3,11 @@
 # AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 # License: MIT license
 # ============================================================================
+
 import os
 import re
 import sys
 import glob
-import json
 import traceback
 import unicodedata
 
@@ -94,22 +94,35 @@ def import_plugin(path, source, classname):
 
 
 def debug(vim, expr):
-    try:
-        json_data = json.dumps(str(expr).strip())
-    except Exception:
-        vim.command('echomsg string(\'' + str(expr).strip() + '\')')
+    if hasattr(vim, 'out_write'):
+        string = (expr if isinstance(expr, str) else str(expr))
+        return vim.out_write('[deoplete] ' + string + '\n')
     else:
-        vim.command('echomsg string(\'' + escape(json_data) + '\')')
+        vim.call('deoplete#util#print_debug', expr)
 
 
-def error(vim, msg):
-    vim.call('deoplete#util#print_error', msg)
+def error(vim, expr):
+    if hasattr(vim, 'err_write'):
+        string = (expr if isinstance(expr, str) else str(expr))
+        return vim.err_write('[deoplete] ' + string + '\n')
+    else:
+        vim.call('deoplete#util#print_error', expr)
 
 
 def error_tb(vim, msg):
     for line in traceback.format_exc().splitlines():
         error(vim, str(line))
     error(vim, '%s.  Use :messages for error details.' % msg)
+
+
+def error_vim(vim, msg):
+    throwpoint = vim.eval('v:throwpoint')
+    if throwpoint != '':
+        error(vim, 'v:throwpoint = ' + throwpoint)
+    exception = vim.eval('v:exception')
+    if exception != '':
+        error(vim, 'v:exception = ' + exception)
+    error_tb(vim, msg)
 
 
 def escape(expr):
@@ -207,3 +220,19 @@ def strwidth(string):
 def charwidth(c):
     wc = unicodedata.east_asian_width(c)
     return 2 if wc == 'F' or wc == 'W' else 1
+
+
+def expand(path):
+    return os.path.expandvars(os.path.expanduser(path))
+
+
+def getlines(vim, start=1, end='$'):
+    if end == '$':
+        end = len(vim.current.buffer)
+    max = 5000
+    lines = []
+    current = start
+    while current <= end:
+        lines += vim.call('getline', current, current + max)
+        current += max + 1
+    return lines

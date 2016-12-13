@@ -33,6 +33,8 @@ class Deoplete(logger.LoggingMixin):
         self.__source_errors = defaultdict(int)
         self.__filter_errors = defaultdict(int)
         self.name = 'core'
+        self.__ignored_sources = set()
+        self.__ignored_filters = set()
 
     def completion_begin(self, context):
         try:
@@ -65,7 +67,7 @@ class Deoplete(logger.LoggingMixin):
     def gather_results(self, context):
         results = []
 
-        for source_name, source in self.itersource(context):
+        for source_name, source in list(self.itersource(context)):
             try:
                 if source.disabled_syntaxes and 'syntax_names' not in context:
                     context['syntax_names'] = get_syn_names(self.__vim)
@@ -125,12 +127,13 @@ class Deoplete(logger.LoggingMixin):
                         self.profile_start(ctx, filter.name)
                         ctx['candidates'] = filter.filter(ctx)
                         self.profile_end(filter.name)
-                    except:
+                    except Exception:
                         self.__filter_errors[filter.name] += 1
                         if self.__source_errors[filter.name] > 2:
                             error(self.__vim, 'Too many errors from "%s". '
                                   'This filter is disabled until Neovim '
                                   'is restarted.' % filter.name)
+                            self.__ignored_filters.add(filter.path)
                             self.__filters.pop(filter.name)
                             continue
                         error_tb(self.__vim,
@@ -155,17 +158,17 @@ class Deoplete(logger.LoggingMixin):
                     'source': source,
                     'context': ctx,
                 })
-            except:
+            except Exception:
                 self.__source_errors[source_name] += 1
                 if self.__source_errors[source_name] > 2:
                     error(self.__vim, 'Too many errors from "%s". '
                           'This source is disabled until Neovim '
                           'is restarted.' % source_name)
+                    self.__ignored_sources.add(source.path)
                     self.__sources.pop(source_name)
                     continue
                 error_tb(self.__vim,
                          'Could not get completions from: %s' % source_name)
-
         return results
 
     def itersource(self, context):
@@ -193,8 +196,17 @@ class Deoplete(logger.LoggingMixin):
                 continue
             if not source.is_initialized and hasattr(source, 'on_init'):
                 self.debug('on_init Source: %s', source.name)
-                source.on_init(context)
-                source.is_initialized = True
+                try:
+                    source.on_init(context)
+                except Exception as exc:
+                    error_tb(self.__vim,
+                             'Error when loading source {}. '
+                             'Ignoring.'.format(source_name, exc))
+                    self.__ignored_sources.add(source.path)
+                    self.__sources.pop(source_name)
+                    continue
+                else:
+                    source.is_initialized = True
 
             yield source_name, source
 
@@ -247,20 +259,23 @@ class Deoplete(logger.LoggingMixin):
 
     def load_sources(self, context):
         # Load sources from runtimepath
+        loaded_paths = [source.path for source in self.__sources.values()]
         for path in find_rplugins(context, 'source'):
-            name = os.path.splitext(os.path.basename(path))[0]
-            if name in self.__sources:
+            if path in self.__ignored_sources:
                 continue
+            if path in loaded_paths:
+                continue
+            name = os.path.splitext(os.path.basename(path))[0]
 
             source = None
-
             try:
                 Source = import_plugin(path, 'source', 'Source')
                 if Source is None:
                     continue
+
                 source = Source(self.__vim)
                 source.name = getattr(source, 'name', name)
-
+                source.path = path
                 source.min_pattern_length = getattr(
                     source, 'min_pattern_length',
                     context['vars']['deoplete#auto_complete_start_length'])
@@ -270,7 +285,6 @@ class Deoplete(logger.LoggingMixin):
                 source.max_menu_width = getattr(
                     source, 'max_menu_width',
                     context['vars']['deoplete#max_menu_width'])
-
             except Exception:
                 error_tb(self.__vim, 'Could not load source: %s' % name)
             finally:
@@ -283,21 +297,23 @@ class Deoplete(logger.LoggingMixin):
 
     def load_filters(self, context):
         # Load filters from runtimepath
+        loaded_paths = [filter.path for filter in self.__filters.values()]
         for path in find_rplugins(context, 'filter'):
-            name = os.path.splitext(os.path.basename(path))[0]
-            if name in self.__filters:
+            if path in self.__ignored_filters:
                 continue
+            if path in loaded_paths:
+                continue
+            name = os.path.splitext(os.path.basename(path))[0]
 
             filter = None
-
             try:
                 Filter = import_plugin(path, 'filter', 'Filter')
                 if Filter is None:
                     continue
 
                 filter = Filter(self.__vim)
-
                 filter.name = getattr(filter, 'name', name)
+                filter.path = path
                 self.__filters[filter.name] = filter
             except Exception:
                 # Exception occurred when loading a filter.  Log stack trace.
@@ -341,7 +357,7 @@ class Deoplete(logger.LoggingMixin):
 
     def is_skip(self, context, disabled_syntaxes,
                 min_pattern_length, max_pattern_length, input_pattern):
-        if 'syntax_names' in context:
+        if 'syntax_names' in context and disabled_syntaxes:
             pattern = '('+'|'.join(disabled_syntaxes)+')$'
             if [x for x in context['syntax_names']
                     if re.search(pattern, x)]:
@@ -376,5 +392,10 @@ class Deoplete(logger.LoggingMixin):
 
         for source_name, source in self.itersource(context):
             if hasattr(source, 'on_event'):
-                self.debug('on_event Source: %s (%s)', source_name)
-                source.on_event(context)
+                self.debug('on_event: Source: %s', source_name)
+                try:
+                    source.on_event(context)
+                except Exception as exc:
+                    error_tb(self.__vim, 'Exception during {}.on_event '
+                             'for event {!r}: {}'.format(
+                                 source_name, context['event'], exc))
