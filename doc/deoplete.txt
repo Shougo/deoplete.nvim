@@ -945,8 +945,12 @@ https://github.com/c9s/perlomni.vim
 deoplete-typescript: "typescript" source for typescript
 https://github.com/mhartington/deoplete-typescript
 
-deoplete-clang: "clang" source for C/C++
+deoplete-clang: "clang" source for C/C++/ObjC
 https://github.com/zchee/deoplete-clang
+
+deoplete-clang2: "clang2" source for C/C++/ObjC
+It is faster than deoplete-clang
+https://github.com/tweekmonster/deoplete-clang2
 
 async-clj-omni: "async_clj" source for Clojure
 https://github.com/SevereOverfl0w/async-clj-omni
