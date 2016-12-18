@@ -189,7 +189,7 @@ class Deoplete(logger.LoggingMixin):
                                   {}))
 
         for source_name, source in sources:
-            if (source_name in ignore_sources):
+            if source.filetypes is None or source_name in ignore_sources:
                 continue
             if context['sources'] and source_name not in context['sources']:
                 continue
