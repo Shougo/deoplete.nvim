@@ -20,8 +20,8 @@ class Source(Base):
         # 20 lines above
         lnum = context['position'][1]
         words = parse_buffer_pattern(
-                        reversed(self.vim.call('getline', 
-                                               max([1, lnum - 20]), 
+                        reversed(self.vim.call('getline',
+                                               max([1, lnum - 20]),
                                                lnum)),
                         context['keyword_patterns'],
                         context['complete_str'])
