@@ -6,6 +6,9 @@ from deoplete.util import parse_buffer_pattern
 
 logger = getLogger('around')
 
+ABOVE_LINES = 20
+BELOW_LINES = 20
+
 
 class Source(Base):
     def __init__(self, vim):
@@ -21,19 +24,15 @@ class Source(Base):
         lnum = context['position'][1]
         words = parse_buffer_pattern(
                         reversed(self.vim.call('getline',
-                                               max([1, lnum - 20]),
+                                               max([1, lnum - ABOVE_LINES]),
                                                lnum)),
                         context['keyword_patterns'],
                         context['complete_str'])
         candidates.extend([{'word': x, 'menu': 'A'} for x in words])
 
         # grab ':changes' command output
-        self.vim.command('exec "redir => g:deoplete_recent_changes"')
-        self.vim.command('silent! changes')
-        self.vim.command('redir END')
-
-        p = re.compile('[\s\d]+')
-        changes = self.vim.eval('g:deoplete_recent_changes').split('\n')
+        p = re.compile(r'[\s\d]+')
+        changes = self.vim.call('execute', 'changes').split('\n')
         lines = set()
         for change in changes:
             m = p.search(change)
@@ -49,7 +48,7 @@ class Source(Base):
 
         # 20 lines below
         words = parse_buffer_pattern(
-                        self.vim.call('getline', lnum, lnum + 20),
+                        self.vim.call('getline', lnum, lnum + BELOW_LINES),
                         context['keyword_patterns'],
                         context['complete_str'])
         candidates.extend([{'word': x, 'menu': 'B'} for x in words])
