@@ -1,13 +1,16 @@
+# ============================================================================
+# FILE: around.py
+# AUTHOR: Khalidov Oleg <brooth at gmail.com>
+# License: MIT license
+# ============================================================================
+
 import re
+
 from .base import Base
+from deoplete.util import parse_buffer_pattern, getlines
 
-from deoplete.logger import getLogger
-from deoplete.util import parse_buffer_pattern
-
-logger = getLogger('around')
-
-ABOVE_LINES = 20
-BELOW_LINES = 20
+LINES_ABOVE = 20
+LINES_BELOW = 20
 
 
 class Source(Base):
@@ -18,17 +21,15 @@ class Source(Base):
         self.rank = 800
 
     def gather_candidates(self, context):
+        line = context['position'][1]
         candidates = list()
 
-        # 20 lines above
-        lnum = context['position'][1]
+        # lines above
         words = parse_buffer_pattern(
-                        reversed(self.vim.call('getline',
-                                               max([1, lnum - ABOVE_LINES]),
-                                               lnum)),
-                        context['keyword_patterns'],
-                        context['complete_str'])
-        candidates.extend([{'word': x, 'menu': 'A'} for x in words])
+            reversed(getlines(self.vim, max([1, line - LINES_ABOVE]), line)),
+            context['keyword_patterns'],
+            context['complete_str'])
+        candidates += [{'word': x, 'menu': 'A'} for x in words]
 
         # grab ':changes' command output
         p = re.compile(r'[\s\d]+')
@@ -37,20 +38,20 @@ class Source(Base):
         for change in changes:
             m = p.search(change)
             if m:
-                line = change[m.span()[1]:]
-                if line and line != '-invalid-':
-                    lines.add(line)
+                change_line = change[m.span()[1]:]
+                if change_line and change_line != '-invalid-':
+                    lines.add(change_line)
 
         words = parse_buffer_pattern(lines,
                                      context['keyword_patterns'],
                                      context['complete_str'])
-        candidates.extend([{'word': x, 'menu': 'C'} for x in words])
+        candidates += [{'word': x, 'menu': 'C'} for x in words]
 
-        # 20 lines below
+        # lines below
         words = parse_buffer_pattern(
-                        self.vim.call('getline', lnum, lnum + BELOW_LINES),
-                        context['keyword_patterns'],
-                        context['complete_str'])
-        candidates.extend([{'word': x, 'menu': 'B'} for x in words])
+            getlines(self.vim, line, line + LINES_BELOW),
+            context['keyword_patterns'],
+            context['complete_str'])
+        candidates += [{'word': x, 'menu': 'B'} for x in words]
 
         return candidates
