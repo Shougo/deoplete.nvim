@@ -553,7 +553,6 @@ tag							*deoplete-source-tag*
 
 file							*deoplete-source-file*
 		This source collects keywords from local files.
-		omni
 
 omni							*deoplete-source-omni*
 		This source collects keywords from 'omnifunc'.
