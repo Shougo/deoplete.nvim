@@ -229,7 +229,7 @@ def expand(path):
 def getlines(vim, start=1, end='$'):
     if end == '$':
         end = len(vim.current.buffer)
-    max = 5000
+    max = min([end - start, 5000])
     lines = []
     current = start
     while current <= end:

@@ -562,6 +562,19 @@ dictionary					*deoplete-source-dictionary*
 		This source collects |g:deoplete#keyword_patterns| keywords
 		from 'dictionary'.
 
+around						    *deoplete-source-around*
+		This source collects candidates around the cursor, so inside
+		current buffer only. Plus, it searches keywords in |:changes|
+		command output. Therefore, this source is about to provide the
+		words that are in sight or the ones you've just typed somewhere
+		else.
+
+		Legend: You can see where the words came from. Next to the
+		source mark [~] these suffixes are used:
+		    A - above the cursor
+		    B - below the cursor
+		    C - in changes
+
 ==============================================================================
 FILTERS							*deoplete-filters*
 
