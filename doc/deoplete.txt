@@ -994,6 +994,9 @@ https://github.com/JuliaEditorSupport/deoplete-julia
 acid.nvim: "acid" source for Clojure
 https://github.com/hkupty/acid.nvim
 
+deoplete-omnisharp: "cs" source for C#
+https://github.com/Robzz/deoplete-omnisharp/
+
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*
 
