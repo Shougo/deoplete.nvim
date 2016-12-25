@@ -66,7 +66,7 @@ function! deoplete#util#get_input(event) abort
         \         '^.*\%' . (mode ==# 'i' ? col('.') : col('.') - 1)
         \         . 'c' . (mode ==# 'i' ? '' : '.'))
 
-  if input =~ '^.\{-}\ze\S\+$'
+  if input =~# '^.\{-}\ze\S\+$'
     let complete_str = matchstr(input, '\S\+$')
     let input = matchstr(input, '^.\{-}\ze\S\+$')
   else
@@ -96,14 +96,14 @@ function! s:vimoption2python(option) abort
   let has_dash = 0
   let patterns = []
   for pattern in split(a:option, ',')
-    if pattern == ''
+    if pattern ==# ''
       " ,
       call add(patterns, ',')
-    elseif pattern == '\'
+    elseif pattern ==# '\'
       call add(patterns, '\\')
-    elseif pattern == '-'
+    elseif pattern ==# '-'
       let has_dash = 1
-    elseif pattern =~ '\d\+'
+    elseif pattern =~# '\d\+'
       call add(patterns, substitute(pattern, '\d\+',
             \ '\=nr2char(submatch(0))', 'g'))
     else

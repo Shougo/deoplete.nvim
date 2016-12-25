@@ -8,13 +8,11 @@ python:
     - 3.5
 
 install:
-    - pip install neovim flake8 nose mock pytest mypy-lang
-
-before_script:
-    - git clone https://github.com/syngan/vim-vimlint /tmp/vim-vimlint
-    - git clone https://github.com/ynkdir/vim-vimlparser /tmp/vim-vimlparser
-    - git clone https://github.com/thinca/vim-themis
+    # Install Neovim via Gist
+    # https://gist.github.com/lambdalisue/0f461f6a91743895394e63a9a1c65232
+    - curl -sL https://gist.githubusercontent.com/lambdalisue/0f461f6a91743895394e63a9a1c65232/raw/install_nvim_for_ci.sh | bash
+    - make install
 
 script:
-    - sh /tmp/vim-vimlint/bin/vimlint.sh -l /tmp/vim-vimlint -p /tmp/vim-vimlparser -e EVL103=1 -e EVL102.l:_=1 autoload
-    - make test
+    - PATH="$HOME/neovim/bin:$PATH" make test
+    - make lint
