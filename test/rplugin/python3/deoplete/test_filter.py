@@ -1,4 +1,5 @@
 import deoplete.util as util
+from deoplete.filter.converter_remove_overlap import overlap_length
 
 def test_fuzzy_escapse():
     assert util.fuzzy_escape('foo', 0) == 'f[^f]*o[^o]*o[^o]*'
@@ -6,11 +7,11 @@ def test_fuzzy_escapse():
     assert util.fuzzy_escape('Foo', 1) == 'F[^F]*[oO].*[oO].*'
 
 def test_overlap_length():
-    assert util.overlap_length('foo bar', 'bar baz') == 3
-    assert util.overlap_length('foobar', 'barbaz') == 3
-    assert util.overlap_length('foob', 'baz') == 1
-    assert util.overlap_length('foobar', 'foobar') == 6
-    assert util.overlap_length('тест', 'ст') == len('ст')
+    assert overlap_length('foo bar', 'bar baz') == 3
+    assert overlap_length('foobar', 'barbaz') == 3
+    assert overlap_length('foob', 'baz') == 1
+    assert overlap_length('foobar', 'foobar') == 6
+    assert overlap_length('тест', 'ст') == len('ст')
 
 def test_charwidth():
     assert util.charwidth('f') == 1
