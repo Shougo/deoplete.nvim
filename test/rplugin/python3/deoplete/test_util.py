@@ -7,7 +7,7 @@ def test_pos():
     assert util.charpos2bytepos('utf-8', 'foo bar', 3) == 3
     assert util.charpos2bytepos('utf-8', 'あああ', 3) == 9
 
-def test_custom(self):
+def test_custom():
     custom = {'_': {'mark': ''}, 'java': {'converters': []}}
     assert get_custom(custom, 'java', 'mark', 'foobar') == ''
     assert get_custom(custom, 'java', 'converters', 'foobar') == []
@@ -15,5 +15,5 @@ def test_custom(self):
     assert get_custom(custom, 'foo', 'converters', 'foobar') == 'foobar'
 
 
-def test_globruntime(self):
+def test_globruntime():
     assert globruntime('/usr', 'bin') == ['/usr/bin']
