@@ -9,11 +9,11 @@ def test_pos():
 
 def test_custom():
     custom = {'_': {'mark': ''}, 'java': {'converters': []}}
-    assert get_custom(custom, 'java', 'mark', 'foobar') == ''
-    assert get_custom(custom, 'java', 'converters', 'foobar') == []
-    assert get_custom(custom, 'foo', 'mark', 'foobar') == ''
-    assert get_custom(custom, 'foo', 'converters', 'foobar') == 'foobar'
+    assert util.get_custom(custom, 'java', 'mark', 'foobar') == ''
+    assert util.get_custom(custom, 'java', 'converters', 'foobar') == []
+    assert util.get_custom(custom, 'foo', 'mark', 'foobar') == ''
+    assert util.get_custom(custom, 'foo', 'converters', 'foobar') == 'foobar'
 
 
 def test_globruntime():
-    assert globruntime('/usr', 'bin') == ['/usr/bin']
+    assert util.globruntime('/usr', 'bin') == ['/usr/bin']
