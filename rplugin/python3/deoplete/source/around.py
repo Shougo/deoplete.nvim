@@ -22,7 +22,7 @@ class Source(Base):
 
     def gather_candidates(self, context):
         line = context['position'][1]
-        candidates = list()
+        candidates = []
 
         # lines above
         words = parse_buffer_pattern(
@@ -33,14 +33,13 @@ class Source(Base):
 
         # grab ':changes' command output
         p = re.compile(r'[\s\d]+')
-        changes = self.vim.call('execute', 'changes').split('\n')
         lines = set()
-        for change in changes:
-            m = p.search(change)
-            if m:
-                change_line = change[m.span()[1]:]
-                if change_line and change_line != '-invalid-':
-                    lines.add(change_line)
+        for change_line in [x[p.search(x).span()[1]:] for x
+                            in self.vim.call(
+                                'execute', 'changes').split('\n')
+                            if p.search(x)]:
+            if change_line and change_line != '-invalid-':
+                lines.add(change_line)
 
         words = parse_buffer_pattern(lines,
                                      context['keyword_patterns'],
