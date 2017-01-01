@@ -37,6 +37,9 @@ class Source(Base):
         return pos if pos < 0 else pos + 1
 
     def gather_candidates(self, context):
+        if not self.__isfname:
+            return []
+
         p = self.__longest_path_that_exists(context, context['input'])
         if p in (None, []) or p == '/' or re.search('//+$', p):
             return []
