@@ -1010,6 +1010,9 @@ https://github.com/hkupty/acid.nvim
 deoplete-omnisharp: "cs" source for C#
 https://github.com/Robzz/deoplete-omnisharp/
 
+deoplete-hack: "hack" source for Hack and PHP
+https://github.com/zefei/deoplete-hack
+
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*
 
