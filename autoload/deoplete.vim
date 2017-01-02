@@ -40,7 +40,7 @@ function! deoplete#manual_complete(...) abort
 
   " Start complete.
   return (pumvisible() ? "\<C-e>" : '')
-        \ . "\<C-r>=deoplete#mapping#_rpcnotify_wrapper("
+        \ . "\<C-r>=deoplete#mapping#_rpcrequest_wrapper("
         \ . string(get(a:000, 0, [])) . ")\<CR>"
 endfunction
 function! deoplete#close_popup() abort

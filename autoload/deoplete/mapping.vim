@@ -31,8 +31,8 @@ function! deoplete#mapping#_set_completeopt() abort
     set completeopt+=noselect
   endif
 endfunction
-function! deoplete#mapping#_rpcnotify_wrapper(sources) abort
-  call rpcnotify(g:deoplete#_channel_id,
+function! deoplete#mapping#_rpcrequest_wrapper(sources) abort
+  call rpcrequest(g:deoplete#_channel_id,
         \ 'deoplete_manual_completion_begin',
         \ deoplete#init#_context('Manual', a:sources))
   return ''
