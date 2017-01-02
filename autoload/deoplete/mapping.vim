@@ -32,7 +32,7 @@ function! deoplete#mapping#_set_completeopt() abort
   endif
 endfunction
 function! deoplete#mapping#_rpcnotify_wrapper(sources) abort
-  call rpcrequest(g:deoplete#_channel_id,
+  call rpcnotify(g:deoplete#_channel_id,
         \ 'deoplete_manual_completion_begin',
         \ deoplete#init#_context('Manual', a:sources))
   return ''

@@ -29,7 +29,7 @@ function! deoplete#enable_logging(level, logfile) abort
     endif
   endif
 
-  call rpcrequest(g:deoplete#_channel_id,
+  call rpcnotify(g:deoplete#_channel_id,
         \ 'deoplete_enable_logging', a:level, a:logfile)
 endfunction
 
