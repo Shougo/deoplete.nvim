@@ -155,7 +155,7 @@ g:deoplete#enable_profile
 g:deoplete#delimiters
 		Delimiters list.
 
-		Default value: ['/', '.', '::', ':', '#']
+		Default value: ['/']
 
 							*g:deoplete#max_list*
 g:deoplete#max_list
