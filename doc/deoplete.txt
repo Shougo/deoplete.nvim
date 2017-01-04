@@ -533,8 +533,9 @@ EXAMPLES						*deoplete-examples*
 SOURCES							*deoplete-sources*
 
 buffer						*deoplete-source-buffer*
-		It collects keywords from current buffer and the opened
-		buffers which have same 'filetype'.
+		It collects keywords from current buffer and the current
+		tabpage windows buffers and the opened buffers which have same
+		'filetype'.
 
 		Note: It does not collect keywords from not loaded buffer.
 		For example, if you open file by "nvim A B".  A is already
