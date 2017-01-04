@@ -1332,6 +1332,12 @@ A: Please enable logging feature like this.
 		call deoplete#enable_logging('DEBUG', 'deoplete.log')
 		call deoplete#custom#set('jedi', 'debug_enabled', 1)
 <
+
+Q: Is deoplete better than completer.vim?
+
+A: Please see
+https://www.reddit.com/r/vim/comments/573e3d/completorvim_async_completion_framework_made_ease/
+
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
 
