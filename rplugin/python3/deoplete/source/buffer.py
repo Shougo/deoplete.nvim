@@ -26,7 +26,7 @@ class Source(Base):
             self.__make_cache(context)
 
     def gather_candidates(self, context):
-        self.__make_cache(context)
+        self.on_event(context)
 
         same_filetype = context['vars'].get(
             'deoplete#buffer#require_same_filetype', True)
@@ -38,23 +38,12 @@ class Source(Base):
 
     def __make_cache(self, context):
         try:
-            if (context['bufnr'] in self.__buffers and
-                    context['event'] != 'BufWritePost' and
-                    len(self.vim.current.buffer) > self.__max_lines):
-                line = context['position'][1]
-                buffer = self.__buffers[context['bufnr']]
-                buffer['candidates'] += parse_buffer_pattern(
-                        getlines(self.vim, max([1, line-500]), line+500),
-                        context['keyword_patterns'],
-                        context['complete_str'])
-                buffer['candidates'] = list(set(buffer['candidates']))
-            else:
-                self.__buffers[context['bufnr']] = {
-                    'filetype': context['filetype'],
-                    'candidates': parse_buffer_pattern(
-                        getlines(self.vim),
-                        context['keyword_patterns'],
-                        context['complete_str'])
-                }
+            self.__buffers[context['bufnr']] = {
+                'filetype': context['filetype'],
+                'candidates': parse_buffer_pattern(
+                    getlines(self.vim),
+                    context['keyword_patterns'],
+                    context['complete_str'])
+            }
         except UnicodeDecodeError:
             return []
