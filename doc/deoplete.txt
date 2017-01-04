@@ -1,6 +1,6 @@
 *deoplete.txt*	Dark powered asynchronous completion framework for neovim.
 
-Version: 2.0
+Version: 3.0
 Author: Shougo <Shougo.Matsu at gmail.com>
 License: MIT license
 
@@ -155,7 +155,7 @@ g:deoplete#enable_profile
 g:deoplete#delimiters
 		Delimiters list.
 
-		Default value: ['/', '.', '::', ':', '#']
+		Default value: ['/']
 
 							*g:deoplete#max_list*
 g:deoplete#max_list
@@ -533,8 +533,9 @@ EXAMPLES						*deoplete-examples*
 SOURCES							*deoplete-sources*
 
 buffer						*deoplete-source-buffer*
-		It collects keywords from current buffer and the opened
-		buffers which have same 'filetype'.
+		It collects keywords from current buffer and the current
+		tabpage windows buffers and the opened buffers which have same
+		'filetype'.
 
 		Note: It does not collect keywords from not loaded buffer.
 		For example, if you open file by "nvim A B".  A is already
@@ -1009,6 +1010,9 @@ https://github.com/hkupty/acid.nvim
 
 deoplete-omnisharp: "cs" source for C#
 https://github.com/Robzz/deoplete-omnisharp/
+
+deoplete-hack: "hack" source for Hack and PHP
+https://github.com/zefei/deoplete-hack
 
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*

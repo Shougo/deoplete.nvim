@@ -7,6 +7,7 @@
 import re
 from abc import abstractmethod
 from deoplete.logger import LoggingMixin
+from deoplete.util import debug
 
 
 class Base(LoggingMixin):
@@ -34,6 +35,9 @@ class Base(LoggingMixin):
         m = re.search('(?:' + context['keyword_patterns'] + ')$',
                       context['input'])
         return m.start() if m else -1
+
+    def print(self, expr):
+        debug(self.vim, expr)
 
     @abstractmethod
     def gather_candidate(self, context):
