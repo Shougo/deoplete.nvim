@@ -70,7 +70,7 @@ class Deoplete(logger.LoggingMixin):
     def gather_results(self, context):
         results = []
 
-        for source_name, source in list(self.itersource(context)):
+        for source_name, source in self.itersource(context):
             try:
                 if source.disabled_syntaxes and 'syntax_names' not in context:
                     context['syntax_names'] = get_syn_names(self.__vim)
@@ -361,18 +361,15 @@ class Deoplete(logger.LoggingMixin):
     def is_skip(self, context, disabled_syntaxes,
                 min_pattern_length, max_pattern_length, input_pattern):
         if 'syntax_names' in context and disabled_syntaxes:
-            pattern = '('+'|'.join(disabled_syntaxes)+')$'
-            if [x for x in context['syntax_names']
-                    if re.search(pattern, x)]:
-                return 1
+            p = re.compile('(' + '|'.join(disabled_syntaxes) + ')$')
+            if next(filter(p.search, context['syntax_names']), None):
+                return True
         if (input_pattern != '' and
                 re.search('(' + input_pattern + ')$', context['input'])):
-            return 0
-        skip_length = (context['event'] != 'Manual' and
-                       not (min_pattern_length <=
-                            len(context['complete_str']) <=
-                            max_pattern_length))
-        return skip_length
+            return False
+        return (context['event'] != 'Manual' and
+                not (min_pattern_length <=
+                     len(context['complete_str']) <= max_pattern_length))
 
     def position_has_changed(self, tick):
         return tick != self.__vim.eval('b:changedtick')
