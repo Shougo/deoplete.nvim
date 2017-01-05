@@ -116,9 +116,6 @@ function! s:is_skip(event, context) abort
 
   return 0
 endfunction
-fu! s:current_w(position, text)
-  return match(reversed(text[:position]), '[^A-Za-z0-9_]')
-endfu
 function! s:is_skip_text(event) abort
   let input = deoplete#util#get_input(a:event)
   let displaywidth = strdisplaywidth(input) + 1
