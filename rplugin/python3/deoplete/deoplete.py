@@ -45,6 +45,8 @@ class Deoplete(logger.LoggingMixin):
 
         if not candidates or self.position_has_changed(
                 context['changedtick']) or self.__vim.funcs.mode() != 'i':
+            if 'deoplete#_saved_completeopt' in context['vars']:
+                self.__vim.call('deoplete#mapping#_restore_completeopt')
             return
 
         self.__vim.vars['deoplete#_context'] = {
@@ -53,6 +55,10 @@ class Deoplete(logger.LoggingMixin):
             'candidates': candidates,
             'event': context['event'],
         }
+
+        if context['event'] != 'Manual' and (
+                'deoplete#_saved_completeopt' not in context['vars']):
+            self.__vim.call('deoplete#mapping#_set_completeopt')
 
         self.__vim.feedkeys(context['start_complete'])
         if self.__vim.call(

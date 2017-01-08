@@ -51,6 +51,7 @@ endfunction
 function! s:completion_begin(event) abort
   let context = deoplete#init#_context(a:event, [])
   if s:is_skip(a:event, context)
+    call deoplete#mapping#_restore_completeopt()
     return
   endif
 
@@ -75,7 +76,6 @@ function! s:completion_begin(event) abort
     endfor
   endfor
 
-  call deoplete#mapping#_set_completeopt()
   call rpcnotify(g:deoplete#_channel_id,
         \ 'deoplete_auto_completion_begin', context)
 endfunction
@@ -137,10 +137,7 @@ function! s:on_event(event) abort
 endfunction
 
 function! s:on_insert_leave() abort
-  if exists('g:deoplete#_saved_completeopt')
-    let &completeopt = g:deoplete#_saved_completeopt
-    unlet g:deoplete#_saved_completeopt
-  endif
+  call deoplete#mapping#_restore_completeopt()
   let g:deoplete#_context = {}
 endfunction
 
