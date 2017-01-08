@@ -182,28 +182,28 @@ def load_external_module(file, module):
         sys.path.insert(0, module_dir)
 
 
-def truncate_skipping(string, max, footer, footer_len):
-    if len(string) <= max/2:
+def truncate_skipping(string, max_width, footer, footer_len):
+    if len(string) <= max_width/2:
         return string
-    if strwidth(string) <= max:
+    if strwidth(string) <= max_width:
         return string
 
     footer += string[
             -len(truncate(string[::-1], footer_len)):]
-    return truncate(string, max - strwidth(footer)) + footer
+    return truncate(string, max_width - strwidth(footer)) + footer
 
 
-def truncate(string, max):
-    if len(string) <= max/2:
+def truncate(string, max_width):
+    if len(string) <= max_width/2:
         return string
-    if strwidth(string) <= max:
+    if strwidth(string) <= max_width:
         return string
 
     width = 0
     ret = ''
     for c in string:
         wc = charwidth(c)
-        if width + wc > max:
+        if width + wc > max_width:
             break
         ret += c
         width += wc
@@ -229,10 +229,10 @@ def expand(path):
 def getlines(vim, start=1, end='$'):
     if end == '$':
         end = len(vim.current.buffer)
-    max = min([end - start, 5000])
+    max_len = min([end - start, 5000])
     lines = []
     current = start
     while current <= end:
-        lines += vim.call('getline', current, current + max)
-        current += max + 1
+        lines += vim.call('getline', current, current + max_len)
+        current += max_len + 1
     return lines
