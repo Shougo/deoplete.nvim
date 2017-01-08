@@ -1338,6 +1338,11 @@ Q: Is deoplete better than completer.vim?
 A: Please see
 https://www.reddit.com/r/vim/comments/573e3d/completorvim_async_completion_framework_made_ease/
 
+Q: The popup is delayed.
+https://github.com/Shougo/deoplete.nvim/issues/413
+
+A: Please change |g:deoplete#auto_complete_delay| value.
+
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
 
