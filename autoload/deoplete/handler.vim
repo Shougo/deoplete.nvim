@@ -51,6 +51,7 @@ endfunction
 function! s:completion_begin(event) abort
   let context = deoplete#init#_context(a:event, [])
   if s:is_skip(a:event, context)
+    call s:restore_complete_opt()
     return
   endif
 
@@ -80,6 +81,11 @@ function! s:completion_begin(event) abort
         \ 'deoplete_auto_completion_begin', context)
 endfunction
 function! s:is_skip(event, context) abort
+  let reversed = join(reverse(split(a:context.input, '.\zs')), '')
+  let first_keyword = match(reversed, '\k*')
+  if match(reversed, '\k*') != 0 || strlen(matchstr(reversed, '\k*')) < 2
+    return 1
+  endif
   if s:is_skip_text(a:event)
     return 1
   endif
@@ -136,11 +142,15 @@ function! s:on_event(event) abort
   call rpcnotify(g:deoplete#_channel_id, 'deoplete_on_event', context)
 endfunction
 
-function! s:on_insert_leave() abort
+fu! s:restore_complete_opt() abort
   if exists('g:deoplete#_saved_completeopt')
     let &completeopt = g:deoplete#_saved_completeopt
     unlet g:deoplete#_saved_completeopt
   endif
+endfu
+
+function! s:on_insert_leave() abort
+  call s:restore_complete_opt()
   let g:deoplete#_context = {}
 endfunction
 
