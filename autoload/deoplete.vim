@@ -44,21 +44,29 @@ function! deoplete#manual_complete(...) abort
         \ . string(get(a:000, 0, [])) . ")\<CR>"
 endfunction
 function! deoplete#close_popup() abort
-  let g:deoplete#_context.position = getpos('.')
+  if exists('g:deoplete#_context')
+    let g:deoplete#_context.position = getpos('.')
+  endif
   return pumvisible() ? "\<C-y>" : ''
 endfunction
 function! deoplete#smart_close_popup() abort
-  let g:deoplete#_context.position = getpos('.')
+  if exists('g:deoplete#_context')
+    let g:deoplete#_context.position = getpos('.')
+  endif
   return pumvisible() ? "\<C-e>" : ''
 endfunction
 function! deoplete#cancel_popup() abort
-  let g:deoplete#_context.position = getpos('.')
+  if exists('g:deoplete#_context')
+    let g:deoplete#_context.position = getpos('.')
+  endif
   return pumvisible() ? "\<C-e>" : ''
 endfunction
 function! deoplete#refresh() abort
-  let g:deoplete#_context.refresh = 1
-  if get(g:deoplete#_context, 'event', '') ==# 'Manual'
-    let g:deoplete#_context.event = 'Refresh'
+  if exists('g:deoplete#_context')
+    let g:deoplete#_context.refresh = 1
+    if get(g:deoplete#_context, 'event', '') ==# 'Manual'
+      let g:deoplete#_context.event = 'Refresh'
+    endif
   endif
   return pumvisible() ? "\<C-e>" : ''
 endfunction
