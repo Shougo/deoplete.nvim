@@ -41,7 +41,7 @@ class DeopleteHandlers(object):
                             version.append(m.group(1))
         self.__vim.vars['deoplete#_neovim_python_version'] = version
 
-    @neovim.rpc_export('deoplete_enable_logging', sync=True)
+    @neovim.rpc_export('deoplete_enable_logging')
     def enable_logging(self, level, logfile):
         logger.setup(self.__vim, level, logfile)
         self.__deoplete.debug_enabled = True
