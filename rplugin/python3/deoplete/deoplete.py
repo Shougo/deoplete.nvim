@@ -15,6 +15,7 @@ import deoplete.filter  # noqa
 import deoplete.source  # noqa
 
 from deoplete import logger
+from deoplete.exceptions import SourceInitError
 from deoplete.util import (bytepos2charpos, charpos2bytepos, error, error_tb,
                            find_rplugins, get_buffer_config, get_custom,
                            get_syn_names, import_plugin)
@@ -205,9 +206,14 @@ class Deoplete(logger.LoggingMixin):
                 try:
                     source.on_init(context)
                 except Exception as exc:
-                    error_tb(self.__vim,
-                             'Error when loading source {}. '
-                             'Ignoring.'.format(source_name, exc))
+                    if isinstance(exc, SourceInitError):
+                        error(self.__vim,
+                              'Error when loading source {}: {}. '
+                              'Ignoring.'.format(source_name, exc))
+                    else:
+                        error_tb(self.__vim,
+                                 'Error when loading source {}: {}. '
+                                 'Ignoring.'.format(source_name, exc))
                     self.__ignored_sources.add(source.path)
                     self.__sources.pop(source_name)
                     continue
