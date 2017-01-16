@@ -7,9 +7,9 @@
 from .base import Base
 
 import re
-from deoplete.util import \
-    get_buffer_config, convert2list, parse_buffer_pattern, \
-    set_pattern, getlines
+from deoplete.util import (
+    get_buffer_config, convert2list,
+    parse_buffer_pattern, set_pattern, getlines)
 
 
 class Source(Base):
