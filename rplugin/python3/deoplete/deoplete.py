@@ -113,11 +113,6 @@ class Deoplete(logger.LoggingMixin):
                 if 'candidates' not in ctx or not ctx['candidates']:
                     continue
 
-                if ctx['candidates'] and isinstance(ctx['candidates'][0], str):
-                    # Convert to dict
-                    ctx['candidates'] = [{'word': x}
-                                         for x in ctx['candidates']]
-
                 # Filtering
                 ignorecase = ctx['ignorecase']
                 smartcase = ctx['smartcase']
@@ -156,9 +151,11 @@ class Deoplete(logger.LoggingMixin):
                 mark = source.mark + ' '
                 for candidate in ctx['candidates']:
                     candidate['icase'] = 1
-                    if source.mark != '' \
-                            and candidate.get('menu', '').find(mark) != 0:
+                    if (source.mark != '' and
+                            candidate.get('menu', '').find(mark) != 0):
                         candidate['menu'] = mark + candidate.get('menu', '')
+                    if source.filetypes:
+                        candidate['dup'] = 1
 
                 results.append({
                     'name': source_name,

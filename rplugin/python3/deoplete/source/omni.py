@@ -6,8 +6,8 @@
 
 import re
 from .base import Base
-from deoplete.util import \
-    get_buffer_config, error, error_vim, convert2list, set_pattern
+from deoplete.util import (
+    get_buffer_config, error, error_vim, convert2list, set_pattern)
 
 
 class Source(Base):
@@ -102,6 +102,13 @@ class Source(Base):
                       'Error occurred calling omnifunction: ' +
                       self.__omnifunc)
             candidates = []
+
+        if candidates and isinstance(candidates[0], str):
+            # Convert to dict
+            candidates = [{'word': x} for x in candidates]
+
+        for candidate in candidates:
+            candidate['dup'] = 1
 
         self.__prev_linenr = context['position'][1]
         self.__prev_pos = context['complete_position']
