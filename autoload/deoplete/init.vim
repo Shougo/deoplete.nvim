@@ -194,7 +194,7 @@ function! deoplete#init#_context(event, sources) abort
 
   let bufname = bufname('%')
   let bufpath = fnamemodify(bufname, ':p')
-  if &l:buftype =~ 'nofile' || !filereadable(bufpath)
+  if &l:buftype =~# 'nofile' || !filereadable(bufpath)
     let bufpath = ''
   endif
 
