@@ -8,47 +8,13 @@
 
 ## Environment Information
 
+ * deoplete version(SHA1):
+
  * OS:
 
- * nvim-python-doctor result or `:CheckHealth` result(neovim ver.0.1.5-452+):
-https://github.com/tweekmonster/nvim-python-doctor
+ * neovim version:
 
-```
-## Neovim Python Diagnostic
-
-- Neovim Version: NVIM v0.1.4-180-g2ba30a7
-
-## Python versions visible to Neovim
-
-### 'python' info from /usr/local/bin/nvim
-
-WARN: 'g:python_host_prog' is not set
-WARN: Fallback to '/usr/bin/python'
-**Python Version**: `Python 3.5.1`
-**Neovim Package Version**: `neovim (0.1.7)
-neovim-gui (0.1.2)
-neovim-remote (1.1.3)`
-
-### 'python3' info from /usr/local/bin/nvim
-
-WARN: 'g:python3_host_prog' is not set
-WARN: Fallback to '/usr/bin/python3'
-**Python Version**: `Python 3.5.1`
-**Neovim Package Version**: `neovim (0.1.7)
-neovim-gui (0.1.2)
-neovim-remote (1.1.3)`
-
-## Python versions visible in the current shell
-
-- **python** version: `Python 3.5.1`
-  - **neovim** version: `neovim (0.1.7)
-neovim-gui (0.1.2)
-neovim-remote (1.1.3)`
-- **python3** version: `Python 3.5.1`
-  - **neovim** version: `neovim (0.1.7)
-neovim-gui (0.1.2)
-neovim-remote (1.1.3)`
-```
+ * `:CheckHealth` result(neovim ver.0.1.5-452+):
 
 ## Provide a minimal init.vim with less than 50 lines (Required!)
 
