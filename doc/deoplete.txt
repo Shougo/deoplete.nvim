@@ -1099,8 +1099,9 @@ Q: What is the "dark powered"?
 
 A: I think text editor is everything in the world.
 I want to do everything in Vim(neovim) like Emacs.
-It is not arrowed by |design-not| in Vim.  It is not the light way to use Vim.
-So it is the dark way.  I am the dark Vimmer.  My plugins are dark powered.
+It is not allowed by |design-not| in Vim.  It is not the light way to use Vim.
+So I have defined it is the dark way.  I am the dark Vimmer.  My plugins are
+dark powered.
 
 Q: deoplete can support Vim8?
 
