@@ -7,7 +7,8 @@
 import re
 from .base import Base
 from deoplete.util import (
-    get_buffer_config, error, error_vim, convert2list, set_pattern)
+    get_buffer_config, error, error_vim, convert2list,
+    set_pattern, convert2candidates)
 
 
 class Source(Base):
@@ -103,9 +104,7 @@ class Source(Base):
                       self.__omnifunc)
             candidates = []
 
-        if candidates and isinstance(candidates[0], str):
-            # Convert to dict
-            candidates = [{'word': x} for x in candidates]
+        candidates = convert2candidates(candidates)
 
         for candidate in candidates:
             candidate['dup'] = 1

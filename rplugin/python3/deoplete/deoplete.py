@@ -18,7 +18,7 @@ from deoplete import logger
 from deoplete.exceptions import SourceInitError
 from deoplete.util import (bytepos2charpos, charpos2bytepos, error, error_tb,
                            find_rplugins, get_buffer_config, get_custom,
-                           get_syn_names, import_plugin)
+                           get_syn_names, import_plugin, convert2candidates)
 
 
 class Deoplete(logger.LoggingMixin):
@@ -112,6 +112,8 @@ class Deoplete(logger.LoggingMixin):
 
                 if 'candidates' not in ctx or not ctx['candidates']:
                     continue
+
+                ctx['candidates'] = convert2candidates(ctx['candidates'])
 
                 # Filtering
                 ignorecase = ctx['ignorecase']

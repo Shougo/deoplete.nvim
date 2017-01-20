@@ -47,6 +47,10 @@ def convert2list(expr):
     return (expr if isinstance(expr, list) else [expr])
 
 
+def convert2candidates(l):
+    return [{'word': x} for x in l] if l and isinstance(l[0], str) else l
+
+
 def globruntime(runtimepath, path):
     ret = []
     for rtp in re.split(',', runtimepath):
