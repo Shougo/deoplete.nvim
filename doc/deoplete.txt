@@ -1014,6 +1014,10 @@ https://github.com/Robzz/deoplete-omnisharp/
 deoplete-hack: "hack" source for Hack and PHP
 https://github.com/zefei/deoplete-hack
 
+deoplete-laravel-plugin: "laravel-plugin" source for "php" and "blade"
+filetypes
+https://github.com/rafaelndev/deoplete-laravel-plugin
+
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*
 
@@ -1090,6 +1094,13 @@ implemented by needed person.
 
 ==============================================================================
 FAQ							*deoplete-faq*
+
+Q: What is the "dark powered"?
+
+A: I think text editor is everything in the world.
+I want to do everything in Vim(neovim) like Emacs.
+It is not arrowed by |design-not| in Vim.  It is not the light way to use Vim.
+So it is the dark way.  I am the dark Vimmer.  My plugins are dark powered.
 
 Q: deoplete can support Vim8?
 
