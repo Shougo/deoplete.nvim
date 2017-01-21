@@ -68,9 +68,7 @@ If you want to read for Neovim-python/python3 interface install documentation,
 you should read |provider-python| and the Wiki.
 https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
 
-You can check the Python3 installation by nvim-python-doctor or |:CheckHealth|
-command.
-https://github.com/tweekmonster/nvim-python-doctor
+You can check the Python3 installation by |:CheckHealth| command.
 
 ==============================================================================
 INTERFACE						*deoplete-interface*
@@ -1017,6 +1015,9 @@ https://github.com/zefei/deoplete-hack
 deoplete-laravel-plugin: "laravel-plugin" source for "php" and "blade"
 filetypes
 https://github.com/rafaelndev/deoplete-laravel-plugin
+
+deoplete-rct: "rct" source for Ruby
+https://github.com/Shougo/deoplete-rct
 
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*
