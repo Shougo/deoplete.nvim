@@ -31,7 +31,7 @@ class DeopleteHandlers(object):
             version = [pkg_resources.get_distribution('neovim').version]
         except Exception:
             version = []
-            python_dir = os.path.dirname(os.path.dirname(neovim._file__))
+            python_dir = os.path.dirname(os.path.dirname(neovim.__file__))
             base = python_dir + '/neovim-*/'
             for metadata in glob(base + 'PKG-INFO') + glob(base + '/METADATA'):
                 with open(metadata, 'r', errors='replace') as f:
