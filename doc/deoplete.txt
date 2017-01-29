@@ -1019,6 +1019,9 @@ https://github.com/rafaelndev/deoplete-laravel-plugin
 deoplete-rct: "rct" source for Ruby
 https://github.com/Shougo/deoplete-rct
 
+deoplete-zsh: "zsh" source for Zsh
+https://github.com/zchee/deoplete-zsh
+
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*
 
