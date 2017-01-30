@@ -46,7 +46,8 @@ class Source(Base):
                                       'deoplete_omni_functions',
                                       'deoplete#omni#functions',
                                       {'_': ''})):
-                if omnifunc == '' and filetype == current_ft:
+                if omnifunc == '' and (filetype == current_ft or
+                                       filetype in ['css', 'javascript']):
                     omnifunc = context['omni__omnifunc']
                 if omnifunc == '' or not self.vim.call(
                             'deoplete#util#exists_omnifunc', omnifunc):
@@ -65,7 +66,7 @@ class Source(Base):
                                                'Manual' and m is None):
                         continue
 
-                    if self.__omnifunc in [
+                    if filetype == current_ft and self.__omnifunc in [
                             'ccomplete#Complete',
                             'htmlcomplete#CompleteTags',
                             'phpcomplete#CompletePHP']:
