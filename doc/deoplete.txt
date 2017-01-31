@@ -21,7 +21,6 @@ Create filter		|deoplete-create-filter|
 FILTERS			|deoplete-filters|
 External sources	|deoplete-external-sources|
 External plugins	|deoplete-external-plugins|
-External omnifuncs	|deoplete-external-omnifuncs|
 Vim8 async API support	|deoplete-vim8|
 FAQ			|deoplete-faq|
 Compatibility		|deoplete-compatibility|
@@ -1047,13 +1046,15 @@ FastFold:
 Speed up the updating folds when you use auto completion plugins.
 https://github.com/Konfekt/FastFold
 
-==============================================================================
-EXTERNAL OMNIFUNCS				*deoplete-external-omnifuncs*
+						*deoplete-external-omnifuncs*
 
 These are my recommended omnifuncs for deoplete.
 
 phpcomplete: PHP omnifunc
 https://github.com/shawncplus/phpcomplete.vim
+
+phpcd.vim: another PHP omnifunc. Faster.
+https://github.com/php-vim/phpcd.vim
 
 ==============================================================================
 VIM8 ASYNC API SUPPORT					*deoplete-vim8*
