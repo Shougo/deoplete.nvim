@@ -1021,6 +1021,12 @@ https://github.com/Shougo/deoplete-rct
 deoplete-zsh: "zsh" source for Zsh
 https://github.com/zchee/deoplete-zsh
 
+deoplete-fish: "fish" source for fish shell
+https://github.com/ponko2/deoplete-fish
+
+deoplete-fsharp: "fsharp" source for F#
+https://github.com/callmekohei/deoplete-fsharp
+
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*
 
