@@ -1366,6 +1366,12 @@ https://github.com/Shougo/deoplete.nvim/issues/413
 
 A: Please change |g:deoplete#auto_complete_delay| value.
 
+Q: I want to use Java script omnifunc.
+
+A: Please set |g:deoplete#omni_patterns| manually. >
+		let g:deoplete#omni_patterns = {}
+		let g:deoplete#omni_patterns.javascript = '[^. *\t]\.\w*'
+
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
 

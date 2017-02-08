@@ -32,8 +32,6 @@ class Source(Base):
                     [r'\w+', r'\w+[):;]?\s+\w*', r'[@!]'])
         set_pattern(self.__input_patterns, 'ruby',
                     [r'[^. \t0-9]\.\w*', r'[a-zA-Z_]\w*::\w*'])
-        set_pattern(self.__input_patterns, 'javascript',
-                    [r'[^. \t0-9]\.\w*'])
         set_pattern(self.__input_patterns, 'lua',
                     [r'\w+[.:]', r'require\s*\(?["'']\w*'])
 
