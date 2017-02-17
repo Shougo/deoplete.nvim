@@ -36,7 +36,7 @@ class DeopleteHandlers(object):
                     major=neovim.VERSION.major,
                     minor=neovim.VERSION.minor,
                     patch=neovim.VERSION.patch,
-                    prerelease=neovim.VERSION.__dict__.get('prerelease', '')
+                    prerelease=getattr(neovim.VERSION, 'prerelease', '')
                 )]
             else:
                 version = []
