@@ -30,15 +30,25 @@ class DeopleteHandlers(object):
             import pkg_resources
             version = [pkg_resources.get_distribution('neovim').version]
         except Exception:
-            version = []
-            python_dir = os.path.dirname(os.path.dirname(neovim.__file__))
-            base = python_dir + '/neovim-*/'
-            for metadata in glob(base + 'PKG-INFO') + glob(base + '/METADATA'):
-                with open(metadata, 'r', errors='replace') as f:
-                    for line in f:
-                        m = re.match('Version: (.+)', line)
-                        if m:
-                            version.append(m.group(1))
+            # Since neovim-client version 0.1.11
+            if hasattr(neovim, 'VERSION'):
+                version = ['{major}.{minor}.{patch}{prerelease}'.format(
+                    major=neovim.VERSION.major,
+                    minor=neovim.VERSION.minor,
+                    patch=neovim.VERSION.patch,
+                    prerelease=getattr(neovim.VERSION, 'prerelease', '')
+                )]
+            else:
+                version = []
+                python_dir = os.path.dirname(os.path.dirname(neovim.__file__))
+                base = python_dir + '/neovim-*/'
+                meta_files = glob(base + 'PKG-INFO') + glob(base + '/METADATA')
+                for metadata in meta_files:
+                    with open(metadata, 'r', errors='replace') as f:
+                        for line in f:
+                            m = re.match('Version: (.+)', line)
+                            if m:
+                                version.append(m.group(1))
         self._vim.vars['deoplete#_neovim_python_version'] = version
 
     @neovim.rpc_export('deoplete_enable_logging')
