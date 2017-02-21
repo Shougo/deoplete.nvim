@@ -1118,6 +1118,12 @@ Q: deoplete can support Vim8?
 
 A: |deoplete-vim8|
 
+Q: deoplete is slow.
+
+A: Please change |g:deoplete#auto_complete_delay| value.
+It is huge delay value intentionally.
+And some sources slow.  You should check what is the slow.
+
 Q: deoplete does not work.
 
 A:
