@@ -669,7 +669,7 @@ name		(String)			(Required)
 		The name of a source.
 
 					*deoplete-source-attribute-filetypes*
-filetypes	(List)				(Optional)
+filetypes	(List[str])			(Optional)
 		Available filetype list.
 
 		If you omit it, this source available in all filetypes.
@@ -742,27 +742,27 @@ debug_enabled
 		If it is True, the debug log feature is enabled in the source.
 
 					*deoplete-source-attribute-matchers*
-matchers	(List)				(Optional)
+matchers	(List[str])			(Optional)
 		Source default matchers list.
 
 		If you omit it, |deoplete-filter-matcher_default| is used.
 
 					*deoplete-source-attribute-sorters*
-sorters		(List)				(Optional)
+sorters		(List[str])			(Optional)
 		Source default sorters list.
 
 		If you omit it, |deoplete-filter-sorter_default| is
 		used.
 
 					*deoplete-source-attribute-converters*
-converters	(List)				(Optional)
+converters	(List[str])			(Optional)
 		Source default converters list.
 
 		If you omit it, |deoplete-filter-converter_default| is used.
 
 				*deoplete-source-attribute-disabled_syntaxes*
 disabled_syntaxes
-		(List)				(Optional)
+		(List[str])			(Optional)
 		Source disabled syntaxes list.
 
 		If you omit it, this feature is ignored.
@@ -834,13 +834,13 @@ __{name}	(Unspecified)			(Optional)
 		complete_str		(String)
 			The complete string of current source.
 
-		candidates		(List)
+		candidates		(List[dict])
 			The current candidates.
 
 		filetype		(String)
 			Current 'filetype'.
 
-		filetypes		(List)
+		filetypes		(List[str])
 			It contains current 'filetype' and same
 			filetypes and composite filetypes.
 
