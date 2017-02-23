@@ -675,21 +675,21 @@ filetypes	(List)				(Optional)
 		If you omit it, this source available in all filetypes.
 
 					*deoplete-source-attribute-rank*
-rank		(Number)			(Optional)
+rank		(Integer)			(Optional)
 		Source priority.  Higher values imply higher priority.
 		If you omit it, it is set 100.
 		Note: It is high priority than match position.
 
 				*deoplete-source-attribute-min_pattern_length*
 min_pattern_length
-		(Number)			(Optional)
+		(Integer)			(Optional)
 		Required pattern length for completion.
 
 		If you omit it, it is set "2" value.
 
 				*deoplete-source-attribute-max_pattern_length*
 max_pattern_length
-		(Number)			(Optional)
+		(Integer)			(Optional)
 		Ignored pattern length for completion.
 		It is useful to edit BASE64 files.
 
@@ -697,7 +697,7 @@ max_pattern_length
 
 				*deoplete-source-attribute-max_abbr_width*
 max_abbr_width
-		(Number)			(Optional)
+		(Integer)			(Optional)
 		If the candidate abbr length exceeds the length it will be cut
 		down.
 		It it is less than or equal 0, it will be disabled.
@@ -706,7 +706,7 @@ max_abbr_width
 
 				*deoplete-source-attribute-max_menu_width*
 max_menu_width
-		(Number)			(Optional)
+		(Integer)			(Optional)
 		If the candidate menu length exceeds the length it will be cut
 		down.
 		It it is less than or equal 0, it will be disabled.
@@ -816,7 +816,7 @@ on_init		(Function)			(Optional)
 		It should be used to initialize the internal variables.
 
 						*deoplete-source-attribute-__*
-__{name}	(Unknown)			(Optional)
+__{name}	(Unspecified)			(Optional)
 		Additional source information.
 		Note: Recommend sources save variables instead of
 		global variables.
@@ -828,7 +828,7 @@ __{name}	(Unknown)			(Optional)
 		input			(String)
 			The input string of current line.
 
-		complete_position	(Number)
+		complete_position	(Integer)
 			The complete position of current source.
 
 		complete_str		(String)
@@ -872,7 +872,7 @@ info		(String)			(Optional)
 		contains "preview", it will be displayed in |preview-window|.
 
 					*deoplete-candidate-attribute-dup*
-dup		(Number)			(Optional)
+dup		(Integer)			(Optional)
 		If it is non zero, the item will be displayed in the popup
 		menu when an item with the same word is already present.
 
