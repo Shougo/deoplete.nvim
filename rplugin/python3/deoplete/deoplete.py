@@ -62,9 +62,6 @@ class Deoplete(logger.LoggingMixin):
             self._vim.call('deoplete#mapping#_set_completeopt')
 
         self._vim.feedkeys(context['start_complete'])
-        if self._vim.call(
-                'has', 'patch-7.4.1758') and context['event'] != 'Manual':
-            self._vim.feedkeys('', 'x!')
 
     def gather_candidates(self, context):
         self.check_recache(context)
