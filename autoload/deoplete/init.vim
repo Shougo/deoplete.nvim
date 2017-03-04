@@ -114,6 +114,8 @@ function! deoplete#init#_variables() abort
         \ 'g:deoplete#max_menu_width', 40)
   call deoplete#util#set_default(
         \ 'g:deoplete#skip_chars', [])
+  call deoplete#util#set_default(
+        \ 'g:deoplete#complete_method', 'complete')
 
   call deoplete#util#set_default(
         \ 'g:deoplete#keyword_patterns', {})
@@ -148,7 +150,6 @@ function! deoplete#init#_variables() abort
   call deoplete#util#set_pattern(
         \ g:deoplete#_omni_patterns,
         \ 'html,xhtml,xml,markdown,mkd', ['<', '<[^>]*\s[[:alnum:]-]*'])
-
 endfunction
 
 function! deoplete#init#_context(event, sources) abort
@@ -222,7 +223,6 @@ function! deoplete#init#_context(event, sources) abort
         \ 'bufname': bufname,
         \ 'bufpath': bufpath,
         \ 'cwd': getcwd(),
-        \ 'start_complete': "\<Plug>_",
         \ 'vars': filter(copy(g:), "stridx(v:key, 'deoplete#') == 0"),
         \ 'bufvars': filter(copy(b:), "stridx(v:key, 'deoplete_') == 0"),
         \ 'custom': deoplete#custom#get(),

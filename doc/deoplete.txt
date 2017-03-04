@@ -83,6 +83,18 @@ g:deoplete#enable_at_startup
 		With the default value 0, you cannot use deoplete
 		unless you start it manually.
 
+						*g:deoplete#complete_method*
+g:deoplete#complete_method
+		If it is "complete", deoplete use |complete()|.
+
+		If it is "completefunc", deoplete use |i_CTRL-X_CTRL-U|.
+		Note: It changes current 'completefunc' value.
+
+		If it is "omnifunc", deoplete use |i_CTRL-X_CTRL-O|.
+		Note: It changes current 'omnifunc' value.
+
+		Default value: "complete"
+
 					*g:deoplete#enable_ignore_case*
 g:deoplete#enable_ignore_case
 		When deoplete looks for candidate completion, this

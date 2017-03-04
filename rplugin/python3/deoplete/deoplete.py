@@ -52,7 +52,6 @@ class Deoplete(logger.LoggingMixin):
 
         self._vim.vars['deoplete#_context'] = {
             'complete_position': complete_position,
-            'changedtick': context['changedtick'],
             'candidates': candidates,
             'event': context['event'],
         }
@@ -61,7 +60,7 @@ class Deoplete(logger.LoggingMixin):
                 'deoplete#_saved_completeopt' not in context['vars']):
             self._vim.call('deoplete#mapping#_set_completeopt')
 
-        self._vim.feedkeys(context['start_complete'])
+        self._vim.call('deoplete#mapping#_do_complete')
 
     def gather_candidates(self, context):
         self.check_recache(context)
