@@ -856,6 +856,30 @@ __{name}	(Unspecified)			(Optional)
 			It contains current 'filetype' and same
 			filetypes and composite filetypes.
 
+		is_async		(Bool)
+			If the gather is asynchronous, the source must set
+			it "True".
+
+	The below is the example of async deoplete source.
+	If "context['is_async']" is True, the gather_candidates is called
+	repeatedly.
+>
+	from .base import Base
+	
+	class Source(Base):
+	    def __init__(self, vim):
+	        super().__init__(vim)
+	        self.name = 'async'
+	        self.mark = '[async]'
+	        self.rank = 1000
+	        self._count = 0
+	
+	    def gather_candidates(self, context):
+	        self._count += 1
+	        context['is_async'] = self._count < 10
+	        return [context['input'] + str(self._count)]
+<
+
 ------------------------------------------------------------------------------
 CANDIDATE ATTRIBUTES			*deoplete-candidate-attributes*
 

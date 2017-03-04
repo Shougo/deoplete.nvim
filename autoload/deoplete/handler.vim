@@ -26,25 +26,60 @@ function! s:completion_check(event) abort
   let delay = get(g:deoplete#_context, 'refresh', 0) ?
         \ g:deoplete#auto_refresh_delay : g:deoplete#auto_complete_delay
   if has('timers') && delay > 0
-    if exists('s:timer')
-      call timer_stop(s:timer.id)
+    if exists('s:delay_timer')
+      call timer_stop(s:delay_timer.id)
     endif
 
     if a:event !=# 'Manual'
-      let s:timer = { 'event': a:event, 'changedtick': b:changedtick }
-      let s:timer.id = timer_start(delay, function('s:completion_delayed'))
+      let s:delay_timer = { 'event': a:event, 'changedtick': b:changedtick }
+      let s:delay_timer.id = timer_start(delay,
+            \ function('s:completion_delayed'))
       return
     endif
   endif
 
   return s:completion_begin(a:event)
 endfunction
-
 function! s:completion_delayed(timer) abort
-  let timer = s:timer
-  unlet! s:timer
+  let timer = s:delay_timer
+  unlet! s:delay_timer
   if b:changedtick == timer.changedtick
     call s:completion_begin(timer.event)
+  endif
+endfunction
+
+function! deoplete#handler#_async_timer_start() abort
+  if !has('timers') || exists('s:async_timer')
+    return
+  endif
+
+  let s:async_timer = { 'event': 'AsyncTimer', 'changedtick': b:changedtick }
+  let s:async_timer.id = timer_start(500,
+        \ function('s:completion_async'), {'repeat': -1})
+endfunction
+function! deoplete#handler#_async_timer_stop() abort
+  if !has('timers')
+    return
+  endif
+
+  if exists('s:async_timer')
+    call timer_stop(s:async_timer.id)
+    unlet s:async_timer
+  endif
+endfunction
+function! s:completion_async(timer) abort
+  if mode() !=# 'i'
+    call deoplete#handler#_async_timer_stop()
+    return
+  endif
+
+  if pumvisible()
+    " Auto refresh
+    call feedkeys("\<Plug>(deoplete_auto_refresh)")
+  endif
+
+  if b:changedtick == s:async_timer.changedtick
+    call s:completion_begin(s:async_timer.event)
   endif
 endfunction
 

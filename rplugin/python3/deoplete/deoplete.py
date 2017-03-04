@@ -36,17 +36,28 @@ class Deoplete(logger.LoggingMixin):
         self.name = 'core'
         self._ignored_sources = set()
         self._ignored_filters = set()
+        self._prev_linenr = -1
+        self._prev_input = ''
         self._results = []
 
     def completion_begin(self, context):
         self.check_recache(context)
 
         try:
-            self._results = self.gather_results(context)
-            complete_position, candidates = self.merge_results(self._results)
+            is_async, complete_position, candidates = self.merge_results(
+                self.gather_results(context), context['input'])
+
         except Exception:
             error_tb(self._vim, 'Error while gathering completions')
+
+            is_async = False
+            complete_position = -1
             candidates = []
+
+        if is_async and self.use_previous_result(context):
+            self._vim.call('deoplete#handler#_async_timer_start')
+        else:
+            self._vim.call('deoplete#handler#_async_timer_stop')
 
         if not candidates or self.position_has_changed(
                 context['changedtick']) or self._vim.funcs.mode() != 'i':
@@ -67,20 +78,38 @@ class Deoplete(logger.LoggingMixin):
         self._vim.call('deoplete#mapping#_do_complete')
 
     def gather_results(self, context):
-        results = []
+        if not self.use_previous_result(context):
+            self._prev_linenr = context['position'][1]
+            self._prev_input = context['input']
+            self._results = {}
 
-        for source_name, source in self.itersource(context):
+        results = self._results
+
+        for source in [x[1] for x in self.itersource(context)
+                       if x[1].name not in results]:
             try:
                 if source.disabled_syntaxes and 'syntax_names' not in context:
                     context['syntax_names'] = get_syn_names(self._vim)
                 ctx = copy.deepcopy(context)
+                ctx['is_async'] = False
+
                 charpos = source.get_complete_position(ctx)
                 if charpos >= 0 and source.is_bytepos:
                     charpos = bytepos2charpos(
                         ctx['encoding'], ctx['input'], charpos)
-                ctx['complete_str'] = ctx['input'][charpos:]
+
+                ctx['char_position'] = charpos
                 ctx['complete_position'] = charpos2bytepos(
                     ctx['encoding'], ctx['input'], charpos)
+                ctx['complete_str'] = ctx['input'][ctx['char_position']:]
+
+                if charpos < 0 or self.is_skip(ctx, source.disabled_syntaxes,
+                                               source.min_pattern_length,
+                                               source.max_pattern_length,
+                                               source.input_pattern):
+                    # Skip
+                    continue
+
                 ctx['max_abbr_width'] = min(source.max_abbr_width,
                                             ctx['max_abbr_width'])
                 ctx['max_menu_width'] = min(source.max_menu_width,
@@ -89,13 +118,6 @@ class Deoplete(logger.LoggingMixin):
                     ctx['max_abbr_width'] = max(20, ctx['max_abbr_width'])
                 if ctx['max_menu_width'] > 0:
                     ctx['max_menu_width'] = max(10, ctx['max_menu_width'])
-
-                if charpos < 0 or self.is_skip(ctx, source.disabled_syntaxes,
-                                               source.min_pattern_length,
-                                               source.max_pattern_length,
-                                               source.input_pattern):
-                    # Skip
-                    continue
 
                 # Gathering
                 self.profile_start(ctx, source.name)
@@ -107,11 +129,12 @@ class Deoplete(logger.LoggingMixin):
 
                 ctx['candidates'] = convert2candidates(ctx['candidates'])
 
-                results.append({
-                    'name': source_name,
+                results[source.name] = {
+                    'name': source.name,
                     'source': source,
                     'context': ctx,
-                })
+                    'is_async': ctx['is_async'],
+                }
             except Exception:
                 self._source_errors[source_name] += 1
                 if self._source_errors[source_name] > 2:
@@ -123,20 +146,32 @@ class Deoplete(logger.LoggingMixin):
                     continue
                 error_tb(self._vim,
                          'Could not get completions from: %s' % source_name)
-        return results
 
-    def merge_results(self, results):
+        return results.values()
+
+    def merge_results(self, results, context_input):
         results = [x for x in results if x['context']['candidates']]
         if not results:
-            return (-1, [])
+            return (False, -1, [])
 
         complete_position = min(
             [x['context']['complete_position'] for x in results])
 
         candidates = []
         for result in results:
-            context = copy.deepcopy(result['context'])
             source = result['source']
+
+            # Gather async results
+            if result['is_async']:
+                result['context']['candidates'] += convert2candidates(
+                    source.gather_candidates(result['context']))
+                result['is_async'] = result['context']['is_async']
+
+            context = copy.deepcopy(result['context'])
+
+            context['input'] = context_input
+            context['complete_str'] = context['input'][
+                context['char_position']:]
 
             # Filtering
             ignorecase = context['ignorecase']
@@ -194,7 +229,9 @@ class Deoplete(logger.LoggingMixin):
         if context['vars']['deoplete#max_list'] > 0:
             candidates = candidates[: context['vars']['deoplete#max_list']]
 
-        return (complete_position, candidates)
+        is_async = len([x for x in results if x['context']['is_async']]) > 0
+
+        return (is_async, complete_position, candidates)
 
     def itersource(self, context):
         sources = sorted(self._sources.items(),
@@ -354,6 +391,14 @@ class Deoplete(logger.LoggingMixin):
                 source_attr = getattr(source, attr, default_val)
                 setattr(source, attr, get_custom(context['custom'], name,
                                                  attr, source_attr))
+
+    def use_previous_result(self, context):
+        return self._results and (
+            context['position'][1] == self._prev_linenr and
+            re.sub(r'\w*$', '', context['input']) == re.sub(
+                r'\w*$', '', self._prev_input) and
+            len(context['input']) >= len(self._prev_input) and
+            context['input'].find(self._prev_input) == 0)
 
     def is_skip(self, context, disabled_syntaxes,
                 min_pattern_length, max_pattern_length, input_pattern):
