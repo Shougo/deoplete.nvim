@@ -71,6 +71,7 @@ def find_rplugins(context, source):
         os.path.join('rplugin/python3/deoplete', source, 'base.py'),
         os.path.join('rplugin/python3/deoplete', source, '*.py'),
         os.path.join('rplugin/python3/deoplete', source + 's', '*.py'),
+        os.path.join('rplugin/python3/deoplete', source, '*', '*.py'),
     )
 
     for src in sources:
