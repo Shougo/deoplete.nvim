@@ -44,7 +44,8 @@ Improvements in deoplete in comparison to |neocomplete|:
 ==============================================================================
 INSTALL							*deoplete-install*
 
-Note: deoplete requires Neovim(latest is recommended) with Python3 enabled.
+Note: deoplete requires Neovim(latest is recommended) with Python3 and
+|+timers| enabled.
 
 1. Extract the files and put them in your Neovim directory
    (usually `$XDG_CONFIG_HOME/nvim/`).

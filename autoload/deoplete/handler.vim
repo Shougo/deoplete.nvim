@@ -25,7 +25,7 @@ endfunction
 function! s:completion_check(event) abort
   let delay = get(g:deoplete#_context, 'refresh', 0) ?
         \ g:deoplete#auto_refresh_delay : g:deoplete#auto_complete_delay
-  if has('timers') && delay > 0
+  if delay > 0
     if exists('s:delay_timer')
       call timer_stop(s:delay_timer.id)
     endif
@@ -49,7 +49,7 @@ function! s:completion_delayed(timer) abort
 endfunction
 
 function! deoplete#handler#_async_timer_start() abort
-  if !has('timers') || exists('s:async_timer')
+  if exists('s:async_timer')
     return
   endif
 
@@ -58,10 +58,6 @@ function! deoplete#handler#_async_timer_start() abort
         \ function('s:completion_async'), {'repeat': -1})
 endfunction
 function! deoplete#handler#_async_timer_stop() abort
-  if !has('timers')
-    return
-  endif
-
   if exists('s:async_timer')
     call timer_stop(s:async_timer.id)
     unlet s:async_timer

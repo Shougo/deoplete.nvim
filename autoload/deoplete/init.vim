@@ -40,6 +40,14 @@ function! deoplete#init#_channel() abort
     return 1
   endif
 
+  if !has('timers')
+    call deoplete#util#print_error(
+          \ 'deoplete.nvim does not work with this version.')
+    call deoplete#util#print_error(
+          \ 'It requires Neovim with timers support("+timers").')
+    return 1
+  endif
+
   try
     if !exists('g:loaded_remote_plugins')
       runtime! plugin/rplugin.vim
