@@ -136,16 +136,16 @@ class Deoplete(logger.LoggingMixin):
                     'is_async': ctx['is_async'],
                 }
             except Exception:
-                self._source_errors[source_name] += 1
-                if self._source_errors[source_name] > 2:
+                self._source_errors[source.name] += 1
+                if self._source_errors[source.name] > 2:
                     error(self._vim, 'Too many errors from "%s". '
                           'This source is disabled until Neovim '
-                          'is restarted.' % source_name)
+                          'is restarted.' % source.name)
                     self._ignored_sources.add(source.path)
-                    self._sources.pop(source_name)
+                    self._sources.pop(source.name)
                     continue
                 error_tb(self._vim,
-                         'Could not get completions from: %s' % source_name)
+                         'Could not get completions from: %s' % source.name)
 
         return results.values()
 
