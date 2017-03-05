@@ -22,21 +22,13 @@ class Source(Base):
         self.is_bytepos = True
         self.min_pattern_length = 0
 
-        self.__prev_linenr = -1
-        self.__prev_pos = -1
-        self.__prev_input = ''
-        self.__prev_candidates = []
-
-        self.__input_patterns = {}
-        set_pattern(self.__input_patterns, 'css,less,scss,sass',
+        self._input_patterns = {}
+        set_pattern(self._input_patterns, 'css,less,scss,sass',
                     [r'\w+', r'\w+[):;]?\s+\w*', r'[@!]'])
-        set_pattern(self.__input_patterns, 'lua',
+        set_pattern(self._input_patterns, 'lua',
                     [r'\w+[.:]', r'require\s*\(?["'']\w*'])
 
     def get_complete_position(self, context):
-        if self.__use_previous_result(context):
-            return self.__prev_pos
-
         current_ft = self.vim.eval('&filetype')
         filetype = context['filetype']
         for omnifunc in convert2list(
@@ -55,7 +47,7 @@ class Source(Base):
                     get_buffer_config(context, filetype,
                                       'deoplete_omni_input_patterns',
                                       'deoplete#omni#input_patterns',
-                                      self.__input_patterns)):
+                                      self._input_patterns)):
 
                 m = re.search('(' + input_pattern + ')$', context['input'])
                 # self.debug(filetype)
@@ -87,9 +79,6 @@ class Source(Base):
         return -1
 
     def gather_candidates(self, context):
-        if self.__use_previous_result(context):
-            return self.__prev_candidates
-
         try:
             candidates = self.vim.call(
                 self.__omnifunc, 0, context['complete_str'])
@@ -108,16 +97,4 @@ class Source(Base):
         for candidate in candidates:
             candidate['dup'] = 1
 
-        self.__prev_linenr = context['position'][1]
-        self.__prev_pos = context['complete_position']
-        self.__prev_input = context['input']
-        self.__prev_candidates = candidates
-
         return candidates
-
-    def __use_previous_result(self, context):
-        return (context['position'][1] == self.__prev_linenr and
-                re.sub(r'\w+$', '', context['input']) == re.sub(
-                    r'\w+$', '', self.__prev_input) and
-                len(context['input']) > len(self.__prev_input) and
-                context['input'].find(self.__prev_input) == 0)
