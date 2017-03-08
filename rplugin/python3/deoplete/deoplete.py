@@ -151,7 +151,6 @@ class Deoplete(logger.LoggingMixin):
         return results.values()
 
     def merge_results(self, results, context_input):
-        results = [x for x in results if x['context']['candidates']]
         if not results:
             return (False, -1, [])
 
