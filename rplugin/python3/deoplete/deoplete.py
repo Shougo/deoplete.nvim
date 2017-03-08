@@ -124,7 +124,8 @@ class Deoplete(logger.LoggingMixin):
                 ctx['candidates'] = source.gather_candidates(ctx)
                 self.profile_end(source.name)
 
-                if 'candidates' not in ctx or not ctx['candidates']:
+                if not ctx['is_async'] and ('candidates' not in ctx or
+                                            not ctx['candidates']):
                     continue
 
                 ctx['candidates'] = convert2candidates(ctx['candidates'])
