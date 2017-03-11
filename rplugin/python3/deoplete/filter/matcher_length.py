@@ -18,4 +18,4 @@ class Filter(Base):
     def filter(self, context):
         input_len = len(context['complete_str'])
         return [x for x in context['candidates']
-                if len(x['word']) > input_len]
+                if len(x['word']) >= input_len]
