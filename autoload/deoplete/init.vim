@@ -115,7 +115,7 @@ function! deoplete#init#_variables() abort
   call deoplete#util#set_default(
         \ 'g:deoplete#auto_complete_delay', 50)
   call deoplete#util#set_default(
-        \ 'g:deoplete#auto_refresh_delay', 50)
+        \ 'g:deoplete#auto_refresh_delay', 500)
   call deoplete#util#set_default(
         \ 'g:deoplete#max_abbr_width', 80)
   call deoplete#util#set_default(

@@ -59,23 +59,19 @@ class Deoplete(logger.LoggingMixin):
         else:
             self._vim.call('deoplete#handler#_async_timer_stop')
 
-        if not candidates or self.position_has_changed(
-                context['changedtick']) or self._vim.funcs.mode() != 'i':
-            if 'deoplete#_saved_completeopt' in context['vars']:
-                self._vim.call('deoplete#mapping#_restore_completeopt')
+        if not candidates and ('deoplete#_saved_completeopt'
+                               in context['vars']):
+            self._vim.call('deoplete#mapping#_restore_completeopt')
             return
 
+        # error(self._vim, context['input'])
+        # error(self._vim, candidates)
         self._vim.vars['deoplete#_context'] = {
             'complete_position': complete_position,
             'candidates': candidates,
             'event': context['event'],
+            'input': context['input'],
         }
-
-        if context['event'] != 'Manual' and (
-                'deoplete#_saved_completeopt' not in context['vars']):
-            self._vim.call('deoplete#mapping#_set_completeopt')
-
-        self._vim.call('deoplete#mapping#_do_complete')
 
     def gather_results(self, context):
         if not self.use_previous_result(context):
@@ -158,7 +154,12 @@ class Deoplete(logger.LoggingMixin):
             [x['context']['complete_position'] for x in results])
 
         candidates = []
-        for result in results:
+        for result in [x for x in results
+                       if not self.is_skip(x['context'],
+                                           x['source'].disabled_syntaxes,
+                                           x['source'].min_pattern_length,
+                                           x['source'].max_pattern_length,
+                                           x['source'].input_pattern)]:
             source = result['source']
 
             # Gather async results
