@@ -619,7 +619,7 @@ matcher_full_fuzzy
 					*deoplete-filter-matcher_length*
 matcher_length
 		Length matching matcher.
-		It removes shorter candidates than or equal to user input.
+		It removes candidates shorter than or equal to the user input.
 
 						*deoplete-filter-sorter_rank*
 sorter_rank	Matched rank order sorter.  The higher the head matched word
