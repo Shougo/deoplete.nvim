@@ -1064,6 +1064,9 @@ https://github.com/ponko2/deoplete-fish
 deoplete-fsharp: "fsharp" source for F#
 https://github.com/callmekohei/deoplete-fsharp
 
+autocomplete-flow: "flow" source for JavaScript
+https://github.com/wokalski/autocomplete-flow
+
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*
 
