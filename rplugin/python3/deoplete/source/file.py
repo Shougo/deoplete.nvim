@@ -71,8 +71,8 @@ class Source(Base):
     def __substitute_path(self, context, path):
         m = re.match(r'(\.{1,2})/+', path)
         if m:
-            if self.__buffer_path and context['bufname']:
-                base = context['bufname']
+            if self.__buffer_path and context['bufpath']:
+                base = context['bufpath']
             else:
                 base = os.path.join(context['cwd'], 'x')
 
