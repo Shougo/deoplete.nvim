@@ -13,6 +13,8 @@ function! deoplete#handler#_init() abort
 
     autocmd TextChangedI * call s:completion_begin('TextChangedI')
     autocmd InsertEnter * call s:completion_begin('InsertEnter')
+    autocmd InsertEnter * call s:timer_begin()
+    autocmd InsertLeave * call s:timer_end()
   augroup END
 
   for event in ['BufNewFile', 'BufRead', 'BufWritePost']
@@ -20,12 +22,6 @@ function! deoplete#handler#_init() abort
   endfor
 
   call s:on_event('Init')
-
-  let delay = max([50, g:deoplete#auto_complete_delay])
-  let s:completion_timer = timer_start(delay,
-            \ function('s:completion_check'), {'repeat': -1})
-
-  let s:prev_completion = { 'complete_position': [], 'candidates': [] }
 endfunction
 
 function! s:completion_check(timer) abort
@@ -74,6 +70,25 @@ function! s:do_complete() abort
 
   let s:prev_completion.candidates = context.candidates
   let s:prev_completion.complete_position = getpos('.')
+endfunction
+
+function! s:timer_begin() abort
+  if exists('s:completion_timer')
+    return
+  endif
+
+  let delay = max([50, g:deoplete#auto_complete_delay])
+  let s:completion_timer = timer_start(delay,
+            \ function('s:completion_check'), {'repeat': -1})
+
+  let s:prev_completion = { 'complete_position': [], 'candidates': [] }
+endfunction
+function! s:timer_end() abort
+  if !exists('s:completion_timer')
+    return
+  endif
+
+  call timer_stop(s:completion_timer)
 endfunction
 
 function! deoplete#handler#_async_timer_start() abort
