@@ -36,8 +36,6 @@ class Deoplete(logger.LoggingMixin):
         self.name = 'core'
         self._ignored_sources = set()
         self._ignored_filters = set()
-        self._prev_linenr = -1
-        self._prev_input = ''
         self._results = []
 
     def completion_begin(self, context):
@@ -74,12 +72,8 @@ class Deoplete(logger.LoggingMixin):
         }
 
     def gather_results(self, context):
-        if not self.use_previous_result(context):
-            self._prev_linenr = context['position'][1]
-            self._prev_input = context['input']
-            self._results = {}
-
-        results = self._results
+        results = {x: self._results[x] for x in self._results
+                   if self.use_previous_result(context, x)}
 
         for source in [x[1] for x in self.itersource(context)
                        if x[1].name not in results]:
@@ -131,6 +125,8 @@ class Deoplete(logger.LoggingMixin):
                     'source': source,
                     'context': ctx,
                     'is_async': ctx['is_async'],
+                    'prev_linenr': ctx['position'][1],
+                    'prev_input': ctx['input'],
                 }
             except Exception:
                 self._source_errors[source.name] += 1
@@ -393,13 +389,14 @@ class Deoplete(logger.LoggingMixin):
                 setattr(source, attr, get_custom(context['custom'], name,
                                                  attr, source_attr))
 
-    def use_previous_result(self, context):
+    def use_previous_result(self, context, result):
         return self._results and (
-            context['position'][1] == self._prev_linenr and
+            context['position'][1] == result['prev_linenr'] and
             re.sub(r'\w*$', '', context['input']) == re.sub(
-                r'\w*$', '', self._prev_input) and
-            len(context['input']) >= len(self._prev_input) and
-            context['input'].find(self._prev_input) == 0)
+                r'\w*$', '', result['prev_input']) and
+            (not result['source'].is_volatile or
+             len(context['input']) >= len(result['prev_input'])) and
+            context['input'].find(result['prev_input']) == 0)
 
     def is_skip(self, context, disabled_syntaxes,
                 min_pattern_length, max_pattern_length, input_pattern):
