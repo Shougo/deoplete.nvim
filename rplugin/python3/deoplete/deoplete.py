@@ -390,13 +390,11 @@ class Deoplete(logger.LoggingMixin):
                                                  attr, source_attr))
 
     def use_previous_result(self, context, result):
-        return self._results and (
-            context['position'][1] == result['prev_linenr'] and
-            re.sub(r'\w*$', '', context['input']) == re.sub(
-                r'\w*$', '', result['prev_input']) and
-            (not result['source'].is_volatile or
-             len(context['input']) >= len(result['prev_input'])) and
-            context['input'].find(result['prev_input']) == 0)
+        return (context['position'][1] == result['prev_linenr'] and
+                re.sub(r'\w*$', '', context['input']) ==
+                re.sub(r'\w*$', '', result['prev_input']) and
+                (not result['source'].is_volatile or
+                 context['input'].find(result['prev_input']) == 0))
 
     def is_skip(self, context, disabled_syntaxes,
                 min_pattern_length, max_pattern_length, input_pattern):
