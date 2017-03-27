@@ -89,6 +89,7 @@ function! s:timer_end() abort
   endif
 
   call timer_stop(s:completion_timer)
+  unlet s:completion_timer
 endfunction
 
 function! deoplete#handler#_async_timer_start() abort
