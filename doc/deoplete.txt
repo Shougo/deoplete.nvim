@@ -1045,6 +1045,9 @@ https://github.com/hkupty/acid.nvim
 deoplete-omnisharp: "cs" source for C#
 https://github.com/Robzz/deoplete-omnisharp/
 
+deoplete-omnisharp: Improved version of deoplete-omnisharp
+https://github.com/dimixar/deoplete-omnisharp/
+
 deoplete-hack: "hack" source for Hack and PHP
 https://github.com/zefei/deoplete-hack
 
