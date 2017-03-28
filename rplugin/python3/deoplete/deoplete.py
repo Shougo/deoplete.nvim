@@ -36,7 +36,7 @@ class Deoplete(logger.LoggingMixin):
         self.name = 'core'
         self._ignored_sources = set()
         self._ignored_filters = set()
-        self._results = []
+        self._results = {}
 
     def completion_begin(self, context):
         self.check_recache(context)
@@ -72,11 +72,11 @@ class Deoplete(logger.LoggingMixin):
         }
 
     def gather_results(self, context):
-        results = {x: self._results[x] for x in self._results
-                   if self.use_previous_result(context, x)}
+        self._results = {k: v for k, v in self._results.items()
+                         if self.use_previous_result(context, v)}
 
         for source in [x[1] for x in self.itersource(context)
-                       if x[1].name not in results]:
+                       if x[1].name not in self._results]:
             try:
                 if source.disabled_syntaxes and 'syntax_names' not in context:
                     context['syntax_names'] = get_syn_names(self._vim)
@@ -114,13 +114,9 @@ class Deoplete(logger.LoggingMixin):
                 ctx['candidates'] = source.gather_candidates(ctx)
                 self.profile_end(source.name)
 
-                if not ctx['is_async'] and ('candidates' not in ctx or
-                                            not ctx['candidates']):
-                    continue
-
                 ctx['candidates'] = convert2candidates(ctx['candidates'])
 
-                results[source.name] = {
+                self._results[source.name] = {
                     'name': source.name,
                     'source': source,
                     'context': ctx,
@@ -140,14 +136,15 @@ class Deoplete(logger.LoggingMixin):
                 error_tb(self._vim,
                          'Could not get completions from: %s' % source.name)
 
-        return results.values()
+        return self._results.values()
 
     def merge_results(self, results, context_input):
         if not results:
             return (False, -1, [])
 
         complete_position = min(
-            [x['context']['complete_position'] for x in results])
+            [x['context']['complete_position'] for x in results
+             if x['context']['candidates']])
 
         candidates = []
         for result in [x for x in results
