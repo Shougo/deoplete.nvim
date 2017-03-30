@@ -136,15 +136,15 @@ class Deoplete(logger.LoggingMixin):
                 error_tb(self._vim,
                          'Could not get completions from: %s' % source.name)
 
-        return self._results.values()
+        return [x for x in self._results.values()
+                if x['context']['candidates']]
 
     def merge_results(self, results, context_input):
         if not results:
             return (False, -1, [])
 
-        complete_position = min(
-            [x['context']['complete_position'] for x in results
-             if x['context']['candidates']])
+        complete_position = min([x['context']['complete_position']
+                                 for x in results])
 
         candidates = []
         for result in [x for x in results
