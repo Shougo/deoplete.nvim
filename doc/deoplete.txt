@@ -199,11 +199,9 @@ g:deoplete#auto_complete_delay
 
 					*g:deoplete#auto_refresh_delay*
 g:deoplete#auto_refresh_delay
-		Delay the refresh after input in milliseconds.
-		Requires |+timers| (Neovim 0.1.5) and
-		|g:deoplete#enable_refresh_always|
+		Delay the refresh when asynchronous.
 
-		Default value: 50
+		Default value: 500
 
 					*g:deoplete#skip_chars*
 g:deoplete#skip_chars
@@ -748,6 +746,11 @@ is_bytepos
 		It is useful for Vim script to create sources.
 		Because Vim script string uses byte position.  Python string
 		uses character position.
+
+					*deoplete-source-attribute-is_volatile*
+is_volatile
+		(Bool)				(Optional)
+		If it is True, the source depends on the user input.
 
 				*deoplete-source-attribute-debug_enabled*
 debug_enabled

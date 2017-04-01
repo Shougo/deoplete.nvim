@@ -11,21 +11,6 @@ function! deoplete#mapping#_init() abort
         \ <C-r>=deoplete#refresh()<CR>
 endfunction
 
-function! deoplete#mapping#_do_complete() abort
-  if empty(g:deoplete#_context) || mode() !=# 'i'
-    return
-  endif
-
-  if g:deoplete#complete_method ==# 'complete'
-    call feedkeys("\<Plug>_")
-  elseif g:deoplete#complete_method ==# 'completefunc'
-    let &l:completefunc = 'deoplete#mapping#_completefunc'
-    call feedkeys("\<C-x>\<C-u>", 'n')
-  elseif g:deoplete#complete_method ==# 'omnifunc'
-    let &l:omnifunc = 'deoplete#mapping#_completefunc'
-    call feedkeys("\<C-x>\<C-o>", 'n')
-  endif
-endfunction
 function! deoplete#mapping#_completefunc(findstart, base) abort
   if a:findstart
     return g:deoplete#_context.complete_position

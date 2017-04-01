@@ -20,6 +20,7 @@ class Source(Base):
         self.mark = '[O]'
         self.rank = 500
         self.is_bytepos = True
+        self.is_volatile = True
         self.min_pattern_length = 0
 
         self._input_patterns = {}

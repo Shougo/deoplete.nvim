@@ -28,6 +28,7 @@ class Base(LoggingMixin):
         self.filetypes = []
         self.is_bytepos = False
         self.is_initialized = False
+        self.is_volatile = False
         self.rank = 100
         self.disabled_syntaxes = []
 
