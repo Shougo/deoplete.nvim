@@ -1419,6 +1419,12 @@ A: Please set |g:deoplete#omni_patterns| manually. >
 		let g:deoplete#omni_patterns = {}
 		let g:deoplete#omni_patterns.javascript = '[^. *\t]\.\w*'
 
+
+Q: I want to use the syntax files as a completion source
+
+A: Please install neco-syntax plugin.
+https://github.com/Shougo/neco-syntax
+
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
 
