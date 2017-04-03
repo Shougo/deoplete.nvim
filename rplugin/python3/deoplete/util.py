@@ -135,11 +135,12 @@ def escape(expr):
 
 
 def charpos2bytepos(encoding, input, pos):
-    return len(bytes(input[: pos], encoding))
+    return len(bytes(input[: pos], encoding, errors='replace'))
 
 
 def bytepos2charpos(encoding, input, pos):
-    return len(bytes(input, encoding)[: pos].decode(encoding))
+    return len(bytes(input, encoding, errors='replace')[: pos].decode(
+        encoding, errors='replace'))
 
 
 def get_custom(custom, source_name, key, default):
