@@ -27,7 +27,7 @@ class Source(Base):
         set_pattern(self._input_patterns, 'css,less,scss,sass',
                     [r'\w+', r'\w+[):;]?\s+\w*', r'[@!]'])
         set_pattern(self._input_patterns, 'lua',
-                    [r'\w+[.:]', r'require\s*\(?["'']\w*'])
+                    [r'\w+[.:]\w*', r'require\s*\(?["'']\w*'])
 
     def get_complete_position(self, context):
         current_ft = self.vim.eval('&filetype')
