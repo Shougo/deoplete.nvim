@@ -36,7 +36,7 @@ class Deoplete(logger.LoggingMixin):
         self.name = 'core'
         self._ignored_sources = set()
         self._ignored_filters = set()
-        self._results = {}
+        self._prev_results = {}
 
     def completion_begin(self, context):
         self.check_recache(context)
@@ -72,11 +72,9 @@ class Deoplete(logger.LoggingMixin):
         }
 
     def gather_results(self, context):
-        self._results = {k: v for k, v in self._results.items()
-                         if self.use_previous_result(context, v)}
+        results = []
 
-        for source in [x[1] for x in self.itersource(context)
-                       if x[1].name not in self._results]:
+        for source in [x[1] for x in self.itersource(context)]:
             try:
                 if source.disabled_syntaxes and 'syntax_names' not in context:
                     context['syntax_names'] = get_syn_names(self._vim)
@@ -100,6 +98,11 @@ class Deoplete(logger.LoggingMixin):
                     # Skip
                     continue
 
+                if (source.name in self._prev_results and
+                        self.use_previous_result(
+                            context, self._prev_results[source.name])):
+                    results.append(self._prev_results[source.name])
+
                 ctx['max_abbr_width'] = min(source.max_abbr_width,
                                             ctx['max_abbr_width'])
                 ctx['max_menu_width'] = min(source.max_menu_width,
@@ -116,7 +119,7 @@ class Deoplete(logger.LoggingMixin):
 
                 ctx['candidates'] = convert2candidates(ctx['candidates'])
 
-                self._results[source.name] = {
+                result = {
                     'name': source.name,
                     'source': source,
                     'context': ctx,
@@ -124,6 +127,8 @@ class Deoplete(logger.LoggingMixin):
                     'prev_linenr': ctx['position'][1],
                     'prev_input': ctx['input'],
                 }
+                self._prev_results[source.name] = result
+                results.append(result)
             except Exception:
                 self._source_errors[source.name] += 1
                 if self._source_errors[source.name] > 2:
@@ -136,8 +141,7 @@ class Deoplete(logger.LoggingMixin):
                 error_tb(self._vim,
                          'Could not get completions from: %s' % source.name)
 
-        return [x for x in self._results.values()
-                if x['context']['candidates']]
+        return results
 
     def merge_results(self, results, context_input):
         if not results:
