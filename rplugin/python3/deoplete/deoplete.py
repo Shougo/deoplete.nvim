@@ -144,13 +144,8 @@ class Deoplete(logger.LoggingMixin):
         return results
 
     def merge_results(self, results, context_input):
-        if not results:
-            return (False, -1, [])
-
-        complete_position = min([x['context']['complete_position']
-                                 for x in results])
-
-        candidates = []
+        merged_results = []
+        all_candidates = []
         for result in [x for x in results
                        if not self.is_skip(x['context'],
                                            x['source'].disabled_syntaxes,
@@ -205,11 +200,23 @@ class Deoplete(logger.LoggingMixin):
             if hasattr(source, 'on_post_filter'):
                 context['candidates'] = source.on_post_filter(context)
 
+            if context['candidates']:
+                merged_results.append([context['candidates'], result])
+
+        if not merged_results:
+            return (False, -1, [])
+
+        complete_position = min([x[1]['context']['complete_position']
+                                 for x in merged_results])
+
+        for [candidates, result] in merged_results:
+            context = result['context']
+            source = result['source']
             prefix = context['input'][
                 complete_position:context['complete_position']]
 
             mark = source.mark + ' '
-            for candidate in context['candidates']:
+            for candidate in candidates:
                 # Add prefix
                 candidate['word'] = prefix + candidate['word']
 
@@ -221,15 +228,16 @@ class Deoplete(logger.LoggingMixin):
                 if source.filetypes:
                     candidate['dup'] = 1
 
-            candidates += context['candidates']
+            all_candidates += candidates
 
         # self.debug(candidates)
         if context['vars']['deoplete#max_list'] > 0:
-            candidates = candidates[: context['vars']['deoplete#max_list']]
+            all_candidates = all_candidates[
+                : context['vars']['deoplete#max_list']]
 
         is_async = len([x for x in results if x['context']['is_async']]) > 0
 
-        return (is_async, complete_position, candidates)
+        return (is_async, complete_position, all_candidates)
 
     def itersource(self, context):
         sources = sorted(self._sources.items(),
