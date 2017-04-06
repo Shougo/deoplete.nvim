@@ -36,8 +36,10 @@ class Process(object):
         if not self.__proc:
             return
         self.__proc.kill()
+        self.__proc.wait()
         self.__proc = None
         self.__queue_out = None
+        self.__thread.join(1.0)
         self.__thread = None
 
     def enqueue_output(self):
