@@ -165,9 +165,17 @@ function! s:is_skip(event, context) abort
   return 0
 endfunction
 function! s:is_skip_text(event) abort
+  let context = g:deoplete#_context
   let input = deoplete#util#get_input(a:event)
-  let displaywidth = strdisplaywidth(input) + 1
 
+  if has_key(context, 'input')
+        \ && context['input'] !=# 'Manual'
+        \ && context['input'] !=# 'Timer'
+        \ && input ==# context['input']
+    return 1
+  endif
+
+  let displaywidth = strdisplaywidth(input) + 1
   if &l:formatoptions =~# '[tca]' && &l:textwidth > 0
         \     && displaywidth >= &l:textwidth
     if &l:formatoptions =~# '[ta]'
