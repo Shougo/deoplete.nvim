@@ -25,9 +25,12 @@ function! deoplete#handler#_init() abort
 endfunction
 
 function! s:completion_check(timer) abort
-  if mode() ==# 'i'
-    call s:do_complete()
+  if mode() !=# 'i'
+    call s:timer_end()
+    return
   endif
+
+  call s:do_complete()
 endfunction
 function! s:do_complete() abort
   let context = g:deoplete#_context
