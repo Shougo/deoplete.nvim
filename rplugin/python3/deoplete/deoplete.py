@@ -36,6 +36,7 @@ class Deoplete(logger.LoggingMixin):
         self.name = 'core'
         self._ignored_sources = set()
         self._ignored_filters = set()
+        self._loaded_paths = set()
         self._prev_results = {}
 
     def completion_begin(self, context):
@@ -302,12 +303,11 @@ class Deoplete(logger.LoggingMixin):
 
     def load_sources(self, context):
         # Load sources from runtimepath
-        loaded_paths = [source.path for source in self._sources.values()]
         for path in find_rplugins(context, 'source'):
-            if path in self._ignored_sources:
+            if path in self._ignored_sources or path in self._loaded_paths:
                 continue
-            if path in loaded_paths:
-                continue
+            self._loaded_paths.add(path)
+
             name = os.path.splitext(os.path.basename(path))[0]
 
             source = None
@@ -340,12 +340,11 @@ class Deoplete(logger.LoggingMixin):
 
     def load_filters(self, context):
         # Load filters from runtimepath
-        loaded_paths = [filter.path for filter in self._filters.values()]
         for path in find_rplugins(context, 'filter'):
-            if path in self._ignored_filters:
+            if path in self._ignored_filters or path in self._loaded_paths:
                 continue
-            if path in loaded_paths:
-                continue
+            self._loaded_paths.add(path)
+
             name = os.path.splitext(os.path.basename(path))[0]
 
             f = None
