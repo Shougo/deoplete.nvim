@@ -167,8 +167,8 @@ function! s:is_skip_text(event) abort
   let input = deoplete#util#get_input(a:event)
 
   if has_key(context, 'input')
-        \ && context['input'] !=# 'Manual'
-        \ && context['input'] !=# 'Timer'
+        \ && a:event !=# 'Manual'
+        \ && a:event !=# 'Async'
         \ && input ==# context['input']
     return 1
   endif
