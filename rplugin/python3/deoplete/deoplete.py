@@ -103,6 +103,7 @@ class Deoplete(logger.LoggingMixin):
                         self.use_previous_result(
                             context, self._prev_results[source.name])):
                     results.append(self._prev_results[source.name])
+                    continue
 
                 ctx['max_abbr_width'] = min(source.max_abbr_width,
                                             ctx['max_abbr_width'])
