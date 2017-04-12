@@ -12,8 +12,8 @@ function! deoplete#handler#_init() abort
     autocmd InsertCharPre * call s:on_insert_char_pre()
 
     autocmd TextChangedI * call s:completion_begin('TextChangedI')
-    autocmd InsertEnter * call s:completion_begin('InsertEnter')
-    autocmd InsertEnter * call s:timer_begin()
+    autocmd InsertEnter *
+          \ call s:completion_begin('InsertEnter') | call s:timer_begin()
     autocmd InsertLeave * call s:timer_end()
   augroup END
 
@@ -25,11 +25,6 @@ function! deoplete#handler#_init() abort
 endfunction
 
 function! s:completion_check(timer) abort
-  if mode() !=# 'i'
-    call s:timer_end()
-    return
-  endif
-
   call s:do_complete()
 endfunction
 function! s:do_complete() abort
