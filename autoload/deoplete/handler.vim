@@ -24,10 +24,7 @@ function! deoplete#handler#_init() abort
   call s:on_event('Init')
 endfunction
 
-function! s:completion_check(timer) abort
-  call s:do_complete()
-endfunction
-function! s:do_complete() abort
+function! s:do_complete(timer) abort
   let context = g:deoplete#_context
   if !has_key(context, 'candidates')
         \ || empty(context.candidates)
@@ -77,7 +74,7 @@ function! s:timer_begin() abort
 
   let delay = max([50, g:deoplete#auto_complete_delay])
   let s:completion_timer = timer_start(delay,
-            \ function('s:completion_check'), {'repeat': -1})
+            \ function('s:do_complete'), {'repeat': -1})
 
   let s:prev_completion = { 'complete_position': [], 'candidates': [] }
 endfunction
@@ -154,7 +151,6 @@ function! s:is_skip(event, context) abort
         \   'g:deoplete#disable_auto_complete')
 
   if &paste
-        \ || mode() !=# 'i'
         \ || (a:event !=# 'Manual' && disable_auto_complete)
         \ || (&l:completefunc !=# '' && &l:buftype =~# 'nofile')
     return 1
