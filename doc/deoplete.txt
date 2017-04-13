@@ -1215,9 +1215,10 @@ A: You can use it by the 'completeopt' option. >
 
 	set completeopt+=noinsert
 
-Q: I want to lock auto completion.
+Q: I want to disable the auto completion for certain filetypes.
 
-A: Please use |b:deoplete_disable_auto_complete|.
+A: Please use |b:deoplete_disable_auto_complete|. >
+	autocmd FileType tex let b:deoplete_disable_auto_complete = 1
 
 Q: Ruby omni completion does not work in neovim.
 
