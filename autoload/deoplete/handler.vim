@@ -3,6 +3,7 @@
 " AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 " License: MIT license
 "=============================================================================
+let s:changedtick = -1
 
 function! deoplete#handler#_init() abort
   augroup deoplete
@@ -92,7 +93,7 @@ function! deoplete#handler#_async_timer_start() abort
     call deoplete#handler#_async_timer_stop()
   endif
 
-  let s:async_timer = { 'event': 'Async', 'changedtick': b:changedtick }
+  let s:async_timer = { 'event': 'Async', 'changedtick': s:changedtick }
   let s:async_timer.id = timer_start(
         \ max([50, g:deoplete#auto_refresh_delay]),
         \ function('s:completion_async'), {'repeat': -1})
@@ -109,12 +110,16 @@ function! s:completion_async(timer) abort
     return
   endif
 
-  if b:changedtick == s:async_timer.changedtick
+  if s:changedtick == s:async_timer.changedtick
     call s:completion_begin(s:async_timer.event)
   endif
 endfunction
 
 function! s:completion_begin(event) abort
+  if a:event ==# 'TextChangedI'
+    let s:changedtick = b:changedtick
+  endif
+
   let context = deoplete#init#_context(a:event, [])
   if s:is_skip(a:event, context)
     call deoplete#mapping#_restore_completeopt()
