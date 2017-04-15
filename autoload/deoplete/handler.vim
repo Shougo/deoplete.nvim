@@ -89,7 +89,7 @@ endfunction
 
 function! deoplete#handler#_async_timer_start() abort
   if exists('s:async_timer')
-    return
+    call deoplete#handler#_async_timer_stop()
   endif
 
   let s:async_timer = { 'event': 'Async', 'changedtick': b:changedtick }
