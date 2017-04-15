@@ -148,6 +148,7 @@ class Deoplete(logger.LoggingMixin):
     def merge_results(self, results, context_input):
         merged_results = []
         all_candidates = []
+        is_async = False
         for result in [x for x in results
                        if not self.is_skip(x['context'],
                                            x['source'].disabled_syntaxes,
@@ -158,6 +159,7 @@ class Deoplete(logger.LoggingMixin):
 
             # Gather async results
             if result['is_async']:
+                is_async = True
                 result['context']['candidates'] += convert2candidates(
                     source.gather_candidates(result['context']))
                 result['is_async'] = result['context']['is_async']
@@ -206,7 +208,7 @@ class Deoplete(logger.LoggingMixin):
                 merged_results.append([context['candidates'], result])
 
         if not merged_results:
-            return (False, -1, [])
+            return (is_async, -1, [])
 
         complete_position = min([x[1]['context']['complete_position']
                                  for x in merged_results])
