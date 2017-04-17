@@ -89,7 +89,7 @@ endfunction
 
 function! deoplete#handler#_async_timer_start() abort
   if exists('s:async_timer')
-    return
+    call deoplete#handler#_async_timer_stop()
   endif
 
   let s:async_timer = { 'event': 'Async', 'changedtick': b:changedtick }
@@ -109,9 +109,7 @@ function! s:completion_async(timer) abort
     return
   endif
 
-  if b:changedtick == s:async_timer.changedtick
-    call s:completion_begin(s:async_timer.event)
-  endif
+  call s:completion_begin(s:async_timer.event)
 endfunction
 
 function! s:completion_begin(event) abort
