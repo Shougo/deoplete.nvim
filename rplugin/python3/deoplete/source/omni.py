@@ -81,8 +81,7 @@ class Source(Base):
 
     def gather_candidates(self, context):
         try:
-            candidates = self.vim.call(
-                self.__omnifunc, 0, context['complete_str'])
+            candidates = self.vim.call(self.__omnifunc, 0, '')
             if candidates is dict:
                 candidates = candidates['words']
             elif candidates is int:
