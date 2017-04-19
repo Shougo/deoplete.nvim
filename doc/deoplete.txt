@@ -803,6 +803,7 @@ gather_candidates
 		It is called to gather candidates.
 		It takes {self} and {context} as its parameter and returns a
 		list of {candidate}.
+		If the error is occurred, it must return None.
 		{candidate} must be String or Dictionary contains
 		|deoplete-candidate-attributes|.
 		Here, {context} is the context information when the source is

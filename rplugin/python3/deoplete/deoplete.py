@@ -119,6 +119,9 @@ class Deoplete(logger.LoggingMixin):
                 ctx['candidates'] = source.gather_candidates(ctx)
                 self.profile_end(source.name)
 
+                if ctx['candidates'] is None:
+                    continue
+
                 ctx['candidates'] = convert2candidates(ctx['candidates'])
 
                 result = {
@@ -158,9 +161,16 @@ class Deoplete(logger.LoggingMixin):
 
             # Gather async results
             if result['is_async']:
-                result['context']['candidates'] += convert2candidates(
-                    source.gather_candidates(result['context']))
+                async_candidates = source.gather_candidates(
+                    result['context'])
                 result['is_async'] = result['context']['is_async']
+                if async_candidates is None:
+                    continue
+                result['context']['candidates'] += convert2candidates(
+                    async_candidates)
+
+            if not result['context']['candidates']:
+                continue
 
             context = copy.deepcopy(result['context'])
 
