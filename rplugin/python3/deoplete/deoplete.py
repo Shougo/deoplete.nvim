@@ -205,8 +205,10 @@ class Deoplete(logger.LoggingMixin):
             if context['candidates']:
                 merged_results.append([context['candidates'], result])
 
+        is_async = len([x for x in results if x['context']['is_async']]) > 0
+
         if not merged_results:
-            return (False, -1, [])
+            return (is_async, -1, [])
 
         complete_position = min([x[1]['context']['complete_position']
                                  for x in merged_results])
@@ -236,8 +238,6 @@ class Deoplete(logger.LoggingMixin):
         if context['vars']['deoplete#max_list'] > 0:
             all_candidates = all_candidates[
                 : context['vars']['deoplete#max_list']]
-
-        is_async = len([x for x in results if x['context']['is_async']]) > 0
 
         return (is_async, complete_position, all_candidates)
 
