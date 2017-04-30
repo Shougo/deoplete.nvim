@@ -31,6 +31,7 @@ function! s:do_complete(timer) abort
         \ || (context.event !=# 'Manual'
         \     && s:prev_completion.complete_position == getpos('.')
         \     && s:prev_completion.candidates ==# context.candidates)
+        \ || (context.event !=# 'InsertEnter' && mode() !=# 'i')
     return
   endif
 
@@ -151,6 +152,7 @@ function! s:is_skip(event, context) abort
   if &paste
         \ || (a:event !=# 'Manual' && disable_auto_complete)
         \ || (&l:completefunc !=# '' && &l:buftype =~# 'nofile')
+        \ || (a:event !=# 'InsertEnter' && mode() !=# 'i')
     return 1
   endif
 
