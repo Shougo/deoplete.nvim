@@ -12,8 +12,8 @@ To view the current options, please consult the
 ## Installation
 
 **Note:** deoplete requires Neovim(latest is recommended) with Python3 and
-timers enabled.  See [requirements](#requirements) if you aren't sure whether
-you have this.
+timers(neovim ver.0.1.5+) enabled.  See [requirements](#requirements) if you
+aren't sure whether you have this.
 
 1. Extract the files and put them in your Neovim directory
    (usually `$XDG_CONFIG_HOME/nvim/`).
