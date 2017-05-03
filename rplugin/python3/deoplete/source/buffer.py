@@ -43,7 +43,7 @@ class Source(Base):
         try:
             self.__buffers[bufnr] = {
                 'bufnr': bufnr,
-                'filetype': context['filetype'],
+                'filetype': self.vim.buffers[bufnr].options['filetype'],
                 'candidates': parse_buffer_pattern(
                     getlines(self.vim),
                     context['keyword_patterns'],
