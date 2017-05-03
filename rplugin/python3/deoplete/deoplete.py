@@ -433,9 +433,9 @@ class Deoplete(logger.LoggingMixin):
 
     def check_recache(self, context):
         if context['runtimepath'] != self._runtimepath:
+            self._runtimepath = context['runtimepath']
             self.load_sources(context)
             self.load_filters(context)
-            self._runtimepath = context['runtimepath']
 
             if context['rpc'] != 'deoplete_on_event':
                 self.on_event(context)
