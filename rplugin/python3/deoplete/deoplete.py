@@ -96,6 +96,8 @@ class Deoplete(logger.LoggingMixin):
                                                source.min_pattern_length,
                                                source.max_pattern_length,
                                                source.input_pattern):
+                    if source.name in self._prev_results:
+                        self._prev_results.pop(source.name)
                     # Skip
                     continue
 
