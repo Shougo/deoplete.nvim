@@ -78,5 +78,6 @@ class Source(Base):
 
             for _ in m.group(1):
                 base = dirname(base)
-            return os.path.abspath(os.path.join(base, path[len(m.group(0)):]))
+            return os.path.abspath(os.path.join(
+                base, path[len(m.group(0)):])) + '/'
         return expand(path)
