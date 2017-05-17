@@ -117,6 +117,7 @@ function! s:completion_begin(event) abort
   let context = deoplete#init#_context(a:event, [])
   if s:is_skip(a:event, context)
     call deoplete#mapping#_restore_completeopt()
+    let g:deoplete#_context.candidates = []
     return
   endif
 
@@ -165,7 +166,7 @@ function! s:is_skip_text(event) abort
   if has_key(context, 'input')
         \ && a:event !=# 'Manual'
         \ && a:event !=# 'Async'
-        \ && input ==# context['input']
+        \ && input ==# context.input
     return 1
   endif
 
@@ -205,6 +206,12 @@ function! s:complete_done() abort
     else
       let g:deoplete#_rank[word] += 1
     endif
+  endif
+
+  " Skip the next completion
+  let input = deoplete#util#get_input('CompleteDone')
+  if input[-1:] !=# '/'
+    let g:deoplete#_context.input = input
   endif
 endfunction
 
