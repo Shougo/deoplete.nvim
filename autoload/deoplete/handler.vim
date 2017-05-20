@@ -208,10 +208,12 @@ function! s:complete_done() abort
     endif
   endif
 
-  " Skip the next completion
-  let input = deoplete#util#get_input('CompleteDone')
-  if input[-1:] !=# '/'
-    let g:deoplete#_context.input = input
+  if !g:deoplete#enable_refresh_always
+    " Skip the next completion
+    let input = deoplete#util#get_input('CompleteDone')
+    if input[-1:] !=# '/'
+      let g:deoplete#_context.input = input
+    endif
   endif
 endfunction
 
