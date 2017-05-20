@@ -6,7 +6,6 @@
 
 from os.path import getmtime, exists
 from collections import namedtuple
-from deoplete.util import parse_file_pattern
 from .base import Base
 
 DictCacheItem = namedtuple('DictCacheItem', 'mtime candidates')
