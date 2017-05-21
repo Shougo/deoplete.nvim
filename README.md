@@ -89,3 +89,11 @@ https://www.youtube.com/watch?v=oanoPTpiSF4
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
 ```
+
+## Issues
+
+If you setup sources to tags and you still can not see your suggestions, try to increase the cache size:
+
+```vim
+let deoplete#tag#cache_limit_size = 5000000
+```
