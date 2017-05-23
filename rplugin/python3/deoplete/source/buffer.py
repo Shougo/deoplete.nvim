@@ -40,13 +40,10 @@ class Source(Base):
         return [{'word': x} for x in chain(*candidates)]
 
     def __make_cache(self, context, bufnr):
-        if bufnr not in self.vim.buffers:
-            return
-
         try:
             self.__buffers[bufnr] = {
                 'bufnr': bufnr,
-                'filetype': self.vim.buffers[bufnr].options['filetype'],
+                'filetype': self.vim.current.buffer.options['filetype'],
                 'candidates': parse_buffer_pattern(
                     getlines(self.vim),
                     context['keyword_patterns'],
