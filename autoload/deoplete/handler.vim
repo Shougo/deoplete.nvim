@@ -26,12 +26,15 @@ endfunction
 
 function! s:do_complete(timer) abort
   let context = g:deoplete#_context
+  if get(context, 'event', '') !=# 'InsertEnter' && mode() !=# 'i'
+    call s:timer_end()
+    return
+  endif
   if !has_key(context, 'candidates')
         \ || empty(context.candidates)
         \ || (context.event !=# 'Manual'
         \     && s:prev_completion.complete_position == getpos('.')
         \     && s:prev_completion.candidates ==# context.candidates)
-        \ || (context.event !=# 'InsertEnter' && mode() !=# 'i')
     return
   endif
 
