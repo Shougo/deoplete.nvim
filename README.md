@@ -44,6 +44,13 @@ You can enable Python3 interface with pip:
 
     pip3 install neovim
 
+## Sources
+
+deoplete will display completions via omnifunc by default.
+
+Here are some [completion sources](https://github.com/Shougo/deoplete.nvim/wiki/Completion-Sources) specifically made for deoplete.nvim.
+
+
 ## Note: deoplete needs neovim-python ver.0.1.8+.
 You need update neovim-python module.
 
