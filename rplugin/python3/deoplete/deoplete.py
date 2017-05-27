@@ -92,10 +92,7 @@ class Deoplete(logger.LoggingMixin):
                     ctx['encoding'], ctx['input'], charpos)
                 ctx['complete_str'] = ctx['input'][ctx['char_position']:]
 
-                if charpos < 0 or self.is_skip(ctx, source.disabled_syntaxes,
-                                               source.min_pattern_length,
-                                               source.max_pattern_length,
-                                               source.input_pattern):
+                if charpos < 0 or self.is_skip(ctx, source):
                     if source.name in self._prev_results:
                         self._prev_results.pop(source.name)
                     # Skip
@@ -154,11 +151,7 @@ class Deoplete(logger.LoggingMixin):
         merged_results = []
         all_candidates = []
         for result in [x for x in results
-                       if not self.is_skip(x['context'],
-                                           x['source'].disabled_syntaxes,
-                                           x['source'].min_pattern_length,
-                                           x['source'].max_pattern_length,
-                                           x['source'].input_pattern)]:
+                       if not self.is_skip(x['context'], x['source'])]:
             source = result['source']
 
             # Gather async results
@@ -417,18 +410,21 @@ class Deoplete(logger.LoggingMixin):
                 (not result['source'].is_volatile or
                  context['input'].find(result['prev_input']) == 0))
 
-    def is_skip(self, context, disabled_syntaxes,
-                min_pattern_length, max_pattern_length, input_pattern):
-        if 'syntax_names' in context and disabled_syntaxes:
-            p = re.compile('(' + '|'.join(disabled_syntaxes) + ')$')
+    def is_skip(self, context, source):
+        if source.limit > 0 and context['bufsize'] > source.limit:
+            return True
+        if 'syntax_names' in context and source.disabled_syntaxes:
+            p = re.compile('(' + '|'.join(source.disabled_syntaxes) + ')$')
             if next(filter(p.search, context['syntax_names']), None):
                 return True
-        if (input_pattern != '' and
-                re.search('(' + input_pattern + ')$', context['input'])):
+        if (source.input_pattern != '' and
+                re.search('(' + source.input_pattern + ')$',
+                          context['input'])):
             return False
-        return (context['event'] != 'Manual' and
-                not (min_pattern_length <=
-                     len(context['complete_str']) <= max_pattern_length))
+        if context['event'] == 'Manual':
+            return False
+        return not (source.min_pattern_length <=
+                    len(context['complete_str']) <= source.max_pattern_length)
 
     def position_has_changed(self, tick):
         return tick != self._vim.eval('b:changedtick')

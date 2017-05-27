@@ -17,6 +17,7 @@ class Source(Base):
 
         self.name = 'buffer'
         self.mark = '[B]'
+        self.limit = 1000000
         self.__buffers = {}
         self.__max_lines = 5000
 

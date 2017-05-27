@@ -691,6 +691,14 @@ rank		(Integer)			(Optional)
 		If you omit it, it is set 100.
 		Note: It is high priority than match position.
 
+					*deoplete-source-attribute-limit*
+limit		(Integer)			(Optional)
+		If the buffer is bigger than this limit,
+		the source will disable the completion.
+		If it is 0, it is disabled.
+
+		If you omit it, it is set 0.
+
 				*deoplete-source-attribute-min_pattern_length*
 min_pattern_length
 		(Integer)			(Optional)

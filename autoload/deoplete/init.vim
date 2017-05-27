@@ -230,6 +230,7 @@ function! deoplete#init#_context(event, sources) abort
         \ 'bufnr': bufnr('%'),
         \ 'bufname': bufname,
         \ 'bufpath': bufpath,
+        \ 'bufsize': wordcount().bytes,
         \ 'cwd': getcwd(),
         \ 'vars': filter(copy(g:), "stridx(v:key, 'deoplete#') == 0"),
         \ 'bufvars': filter(copy(b:), "stridx(v:key, 'deoplete_') == 0"),
