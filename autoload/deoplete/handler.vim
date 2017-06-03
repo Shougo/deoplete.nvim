@@ -9,8 +9,6 @@ function! deoplete#handler#_init() abort
     autocmd!
     autocmd InsertLeave * call s:on_insert_leave()
     autocmd CompleteDone * call s:complete_done()
-    autocmd InsertCharPre * call s:on_insert_char_pre()
-
     autocmd TextChangedI * call s:completion_begin('TextChangedI')
     autocmd InsertEnter *
           \ call s:completion_begin('InsertEnter') | call s:timer_begin()
@@ -20,6 +18,10 @@ function! deoplete#handler#_init() abort
   for event in ['BufNewFile', 'BufRead', 'BufWritePost']
     execute 'autocmd deoplete' event '* call s:on_event('.string(event).')'
   endfor
+
+  if g:deoplete#enable_refresh_always
+    autocmd deoplete InsertCharPre * call s:completion_begin('InsertCharPre')
+  endif
 
   call s:on_event('Init')
 endfunction
@@ -49,12 +51,6 @@ function! s:do_complete(timer) abort
     let context.event = ''
   elseif !exists('g:deoplete#_saved_completeopt')
     call deoplete#mapping#_set_completeopt()
-  endif
-
-  if (context.event ==# 'Async' || g:deoplete#enable_refresh_always)
-        \ && pumvisible()
-    " Auto refresh
-    call feedkeys("\<Plug>(deoplete_auto_refresh)")
   endif
 
   if g:deoplete#complete_method ==# 'complete'
@@ -218,15 +214,4 @@ function! s:complete_done() abort
       let g:deoplete#_context.input = input
     endif
   endif
-endfunction
-
-function! s:on_insert_char_pre() abort
-  if !pumvisible()
-        \ || !g:deoplete#enable_refresh_always
-        \ || s:is_skip_text('InsertCharPre')
-    return 1
-  endif
-
-  " Auto refresh
-  call feedkeys("\<Plug>(deoplete_auto_refresh)")
 endfunction
