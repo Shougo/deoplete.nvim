@@ -1322,7 +1322,7 @@ And you must set |g:context_filetype#same_filetypes| variable.
 Q: I want to close the preview window after completion is done.
 
 A: >
-	autocmd CompleteDone * pclose!
+	autocmd CompleteDone * silent! pclose!
 
 Note: It conflicts with iabbr.
 https://github.com/Shougo/deoplete.nvim/issues/234
