@@ -404,11 +404,12 @@ class Deoplete(logger.LoggingMixin):
                                                  attr, source_attr))
 
     def use_previous_result(self, context, result):
-        return (context['position'][1] == result['prev_linenr'] and
-                re.sub(r'\w*$', '', context['input']) ==
-                re.sub(r'\w*$', '', result['prev_input']) and
-                (not result['source'].is_volatile or
-                 context['input'].find(result['prev_input']) == 0))
+        return (result.get('candidates') and
+                (context['position'][1] == result['prev_linenr'] and
+                 re.sub(r'\w*$', '', context['input']) ==
+                 re.sub(r'\w*$', '', result['prev_input']) and
+                 (not result['source'].is_volatile or
+                  context['input'].find(result['prev_input']) == 0)))
 
     def is_skip(self, context, source):
         if source.limit > 0 and context['bufsize'] > source.limit:
