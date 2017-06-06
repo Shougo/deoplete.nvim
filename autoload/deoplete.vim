@@ -44,9 +44,11 @@ function! deoplete#manual_complete(...) abort
         \ . string(get(a:000, 0, [])) . ")\<CR>"
 endfunction
 function! deoplete#close_popup() abort
+  call deoplete#handler#_skip_next_completion()
   return pumvisible() ? "\<C-y>" : ''
 endfunction
 function! deoplete#smart_close_popup() abort
+  call deoplete#handler#_skip_next_completion()
   return pumvisible() ? "\<C-e>" : ''
 endfunction
 function! deoplete#cancel_popup() abort
