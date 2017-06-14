@@ -1082,6 +1082,9 @@ https://github.com/callmekohei/deoplete-fsharp
 autocomplete-flow: "flow" source for JavaScript
 https://github.com/wokalski/autocomplete-flow
 
+deoplete-asm "asm" source for Assembly Language
+https://github.com/zchee/deoplete-asm
+
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*
 
