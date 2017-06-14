@@ -262,6 +262,8 @@ class Deoplete(logger.LoggingMixin):
                                   {}))
 
         for source_name, source in sources:
+            if source.limit > 0 and context['bufsize'] > source.limit:
+                continue
             if source.filetypes is None or source_name in ignore_sources:
                 continue
             if context['sources'] and source_name not in context['sources']:
@@ -411,8 +413,6 @@ class Deoplete(logger.LoggingMixin):
                  context['input'].find(result['prev_input']) == 0))
 
     def is_skip(self, context, source):
-        if source.limit > 0 and context['bufsize'] > source.limit:
-            return True
         if 'syntax_names' in context and source.disabled_syntaxes:
             p = re.compile('(' + '|'.join(source.disabled_syntaxes) + ')$')
             if next(filter(p.search, context['syntax_names']), None):
