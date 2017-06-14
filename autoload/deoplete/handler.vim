@@ -213,6 +213,10 @@ function! s:complete_done() abort
 endfunction
 
 function! deoplete#handler#_skip_next_completion() abort
+  if !exists('g:deoplete#_context')
+    return
+  endif
+
   let input = deoplete#util#get_input('CompleteDone')
   if input[-1:] !=# '/'
     let g:deoplete#_context.input = input
