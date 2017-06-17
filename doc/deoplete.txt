@@ -1438,6 +1438,12 @@ Q: I want to use the syntax files as a completion source
 A: Please install neco-syntax plugin.
 https://github.com/Shougo/neco-syntax
 
+Q: Neovim startup is slow when |g:deoplete#enable_at_startup| is enabled.
+
+A: If it is enabled, Neovim will enable and load deoplete in startup.
+It may be slow.  You should use lazy load feature in plugin manager or use
+|:autocmd| to call |deoplete#enable()|.
+
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
 
