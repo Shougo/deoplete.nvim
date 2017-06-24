@@ -3,11 +3,6 @@
 # AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 # License: MIT license
 # ============================================================================
-import os
-import re
-
-from glob import glob
-
 import neovim
 
 from deoplete import logger
