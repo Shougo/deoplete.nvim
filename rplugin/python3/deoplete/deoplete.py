@@ -39,6 +39,11 @@ class Deoplete(logger.LoggingMixin):
         self._loaded_paths = set()
         self._prev_results = {}
 
+        # on_init() call
+        context = self._vim.call('deoplete#init#_context', 'Init', [])
+        context['rpc'] = 'deoplete_on_event'
+        self.on_event(context)
+
     def completion_begin(self, context):
         self.check_recache(context)
 

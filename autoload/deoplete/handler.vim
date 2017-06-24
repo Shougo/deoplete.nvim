@@ -23,8 +23,6 @@ function! deoplete#handler#_init() abort
   if g:deoplete#enable_refresh_always
     autocmd deoplete InsertCharPre * call s:completion_begin('InsertCharPre')
   endif
-
-  call s:on_event('Init')
 endfunction
 
 function! s:do_complete(timer) abort
@@ -114,6 +112,10 @@ function! s:completion_async(timer) abort
 endfunction
 
 function! s:completion_begin(event) abort
+  if !exists('g:deoplete#_initialized')
+    return
+  endif
+
   let context = deoplete#init#_context(a:event, [])
   if s:is_skip(a:event, context)
     call deoplete#mapping#_restore_completeopt()
@@ -189,6 +191,10 @@ function! s:is_skip_text(event) abort
 endfunction
 
 function! s:on_event(event) abort
+  if !exists('g:deoplete#_initialized')
+    return
+  endif
+
   let context = deoplete#init#_context(a:event, [])
   call rpcnotify(g:deoplete#_channel_id, 'deoplete_on_event', context)
 endfunction

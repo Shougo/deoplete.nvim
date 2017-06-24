@@ -62,19 +62,7 @@ function! deoplete#init#_channel() abort
     return 1
   endtry
 
-  " neovim module version check.
-  if empty(g:deoplete#_neovim_python_version) ||
-        \ empty(filter(copy(g:deoplete#_neovim_python_version),
-        \   "deoplete#util#versioncmp(v:val, '0.1.8') >= 0"))
-    call deoplete#util#print_error(
-          \ 'Current neovim-python module version: ' .
-          \  string(g:deoplete#_neovim_python_version))
-    call deoplete#util#print_error(
-          \ 'deoplete.nvim requires neovim-python 0.1.8+.')
-    call deoplete#util#print_error(
-          \ 'Please update neovim-python by "pip3 install --upgrade neovim"')
-    return 1
-  endif
+  call rpcnotify(g:deoplete#_channel_id, 'deoplete_init')
 endfunction
 function! deoplete#init#_enable() abort
   call deoplete#handler#_init()
