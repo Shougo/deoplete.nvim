@@ -8,11 +8,12 @@ function! deoplete#handler#_init() abort
   augroup deoplete
     autocmd!
     autocmd InsertLeave * call s:on_insert_leave()
-    autocmd CompleteDone * call s:complete_done()
+    autocmd CompleteDone * call s:on_complete_done()
     autocmd TextChangedI * call s:completion_begin('TextChangedI')
     autocmd InsertEnter *
           \ call s:completion_begin('InsertEnter') | call s:timer_begin()
     autocmd InsertLeave * call s:timer_end()
+    autocmd VimLeavePre * call s:on_vimleave()
   augroup END
 
   for event in ['BufNewFile', 'BufRead', 'BufWritePost']
@@ -197,7 +198,7 @@ function! s:on_insert_leave() abort
   let g:deoplete#_context = {}
 endfunction
 
-function! s:complete_done() abort
+function! s:on_complete_done() abort
   if get(v:completed_item, 'word', '') !=# ''
     let word = v:completed_item.word
     if !has_key(g:deoplete#_rank, word)
@@ -209,6 +210,12 @@ function! s:complete_done() abort
 
   if !g:deoplete#enable_refresh_always
     call deoplete#handler#_skip_next_completion()
+  endif
+endfunction
+
+function! s:on_vimleave() abort
+  if exists('g:deoplete#_channel_id')
+    call rpcstop(g:deoplete#_channel_id)
   endif
 endfunction
 
