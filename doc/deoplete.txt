@@ -1446,6 +1446,10 @@ Q: Neovim startup is slow when |g:deoplete#enable_at_startup| is enabled.
 A: If it is enabled, Neovim will enable and load deoplete in startup.
 It may be slow.  You should use lazy load feature in plugin manager or use
 |:autocmd| to call |deoplete#enable()|.
+>
+		" Enable deoplete when InsertEnter.
+		let g:deoplete#enable_at_startup = 0
+		autocmd InsertEnter * call deoplete#enable()
 
 Q: I want to disable the preview window feature.
 https://github.com/Shougo/deoplete.nvim/issues/298
