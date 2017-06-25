@@ -1098,6 +1098,9 @@ https://github.com/zchee/deoplete-asm
 deoplete-abook: "abook" source for abook contacts
 https://github.com/fszymanski/deoplete-abook
 
+deoplete-emoji: "emoji" source for emoji codes
+https://github.com/fszymanski/deoplete-emoji
+
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*
 
