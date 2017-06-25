@@ -50,6 +50,18 @@ function! deoplete#mapping#_rpcrequest_wrapper(sources) abort
   return ''
 endfunction
 function! deoplete#mapping#_undo_completion() abort
+  if !exists('v:completed_item') || empty(v:completed_item)
+    return ''
+  endif
+
+  let input = deoplete#util#get_input('')
+  if strridx(input, v:completed_item.word) !=
+        \ len(input) - len(v:completed_item.word)
+    return ''
+  endif
+
+  return deoplete#smart_close_popup() .
+        \  repeat("\<C-h>", strchars(v:completed_item.word))
 endfunction
 function! deoplete#mapping#_complete_common_string() abort
   if deoplete#initialize()
@@ -59,7 +71,7 @@ function! deoplete#mapping#_complete_common_string() abort
   " Get cursor word.
   let complete_str = matchstr(deoplete#util#get_input(''), '\w*$')
 
-  if complete_str == '' || !has_key(g:deoplete#_context, 'candidates')
+  if complete_str ==# '' || !has_key(g:deoplete#_context, 'candidates')
     return ''
   endif
 
@@ -77,7 +89,7 @@ function! deoplete#mapping#_complete_common_string() abort
     endwhile
   endfor
 
-  if common_str == '' || complete_str ==? common_str
+  if common_str ==# '' || complete_str ==? common_str
     return ''
   endif
 
