@@ -1447,6 +1447,12 @@ A: If it is enabled, Neovim will enable and load deoplete in startup.
 It may be slow.  You should use lazy load feature in plugin manager or use
 |:autocmd| to call |deoplete#enable()|.
 
+Q: I want to disable the preview window feature.
+https://github.com/Shougo/deoplete.nvim/issues/298
+
+A: >
+	set completeopt-=preview
+
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
 
