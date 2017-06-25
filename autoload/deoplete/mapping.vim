@@ -49,3 +49,38 @@ function! deoplete#mapping#_rpcrequest_wrapper(sources) abort
         \ deoplete#init#_context('Manual', a:sources))
   return ''
 endfunction
+function! deoplete#mapping#_undo_completion() abort
+endfunction
+function! deoplete#mapping#_complete_common_string() abort
+  if deoplete#initialize()
+    return
+  endif
+
+  " Get cursor word.
+  let complete_str = matchstr(deoplete#util#get_input(''), '\w*$')
+
+  if complete_str == '' || !has_key(g:deoplete#_context, 'candidates')
+    return ''
+  endif
+
+  let candidates = filter(copy(g:deoplete#_context.candidates),
+        \ 'stridx(tolower(v:val.word), tolower(complete_str)) == 0')
+
+  if empty(candidates)
+    return ''
+  endif
+
+  let common_str = candidates[0].word
+  for candidate in candidates[1:]
+    while stridx(tolower(candidate.word), tolower(common_str)) != 0
+      let common_str = common_str[: -2]
+    endwhile
+  endfor
+
+  if common_str == '' || complete_str ==? common_str
+    return ''
+  endif
+
+  return (pumvisible() ? "\<C-e>" : '')
+        \ . repeat("\<BS>", strchars(complete_str)) . common_str
+endfunction

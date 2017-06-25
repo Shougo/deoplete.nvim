@@ -61,18 +61,9 @@ function! deoplete#refresh() abort
   endif
   return pumvisible() ? "\<C-e>" : ''
 endfunction
-
 function! deoplete#undo_completion() abort
-  if !exists('v:completed_item') || empty(v:completed_item)
-    return ''
-  endif
-
-  let input = deoplete#util#get_input('')
-  if strridx(input, v:completed_item.word) !=
-        \ len(input) - len(v:completed_item.word)
-    return ''
-  endif
-
-  return deoplete#smart_close_popup() .
-        \  repeat("\<C-h>", strchars(v:completed_item.word))
+  return deoplete#mapping#_undo_completion()
+endfunction
+function! deoplete#complete_common_string() abort
+  return deoplete#mapping#_complete_common_string()
 endfunction

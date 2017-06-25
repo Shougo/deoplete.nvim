@@ -470,12 +470,12 @@ KEY MAPPINGS 					*deoplete-key-mappings*
 
 					*deoplete#manual_complete()*
 deoplete#manual_complete([{sources}])
-		Use this function with |:inoremap| <expr> (|:map-expression|).
 		It calls the completion of deoplete.  You can use it with
 		custom completion setups.
 		You can provide a list of {sources}: It can be the name of a
 		source or a list of sources name.
 		Note: It blocks your neovim.
+		Note: It must be in |map-<expr>|.
 
 		If you want to trigger deoplete manually, see also
 		|g:deoplete#disable_auto_complete|, which should be 1 then
@@ -493,6 +493,7 @@ deoplete#manual_complete([{sources}])
 				*deoplete#smart_close_popup()*
 deoplete#smart_close_popup()
 		Insert candidate and re-generate popup menu for deoplete.
+		Note: It must be in |map-<expr>|.
 >
 		inoremap <expr><C-h>
 		\ deoplete#smart_close_popup()."\<C-h>"
@@ -506,19 +507,28 @@ deoplete#smart_close_popup()
 					*deoplete#close_popup()*
 deoplete#close_popup()
 		Insert candidate and close popup menu for deoplete.
+		Note: It must be in |map-<expr>|.
 
 					*deoplete#undo_completion()*
 deoplete#undo_completion()
-		Undo inputted candidate. >
-
+		Undo inputted candidate.
+		Note: It must be in |map-<expr>|.
+>
 		inoremap <expr><C-g>     deoplete#undo_completion()
 <
 					*deoplete#refresh()*
 deoplete#refresh()
 		Refresh the candidates.
+		Note: It must be in |map-<expr>|.
 >
 		inoremap <expr><C-l>     deoplete#refresh()
 <
+					*deoplete#complete_common_string()*
+deoplete#complete_common_string()
+		complete common string in candidates.  It will be convenient
+		when candidates have long common string.
+		Note: It must be in |map-<expr>|.
+
 ==============================================================================
 EXAMPLES						*deoplete-examples*
 >
