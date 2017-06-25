@@ -39,8 +39,7 @@ function! deoplete#manual_complete(...) abort
   endif
 
   " Start complete.
-  return (pumvisible() ? "\<C-e>" : '')
-        \ . "\<C-r>=deoplete#mapping#_rpcrequest_wrapper("
+  return "\<C-r>=deoplete#mapping#_rpcrequest_wrapper("
         \ . string(get(a:000, 0, [])) . ")\<CR>"
 endfunction
 function! deoplete#close_popup() abort

@@ -45,8 +45,11 @@ function! s:do_complete(timer) abort
     return
   endif
 
+  let s:prev_completion.event = context.event
+  let s:prev_completion.candidates = context.candidates
+  let s:prev_completion.complete_position = getpos('.')
+
   if context.event ==# 'Manual'
-    " Disable the manual completion
     let context.event = ''
   elseif !exists('g:deoplete#_saved_completeopt')
     call deoplete#mapping#_set_completeopt()
@@ -61,9 +64,6 @@ function! s:do_complete(timer) abort
     let &l:omnifunc = 'deoplete#mapping#_completefunc'
     call feedkeys("\<C-x>\<C-o>", 'n')
   endif
-
-  let s:prev_completion.candidates = context.candidates
-  let s:prev_completion.complete_position = getpos('.')
 endfunction
 
 function! s:timer_begin() abort
@@ -75,7 +75,9 @@ function! s:timer_begin() abort
   let s:completion_timer = timer_start(delay,
             \ function('s:do_complete'), {'repeat': -1})
 
-  let s:prev_completion = { 'complete_position': [], 'candidates': [] }
+  let s:prev_completion = {
+        \ 'complete_position': [], 'candidates': [], 'event': ''
+        \ }
 endfunction
 function! s:timer_end() abort
   if !exists('s:completion_timer')
@@ -123,21 +125,24 @@ function! s:completion_begin(event) abort
     return
   endif
 
-  " Call omni completion
-  for filetype in context.filetypes
-    for pattern in deoplete#util#convert2list(
-          \ deoplete#util#get_buffer_config(filetype,
-          \ 'b:deoplete_omni_patterns',
-          \ 'g:deoplete#omni_patterns',
-          \ 'g:deoplete#_omni_patterns'))
-      if pattern !=# '' && &l:omnifunc !=# ''
-            \ && context.input =~# '\%('.pattern.'\)$'
-        call deoplete#mapping#_set_completeopt()
-        call feedkeys("\<C-x>\<C-o>", 'n')
-        return
-      endif
+  if exists('s:prev_completion') && s:prev_completion.event !=# 'Manual'
+    " Call omni completion
+    for filetype in context.filetypes
+      for pattern in deoplete#util#convert2list(
+            \ deoplete#util#get_buffer_config(filetype,
+            \ 'b:deoplete_omni_patterns',
+            \ 'g:deoplete#omni_patterns',
+            \ 'g:deoplete#_omni_patterns'))
+        if pattern !=# '' && &l:omnifunc !=# ''
+              \ && context.input =~# '\%('.pattern.'\)$'
+          let g:deoplete#_context.candidates = []
+          call deoplete#mapping#_set_completeopt()
+          call feedkeys("\<C-x>\<C-o>", 'n')
+          return
+        endif
+      endfor
     endfor
-  endfor
+  endif
 
   call rpcnotify(g:deoplete#_channel_id,
         \ 'deoplete_auto_completion_begin', context)

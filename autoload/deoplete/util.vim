@@ -135,20 +135,6 @@ function! deoplete#util#uniq(list) abort
   return map(list, 'v:val[0]')
 endfunction
 
-function! deoplete#util#redir(cmd) abort
-  if exists('*execute')
-    return execute(a:cmd)
-  else
-    let [save_verbose, save_verbosefile] = [&verbose, &verbosefile]
-    set verbose=0 verbosefile=
-    redir => res
-    silent! execute a:cmd
-    redir END
-    let [&verbose, &verbosefile] = [save_verbose, save_verbosefile]
-    return res
-  endif
-endfunction
-
 function! deoplete#util#get_syn_names() abort
   if col('$') >= 200
     return []
