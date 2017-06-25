@@ -13,7 +13,6 @@ function! deoplete#handler#_init() abort
     autocmd InsertEnter *
           \ call s:completion_begin('InsertEnter') | call s:timer_begin()
     autocmd InsertLeave * call s:timer_end()
-    autocmd VimLeavePre * call s:on_vimleave()
   augroup END
 
   for event in ['BufNewFile', 'BufRead', 'BufWritePost']
@@ -221,12 +220,6 @@ function! s:on_complete_done() abort
 
   if !g:deoplete#enable_refresh_always
     call deoplete#handler#_skip_next_completion()
-  endif
-endfunction
-
-function! s:on_vimleave() abort
-  if exists('g:deoplete#_channel_id')
-    call rpcstop(g:deoplete#_channel_id)
   endif
 endfunction
 
