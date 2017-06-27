@@ -18,13 +18,6 @@ class DeopleteHandlers(object):
     @neovim.function('_deoplete', sync=True)
     def init_channel(self, args):
         self._vim.vars['deoplete#_channel_id'] = self._vim.channel_id
-        # Check neovim-python version.
-        try:
-            import pkg_resources
-            version = [pkg_resources.get_distribution('neovim').version]
-        except Exception:
-            version = 'unknown'
-        self._vim.vars['deoplete#_neovim_python_version'] = version
 
     @neovim.rpc_export('deoplete_init')
     def init(self):
