@@ -66,7 +66,6 @@ class Deoplete(logger.LoggingMixin):
         if not candidates and ('deoplete#_saved_completeopt'
                                in context['vars']):
             self._vim.call('deoplete#mapping#_restore_completeopt')
-            return
 
         # error(self._vim, context['input'])
         # error(self._vim, candidates)
