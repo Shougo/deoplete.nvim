@@ -175,6 +175,41 @@ function! deoplete#util#neovim_version() abort
   return split(v, '\n')[0]
 endfunction
 
+function! deoplete#util#get_context_filetype(input) abort
+  if !exists('s:context_filetype')
+    let s:context_filetype = {}
+  endif
+
+  if empty(s:context_filetype)
+        \ || s:context_filetype.line != line('.')
+        \ || s:context_filetype.bufnr != bufnr('.')
+        \ || (a:input =~# '\W$' &&
+        \     substitute(a:input, '\s\zs\s\+$', '', '') !=#
+        \     substitute(s:context_filetype.input, '\s\zs\s\+$', '', ''))
+        \ || (a:input =~# '\w$' &&
+        \     substitute(a:input, '\w\+$', '', '') !=#
+        \     substitute(s:context_filetype.input, '\w\+$', '', ''))
+    let s:context_filetype.line = line('.')
+    let s:context_filetype.bufnr = bufnr('.')
+    let s:context_filetype.input = a:input
+    let s:context_filetype.filetype =
+          \ (exists('*context_filetype#get_filetype') ?
+          \   context_filetype#get_filetype() :
+          \   (&filetype ==# '' ? 'nothing' : &filetype))
+    let s:context_filetype.filetypes =
+          \ exists('*context_filetype#get_filetypes') ?
+          \   context_filetype#get_filetypes() :
+          \   &filetype ==# '' ? ['nothing'] :
+          \                     deoplete#util#uniq([&filetype]
+          \                          + split(&filetype, '\.'))
+    let s:context_filetype.same_filetypes =
+          \ exists('*context_filetype#get_same_filetypes') ?
+          \   context_filetype#get_same_filetypes() : []
+  endif
+  return [ s:context_filetype.filetype,
+        \  s:context_filetype.filetypes, s:context_filetype.same_filetypes]
+endfunction
+
 " Compare versions.  Return values is the distance between versions.  Each
 " version integer (from right to left) is an ascending power of 100.
 "

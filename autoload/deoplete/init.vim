@@ -149,16 +149,10 @@ function! deoplete#init#_variables() abort
 endfunction
 
 function! deoplete#init#_context(event, sources) abort
-  let filetype = (exists('*context_filetype#get_filetype') ?
-        \   context_filetype#get_filetype() :
-        \   (&filetype ==# '' ? 'nothing' : &filetype))
-  let filetypes = exists('*context_filetype#get_filetypes') ?
-        \   context_filetype#get_filetypes() :
-        \   &filetype ==# '' ? ['nothing'] :
-        \                     deoplete#util#uniq([&filetype]
-        \                          + split(&filetype, '\.'))
-  let same_filetypes = exists('*context_filetype#get_same_filetypes') ?
-        \   context_filetype#get_same_filetypes() : []
+  let input = deoplete#util#get_input(a:event)
+
+  let [filetype, filetypes, same_filetypes] =
+        \ deoplete#util#get_context_filetype(input)
 
   let sources = deoplete#util#convert2list(a:sources)
   if a:event !=# 'Manual' && empty(sources)
@@ -184,8 +178,6 @@ function! deoplete#init#_context(event, sources) abort
 
   let event = (deoplete#util#get_prev_event() ==# 'Refresh') ?
         \ 'Manual' : a:event
-
-  let input = deoplete#util#get_input(a:event)
 
   let width = winwidth(0) - col('.') + len(matchstr(input, '\w*$'))
 
