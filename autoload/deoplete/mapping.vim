@@ -41,9 +41,10 @@ function! deoplete#mapping#_restore_completeopt() abort
   endif
 endfunction
 function! deoplete#mapping#_rpcrequest_wrapper(sources) abort
-  if !exists('g:deoplete#_initialized')
+  if deoplete#init#_check_channel()
     return ''
   endif
+
   call rpcnotify(g:deoplete#_channel_id,
         \ 'deoplete_manual_completion_begin',
         \ deoplete#init#_context('Manual', a:sources))

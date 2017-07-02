@@ -116,7 +116,7 @@ function! s:completion_async(timer) abort
 endfunction
 
 function! s:completion_begin(event) abort
-  if !exists('g:deoplete#_initialized')
+  if deoplete#init#_check_channel()
     return
   endif
 
@@ -198,7 +198,7 @@ function! s:is_skip_text(event) abort
 endfunction
 
 function! s:on_event(event) abort
-  if !exists('g:deoplete#_initialized')
+  if deoplete#init#_check_channel()
     return
   endif
 

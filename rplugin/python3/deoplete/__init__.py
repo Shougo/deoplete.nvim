@@ -15,7 +15,7 @@ class DeopleteHandlers(object):
     def __init__(self, vim):
         self._vim = vim
 
-    @neovim.function('_deoplete', sync=True)
+    @neovim.function('_deoplete', sync=False)
     def init_channel(self, args):
         self._vim.vars['deoplete#_channel_id'] = self._vim.channel_id
 

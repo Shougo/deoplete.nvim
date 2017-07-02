@@ -32,19 +32,9 @@ function! deoplete#init#_initialize() abort
   call deoplete#init#_variables()
 endfunction
 function! deoplete#init#_channel() abort
-  if !has('nvim') || !has('python3')
-    call deoplete#util#print_error(
-          \ 'deoplete.nvim does not work with this version.')
-    call deoplete#util#print_error(
-          \ 'It requires Neovim with Python3 support("+python3").')
-    return 1
-  endif
-
   if !has('timers')
     call deoplete#util#print_error(
-          \ 'deoplete.nvim does not work with this version.')
-    call deoplete#util#print_error(
-          \ 'It requires Neovim with timers support("+timers").')
+          \ 'deoplete requires Neovim with timers support("+timers").')
     return 1
   endif
 
@@ -54,6 +44,12 @@ function! deoplete#init#_channel() abort
     endif
     call _deoplete()
   catch
+    if !has('nvim') || !has('python3')
+      call deoplete#util#print_error(
+            \ 'deoplete requires Neovim with Python3 support("+python3").')
+      return 1
+    endif
+
     call deoplete#util#print_error(printf(
           \ 'deoplete failed to load: %s. '
           \ .'Try the :UpdateRemotePlugins command and restart Neovim. '
@@ -61,8 +57,17 @@ function! deoplete#init#_channel() abort
           \ v:exception))
     return 1
   endtry
+endfunction
+function! deoplete#init#_check_channel() abort
+  if !exists('g:deoplete#_initialized')
+    if exists('g:deoplete#_channel_id')
+      call rpcnotify(g:deoplete#_channel_id, 'deoplete_init')
+    endif
 
-  call rpcnotify(g:deoplete#_channel_id, 'deoplete_init')
+    return 1
+  endif
+
+  return 0
 endfunction
 function! deoplete#init#_enable() abort
   call deoplete#handler#_init()
