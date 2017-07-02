@@ -27,7 +27,7 @@ endfunction
 function! s:do_complete(timer) abort
   let context = g:deoplete#_context
   if get(context, 'event', '') !=# 'InsertEnter'
-        \ && mode() !=# 'i' || v:exiting != v:null
+        \ && mode() !=# 'i' || s:is_exiting()
     call s:timer_end()
     return
   endif
@@ -105,7 +105,7 @@ function! deoplete#handler#_async_timer_stop() abort
   endif
 endfunction
 function! s:completion_async(timer) abort
-  if mode() !=# 'i' || v:exiting != v:null
+  if mode() !=# 'i' || s:is_exiting()
     call deoplete#handler#_async_timer_stop()
     return
   endif
@@ -233,4 +233,8 @@ function! deoplete#handler#_skip_next_completion() abort
   if input[-1:] !=# '/'
     let g:deoplete#_context.input = input
   endif
+endfunction
+
+function! s:is_exiting() abort
+  return exists('v:exiting') && v:exiting != v:null
 endfunction
