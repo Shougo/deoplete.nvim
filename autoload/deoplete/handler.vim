@@ -22,6 +22,8 @@ function! deoplete#handler#_init() abort
   if g:deoplete#enable_refresh_always
     autocmd deoplete InsertCharPre * call s:completion_begin('InsertCharPre')
   endif
+
+  call s:timer_begin()
 endfunction
 
 function! s:do_complete(timer) abort
