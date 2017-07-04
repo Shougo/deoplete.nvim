@@ -839,10 +839,22 @@ on_post_filter
 
 					*deoplete-source-attribute-on_event*
 on_event	(Function)			(Optional)
-		It is called when |BufRead|, |BufNewFile|, |BufWritePost| or
-		deoplete is initialized.
+		It is called when |BufRead|, |BufNewFile|, |BufWritePost|,
+		|VimLeavePre| or deoplete is initialized.
 		It is useful to make cache.
 		It takes {self} and {context} as its parameter.
+
+		" Examples:
+		def on_event(self, context):
+		    if context['event'] == 'Init':
+			# BufNewFile, BufRead
+			pass
+		    elif context['event'] == 'BufWritePost':
+			# BufWritePost
+			pass
+		    else:
+			# VimLeavePre
+			pass
 
 					*deoplete-source-attribute-on_init*
 on_init		(Function)			(Optional)
