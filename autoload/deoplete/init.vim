@@ -11,12 +11,9 @@ endif
 function! deoplete#init#_is_enabled() abort
   return s:is_enabled
 endfunction
-function! s:is_initialized() abort
-  return exists('g:deoplete#_context')
-endfunction
 
 function! deoplete#init#_initialize() abort
-  if s:is_initialized()
+  if !deoplete#init#_check_channel()
     return
   endif
 
@@ -59,15 +56,7 @@ function! deoplete#init#_channel() abort
   endtry
 endfunction
 function! deoplete#init#_check_channel() abort
-  if !exists('g:deoplete#_initialized')
-    if exists('g:deoplete#_channel_id')
-      call rpcnotify(g:deoplete#_channel_id, 'deoplete_init')
-    endif
-
-    return 1
-  endif
-
-  return 0
+  return !exists('g:deoplete#_channel_id')
 endfunction
 function! deoplete#init#_enable() abort
   call deoplete#handler#_init()
