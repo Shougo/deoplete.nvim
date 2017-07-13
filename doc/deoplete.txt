@@ -581,7 +581,8 @@ omni							*deoplete-source-omni*
 
 dictionary					*deoplete-source-dictionary*
 		This source collects |g:deoplete#keyword_patterns| keywords
-		from 'dictionary'.
+		from 'dictionary'. Note: it uses buffer-local 'dictionary'
+		set up.
 
 		" Examples:
 		" Sample configuration for dictionary source with multiple
