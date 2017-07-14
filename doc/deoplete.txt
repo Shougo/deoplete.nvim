@@ -1494,11 +1494,19 @@ It may be slow.  You should use lazy load feature in plugin manager or use
 		let g:deoplete#enable_at_startup = 0
 		autocmd InsertEnter * call deoplete#enable()
 
+And you should set |g:python3_host_prog| variable.
+It reduces almost 20ms startuptime.
+
 Q: I want to disable the preview window feature.
 https://github.com/Shougo/deoplete.nvim/issues/298
 
 A: >
 	set completeopt-=preview
+
+
+Q: Deoplete popup is not displayed immediately.
+
+A: Deoplete is initialized asynchronously.  So it is feature.
 
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*

@@ -15,14 +15,10 @@ class DeopleteHandlers(object):
     def __init__(self, vim):
         self._vim = vim
 
-    @neovim.function('_deoplete', sync=True)
+    @neovim.function('_deoplete', sync=False)
     def init_channel(self, args):
-        self._vim.vars['deoplete#_channel_id'] = self._vim.channel_id
-
-    @neovim.rpc_export('deoplete_init')
-    def init(self):
         self._deoplete = Deoplete(self._vim)
-        self._vim.vars['deoplete#_initialized'] = 1
+        self._vim.vars['deoplete#_channel_id'] = self._vim.channel_id
 
     @neovim.rpc_export('deoplete_enable_logging')
     def enable_logging(self, level, logfile):
