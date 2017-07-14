@@ -34,7 +34,7 @@ current buffer.
 
 Note: deoplete may consume more memory than other plugins do.
 
-Improvements in deoplete/ in comparison to |neocomplete|:
+Improvements in deoplete in comparison to |neocomplete|:
 
 1. Real asynchronous completion behavior like |YouCompleteMe| by default.
 2. Uses Python3 to implement sources.
