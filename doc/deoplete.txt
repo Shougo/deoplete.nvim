@@ -34,7 +34,7 @@ current buffer.
 
 Note: deoplete may consume more memory than other plugins do.
 
-Improvements in deoplete in comparison to |neocomplete|:
+Improvements in deoplete/ in comparison to |neocomplete|:
 
 1. Real asynchronous completion behavior like |YouCompleteMe| by default.
 2. Uses Python3 to implement sources.
@@ -892,6 +892,14 @@ __{name}	(Unspecified)			(Optional)
 
 		complete_position	(Integer)
 			The complete position of current source.
+
+			" Example:
+			pattern : r'fruits\.'
+
+				  01234567
+			input   : fruits.
+
+			complete_position : 7
 
 		complete_str		(String)
 			The complete string of current source.
