@@ -29,8 +29,7 @@ class Source(Base):
 
     def gather_candidates(self, context):
         self.on_event(context)
-        tab_bufnrs = [x.buffer.number for x
-                      in self.vim.current.tabpage.windows]
+        tab_bufnrs = self.vim.call('tabpagebuflist')
         same_filetype = context['vars'].get(
             'deoplete#buffer#require_same_filetype', True)
         candidates = (x['candidates'] for x in self.__buffers.values()
