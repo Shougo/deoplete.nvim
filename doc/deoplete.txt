@@ -613,7 +613,7 @@ around						    *deoplete-source-around*
 FILTERS							*deoplete-filters*
 
 					*deoplete-filter-matcher_default*
-Default matchers: ['matcher_length', 'matcher_fuzzy']
+Default matchers: ['matcher_fuzzy']
 
 	You can change it by |deoplete#custom#set()|.
 

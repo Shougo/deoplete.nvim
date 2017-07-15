@@ -18,8 +18,7 @@ class Base(LoggingMixin):
         self.mark = ''
         self.max_pattern_length = 80
         self.input_pattern = ''
-        self.matchers = [
-            'matcher_length', 'matcher_fuzzy']
+        self.matchers = ['matcher_fuzzy']
         self.sorters = ['sorter_rank']
         self.converters = [
             'converter_remove_overlap',

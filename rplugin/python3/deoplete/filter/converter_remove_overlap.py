@@ -27,8 +27,7 @@ class Filter(Base):
             if 'abbr' not in candidate:
                 candidate['abbr'] = candidate['word']
             candidate['word'] = candidate['word'][: -overlap]
-        return [x for x in context['candidates']
-                if x['word'] != context['complete_str']]
+        return context['candidates']
 
 
 def overlap_length(left, right):
