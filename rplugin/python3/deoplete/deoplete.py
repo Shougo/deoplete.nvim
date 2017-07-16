@@ -293,7 +293,6 @@ class Deoplete(logger.LoggingMixin):
                     continue
                 else:
                     source.is_initialized = True
-
             yield source_name, source
 
     def profile_start(self, context, name):

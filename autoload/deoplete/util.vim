@@ -181,6 +181,7 @@ function! deoplete#util#get_context_filetype(input) abort
   endif
 
   if empty(s:context_filetype)
+        \ || s:context_filetype.prev_filetype !=# &filetype
         \ || s:context_filetype.line != line('.')
         \ || s:context_filetype.bufnr != bufnr('.')
         \ || (a:input =~# '\W$' &&
@@ -189,9 +190,11 @@ function! deoplete#util#get_context_filetype(input) abort
         \ || (a:input =~# '\w$' &&
         \     substitute(a:input, '\w\+$', '', '') !=#
         \     substitute(s:context_filetype.input, '\w\+$', '', ''))
+
     let s:context_filetype.line = line('.')
     let s:context_filetype.bufnr = bufnr('.')
     let s:context_filetype.input = a:input
+    let s:context_filetype.prev_filetype = &filetype
     let s:context_filetype.filetype =
           \ (exists('*context_filetype#get_filetype') ?
           \   context_filetype#get_filetype() :
