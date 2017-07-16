@@ -176,6 +176,7 @@ class Deoplete(logger.LoggingMixin):
             context['input'] = context_input
             context['complete_str'] = context['input'][
                 context['char_position']:]
+            context['is_sorted'] = False
 
             # Filtering
             ignorecase = context['ignorecase']
@@ -197,6 +198,7 @@ class Deoplete(logger.LoggingMixin):
                         context_candidates = []
                         sorted_candidates = context['candidates'][
                             'sorted_candidates']
+                        context['is_sorted'] = True
                         for candidates in sorted_candidates:
                             context['candidates'] = candidates
                             context_candidates += f.filter(context)
