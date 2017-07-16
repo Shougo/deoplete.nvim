@@ -192,7 +192,17 @@ class Deoplete(logger.LoggingMixin):
                       if x in self._filters]:
                 try:
                     self.profile_start(context, f.name)
-                    context['candidates'] = f.filter(context)
+                    if (isinstance(context['candidates'], dict) and
+                            'sorted_candidates' in context['candidates']):
+                        context_candidates = []
+                        sorted_candidates = context['candidates'][
+                            'sorted_candidates']
+                        for candidates in sorted_candidates:
+                            context['candidates'] = candidates
+                            context_candidates += f.filter(context)
+                        context['candidates'] = context_candidates
+                    else:
+                        context['candidates'] = f.filter(context)
                     self.profile_end(f.name)
                 except Exception:
                     self._filter_errors[f.name] += 1

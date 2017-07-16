@@ -27,8 +27,7 @@ class Source(Base):
         # lines above
         words = parse_buffer_pattern(
             reversed(getlines(self.vim, max([1, line - LINES_ABOVE]), line)),
-            context['keyword_patterns'],
-            context['complete_str'])
+            context['keyword_patterns'])
         candidates += [{'word': x, 'menu': 'A'} for x in words]
 
         # grab ':changes' command output
@@ -41,16 +40,13 @@ class Source(Base):
             if change_line and change_line != '-invalid-':
                 lines.add(change_line)
 
-        words = parse_buffer_pattern(lines,
-                                     context['keyword_patterns'],
-                                     context['complete_str'])
+        words = parse_buffer_pattern(lines, context['keyword_patterns'])
         candidates += [{'word': x, 'menu': 'C'} for x in words]
 
         # lines below
         words = parse_buffer_pattern(
             getlines(self.vim, line, line + LINES_BELOW),
-            context['keyword_patterns'],
-            context['complete_str'])
+            context['keyword_patterns'])
         candidates += [{'word': x, 'menu': 'B'} for x in words]
 
         return candidates

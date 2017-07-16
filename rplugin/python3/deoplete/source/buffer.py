@@ -6,7 +6,6 @@
 
 from .base import Base
 
-from itertools import chain
 from deoplete.util import parse_buffer_pattern, getlines
 
 
@@ -32,22 +31,25 @@ class Source(Base):
         tab_bufnrs = self.vim.call('tabpagebuflist')
         same_filetype = context['vars'].get(
             'deoplete#buffer#require_same_filetype', True)
-        candidates = (x['candidates'] for x in self.__buffers.values()
-                      if not same_filetype or
-                      x['filetype'] in context['filetypes'] or
-                      x['filetype'] in context['same_filetypes'] or
-                      x['bufnr'] in tab_bufnrs)
-        return [{'word': x} for x in chain(*candidates)]
+        return {'sorted_candidates': [
+            x['candidates'] for x in self.__buffers.values()
+            if not same_filetype or
+            x['filetype'] in context['filetypes'] or
+            x['filetype'] in context['same_filetypes'] or
+            x['bufnr'] in tab_bufnrs
+        ]}
 
     def __make_cache(self, context, bufnr):
         try:
             self.__buffers[bufnr] = {
                 'bufnr': bufnr,
                 'filetype': self.vim.current.buffer.options['filetype'],
-                'candidates': parse_buffer_pattern(
-                    getlines(self.vim),
-                    context['keyword_patterns'],
-                    context['complete_str'])
+                'candidates': [
+                    {'word': x} for x in
+                    sorted(parse_buffer_pattern(getlines(self.vim),
+                                                context['keyword_patterns']),
+                           key=str.lower)
+                ]
             }
         except UnicodeDecodeError:
             return []

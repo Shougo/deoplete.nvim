@@ -48,7 +48,8 @@ def convert2list(expr):
 
 
 def convert2candidates(l):
-    return [{'word': x} for x in l] if l and isinstance(l[0], str) else l
+    return ([{'word': x} for x in l]
+            if l and isinstance(l, list) and isinstance(l[0], str) else l)
 
 
 def globruntime(runtimepath, path):
@@ -166,9 +167,8 @@ def parse_file_pattern(f, pattern):
     return list(set(ret))
 
 
-def parse_buffer_pattern(b, pattern, complete_str):
-    p = re.compile(pattern)
-    return [x for x in p.findall('\n'.join(b)) if x != complete_str]
+def parse_buffer_pattern(b, pattern):
+    return re.compile(pattern).findall('\n'.join(b))
 
 
 def fuzzy_escape(string, camelcase):
