@@ -72,6 +72,7 @@ endfunction
 function! deoplete#init#_variables() abort
   let g:deoplete#_context = {}
   let g:deoplete#_rank = {}
+  let g:deoplete#_logging = {}
 
   " User vairables
   call deoplete#util#set_default(

@@ -146,7 +146,7 @@ function! s:completion_begin(event) abort
     endfor
   endif
 
-  call rpcnotify(g:deoplete#_channel_id,
+  call deoplete#util#rpcnotify(
         \ 'deoplete_auto_completion_begin', context)
 endfunction
 function! s:is_skip(event, context) abort
@@ -203,7 +203,7 @@ function! s:on_event(event) abort
   endif
 
   let context = deoplete#init#_context(a:event, [])
-  call rpcnotify(g:deoplete#_channel_id, 'deoplete_on_event', context)
+  call deoplete#util#rpcnotify('deoplete_on_event', context)
 endfunction
 
 function! s:on_insert_leave() abort

@@ -22,15 +22,7 @@ function! deoplete#toggle() abort
 endfunction
 
 function! deoplete#enable_logging(level, logfile) abort
-  if !exists('g:deoplete#_channel_id')
-    " Enable to allow logging before completions start.
-    if deoplete#init#_channel()
-      return
-    endif
-  endif
-
-  call rpcnotify(g:deoplete#_channel_id,
-        \ 'deoplete_enable_logging', a:level, a:logfile)
+  let g:deoplete#_logging = {'level': a:level, 'logfile': a:logfile}
 endfunction
 
 function! deoplete#manual_complete(...) abort

@@ -213,6 +213,23 @@ function! deoplete#util#get_context_filetype(input) abort
         \  s:context_filetype.filetypes, s:context_filetype.same_filetypes]
 endfunction
 
+function! deoplete#util#rpcnotify(...) abort
+  if deoplete#init#_check_channel()
+    return ''
+  endif
+
+  if !exists('s:logged') && !empty(g:deoplete#_logging)
+    call rpcnotify(g:deoplete#_channel_id,
+          \ 'deoplete_enable_logging',
+          \ g:deoplete#_logging.level, g:deoplete#_logging.logfile)
+    let g:deoplete#_logging = {}
+    let s:logged = 1
+  endif
+
+  call call('rpcnotify', [g:deoplete#_channel_id] + a:000)
+  return ''
+endfunction
+
 " Compare versions.  Return values is the distance between versions.  Each
 " version integer (from right to left) is an ascending power of 100.
 "
