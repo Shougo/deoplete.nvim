@@ -116,10 +116,6 @@ function! s:completion_async(timer) abort
 endfunction
 
 function! s:completion_begin(event) abort
-  if deoplete#init#_check_channel()
-    return
-  endif
-
   let context = deoplete#init#_context(a:event, [])
   if s:is_skip(a:event, context)
     call deoplete#mapping#_restore_completeopt()
@@ -198,12 +194,8 @@ function! s:is_skip_text(event) abort
 endfunction
 
 function! s:on_event(event) abort
-  if deoplete#init#_check_channel()
-    return
-  endif
-
-  let context = deoplete#init#_context(a:event, [])
-  call deoplete#util#rpcnotify('deoplete_on_event', context)
+  call deoplete#util#rpcnotify('deoplete_on_event',
+        \ deoplete#init#_context(a:event, []))
 endfunction
 
 function! s:on_insert_leave() abort
