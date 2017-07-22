@@ -24,6 +24,9 @@ function! deoplete#custom#get_source_var(source_name) abort
 endfunction
 
 function! deoplete#custom#set(source_name, option_name, value) abort
+  return deoplete#custom#source(a:source_name, a:option_name, a:value)
+endfunction
+function! deoplete#custom#source(source_name, option_name, value) abort
   for key in split(a:source_name, '\s*,\s*')
     let custom_source = deoplete#custom#get_source_var(key)
     let custom_source[a:option_name] = a:value

@@ -402,6 +402,11 @@ deoplete#toggle()
 
 						*deoplete#custom#set()*
 deoplete#custom#set({source-name}, {option-name}, {value})
+		It is the deprecated option.
+		Please use |deoplete#custom#source()| instead.
+
+						*deoplete#custom#source()*
+deoplete#custom#source({source-name}, {option-name}, {value})
 		Set {source-name} source specialized {option-name}
 		to {value}. You may specify multiple sources with
 		separating "," in {source-name}.
@@ -412,45 +417,48 @@ deoplete#custom#set({source-name}, {option-name}, {value})
 		" Examples:
 
 		" Use head matcher instead of fuzzy matcher
-		call deoplete#custom#set('_', 'matchers', ['matcher_head'])
+		call deoplete#custom#source('_',
+		\ 'matchers', ['matcher_head'])
 
 		" Use auto delimiter feature
-		call deoplete#custom#set('_', 'converters',
+		call deoplete#custom#source('_', 'converters',
 		\ ['converter_auto_delimiter', 'remove_overlap'])
 
-		call deoplete#custom#set('buffer', 'min_pattern_length', 9999)
+		call deoplete#custom#source('buffer',
+		\ 'min_pattern_length', 9999)
 
 		" Change the source rank
-		call deoplete#custom#set('buffer', 'rank', 9999)
+		call deoplete#custom#source('buffer', 'rank', 9999)
 
 		" Enable buffer source in C/C++ files only.
-		call deoplete#custom#set('buffer', 'filetypes', ['c', 'cpp'])
+		call deoplete#custom#source('buffer',
+		\ 'filetypes', ['c', 'cpp'])
 
 		" Disable the candidates in Comment/String syntaxes.
-		call deoplete#custom#set('_',
+		call deoplete#custom#source('_',
 		\ 'disabled_syntaxes', ['Comment', 'String'])
 
 		" Change the truncate width.
-		call deoplete#custom#set('javacomplete2',
+		call deoplete#custom#source('javacomplete2',
 		\ 'max_abbr_width', 20)
-		call deoplete#custom#set('javacomplete2',
+		call deoplete#custom#source('javacomplete2',
 		\ 'max_menu_width', 80)
 
 		" Disable the truncate feature.
-		call deoplete#custom#set('javacomplete2',
+		call deoplete#custom#source('javacomplete2',
 		\ 'max_abbr_width', 0)
-		call deoplete#custom#set('javacomplete2',
+		call deoplete#custom#source('javacomplete2',
 		\ 'max_menu_width', 0)
 
 		" Change the source mark.
-		call deoplete#custom#set('buffer', 'mark', '*')
+		call deoplete#custom#source('buffer', 'mark', '*')
 		" Disable the source mark.
-		call deoplete#custom#set('omni', 'mark', '')
+		call deoplete#custom#source('omni', 'mark', '')
 
 		" Enable jedi source debug messages
 		" let g:deoplete#enable_profile = 1
 		" call deoplete#enable_logging('DEBUG', 'deoplete.log')
-		" call deoplete#custom#set('jedi', 'debug_enabled', 1)
+		" call deoplete#custom#source('jedi', 'debug_enabled', 1)
 <
 						*deoplete#enable_logging()*
 deoplete#enable_logging({level}, {logfile})
@@ -583,19 +591,22 @@ dictionary					*deoplete-source-dictionary*
 		This source collects |g:deoplete#keyword_patterns| keywords
 		from 'dictionary'. Note: it uses buffer-local 'dictionary'
 		set up.
-
+>
 		" Examples:
 		" Sample configuration for dictionary source with multiple
 		" dictionary files.
 		setlocal dictionary+=/usr/share/dict/words
 		setlocal dictionary+=/usr/share/dict/american-english
 		" Remove this if you'd like to use fuzzy search
-		call deoplete#custom#set('dictionary', 'matchers', ['matcher_head'])
+		call deoplete#custom#source(
+		\ 'dictionary', 'matchers', ['matcher_head'])
 		" If dictionary is already sorted, no need to sort it again.
-		call deoplete#custom#set('dictionary', 'sorters', [])
+		call deoplete#custom#source(
+		\ 'dictionary', 'sorters', [])
 		" Do not complete too short words
-		call deoplete#custom#set('dictionary', 'min_pattern_length', 4)
-
+		call deoplete#custom#source(
+		\ 'dictionary', 'min_pattern_length', 4)
+<
 around						    *deoplete-source-around*
 		This source collects candidates around the cursor, so inside
 		current buffer only. Plus, it searches keywords in |:changes|
@@ -615,18 +626,18 @@ FILTERS							*deoplete-filters*
 					*deoplete-filter-matcher_default*
 Default matchers: ['matcher_fuzzy']
 
-	You can change it by |deoplete#custom#set()|.
+	You can change it by |deoplete#custom#source()|.
 
 					*deoplete-filter-sorter_default*
 Default sorters: ['sorter_rank'].
 
-	You can change it by |deoplete#custom#set()|.
+	You can change it by |deoplete#custom#source()|.
 
 					*deoplete-filter-converter_default*
 Default converters: ['converter_remove_overlap', 'converter_truncate_abbr',
                      'converter_truncate_menu'].
 
-	You can change it by |deoplete#custom#set()|.
+	You can change it by |deoplete#custom#source()|.
 
 						*deoplete-filter-matcher_head*
 matcher_head	Head matching matcher.
@@ -1316,7 +1327,7 @@ Q: I want to use head matcher instead of fuzzy matcher.
 
 A: >
 	" Use head matcher instead of fuzzy matcher
-	call deoplete#custom#set('_', 'matchers', ['matcher_head'])
+	call deoplete#custom#source('_', 'matchers', ['matcher_head'])
 
 Q: Is deoplete faster than neocomplete?
 
@@ -1388,13 +1399,13 @@ Q: I want to see the typed word in the completion menu.
 
 A: You should remove |deoplete-filter-matcher_length| from the matchers.
 >
-	call deoplete#custom#set('_', 'matchers', ['matcher_fuzzy'])
+	call deoplete#custom#source('_', 'matchers', ['matcher_fuzzy'])
 <
 Q: How to prevent auto bracket completion?
 https://github.com/Shougo/deoplete.nvim/issues/150
 
 A: >
-	call deoplete#custom#set('_', 'converters',
+	call deoplete#custom#source('_', 'converters',
 	\ ['converter_remove_paren'])
 
 Q: What is the difference of |g:deoplete#omni_patterns| and
@@ -1442,7 +1453,7 @@ Q: The candidates are filtered by first character.
 https://github.com/Shougo/deoplete.nvim/issues/288
 
 A: >
-	call deoplete#custom#set('_', 'matchers', ['matcher_full_fuzzy'])
+	call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
 <
 Q: Are there any plans to support GotoDefinition feature like YouCompleteMe?
 
@@ -1452,13 +1463,13 @@ A: https://github.com/zchee/deoplete-jedi/issues/35
 Q: What about the alphabetical sorting of all entries?
 
 A: >
-	call deoplete#custom#set('_', 'sorters', ['sorter_word'])
+	call deoplete#custom#source('_', 'sorters', ['sorter_word'])
 <
 
 Q: I want to change the UltiSnips source order.
 
 A: >
-	call deoplete#custom#set('ultisnips', 'rank', 1000)
+	call deoplete#custom#source('ultisnips', 'rank', 1000)
 <
 
 Q: tag source does not work.
@@ -1472,7 +1483,7 @@ A: Please enable logging feature like this.
 >
 		let g:deoplete#enable_profile = 1
 		call deoplete#enable_logging('DEBUG', 'deoplete.log')
-		call deoplete#custom#set('jedi', 'debug_enabled', 1)
+		call deoplete#custom#source('jedi', 'debug_enabled', 1)
 <
 
 Q: Is deoplete better than completer.vim?
@@ -1518,6 +1529,9 @@ A: Deoplete is initialized asynchronously.  So it is feature.
 
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
+
+2017.07.22
+* "deoplete#custom#set()" is deprecated.
 
 ==============================================================================
 vim:tw=78:ts=8:ft=help:norl:noet:fen:noet:
