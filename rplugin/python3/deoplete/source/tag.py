@@ -7,7 +7,6 @@
 
 from .base import Base
 
-import re
 from collections import namedtuple
 from os.path import exists, getmtime, getsize
 from deoplete.util import parse_file_pattern
@@ -36,21 +35,22 @@ class Source(Base):
         # Make cache
         for filename in self.__tagfiles[context['bufnr']]:
             mtime = getmtime(filename)
-            if filename not in self.__cache or self.__cache[
-                    filename].mtime != mtime:
-                with open(filename, 'r', errors='replace') as f:
-                    self.__cache[filename] = TagsCacheItem(
-                        mtime, parse_file_pattern(f, '^[^!][^\t]+'))
+            if filename in self.__cache and self.__cache[
+                    filename].mtime == mtime:
+                continue
+            with open(filename, 'r', errors='replace') as f:
+                self.__cache[filename] = TagsCacheItem(
+                    mtime, [{'word': x} for x in sorted(
+                        parse_file_pattern(f, '^[^!][^\t]+'), key=str.lower)]
+                )
 
     def gather_candidates(self, context):
         candidates = []
         for filename in [
                 x for x in self.__tagfiles.get(context['bufnr'], [])
                 if x in self.__cache]:
-            candidates += self.__cache[filename].candidates
-
-        p = re.compile('(?:{})$'.format(context['keyword_patterns']))
-        return [{'word': x} for x in candidates if p.match(x)]
+            candidates.append(self.__cache[filename].candidates)
+        return {'sorted_candidates': candidates}
 
     def __get_tagfiles(self, context):
         include_files = self.vim.call(
