@@ -1,5 +1,7 @@
-deoplete
-========
+deoplete.nvim
+=============
+
+https://travis-ci.org/Shougo/deoplete.nvim.svg?branch=master
 
 [![Join the chat at https://gitter.im/Shougo/deoplete.nvim](https://badges.gitter.im/Shougo/deoplete.nvim.svg)](https://gitter.im/Shougo/deoplete.nvim?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
