@@ -58,13 +58,13 @@ function! s:do_complete(timer) abort
   endif
 
   if g:deoplete#complete_method ==# 'complete'
-    call feedkeys("\<Plug>_")
+    call feedkeys("\<Plug>_", 'i')
   elseif g:deoplete#complete_method ==# 'completefunc'
     let &l:completefunc = 'deoplete#mapping#_completefunc'
-    call feedkeys("\<C-x>\<C-u>", 'n')
+    call feedkeys("\<C-x>\<C-u>", 'in')
   elseif g:deoplete#complete_method ==# 'omnifunc'
     let &l:omnifunc = 'deoplete#mapping#_completefunc'
-    call feedkeys("\<C-x>\<C-o>", 'n')
+    call feedkeys("\<C-x>\<C-o>", 'in')
   endif
 endfunction
 
@@ -135,7 +135,7 @@ function! s:completion_begin(event) abort
               \ && context.input =~# '\%('.pattern.'\)$'
           let g:deoplete#_context.candidates = []
           call deoplete#mapping#_set_completeopt()
-          call feedkeys("\<C-x>\<C-o>", 'n')
+          call feedkeys("\<C-x>\<C-o>", 'in')
           return
         endif
       endfor
