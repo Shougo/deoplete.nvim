@@ -248,18 +248,20 @@ def binary_search_begin(l, prefix):
     if not l:
         return -1
     if len(l) == 1:
-        return 0 if l[0]['word'].startswith(prefix) else -1
+        return 0 if l[0]['word'].lower().startswith(prefix) else -1
 
     s = 0
     e = len(l)
     prefix = prefix.lower()
     while s < e:
         index = int((s + e) / 2)
-        if (l[index]['word'].lower().startswith(prefix) and
-                (index - 1 < 0 or not
-                 l[index-1]['word'].lower().startswith(prefix))):
+        word = l[index]['word'].lower()
+        if word.startswith(prefix):
+            if (index - 1 < 0 or not
+                    l[index-1]['word'].lower().startswith(prefix)):
                 return index
-        elif prefix < l[index]['word'].lower():
+            e = index
+        elif prefix < word:
             e = index
         else:
             s = index + 1
@@ -270,19 +272,20 @@ def binary_search_end(l, prefix):
     if not l:
         return -1
     if len(l) == 1:
-        return 0 if l[0]['word'].startswith(prefix) else -1
+        return 0 if l[0]['word'].lower().startswith(prefix) else -1
 
     s = 0
     e = len(l)
     prefix = prefix.lower()
     while s < e:
         index = int((s + e) / 2)
-        if l[index]['word'].lower().startswith(prefix):
+        word = l[index]['word'].lower()
+        if word.startswith(prefix):
             if ((index + 1) >= len(l) or not
                     l[index+1]['word'].lower().startswith(prefix)):
                 return index
             s = index + 1
-        elif prefix < l[index]['word'].lower():
+        elif prefix < word:
             e = index
         else:
             s = index + 1
