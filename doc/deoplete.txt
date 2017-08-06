@@ -934,7 +934,7 @@ __{name}	(Unspecified)			(Optional)
 	repeatedly.
 >
 	from .base import Base
-	
+
 	class Source(Base):
 	    def __init__(self, vim):
 	        super().__init__(vim)
@@ -942,7 +942,7 @@ __{name}	(Unspecified)			(Optional)
 	        self.mark = '[async]'
 	        self.rank = 1000
 	        self._count = 0
-	
+
 	    def gather_candidates(self, context):
 	        self._count += 1
 	        context['is_async'] = self._count < 10
@@ -1395,11 +1395,12 @@ A: >
 Note: It conflicts with iabbr.
 https://github.com/Shougo/deoplete.nvim/issues/234
 
-Q: I want to see the typed word in the completion menu.
+Q: I don't want to see the typed word in the completion menu.
 
-A: You should remove |deoplete-filter-matcher_length| from the matchers.
+A: You should add |deoplete-filter-matcher_length| to the matchers.
 >
-	call deoplete#custom#source('_', 'matchers', ['matcher_fuzzy'])
+	call deoplete#custom#source('_', 'matchers', ['matcher_fuzzy',
+	'matcher_length'])
 <
 Q: How to prevent auto bracket completion?
 https://github.com/Shougo/deoplete.nvim/issues/150
