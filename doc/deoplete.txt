@@ -1061,8 +1061,8 @@ https://github.com/zchee/deoplete-jedi
 perlomni.vim: "PerlOmni" source for Perl
 https://github.com/c9s/perlomni.vim
 
-deoplete-typescript: "typescript" source for typescript
-https://github.com/mhartington/deoplete-typescript
+nvim-typescript: "typescript" source for typescript
+https://github.com/mhartington/nvim-typescript
 
 deoplete-clang: "clang" source for C/C++/ObjC
 https://github.com/zchee/deoplete-clang
