@@ -175,9 +175,16 @@ function! deoplete#util#neovim_version() abort
   return split(v, '\n')[0]
 endfunction
 
-function! deoplete#util#get_context_filetype(input) abort
+function! deoplete#util#get_context_filetype(input, event) abort
   if !exists('s:context_filetype')
     let s:context_filetype = {}
+
+    " Force context_filetype call.
+    try
+      call context_filetype#get_filetype()
+    catch
+      " Ignore error
+    endtry
   endif
 
   if empty(s:context_filetype)
@@ -190,6 +197,7 @@ function! deoplete#util#get_context_filetype(input) abort
         \ || (a:input =~# '\w$' &&
         \     substitute(a:input, '\w\+$', '', '') !=#
         \     substitute(s:context_filetype.input, '\w\+$', '', ''))
+        \ || a:event ==# 'InsertEnter'
 
     let s:context_filetype.line = line('.')
     let s:context_filetype.bufnr = bufnr('.')
