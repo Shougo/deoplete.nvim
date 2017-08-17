@@ -1494,9 +1494,9 @@ https://www.reddit.com/r/vim/comments/573e3d/completorvim_async_completion_frame
 
 Q: I want to use Java script omnifunc.
 
-A: Please set |g:deoplete#omni_patterns| manually. >
-		let g:deoplete#omni_patterns = {}
-		let g:deoplete#omni_patterns.javascript = '[^. *\t]\.\w*'
+A: Please set |g:deoplete#omni#input_patterns| manually. >
+		let g:deoplete#omni#input_patterns = {}
+		let g:deoplete#omni#input_patterns.javascript = '[^. *\t]\.\w*'
 
 
 Q: I want to use the syntax files as a completion source
