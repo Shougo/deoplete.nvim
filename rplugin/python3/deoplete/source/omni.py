@@ -31,7 +31,15 @@ class Source(Base):
 
     def get_complete_position(self, context):
         current_ft = self.vim.eval('&filetype')
-        filetype = context['filetype']
+
+        for filetype in list(set([context['filetype']] +
+                                 context['filetype'].split('.'))):
+            pos = self._get_complete_position(context, current_ft, filetype)
+            if pos >= 0:
+                return pos
+        return -1
+
+    def _get_complete_position(self, context, current_ft, filetype):
         for omnifunc in convert2list(
                 get_buffer_config(context, filetype,
                                   'deoplete_omni_functions',
