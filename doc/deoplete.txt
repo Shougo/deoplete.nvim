@@ -163,7 +163,8 @@ g:deoplete#enable_profile
 
 						*g:deoplete#delimiters*
 g:deoplete#delimiters
-		Delimiters list.
+		Delimiters list.  It is used in
+		|deoplete-filter-converter_auto_delimiter|.
 
 		Default value: ['/']
 
@@ -668,7 +669,8 @@ converter_remove_overlap
 
 				*deoplete-filter-converter_auto_delimiter*
 converter_auto_delimiter
-		It adds delimiter characters in a candidate's word.
+		It adds |g:deoplete#delimiters| characters in a candidate's
+		word.
 
 				*deoplete-filter-converter_auto_paren*
 converter_auto_paren
