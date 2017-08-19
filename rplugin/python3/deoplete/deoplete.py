@@ -102,7 +102,8 @@ class Deoplete(logger.LoggingMixin):
                     # Skip
                     continue
 
-                if (source.name in self._prev_results and
+                if (not source.is_volatile and
+                        source.name in self._prev_results and
                         self.use_previous_result(
                             context, self._prev_results[source.name])):
                     results.append(self._prev_results[source.name])
@@ -424,8 +425,7 @@ class Deoplete(logger.LoggingMixin):
         return (context['position'][1] == result['prev_linenr'] and
                 re.sub(r'\w*$', '', context['input']) ==
                 re.sub(r'\w*$', '', result['prev_input']) and
-                (not result['source'].is_volatile or
-                 context['input'].find(result['prev_input']) == 0))
+                context['input'].find(result['prev_input']) == 0)
 
     def is_skip(self, context, source):
         if 'syntax_names' in context and source.disabled_syntaxes:
