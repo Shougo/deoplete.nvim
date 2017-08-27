@@ -1,6 +1,6 @@
 *deoplete.txt*	Dark powered asynchronous completion framework for neovim.
 
-Version: 3.0
+Version: 4.0
 Author: Shougo <Shougo.Matsu at gmail.com>
 License: MIT license
 
