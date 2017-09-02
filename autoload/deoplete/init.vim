@@ -14,7 +14,7 @@ endfunction
 
 function! deoplete#init#_initialize() abort
   if !deoplete#init#_check_channel()
-    return
+    return 1
   endif
 
   augroup deoplete
