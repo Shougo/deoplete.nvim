@@ -815,11 +815,6 @@ is_bytepos
 		Because Vim script string uses byte position.  Python string
 		uses character position.
 
-					*deoplete-source-attribute-is_initialized*
-is_initialized
-		(Bool)				(Optional)
-		If it is True, |deoplete-source-attribute-on_init| is not called.
-
 					*deoplete-source-attribute-is_volatile*
 is_volatile
 		(Bool)				(Optional)
