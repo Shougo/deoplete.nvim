@@ -8,7 +8,7 @@ install: vim-themis
 	pip install neovim --upgrade
 	pip install pytest --upgrade
 	pip install flake8 --upgrade
-	pip install mypy-lang --upgrade
+	pip install mypy --upgrade
 	pip install vim-vint --upgrade
 
 lint:
