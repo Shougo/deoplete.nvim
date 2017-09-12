@@ -17,8 +17,9 @@ function! deoplete#disable() abort
   return deoplete#init#_disable()
 endfunction
 function! deoplete#toggle() abort
+  call deoplete#initialize()
   return deoplete#init#_is_enabled() ?
-        \ deoplete#disable() : deoplete#enable()
+        \ deoplete#init#_disable() : deoplete#init#_enable()
 endfunction
 
 function! deoplete#enable_logging(level, logfile) abort
