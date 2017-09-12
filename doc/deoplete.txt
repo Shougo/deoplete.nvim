@@ -572,26 +572,38 @@ buffer						*deoplete-source-buffer*
 		Note: It takes time to get the candidates in the first time if
 		you want to edit the large files(like Vim 22000 lines eval.c).
 
+		rank: 100
+
 member						*deoplete-source-member*
 		It collects members from current buffer.
+
+		rank: 100
 
 tag							*deoplete-source-tag*
 		It collects keywords from |ctags| files.
 		Note: It only supports UTF-8 encoding tag file.
+
+		rank: 100
 
 file							*deoplete-source-file*
 		This source collects keywords from local files. Specifically,
 		it completes file and directory names and paths, e.g.
 		/usr/lib/share.
 
+		rank: 150
+
 omni							*deoplete-source-omni*
 		This source collects keywords from 'omnifunc'.
 		Note: It is not asynchronous.
+
+		rank: 500
 
 dictionary					*deoplete-source-dictionary*
 		This source collects |g:deoplete#keyword_patterns| keywords
 		from 'dictionary'. Note: it uses buffer-local 'dictionary'
 		set up.
+
+		rank: 100
 >
 		" Examples:
 		" Sample configuration for dictionary source with multiple
@@ -620,6 +632,8 @@ around						    *deoplete-source-around*
 		    A - above the cursor
 		    B - below the cursor
 		    C - in changes
+
+		rank: 800
 
 ==============================================================================
 FILTERS							*deoplete-filters*
@@ -716,6 +730,14 @@ __init__	(Function)
 					*deoplete-source-attribute-name*
 name		(String)			(Required)
 		The name of a source.
+
+					*deoplete-source-attribute-mark*
+mark		(String)			(Optional)
+		The mark of a source.
+
+					*deoplete-source-attribute-description*
+description	(String)			(Optional)
+		The description of a source.
 
 					*deoplete-source-attribute-filetypes*
 filetypes	(List[str])			(Optional)
