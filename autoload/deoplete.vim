@@ -31,7 +31,7 @@ endfunction
 
 function! deoplete#manual_complete(...) abort
   if !deoplete#is_enabled()
-    return
+    return ''
   endif
 
   " Start complete.
