@@ -27,7 +27,7 @@ function! deoplete#enable_logging(level, logfile) abort
 endfunction
 
 function! deoplete#manual_complete(...) abort
-  if deoplete#initialize()
+  if !deoplete#init#_is_enabled()
     return
   endif
 
