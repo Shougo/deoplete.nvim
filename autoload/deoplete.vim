@@ -7,6 +7,10 @@
 function! deoplete#initialize() abort
   return deoplete#init#_initialize()
 endfunction
+function! deoplete#is_enabled() abort
+  call deoplete#initialize()
+  return deoplete#init#_is_enabled()
+endfunction
 function! deoplete#enable() abort
   if deoplete#initialize()
     return 1
@@ -17,8 +21,7 @@ function! deoplete#disable() abort
   return deoplete#init#_disable()
 endfunction
 function! deoplete#toggle() abort
-  call deoplete#initialize()
-  return deoplete#init#_is_enabled() ?
+  return deoplete#is_enabled() ?
         \ deoplete#init#_disable() : deoplete#init#_enable()
 endfunction
 
@@ -27,7 +30,7 @@ function! deoplete#enable_logging(level, logfile) abort
 endfunction
 
 function! deoplete#manual_complete(...) abort
-  if deoplete#initialize()
+  if !deoplete#is_enabled()
     return
   endif
 

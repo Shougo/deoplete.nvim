@@ -60,8 +60,8 @@ function! deoplete#mapping#_undo_completion() abort
         \  repeat("\<C-h>", strchars(v:completed_item.word))
 endfunction
 function! deoplete#mapping#_complete_common_string() abort
-  if deoplete#initialize()
-    return
+  if !deoplete#is_enabled()
+    return ''
   endif
 
   " Get cursor word.
