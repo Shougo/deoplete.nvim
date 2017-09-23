@@ -69,8 +69,7 @@ function! deoplete#handler#_completion_timer_start() abort
   endif
 
   let delay = max([50, g:deoplete#auto_complete_delay])
-  let s:completion_timer = timer_start(delay,
-            \ function('s:do_complete'), {'repeat': -1})
+  let s:completion_timer = timer_start(delay, function('s:do_complete'))
 
   let s:prev_completion = {
         \ 'complete_position': [], 'candidates': [], 'event': ''
