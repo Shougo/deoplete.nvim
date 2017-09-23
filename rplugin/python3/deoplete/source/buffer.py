@@ -43,7 +43,7 @@ class Source(Base):
         try:
             self.__buffers[bufnr] = {
                 'bufnr': bufnr,
-                'filetype': self.vim.current.buffer.options['filetype'],
+                'filetype': self.vim.eval('&l:filetype'),
                 'candidates': [
                     {'word': x} for x in
                     sorted(parse_buffer_pattern(getlines(self.vim),
