@@ -75,6 +75,7 @@ class Deoplete(logger.LoggingMixin):
             'event': context['event'],
             'input': context['input'],
         }
+        self._vim.call('deoplete#handler#_completion_timer_start')
 
     def gather_results(self, context):
         results = []
