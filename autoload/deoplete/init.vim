@@ -72,7 +72,9 @@ endfunction
 function! deoplete#init#_variables() abort
   let g:deoplete#_context = {}
   let g:deoplete#_rank = {}
-  let g:deoplete#_logging = {}
+  if !exists('g:deoplete#_logging')
+    let g:deoplete#_logging = {}
+  endif
 
   " User vairables
   call deoplete#util#set_default(
