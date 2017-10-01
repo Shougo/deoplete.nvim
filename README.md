@@ -48,7 +48,7 @@ You can enable Python3 interface with pip:
 
 ## Sources
 
-deoplete will display completions via omnifunc by default.
+deoplete will display completions via `complete()` by default.
 
 Here are some [completion sources](https://github.com/Shougo/deoplete.nvim/wiki/Completion-Sources) specifically made for deoplete.nvim.
 
