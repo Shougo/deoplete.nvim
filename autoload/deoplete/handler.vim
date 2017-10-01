@@ -15,8 +15,12 @@ function! deoplete#handler#_init() abort
   augroup END
 
   for event in ['BufNewFile', 'BufRead', 'BufWritePost', 'VimLeavePre']
-    execute 'autocmd deoplete' event '* call s:on_event('.string(event).')'
+    call s:define_on_event(event)
   endfor
+
+  if exists('##DirChanged')
+    call s:define_on_event('DirChanged')
+  endif
 
   if g:deoplete#enable_refresh_always
     autocmd deoplete InsertCharPre * call s:completion_begin('InsertCharPre')
@@ -187,9 +191,10 @@ function! s:is_skip_text(event) abort
         \     && index(skip_chars, input[-1:]) >= 0)
 endfunction
 
-function! s:on_event(event) abort
-  call deoplete#util#rpcnotify('deoplete_on_event',
-        \ deoplete#init#_context(a:event, []))
+function! s:define_on_event(event) abort
+  execute 'autocmd deoplete' a:event
+        \ '* call deoplete#util#rpcnotify("deoplete_on_event",'
+        \.'deoplete#init#_context('.string(a:event).', []))'
 endfunction
 
 function! s:on_insert_leave() abort
