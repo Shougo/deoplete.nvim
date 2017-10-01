@@ -156,18 +156,6 @@ function! deoplete#util#get_syn_names() abort
   return names
 endfunction
 
-function! deoplete#util#exists_omnifunc(name) abort
-  if !exists('s:called_omnifuncs')
-    let s:called_omnifuncs = {}
-  endif
-
-  if !has_key(s:called_omnifuncs, a:name)
-    silent! call {a:name}(1, '')
-    let s:called_omnifuncs[a:name] = exists('*' . a:name)
-  endif
-  return s:called_omnifuncs[a:name]
-endfunction
-
 function! deoplete#util#neovim_version() abort
   redir => v
   silent version

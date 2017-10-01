@@ -47,8 +47,7 @@ class Source(Base):
             if omnifunc == '' and (filetype == current_ft or
                                    filetype in ['css', 'javascript']):
                 omnifunc = context['omni__omnifunc']
-            if omnifunc == '' or not self.vim.call(
-                    'deoplete#util#exists_omnifunc', omnifunc):
+            if omnifunc == '':
                 continue
             self.__omnifunc = omnifunc
             for input_pattern in convert2list(
