@@ -141,6 +141,8 @@ class Deoplete(logger.LoggingMixin):
                 results.append(result)
             except Exception:
                 self._source_errors[source.name] += 1
+                if source.is_silent:
+                    continue
                 if self._source_errors[source.name] > 2:
                     error(self._vim, 'Too many errors from "%s". '
                           'This source is disabled until Neovim '

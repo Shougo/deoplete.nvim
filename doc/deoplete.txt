@@ -815,6 +815,11 @@ is_bytepos
 		Because Vim script string uses byte position.  Python string
 		uses character position.
 
+					*deoplete-source-attribute-is_silent*
+is_silent
+		(Bool)				(Optional)
+		If it is True, the source messages are disabled.
+
 					*deoplete-source-attribute-is_volatile*
 is_volatile
 		(Bool)				(Optional)

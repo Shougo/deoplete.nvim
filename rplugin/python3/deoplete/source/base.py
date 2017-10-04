@@ -7,7 +7,7 @@
 import re
 from abc import abstractmethod
 from deoplete.logger import LoggingMixin
-from deoplete.util import debug
+from deoplete.util import debug, error_vim
 
 
 class Base(LoggingMixin):
@@ -28,6 +28,7 @@ class Base(LoggingMixin):
         self.is_bytepos = False
         self.is_initialized = False
         self.is_volatile = False
+        self.is_silent = False
         self.rank = 100
         self.disabled_syntaxes = []
         self.limit = 0
@@ -38,7 +39,12 @@ class Base(LoggingMixin):
         return m.start() if m else -1
 
     def print(self, expr):
-        debug(self.vim, expr)
+        if not self.is_silent:
+            debug(self.vim, expr)
+
+    def print_error(self, expr):
+        if not self.is_silent:
+            error_vim(self.vim, expr)
 
     @abstractmethod
     def gather_candidate(self, context):
