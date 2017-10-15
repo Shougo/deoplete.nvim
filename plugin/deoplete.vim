@@ -11,5 +11,5 @@ let g:loaded_deoplete = 1
 
 " Global options definition.
 if get(g:, 'deoplete#enable_at_startup', 0)
-  call deoplete#enable()
+  autocmd VimEnter * call deoplete#enable()
 endif
