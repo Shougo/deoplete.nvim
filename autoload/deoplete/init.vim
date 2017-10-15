@@ -35,6 +35,11 @@ function! deoplete#init#_channel() abort
     return 1
   endif
 
+  let s:deoplete = yarp#py3('deoplete')
+
+  call s:deoplete.notify('deoplete_init')
+  return
+
   try
     if !exists('g:loaded_remote_plugins')
       runtime! plugin/rplugin.vim
