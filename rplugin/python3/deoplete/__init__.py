@@ -17,7 +17,7 @@ class DeopleteHandlers(object):
 
     def init_channel(self):
         self._deoplete = Deoplete(self._vim)
-        self._vim.vars['deoplete#_channel_id'] = self._vim.channel_id
+        self._vim.vars['deoplete#_initialized'] = True
 
     def enable_logging(self, level, logfile):
         logger.setup(self._vim, level, logfile)

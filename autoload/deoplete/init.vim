@@ -40,7 +40,13 @@ function! deoplete#init#_channel() abort
 
     call g:deoplete#_yarp.notify('deoplete_init')
   catch
-    if !has('nvim') || !has('python3')
+    call deoplete#util#print_error(v:exception)
+
+    if !has('nvim') && !exists('*neovim_rpc#serveraddr')
+      call deoplete#util#print_error(
+            \ 'deoplete requires vim-hug-neovim-rpc plugin.')
+    endif
+    if !has('python3')
       call deoplete#util#print_error(
             \ 'deoplete requires Neovim with Python3 support("+python3").')
       return 1
@@ -52,7 +58,7 @@ function! deoplete#init#_channel() abort
   endtry
 endfunction
 function! deoplete#init#_check_channel() abort
-  return !exists('g:deoplete#_channel_id')
+  return !exists('g:deoplete#_initialized')
 endfunction
 function! deoplete#init#_enable() abort
   call deoplete#handler#_init()
