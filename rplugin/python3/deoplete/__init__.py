@@ -9,7 +9,7 @@ from deoplete import logger
 from deoplete.deoplete import Deoplete
 
 
-if not find_loader('vim'):
+if not find_loader('yarp'):
     import neovim
     vim = neovim
 else:
