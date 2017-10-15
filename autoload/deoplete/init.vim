@@ -213,7 +213,9 @@ function! deoplete#init#_context(event, sources) abort
         \ 'bufpath': bufpath,
         \ 'bufsize': wordcount().bytes,
         \ 'cwd': getcwd(),
-        \ 'vars': filter(copy(g:), "stridx(v:key, 'deoplete#') == 0"),
+        \ 'vars': filter(copy(g:),
+        \       "stridx(v:key, 'deoplete#') == 0
+        \        && v:key !=# 'deoplete#_yarp'"),
         \ 'bufvars': filter(copy(b:), "stridx(v:key, 'deoplete_') == 0"),
         \ 'custom': deoplete#custom#get(),
         \ 'omni__omnifunc': &l:omnifunc,
