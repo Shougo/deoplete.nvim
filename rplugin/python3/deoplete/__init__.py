@@ -4,6 +4,8 @@
 # License: MIT license
 # ============================================================================
 
+import vim
+
 from deoplete import logger
 from deoplete.deoplete import Deoplete
 
@@ -33,21 +35,25 @@ class DeopleteHandlers(object):
         context['rpc'] = 'deoplete_on_event'
         self._deoplete.on_event(context)
 
-import vim
 
 deoplete_handler = DeopleteHandlers(vim)
+
 
 def deoplete_init():
     deoplete_handler.init_channel()
 
+
 def deoplete_enable_logging(level, logfile):
     deoplete_handler.enable_logging(level, logfile)
+
 
 def deoplete_auto_completion_begin(context):
     deoplete_handler.auto_completion_begin(context)
 
+
 def deoplete_manual_completion_begin(context):
     deoplete_handler.manual_completion_begin(context)
+
 
 def deoplete_on_event(context):
     deoplete_handler.on_event(context)

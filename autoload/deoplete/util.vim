@@ -215,14 +215,14 @@ function! deoplete#util#rpcnotify(...) abort
   endif
 
   if !exists('s:logged') && !empty(g:deoplete#_logging)
-    call rpcnotify(g:deoplete#_channel_id,
+    call g:deoplete#_yarp.notify(g:deoplete#_channel_id,
           \ 'deoplete_enable_logging',
           \ g:deoplete#_logging.level, g:deoplete#_logging.logfile)
     let g:deoplete#_logging = {}
     let s:logged = 1
   endif
 
-  call call('rpcnotify', [g:deoplete#_channel_id] + a:000)
+  call call(g:deoplete#_yarp.notify, a:000, g:deoplete#_yarp)
   return ''
 endfunction
 

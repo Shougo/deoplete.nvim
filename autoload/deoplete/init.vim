@@ -31,20 +31,14 @@ endfunction
 function! deoplete#init#_channel() abort
   if !has('timers')
     call deoplete#util#print_error(
-          \ 'deoplete requires Neovim with timers support("+timers").')
+          \ 'deoplete requires timers support("+timers").')
     return 1
   endif
 
-  let s:deoplete = yarp#py3('deoplete')
-
-  call s:deoplete.notify('deoplete_init')
-  return
-
   try
-    if !exists('g:loaded_remote_plugins')
-      runtime! plugin/rplugin.vim
-    endif
-    call _deoplete()
+    let g:deoplete#_yarp = yarp#py3('deoplete')
+
+    call g:deoplete#_yarp.notify('deoplete_init')
   catch
     if !has('nvim') || !has('python3')
       call deoplete#util#print_error(
@@ -52,11 +46,8 @@ function! deoplete#init#_channel() abort
       return 1
     endif
 
-    call deoplete#util#print_error(printf(
-          \ 'deoplete failed to load: %s. '
-          \ .'Try the :UpdateRemotePlugins command and restart Neovim. '
-          \ .'See also :CheckHealth.',
-          \ v:exception))
+    call deoplete#util#print_error(
+          \ 'deoplete requires nvim-yarp plugin.')
     return 1
   endtry
 endfunction
