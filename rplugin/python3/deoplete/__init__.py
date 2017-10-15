@@ -4,7 +4,14 @@
 # License: MIT license
 # ============================================================================
 
-import vim
+from importlib import find_loader
+
+
+if not find_loader('vim'):
+    import neovim
+    vim = neovim
+else:
+    import vim
 
 from deoplete import logger
 from deoplete.deoplete import Deoplete
