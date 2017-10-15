@@ -35,12 +35,16 @@ function! deoplete#init#_channel() abort
     return 1
   endif
 
+  let g:deoplete#_yarp = yarp#py3('deoplete')
+
+  call g:deoplete#_yarp.notify('deoplete_init')
   try
     let g:deoplete#_yarp = yarp#py3('deoplete')
 
     call g:deoplete#_yarp.notify('deoplete_init')
   catch
     call deoplete#util#print_error(v:exception)
+    call deoplete#util#print_error(v:throwpoint)
 
     if !has('nvim') && !exists('*neovim_rpc#serveraddr')
       call deoplete#util#print_error(

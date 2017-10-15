@@ -5,6 +5,8 @@
 # ============================================================================
 
 from importlib import find_loader
+from deoplete import logger
+from deoplete.deoplete import Deoplete
 
 
 if not find_loader('vim'):
@@ -12,9 +14,6 @@ if not find_loader('vim'):
     vim = neovim
 else:
     import vim
-
-from deoplete import logger
-from deoplete.deoplete import Deoplete
 
 
 class DeopleteHandlers(object):
