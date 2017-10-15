@@ -47,10 +47,15 @@ INSTALL							*deoplete-install*
 Note: deoplete requires Neovim(latest is recommended) with Python3 and
 |+timers| enabled.
 
+Please install nvim-yarp plugin.
+https://github.com/roxma/nvim-yarp
+
+Please install vim-hug-neovim-rpc plugin for Vim8.
+https://github.com/roxma/vim-hug-neovim-rpc
+
 1. Extract the files and put them in your Neovim directory
    (usually `$XDG_CONFIG_HOME/nvim/`).
-2. Execute the ":UpdateRemotePlugins" and restart Neovim.
-3. Call |deoplete#enable()| or set "let g:deoplete#enable_at_startup = 1" in
+2. Call |deoplete#enable()| or set "let g:deoplete#enable_at_startup = 1" in
    your `init.vim`
 
 If ":echo has('python3')" returns `1`, then you're done; otherwise, see below.
@@ -1273,8 +1278,11 @@ A: 1. Please update neovim to the latest version.
 
        $ sudo pip3 install neovim --upgrade
 <
-   3. Please execute ":UpdateRemotePlugins" or ":NeoBundleRemotePlugins" (for
-   using NeoBundle) command manually.
+   2. Please install nvim-yarp plugin.
+   https://github.com/roxma/nvim-yarp
+
+   3. Please install vim-hug-neovim-rpc plugin for Vim8.
+   https://github.com/roxma/vim-hug-neovim-rpc
 
    4. Please check if Python3 interface works. You can check it by the command
        `:echo has('python3')` .

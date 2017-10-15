@@ -45,6 +45,7 @@ function! deoplete#init#_channel() abort
     if !has('nvim') && !exists('*neovim_rpc#serveraddr')
       call deoplete#util#print_error(
             \ 'deoplete requires vim-hug-neovim-rpc plugin.')
+      return 1
     endif
     if !has('python3')
       call deoplete#util#print_error(

@@ -19,23 +19,25 @@ aren't sure whether you have this.
 
 1. Extract the files and put them in your Neovim directory
    (usually `$XDG_CONFIG_HOME/nvim/`).
-2. Execute the `:UpdateRemotePlugins` and restart Neovim.
-3. Write `call deoplete#enable()` or `let g:deoplete#enable_at_startup = 1` in
+2. Write `call deoplete#enable()` or `let g:deoplete#enable_at_startup = 1` in
    your `init.vim`
 
 
 For vim-plug
 
 ```viml
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete.nvim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
 ```
 
 For dein.vim
 
 ```viml
 call dein#add('Shougo/deoplete.nvim')
+call dein#add('roxma/nvim-yarp')
+call dein#add('roxma/vim-hug-neovim-rpc')
 ```
-
 
 ## Requirements
 
@@ -45,6 +47,13 @@ If `:echo has("python3")` returns `1`, then you're done; otherwise, see below.
 You can enable Python3 interface with pip:
 
     pip3 install neovim
+
+Please install nvim-yarp plugin.
+https://github.com/roxma/nvim-yarp
+
+Please install vim-hug-neovim-rpc plugin for Vim8.
+https://github.com/roxma/vim-hug-neovim-rpc
+
 
 ## Sources
 
@@ -61,11 +70,6 @@ You need update neovim-python module.
 If you want to read the Neovim-python/python3 interface install documentation,
 you should read `:help provider-python` and the Wiki.
 https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
-
-## Note: Python3 must be enabled before updating remote plugins
-If Deoplete was installed prior to Python support being added to Neovim,
-`:UpdateRemotePlugins` should be executed manually in order to enable
-auto-completion.
 
 ## Screenshots
 
