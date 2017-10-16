@@ -181,6 +181,10 @@ def fuzzy_match(string, substring, camelcase, ensure_same_prefix):
     r0 = len(string)
     r1 = len(substring)
 
+    if r1 == 0:
+        return True
+    if r0 == 0:
+        return False
     if ensure_same_prefix \
        and not camelcase_equal(string[0], substring[0], camelcase):
         return False

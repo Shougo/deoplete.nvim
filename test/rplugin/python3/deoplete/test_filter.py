@@ -39,6 +39,23 @@ def test_matcher_fuzzy():
     assert f.description == 'fuzzy matcher'
 
     ctx = {
+        'complete_str': '',
+        'ignorecase': True,
+        'camelcase': True,
+        'is_sorted': False,
+        'candidates': [
+            { 'word': 'FooBar' },
+            { 'word': 'foobar' },
+            { 'word': 'aFooBar' },
+        ]
+    }
+    assert f.filter(ctx) == [
+        { 'word': 'FooBar' },
+        { 'word': 'foobar' },
+        { 'word': 'aFooBar' },
+    ]
+
+    ctx = {
         'complete_str': 'FOBR',
         'ignorecase': True,
         'camelcase': True,
@@ -109,6 +126,23 @@ def test_matcher_full_fuzzy():
 
     assert f.name == 'matcher_full_fuzzy'
     assert f.description == 'full fuzzy matcher'
+
+    ctx = {
+        'complete_str': '',
+        'ignorecase': True,
+        'camelcase': True,
+        'is_sorted': False,
+        'candidates': [
+            { 'word': 'FooBar' },
+            { 'word': 'foobar' },
+            { 'word': 'aFooBar' },
+        ]
+    }
+    assert f.filter(ctx) == [
+        { 'word': 'FooBar' },
+        { 'word': 'foobar' },
+        { 'word': 'aFooBar' },
+    ]
 
     ctx = {
         'complete_str': 'FOBR',
