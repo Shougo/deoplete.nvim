@@ -35,6 +35,16 @@ function! deoplete#init#_channel() abort
     return 1
   endif
 
+  if !has('nvim') && get(g:, 'python3_host_prog', '') == ''
+        \ && !executable('python3')
+    call deoplete#util#print_error(
+          \ '"python3" binary cannot be detected')
+    call deoplete#util#print_error(
+          \ '"let g:python3_host_prog = ''/to/python3/path''"'.
+          \ ' is needed in your vimrc.')
+    return 1
+  endif
+
   try
     let g:deoplete#_yarp = yarp#py3('deoplete')
 
