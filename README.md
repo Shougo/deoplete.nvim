@@ -13,11 +13,11 @@ To view the current options, please consult the
 
 ## Installation
 
-**Note:** deoplete requires Neovim(latest is recommended) with Python3 and
+**Note:** deoplete requires Neovim(latest is recommended) or Vim8 with Python3 and
 timers(neovim ver.0.1.5+) enabled.  See [requirements](#requirements) if you
 aren't sure whether you have this.
 
-1. Extract the files and put them in your Neovim directory
+1. Extract the files and put them in your Neovim or .vim directory
    (usually `$XDG_CONFIG_HOME/nvim/`).
 2. Write `call deoplete#enable()` or `let g:deoplete#enable_at_startup = 1` in
    your `init.vim`
@@ -41,7 +41,7 @@ call dein#add('roxma/vim-hug-neovim-rpc')
 
 ## Requirements
 
-deoplete requires Neovim with if\_python3.
+deoplete requires Neovim or Vim8 with if\_python3.
 If `:echo has("python3")` returns `1`, then you're done; otherwise, see below.
 
 You can enable Python3 interface with pip:
