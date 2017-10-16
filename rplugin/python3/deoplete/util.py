@@ -171,14 +171,26 @@ def parse_buffer_pattern(b, pattern):
     return list(set(re.compile(pattern).findall('\n'.join(b))))
 
 
-def fuzzy_escape(string, camelcase):
-    # Escape string for python regexp.
-    p = re.sub(r'([a-zA-Z0-9_])', r'\1.*', re.escape(string))
-    if camelcase and re.search(r'[A-Z]', string):
-        p = re.sub(r'([a-z])', (lambda pat:
-                                '['+pat.group(1)+pat.group(1).upper()+']'), p)
-    p = re.sub(r'([a-zA-Z0-9_])\.\*', r'\1[^\1]*', p)
-    return p
+def camelcase_equal(c0, c1, camelcase):
+    return c0 == c1 or camelcase and c0.lower() == c1
+
+
+def fuzzy_match(string, substring, camelcase, ensure_same_prefix):
+    l0 = 0
+    l1 = 0
+    r0 = len(string)
+    r1 = len(substring)
+
+    if ensure_same_prefix \
+       and not camelcase_equal(string[0], substring[0], camelcase):
+        return False
+
+    while (l0 < r0 and l1 < r1):
+        if camelcase_equal(string[l0], substring[l1], camelcase):
+            l1 += 1
+        l0 += 1
+
+    return l1 == r1
 
 
 def load_external_module(file, module):

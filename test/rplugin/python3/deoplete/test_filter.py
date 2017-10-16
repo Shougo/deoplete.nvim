@@ -3,11 +3,6 @@ from deoplete.filter.converter_remove_overlap import overlap_length
 import deoplete.filter.matcher_fuzzy
 import deoplete.filter.matcher_full_fuzzy
 
-def test_fuzzy_escapse():
-    assert util.fuzzy_escape('foo', 0) == 'f[^f]*o[^o]*o[^o]*'
-    assert util.fuzzy_escape('foo', 1) == 'f[^f]*o[^o]*o[^o]*'
-    assert util.fuzzy_escape('Foo', 1) == 'F[^F]*[oO].*[oO].*'
-
 def test_overlap_length():
     assert overlap_length('foo bar', 'bar baz') == 3
     assert overlap_length('foobar', 'barbaz') == 3
@@ -39,6 +34,9 @@ def test_skipping():
 
 def test_matcher_fuzzy():
     f = deoplete.filter.matcher_fuzzy.Filter(None)
+
+    assert f.name == 'matcher_fuzzy'
+    assert f.description == 'fuzzy matcher'
 
     ctx = {
         'complete_str': 'FOBR',
@@ -108,6 +106,9 @@ def test_matcher_fuzzy():
 
 def test_matcher_full_fuzzy():
     f = deoplete.filter.matcher_full_fuzzy.Filter(None)
+
+    assert f.name == 'matcher_full_fuzzy'
+    assert f.description == 'full fuzzy matcher'
 
     ctx = {
         'complete_str': 'FOBR',
