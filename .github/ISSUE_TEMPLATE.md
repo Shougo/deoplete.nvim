@@ -12,20 +12,20 @@
 
  * OS:
 
- * neovim version:
+ * neovim/Vim version:
 
- * `:CheckHealth` result(neovim ver.0.1.5-452+):
+ * `:checkhealth` or `:CheckHealth` result(neovim only):
 
-## Provide a minimal init.vim with less than 50 lines (Required!)
+## Provide a minimal init.vim/vimrc with less than 50 lines (Required!)
 
 ```vim
-" Your minimal init.vim
+" Your minimal init.vim/vimrc
 set runtimepath+=~/path/to/deoplete.nvim/
 let g:deoplete#enable_at_startup = 1
 ```
 
 
-## The reproduce ways from neovim starting (Required!)
+## The reproduce ways from neovim/Vim starting (Required!)
 
  1. foo
  2. bar
