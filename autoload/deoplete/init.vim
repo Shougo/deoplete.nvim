@@ -35,16 +35,6 @@ function! deoplete#init#_channel() abort
     return 1
   endif
 
-  if !has('nvim') && get(g:, 'python3_host_prog', '') == ''
-        \ && !executable('python3')
-    call deoplete#util#print_error(
-          \ '"python3" binary cannot be detected')
-    call deoplete#util#print_error(
-          \ '"let g:python3_host_prog = ''/to/python3/path''"'.
-          \ ' is needed in your vimrc.')
-    return 1
-  endif
-
   try
     let g:deoplete#_yarp = yarp#py3('deoplete')
 
@@ -56,16 +46,18 @@ function! deoplete#init#_channel() abort
     if !has('nvim') && !exists('*neovim_rpc#serveraddr')
       call deoplete#util#print_error(
             \ 'deoplete requires vim-hug-neovim-rpc plugin.')
-      return 1
     endif
+
     if !has('python3')
       call deoplete#util#print_error(
             \ 'deoplete requires Neovim with Python3 support("+python3").')
-      return 1
     endif
 
-    call deoplete#util#print_error(
-          \ 'deoplete requires nvim-yarp plugin.')
+    if !exists('*yarp#py3')
+      call deoplete#util#print_error(
+            \ 'deoplete requires nvim-yarp plugin.')
+    endif
+
     return 1
   endtry
 endfunction
