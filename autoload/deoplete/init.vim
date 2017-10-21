@@ -43,19 +43,26 @@ function! deoplete#init#_channel() abort
     call deoplete#util#print_error(v:exception)
     call deoplete#util#print_error(v:throwpoint)
 
-    if !has('nvim') && !exists('*neovim_rpc#serveraddr')
-      call deoplete#util#print_error(
-            \ 'deoplete requires vim-hug-neovim-rpc plugin.')
-    endif
-
     if !has('python3')
       call deoplete#util#print_error(
-            \ 'deoplete requires Neovim with Python3 support("+python3").')
+            \ 'deoplete requires Python3 support("+python3").')
     endif
 
-    if !exists('*yarp#py3')
+    if has('nvim')
       call deoplete#util#print_error(
-            \ 'deoplete requires nvim-yarp plugin.')
+          \ 'deoplete failed to load. '
+          \ .'Try the :UpdateRemotePlugins command and restart Neovim. '
+          \ .'See also :CheckHealth.')
+    else
+      if !exists('*neovim_rpc#serveraddr')
+        call deoplete#util#print_error(
+              \ 'deoplete requires vim-hug-neovim-rpc plugin in Vim.')
+      endif
+
+      if !exists('*yarp#py3')
+        call deoplete#util#print_error(
+              \ 'deoplete requires nvim-yarp plugin in Vim.')
+      endif
     endif
 
     return 1
