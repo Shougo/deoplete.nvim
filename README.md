@@ -11,6 +11,7 @@ current buffer.
 To view the current options, please consult the
 [documentation](https://github.com/Shougo/deoplete.nvim/blob/master/doc%2Fdeoplete.txt).
 
+
 ## Installation
 
 **Note:** deoplete requires Neovim(latest is recommended) or Vim8 with Python3 and
@@ -26,17 +27,23 @@ aren't sure whether you have this.
 For vim-plug
 
 ```viml
-Plug 'Shougo/deoplete.nvim'
-Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc'
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
 ```
 
 For dein.vim
 
 ```viml
 call dein#add('Shougo/deoplete.nvim')
-call dein#add('roxma/nvim-yarp')
-call dein#add('roxma/vim-hug-neovim-rpc')
+if !has('nvim')
+  call dein#add('roxma/nvim-yarp')
+  call dein#add('roxma/vim-hug-neovim-rpc')
+endif
 ```
 
 ## Requirements
@@ -48,11 +55,17 @@ You can enable Python3 interface with pip:
 
     pip3 install neovim
 
-Please install nvim-yarp plugin.
+Please install nvim-yarp plugin for Vim8.
 https://github.com/roxma/nvim-yarp
 
 Please install vim-hug-neovim-rpc plugin for Vim8.
 https://github.com/roxma/vim-hug-neovim-rpc
+
+
+## Note: Python3 must be enabled before updating remote plugins
+If Deoplete was installed prior to Python support being added to Neovim,
+`:UpdateRemotePlugins` should be executed manually in order to enable
+auto-completion.
 
 
 ## Sources
@@ -70,6 +83,7 @@ You need update neovim-python module.
 If you want to read the Neovim-python/python3 interface install documentation,
 you should read `:help provider-python` and the Wiki.
 https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
+
 
 ## Screenshots
 
@@ -95,6 +109,7 @@ https://www.youtube.com/watch?v=oanoPTpiSF4
 [Java completion using vim-javacomplete2](https://cloud.githubusercontent.com/assets/3712731/17458504/f075e76a-5c44-11e6-97d5-c5525f61c4a9.gif)
 
 [Vim Script completion using neco-vim](https://cloud.githubusercontent.com/assets/3712731/17461000/660e15be-5caf-11e6-8c02-eb9f9c169f3c.gif)
+
 
 ## Configuration Examples
 

@@ -47,7 +47,7 @@ INSTALL							*deoplete-install*
 Note: deoplete requires Neovim or Vim8(latest is recommended) with Python3 and
 |+timers| enabled.
 
-Please install nvim-yarp plugin.
+Please install nvim-yarp plugin for Vim8.
 https://github.com/roxma/nvim-yarp
 
 Please install vim-hug-neovim-rpc plugin for Vim8.
@@ -57,6 +57,7 @@ https://github.com/roxma/vim-hug-neovim-rpc
    (usually `$XDG_CONFIG_HOME/nvim/`).
 2. Call |deoplete#enable()| or set "let g:deoplete#enable_at_startup = 1" in
    your `init.vim`
+3. Execute the ":UpdateRemotePlugins" if Neovim.
 
 If ":echo has('python3')" returns `1`, then you're done; otherwise, see below.
 
@@ -1237,18 +1238,20 @@ A: 1. Please update neovim to the latest version.
 
        $ sudo pip3 install neovim --upgrade
 <
-   2. Please install nvim-yarp plugin.
+   3. Please execute ":UpdateRemotePlugins" command manually if Neovim.
+
+   4. Please install nvim-yarp plugin for Vim8.
    https://github.com/roxma/nvim-yarp
 
-   3. Please install vim-hug-neovim-rpc plugin for Vim8.
+   5. Please install vim-hug-neovim-rpc plugin for Vim8.
    https://github.com/roxma/vim-hug-neovim-rpc
 
-   4. Please check if Python3 interface works. You can check it by the command
+   6. Please check if Python3 interface works. You can check it by the command
        `:echo has('python3')` .
 
    https://github.com/neovim/neovim/wiki/Troubleshooting#python-support-isnt-working
 
-   5. Please enable debug mode from command line and upload the log file. >
+   7. Please enable debug mode from command line and upload the log file. >
 
        $ export NVIM_PYTHON_LOG_FILE=/tmp/log
        $ export NVIM_PYTHON_LOG_LEVEL=DEBUG
