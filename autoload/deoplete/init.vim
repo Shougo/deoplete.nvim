@@ -36,9 +36,12 @@ function! deoplete#init#_channel() abort
   endif
 
   try
-    let g:deoplete#_yarp = yarp#py3('deoplete')
-
-    call g:deoplete#_yarp.notify('deoplete_init')
+    if has('nvim')
+      call _deoplete_init()
+    else
+      let g:deoplete#_yarp = yarp#py3('deoplete')
+      call g:deoplete#_yarp.notify('deoplete_init')
+    endif
   catch
     call deoplete#util#print_error(v:exception)
     call deoplete#util#print_error(v:throwpoint)

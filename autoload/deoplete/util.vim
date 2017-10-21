@@ -227,7 +227,12 @@ endfunction
 
 function! s:notify(event, context) abort
   let a:context['rpc'] = a:event
-  call g:deoplete#_yarp.notify(a:event, a:context)
+
+  if has('nvim')
+    call rpcnotify(g:deoplete#_channel_id, a:event, a:context)
+  else
+    call g:deoplete#_yarp.notify(a:event, a:context)
+  endif
 endfunction
 
 " Compare versions.  Return values is the distance between versions.  Each

@@ -44,6 +44,15 @@ class Deoplete(logger.LoggingMixin):
         context['rpc'] = 'deoplete_on_event'
         self.on_event(context)
 
+        self._vim.vars['deoplete#_initialized'] = True
+        if hasattr(self._vim, 'channel_id'):
+            self._vim.vars['deoplete#_channel_id'] = self._vim.channel_id
+
+    def enable_logging(self, context):
+        logging = self._vim.vars['deoplete#_logging']
+        logger.setup(self._vim, logging['level'], logging['logfile'])
+        self.debug_enabled = True
+
     def completion_begin(self, context):
         self.check_recache(context)
 
