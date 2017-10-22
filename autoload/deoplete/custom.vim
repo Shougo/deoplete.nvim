@@ -4,10 +4,14 @@
 " License: MIT license
 "=============================================================================
 
+function! deoplete#custom#init() abort
+  let s:custom = {}
+  let s:custom._ = {}
+endfunction
+
 function! deoplete#custom#get() abort
   if !exists('s:custom')
-    let s:custom = {}
-    let s:custom._ = {}
+    call deoplete#custom#init()
   endif
 
   return s:custom
