@@ -145,12 +145,13 @@ def bytepos2charpos(encoding, input, pos):
 
 
 def get_custom(custom, source_name, key, default):
-    if source_name not in custom:
+    custom_source = custom['source']
+    if source_name not in custom_source:
         return get_custom(custom, '_', key, default)
-    elif key in custom[source_name]:
-        return custom[source_name][key]
-    elif key in custom['_']:
-        return custom['_'][key]
+    elif key in custom_source[source_name]:
+        return custom_source[source_name][key]
+    elif key in custom_source['_']:
+        return custom_source['_'][key]
     else:
         return default
 

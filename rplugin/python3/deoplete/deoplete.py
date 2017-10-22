@@ -426,8 +426,8 @@ class Deoplete(logger.LoggingMixin):
                 else:
                     default_val = None
                 source_attr = getattr(source, attr, default_val)
-                setattr(source, attr, get_custom(context['custom'], name,
-                                                 attr, source_attr))
+                setattr(source, attr, get_custom(context['custom'],
+                                                 name, attr, source_attr))
 
     def use_previous_result(self, context, result):
         return (context['position'][1] == result['prev_linenr'] and

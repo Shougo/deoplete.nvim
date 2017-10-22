@@ -6,7 +6,8 @@
 
 function! deoplete#custom#init() abort
   let s:custom = {}
-  let s:custom._ = {}
+  let s:custom.source = {}
+  let s:custom.source._ = {}
 endfunction
 
 function! deoplete#custom#get() abort
@@ -18,7 +19,7 @@ function! deoplete#custom#get() abort
 endfunction
 
 function! deoplete#custom#get_source_var(source_name) abort
-  let custom = deoplete#custom#get()
+  let custom = deoplete#custom#get().source
 
   if !has_key(custom, a:source_name)
     let custom[a:source_name] = {}

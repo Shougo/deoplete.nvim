@@ -11,7 +11,7 @@ function! s:suite.custom() abort
         \ ['converter_auto_delimiter', 'remove_overlap'])
 
   call s:assert.equals(
-        \ deoplete#custom#get(),
+        \ deoplete#custom#get().source,
         \ {'_' : {
         \  'matchers': ['matcher_head'],
         \  'converters': ['converter_auto_delimiter', 'remove_overlap']}})
