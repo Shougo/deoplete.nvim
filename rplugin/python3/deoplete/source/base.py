@@ -23,6 +23,7 @@ class Base(LoggingMixin):
         self.converters = [
             'converter_remove_overlap',
             'converter_truncate_abbr',
+            'converter_truncate_kind',
             'converter_truncate_menu']
         self.filetypes = []
         self.is_bytepos = False

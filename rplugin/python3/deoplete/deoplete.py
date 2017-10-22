@@ -121,10 +121,14 @@ class Deoplete(logger.LoggingMixin):
 
                 ctx['max_abbr_width'] = min(source.max_abbr_width,
                                             ctx['max_abbr_width'])
+                ctx['max_kind_width'] = min(source.max_kind_width,
+                                            ctx['max_kind_width'])
                 ctx['max_menu_width'] = min(source.max_menu_width,
                                             ctx['max_menu_width'])
                 if ctx['max_abbr_width'] > 0:
                     ctx['max_abbr_width'] = max(20, ctx['max_abbr_width'])
+                if ctx['max_kind_width'] > 0:
+                    ctx['max_kind_width'] = max(10, ctx['max_kind_width'])
                 if ctx['max_menu_width'] > 0:
                     ctx['max_menu_width'] = max(10, ctx['max_menu_width'])
 
@@ -355,15 +359,6 @@ class Deoplete(logger.LoggingMixin):
                 source = Source(self._vim)
                 source.name = getattr(source, 'name', name)
                 source.path = path
-                source.min_pattern_length = getattr(
-                    source, 'min_pattern_length',
-                    context['vars']['deoplete#auto_complete_start_length'])
-                source.max_abbr_width = getattr(
-                    source, 'max_abbr_width',
-                    context['vars']['deoplete#max_abbr_width'])
-                source.max_menu_width = getattr(
-                    source, 'max_menu_width',
-                    context['vars']['deoplete#max_menu_width'])
             except Exception:
                 error_tb(self._vim, 'Could not load source: %s' % name)
             finally:
@@ -414,6 +409,7 @@ class Deoplete(logger.LoggingMixin):
             ('min_pattern_length', 'deoplete#auto_complete_start_length'),
             'max_pattern_length',
             ('max_abbr_width', 'deoplete#max_abbr_width'),
+            ('max_kind_width', 'deoplete#max_menu_width'),
             ('max_menu_width', 'deoplete#max_menu_width'),
             'matchers',
             'sorters',

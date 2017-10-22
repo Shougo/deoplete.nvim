@@ -789,6 +789,15 @@ max_abbr_width
 
 		If you omit it, it is set |g:deoplete#max_abbr_width| value.
 
+				*deoplete-source-attribute-max_kind_width*
+max_kind_width
+		(Integer)			(Optional)
+		If the candidate kind length exceeds the length it will be cut
+		down.
+		It it is less than or equal 0, it will be disabled.
+
+		If you omit it, it is set |g:deoplete#max_menu_width| value.
+
 				*deoplete-source-attribute-max_menu_width*
 max_menu_width
 		(Integer)			(Optional)
