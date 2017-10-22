@@ -3,39 +3,61 @@
 # AUTHOR: Shougo Matsushita <Shougo.Matsu at gmail.com>
 # License: MIT license
 # ============================================================================
-import neovim
 
-from deoplete import logger
+from importlib import find_loader
 from deoplete.deoplete import Deoplete
 
 
-@neovim.plugin
-class DeopleteHandlers(object):
+if not find_loader('yarp'):
+    import neovim
+    vim = neovim
+else:
+    import vim
 
-    def __init__(self, vim):
-        self._vim = vim
+if 'neovim' in locals() and hasattr(neovim, 'plugin'):
+    # Neovim only
 
-    @neovim.function('_deoplete', sync=False)
-    def init_channel(self, args):
-        self._deoplete = Deoplete(self._vim)
-        self._vim.vars['deoplete#_channel_id'] = self._vim.channel_id
+    @neovim.plugin
+    class DeopleteHandlers(object):
 
-    @neovim.rpc_export('deoplete_enable_logging')
-    def enable_logging(self, level, logfile):
-        logger.setup(self._vim, level, logfile)
-        self._deoplete.debug_enabled = True
+        def __init__(self, vim):
+            self._vim = vim
 
-    @neovim.rpc_export('deoplete_auto_completion_begin')
-    def completion_begin(self, context):
-        context['rpc'] = 'deoplete_auto_completion_begin'
-        self._deoplete.completion_begin(context)
+        @neovim.function('_deoplete_init', sync=False)
+        def init_channel(self, args):
+            self._deoplete = Deoplete(self._vim)
 
-    @neovim.rpc_export('deoplete_manual_completion_begin')
-    def manual_completion_begin(self, context):
-        context['rpc'] = 'deoplete_manual_completion_begin'
-        self._deoplete.completion_begin(context)
+        @neovim.rpc_export('deoplete_enable_logging')
+        def enable_logging(self, context):
+            self._deoplete.enable_logging(context)
 
-    @neovim.rpc_export('deoplete_on_event')
-    def on_event(self, context):
-        context['rpc'] = 'deoplete_on_event'
-        self._deoplete.on_event(context)
+        @neovim.rpc_export('deoplete_auto_completion_begin')
+        def auto_completion_begin(self, context):
+            self._deoplete.completion_begin(context)
+
+        @neovim.rpc_export('deoplete_manual_completion_begin')
+        def manual_completion_begin(self, context):
+            self._deoplete.completion_begin(context)
+
+        @neovim.rpc_export('deoplete_on_event')
+        def on_event(self, context):
+            self._deoplete.on_event(context)
+else:
+    # Vim only
+
+    global_deoplete = Deoplete(vim)
+
+    def deoplete_init():
+        pass
+
+    def deoplete_enable_logging(context):
+        global_deoplete.enable_logging(context)
+
+    def deoplete_auto_completion_begin(context):
+        global_deoplete.completion_begin(context)
+
+    def deoplete_manual_completion_begin(context):
+        global_deoplete.completion_begin(context)
+
+    def deoplete_on_event(context):
+        global_deoplete.on_event(context)

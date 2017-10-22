@@ -31,32 +31,48 @@ endfunction
 function! deoplete#init#_channel() abort
   if !has('timers')
     call deoplete#util#print_error(
-          \ 'deoplete requires Neovim with timers support("+timers").')
+          \ 'deoplete requires timers support("+timers").')
     return 1
   endif
 
   try
-    if !exists('g:loaded_remote_plugins')
-      runtime! plugin/rplugin.vim
+    if has('nvim')
+      call _deoplete_init()
+    else
+      let g:deoplete#_yarp = yarp#py3('deoplete')
+      call g:deoplete#_yarp.notify('deoplete_init')
     endif
-    call _deoplete()
   catch
-    if !has('nvim') || !has('python3')
+    call deoplete#util#print_error(v:exception)
+    call deoplete#util#print_error(v:throwpoint)
+
+    if !has('python3')
       call deoplete#util#print_error(
-            \ 'deoplete requires Neovim with Python3 support("+python3").')
-      return 1
+            \ 'deoplete requires Python3 support("+python3").')
     endif
 
-    call deoplete#util#print_error(printf(
-          \ 'deoplete failed to load: %s. '
+    if has('nvim')
+      call deoplete#util#print_error(
+          \ 'deoplete failed to load. '
           \ .'Try the :UpdateRemotePlugins command and restart Neovim. '
-          \ .'See also :CheckHealth.',
-          \ v:exception))
+          \ .'See also :CheckHealth.')
+    else
+      if !exists('*neovim_rpc#serveraddr')
+        call deoplete#util#print_error(
+              \ 'deoplete requires vim-hug-neovim-rpc plugin in Vim.')
+      endif
+
+      if !exists('*yarp#py3')
+        call deoplete#util#print_error(
+              \ 'deoplete requires nvim-yarp plugin in Vim.')
+      endif
+    endif
+
     return 1
   endtry
 endfunction
 function! deoplete#init#_check_channel() abort
-  return !exists('g:deoplete#_channel_id')
+  return !exists('g:deoplete#_initialized')
 endfunction
 function! deoplete#init#_enable() abort
   call deoplete#handler#_init()
@@ -209,7 +225,9 @@ function! deoplete#init#_context(event, sources) abort
         \ 'bufpath': bufpath,
         \ 'bufsize': wordcount().bytes,
         \ 'cwd': getcwd(),
-        \ 'vars': filter(copy(g:), "stridx(v:key, 'deoplete#') == 0"),
+        \ 'vars': filter(copy(g:),
+        \       "stridx(v:key, 'deoplete#') == 0
+        \        && v:key !=# 'deoplete#_yarp'"),
         \ 'bufvars': filter(copy(b:), "stridx(v:key, 'deoplete_') == 0"),
         \ 'custom': deoplete#custom#get(),
         \ 'omni__omnifunc': &l:omnifunc,

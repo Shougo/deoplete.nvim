@@ -209,21 +209,30 @@ function! deoplete#util#get_context_filetype(input, event) abort
         \  s:context_filetype.filetypes, s:context_filetype.same_filetypes]
 endfunction
 
-function! deoplete#util#rpcnotify(...) abort
+function! deoplete#util#rpcnotify(event, context) abort
   if deoplete#init#_check_channel()
     return ''
   endif
 
   if !exists('s:logged') && !empty(g:deoplete#_logging)
-    call rpcnotify(g:deoplete#_channel_id,
-          \ 'deoplete_enable_logging',
-          \ g:deoplete#_logging.level, g:deoplete#_logging.logfile)
+    call s:notify('deoplete_enable_logging',
+          \ deoplete#init#_context(a:event, []))
     let g:deoplete#_logging = {}
     let s:logged = 1
   endif
 
-  call call('rpcnotify', [g:deoplete#_channel_id] + a:000)
+  call s:notify(a:event, a:context)
   return ''
+endfunction
+
+function! s:notify(event, context) abort
+  let a:context['rpc'] = a:event
+
+  if has('nvim')
+    call rpcnotify(g:deoplete#_channel_id, a:event, a:context)
+  else
+    call g:deoplete#_yarp.notify(a:event, a:context)
+  endif
 endfunction
 
 " Compare versions.  Return values is the distance between versions.  Each

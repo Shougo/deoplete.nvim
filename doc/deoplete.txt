@@ -1,4 +1,4 @@
-*deoplete.txt*	Dark powered asynchronous completion framework for neovim.
+*deoplete.txt*	Dark powered asynchronous completion framework for neovim/Vim8.
 
 Version: 4.0
 Author: Shougo <Shougo.Matsu at gmail.com>
@@ -44,14 +44,20 @@ Improvements in deoplete in comparison to |neocomplete|:
 ==============================================================================
 INSTALL							*deoplete-install*
 
-Note: deoplete requires Neovim(latest is recommended) with Python3 and
+Note: deoplete requires Neovim or Vim8(latest is recommended) with Python3 and
 |+timers| enabled.
 
-1. Extract the files and put them in your Neovim directory
+Please install nvim-yarp plugin for Vim8.
+https://github.com/roxma/nvim-yarp
+
+Please install vim-hug-neovim-rpc plugin for Vim8.
+https://github.com/roxma/vim-hug-neovim-rpc
+
+1. Extract the files and put them in your Neovim or .vim directory
    (usually `$XDG_CONFIG_HOME/nvim/`).
-2. Execute the ":UpdateRemotePlugins" and restart Neovim.
-3. Call |deoplete#enable()| or set "let g:deoplete#enable_at_startup = 1" in
+2. Call |deoplete#enable()| or set "let g:deoplete#enable_at_startup = 1" in
    your `init.vim`
+3. Execute the ":UpdateRemotePlugins" if Neovim.
 
 If ":echo has('python3')" returns `1`, then you're done; otherwise, see below.
 
@@ -1215,47 +1221,6 @@ phpcd.vim: another PHP omnifunc. Faster.
 https://github.com/php-vim/phpcd.vim
 
 ==============================================================================
-VIM8 ASYNC API SUPPORT					*deoplete-vim8*
-
-Current deoplete does not support Vim8 asynchronous API.
-To support Vim8, neovim-python compatible API is needed.
-I have not plan to create it.
-But if it is created, I will support it.
-
-Q: Why neovim-python compatible API is needed?  Vim8 already implements
-asynchronous API.  It optimize your plugins, doesn't it?
-Q: Why neocomplete/unite.vim does not support Vim8 asynchronous API?
-
-A: Vim8 asynchronous API (or neovim job API) does replace vimproc plugin.
-No more vimproc dependency.  But it does not optimize my plugins.
-To optimize my plugins, I must rewrite the plugins and most functions must be
-executed in the separated process.  It is hard way though, it is already done.
-Yes, it is deoplete!
-
-Q: Why does not use the external interfaces?
-
-A: Current all external interfaces block your Vim.  The neovim remote plugin
-feature is not.
-
-Q: Why neovim remote plugin is better?
-
-A: It is the separated process and easy to communicate with Vim like the
-external interfaces.  I think it is the killer feature in neovim.  It is not
-well known though.
-
-Q: neovim-python compatible API can be implemented by Vim8 async API?
-
-A: Yes.  Vim8 implements JSON RPC.  I think you can create Python-Vim
-input/output interface using JSON RPC.  It is like MessagePack-RPC in neovim.
-
-Q: Why don't you implement neovim-python compatibility API using Vim8 JSON
-RPC?
-
-A: I have not much time.  You can implement it.  Why do I need to implement
-the feature?  neovim remote plugin feature already works!  It should be
-implemented by needed person.
-
-==============================================================================
 FREQUENTLY ASKED QUESTIONS (FAQ)                                *deoplete-faq*
 
                                                         *deoplete-faq-trouble*
@@ -1273,15 +1238,20 @@ A: 1. Please update neovim to the latest version.
 
        $ sudo pip3 install neovim --upgrade
 <
-   3. Please execute ":UpdateRemotePlugins" or ":NeoBundleRemotePlugins" (for
-   using NeoBundle) command manually.
+   3. Please execute ":UpdateRemotePlugins" command manually if Neovim.
 
-   4. Please check if Python3 interface works. You can check it by the command
+   4. Please install nvim-yarp plugin for Vim8.
+   https://github.com/roxma/nvim-yarp
+
+   5. Please install vim-hug-neovim-rpc plugin for Vim8.
+   https://github.com/roxma/vim-hug-neovim-rpc
+
+   6. Please check if Python3 interface works. You can check it by the command
        `:echo has('python3')` .
 
    https://github.com/neovim/neovim/wiki/Troubleshooting#python-support-isnt-working
 
-   5. Please enable debug mode from command line and upload the log file. >
+   7. Please enable debug mode from command line and upload the log file. >
 
        $ export NVIM_PYTHON_LOG_FILE=/tmp/log
        $ export NVIM_PYTHON_LOG_LEVEL=DEBUG
