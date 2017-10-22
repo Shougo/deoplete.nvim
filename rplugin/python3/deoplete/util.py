@@ -189,6 +189,8 @@ def load_external_module(file, module):
 
 
 def truncate_skipping(string, max_width, footer, footer_len):
+    if not string:
+        return ''
     if len(string) <= max_width/2:
         return string
     if strwidth(string) <= max_width:
