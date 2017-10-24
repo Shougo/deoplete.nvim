@@ -34,8 +34,6 @@ class Deoplete(logger.LoggingMixin):
         self._source_errors = defaultdict(int)
         self._filter_errors = defaultdict(int)
         self.name = 'core'
-        self._ignored_sources = set()
-        self._ignored_filters = set()
         self._loaded_paths = set()
         self._prev_results = {}
 
@@ -160,7 +158,6 @@ class Deoplete(logger.LoggingMixin):
                     error(self._vim, 'Too many errors from "%s". '
                           'This source is disabled until Neovim '
                           'is restarted.' % source.name)
-                    self._ignored_sources.add(source.path)
                     self._sources.pop(source.name)
                     continue
                 error_tb(self._vim,
@@ -229,7 +226,6 @@ class Deoplete(logger.LoggingMixin):
                         error(self._vim, 'Too many errors from "%s". '
                               'This filter is disabled until Neovim '
                               'is restarted.' % f.name)
-                        self._ignored_filters.add(f.path)
                         self._filters.pop(f.name)
                         continue
                     error_tb(self._vim, 'Could not filter using: %s' % f)
@@ -317,7 +313,6 @@ class Deoplete(logger.LoggingMixin):
                         error_tb(self._vim,
                                  'Error when loading source {}: {}. '
                                  'Ignoring.'.format(source_name, exc))
-                    self._ignored_sources.add(source.path)
                     self._sources.pop(source_name)
                     continue
                 else:
@@ -344,7 +339,7 @@ class Deoplete(logger.LoggingMixin):
     def load_sources(self, context):
         # Load sources from runtimepath
         for path in find_rplugins(context, 'source'):
-            if path in self._ignored_sources or path in self._loaded_paths:
+            if path in self._loaded_paths:
                 continue
             self._loaded_paths.add(path)
 
@@ -372,7 +367,7 @@ class Deoplete(logger.LoggingMixin):
     def load_filters(self, context):
         # Load filters from runtimepath
         for path in find_rplugins(context, 'filter'):
-            if path in self._ignored_filters or path in self._loaded_paths:
+            if path in self._loaded_paths:
                 continue
             self._loaded_paths.add(path)
 
@@ -448,9 +443,6 @@ class Deoplete(logger.LoggingMixin):
             return False
         return not (source.min_pattern_length <=
                     len(context['complete_str']) <= source.max_pattern_length)
-
-    def position_has_changed(self, tick):
-        return tick != self._vim.eval('b:changedtick')
 
     def check_recache(self, context):
         if context['runtimepath'] != self._runtimepath:
