@@ -74,7 +74,7 @@ class Source(Base):
                     return -1
                 try:
                     complete_pos = self.vim.call(self.__omnifunc, 1, '')
-                except:
+                except Exception as e:
                     self.print_error('Error occurred calling omnifunction: ' +
                                      self.__omnifunc)
                     return -1
@@ -88,7 +88,7 @@ class Source(Base):
                 candidates = candidates['words']
             elif candidates is int:
                 candidates = []
-        except:
+        except Exception as e:
             self.print_error('Error occurred calling omnifunction: ' +
                              self.__omnifunc)
             candidates = []
