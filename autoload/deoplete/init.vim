@@ -21,12 +21,13 @@ function! deoplete#init#_initialize() abort
     autocmd!
   augroup END
 
+  call deoplete#init#_variables()
+
   if deoplete#init#_channel()
     return 1
   endif
 
   call deoplete#mapping#_init()
-  call deoplete#init#_variables()
 endfunction
 function! deoplete#init#_channel() abort
   if !has('timers')
@@ -36,11 +37,11 @@ function! deoplete#init#_channel() abort
   endif
 
   try
-    if has('nvim')
-      call _deoplete_init()
-    else
+    if deoplete#util#has_yarp()
       let g:deoplete#_yarp = yarp#py3('deoplete')
       call g:deoplete#_yarp.notify('deoplete_init')
+    else
+      call _deoplete_init()
     endif
   catch
     call deoplete#util#print_error(v:exception)
@@ -51,21 +52,21 @@ function! deoplete#init#_channel() abort
             \ 'deoplete requires Python3 support("+python3").')
     endif
 
-    if has('nvim')
-      call deoplete#util#print_error(
-          \ 'deoplete failed to load. '
-          \ .'Try the :UpdateRemotePlugins command and restart Neovim. '
-          \ .'See also :CheckHealth.')
-    else
-      if !exists('*neovim_rpc#serveraddr')
+    if deoplete#util#has_yarp()
+      if !has('nvim') && !exists('*neovim_rpc#serveraddr')
         call deoplete#util#print_error(
               \ 'deoplete requires vim-hug-neovim-rpc plugin in Vim.')
       endif
 
       if !exists('*yarp#py3')
         call deoplete#util#print_error(
-              \ 'deoplete requires nvim-yarp plugin in Vim.')
+              \ 'deoplete requires nvim-yarp plugin.')
       endif
+    else
+      call deoplete#util#print_error(
+          \ 'deoplete failed to load. '
+          \ .'Try the :UpdateRemotePlugins command and restart Neovim. '
+          \ .'See also :CheckHealth.')
     endif
 
     return 1
@@ -95,6 +96,8 @@ function! deoplete#init#_variables() abort
   " User vairables
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_at_startup', 0)
+  call deoplete#util#set_default(
+        \ 'g:deoplete#enable_yarp', 0)
   call deoplete#util#set_default(
         \ 'g:deoplete#auto_complete_start_length', 2)
   call deoplete#util#set_default(

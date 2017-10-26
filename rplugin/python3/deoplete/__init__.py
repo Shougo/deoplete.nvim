@@ -8,11 +8,11 @@ from importlib import find_loader
 from deoplete.deoplete import Deoplete
 
 
-if not find_loader('yarp'):
+if find_loader('yarp'):
+    import vim
+else:
     import neovim
     vim = neovim
-else:
-    import vim
 
 if 'neovim' in locals() and hasattr(neovim, 'plugin'):
     # Neovim only
@@ -42,8 +42,9 @@ if 'neovim' in locals() and hasattr(neovim, 'plugin'):
         @neovim.rpc_export('deoplete_on_event')
         def on_event(self, context):
             self._deoplete.on_event(context)
-else:
-    # Vim only
+
+
+if find_loader('yarp'):
 
     global_deoplete = Deoplete(vim)
 

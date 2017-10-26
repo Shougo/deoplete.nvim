@@ -90,6 +90,14 @@ g:deoplete#enable_at_startup
 		With the default value 0, you cannot use deoplete
 		unless you start it manually.
 
+						*g:deoplete#enable_yarp*
+g:deoplete#enable_yarp
+		Use nvim-yarp library instead of neovim remote plugin feature.
+		Note: nvim-yarp plugin is needed.
+		https://github.com/roxma/nvim-yarp
+
+		Default value: 0
+
 						*g:deoplete#complete_method*
 g:deoplete#complete_method
 		If it is "complete", deoplete use |complete()|.
@@ -1260,7 +1268,9 @@ A: 1. Please update neovim to the latest version.
 
    https://github.com/neovim/neovim/wiki/Troubleshooting#python-support-isnt-working
 
-   7. Please enable debug mode from command line and upload the log file. >
+   7. You can test |g:deoplete#enable_yarp| option for neovim.
+
+   8. Please enable debug mode from command line and upload the log file. >
 
        $ export NVIM_PYTHON_LOG_FILE=/tmp/log
        $ export NVIM_PYTHON_LOG_LEVEL=DEBUG

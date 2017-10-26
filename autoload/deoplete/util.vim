@@ -163,6 +163,10 @@ function! deoplete#util#neovim_version() abort
   return split(v, '\n')[0]
 endfunction
 
+function! deoplete#util#has_yarp() abort
+  return !has('nvim') || get(g:, 'deoplete#enable_yarp', 0)
+endfunction
+
 function! deoplete#util#get_context_filetype(input, event) abort
   if !exists('s:context_filetype')
     let s:context_filetype = {}
@@ -228,10 +232,10 @@ endfunction
 function! s:notify(event, context) abort
   let a:context['rpc'] = a:event
 
-  if has('nvim')
-    call rpcnotify(g:deoplete#_channel_id, a:event, a:context)
-  else
+  if deoplete#util#has_yarp()
     call g:deoplete#_yarp.notify(a:event, a:context)
+  else
+    call rpcnotify(g:deoplete#_channel_id, a:event, a:context)
   endif
 endfunction
 
