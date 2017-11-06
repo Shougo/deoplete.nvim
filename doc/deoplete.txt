@@ -1171,6 +1171,9 @@ https://github.com/Robzz/deoplete-omnisharp/
 deoplete-omnisharp: Improved version of deoplete-omnisharp
 https://github.com/dimixar/deoplete-omnisharp/
 
+deoplete-omnisharp: Embeded omnisharp server version of deoplete-omnisharp
+https://github.com/cyansprite/deoplete-omnisharp
+
 deoplete-hack: "hack" source for Hack and PHP
 https://github.com/zefei/deoplete-hack
 
@@ -1525,6 +1528,13 @@ A: You can create the source for it. Why don't create the source if you need?
 
                                                         *deoplete-faq-general*
 4. General Questions~
+
+Q: How to donate money to you?
+
+A: I don't get the donation, but if you want to donate, please support neovim
+project.  My plugins depends on neovim development.
+
+https://salt.bountysource.com/teams/neovim
 
 Q: What means "dark powered"?
 
