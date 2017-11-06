@@ -1356,6 +1356,11 @@ A: You can use it by the 'completeopt' option. >
 
        set completeopt+=noinsert
 
+Q: How do I select one of the responses from the pop up? I assume this is
+   really obvious, but I have not figured it out.
+
+A: Please press <C-y> on the candidate.
+
 Q: I want to close the preview window after completion is done.
 
 A: >
@@ -1461,6 +1466,21 @@ A: |g:deoplete#omni_patterns| offers:
     - Python3 regexp
 
    You should use |g:deoplete#omni#input_patterns| if possible.
+
+Q: Is there a way to control the colors used for popup menu using highlight
+   groups?
+
+A: Like this:
+>
+	highlight Pmenu ctermbg=8 guibg=#606060
+	highlight PmenuSel ctermbg=1 guifg=#dddd00 guibg=#1f82cd
+	highlight PmenuSbar ctermbg=0 guibg=#d6d6d6
+<
+Q: What does each part of a line on the pop up mean?  For example I see:
+   Bree pops up Breed [~] A. What do [~] and A stand for?
+
+A: It is the source mark. [~] is from around source.  A is from
+   |deoplete-source-around|.
 
                                                     *deoplete-faq-ft-specific*
 3. Filetype Specific Questions~
