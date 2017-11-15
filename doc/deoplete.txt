@@ -846,7 +846,13 @@ is_silent
 					*deoplete-source-attribute-is_volatile*
 is_volatile
 		(Bool)				(Optional)
-		If it is True, the source depends on the user input.
+		If it is True, the source depends on the user input. It means
+		that if this flag is set to False, deoplete will cache
+		gather_candidates results and will not call gather_candidates
+		on each input change. Only on_post_filter method will be
+		called on each input change (if implemented).
+
+		Default value: False
 
 				*deoplete-source-attribute-debug_enabled*
 debug_enabled
@@ -979,7 +985,14 @@ __{name}	(Unspecified)			(Optional)
 
 		is_async		(Bool)
 			If the gather is asynchronous, the source must set
-			it "True".
+			it to "True". A typical stategy for an asynchronous
+			gather_candidates method to use this flag is to
+			set is_async flag to True while results are being
+			produced in the background (optionally, returning them
+			as they become ready). Once background processing
+			has completed, is_async flag should be set to False
+			indicating that this is the last portion of the
+			candidates.
 
 	The below is the example of async deoplete source.
 	If "context['is_async']" is True, the gather_candidates is called
