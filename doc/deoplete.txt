@@ -985,7 +985,7 @@ __{name}	(Unspecified)			(Optional)
 
 		is_async		(Bool)
 			If the gather is asynchronous, the source must set
-			it to "True". A typical stategy for an asynchronous
+			it to "True". A typical strategy for an asynchronous
 			gather_candidates method to use this flag is to
 			set is_async flag to True while results are being
 			produced in the background (optionally, returning them
