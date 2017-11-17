@@ -114,6 +114,9 @@ https://www.youtube.com/watch?v=oanoPTpiSF4
 
 [Register/Extract list completions](https://camo.githubusercontent.com/6a6df993ad0e05c014c72c8f8702447f9b34ad90/68747470733a2f2f692e696d6775722e636f6d2f5131663731744a2e676966)
 
+### deoplete-fsharp sample ( Enjoy! )
+![FSharp completion using deopletefs](https://github.com/callmekohei/deoplete-fsharp/blob/master/pic/sample.gif)
+
 ## Configuration Examples
 
 ```vim
