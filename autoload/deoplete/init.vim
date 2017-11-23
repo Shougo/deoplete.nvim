@@ -213,6 +213,7 @@ function! deoplete#init#_context(event, sources) abort
         \ 'changedtick': b:changedtick,
         \ 'event': event,
         \ 'input': input,
+        \ 'is_windows': ((has('win32') || has('win64')) ? v:true : v:false),
         \ 'next_input': deoplete#util#get_next_input(a:event),
         \ 'complete_str': '',
         \ 'encoding': &encoding,

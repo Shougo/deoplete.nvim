@@ -684,6 +684,21 @@ matcher_length
 		Length matching matcher.
 		It removes candidates shorter than or equal to the user input.
 
+					*deoplete-filter-matcher_cpsm*
+matcher_cpsm
+		A matcher which filters the candidates using cpsm.
+		It is like |deoplete-filter-matcher_full_fuzzy| but faster.
+		It also sorts the candidates using cpsm.
+		Note: cpsm plugin build/install is needed in 'runtimepath'.
+		https://github.com/nixprime/cpsm
+		Note: You must use Python3 support enabled cpsm. >
+			$ PY3=ON ./install.sh
+<
+		Configuration example: >
+>
+		call deoplete#custom#source('_', 'matchers', ['matcher_cpsm'])
+		call deoplete#custom#source('_', 'sorters', [])
+<
 						*deoplete-filter-sorter_rank*
 sorter_rank	Matched rank order sorter.  The higher the head matched word
 		or already selected.
