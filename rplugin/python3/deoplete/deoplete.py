@@ -92,7 +92,6 @@ class Deoplete(logger.LoggingMixin):
                 if source.disabled_syntaxes and 'syntax_names' not in context:
                     context['syntax_names'] = get_syn_names(self._vim)
                 ctx = copy.deepcopy(context)
-                ctx['is_async'] = False
 
                 charpos = source.get_complete_position(ctx)
                 if charpos >= 0 and source.is_bytepos:
@@ -117,6 +116,7 @@ class Deoplete(logger.LoggingMixin):
                     results.append(self._prev_results[source.name])
                     continue
 
+                ctx['is_async'] = False
                 ctx['max_abbr_width'] = min(source.max_abbr_width,
                                             ctx['max_abbr_width'])
                 ctx['max_kind_width'] = min(source.max_kind_width,

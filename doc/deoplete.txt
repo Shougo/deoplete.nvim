@@ -984,6 +984,8 @@ __{name}	(Unspecified)			(Optional)
 			filetypes and composite filetypes.
 
 		is_async		(Bool)
+			If the input is changed, it will be "True".
+
 			If the gather is asynchronous, the source must set
 			it to "True". A typical strategy for an asynchronous
 			gather_candidates method to use this flag is to
