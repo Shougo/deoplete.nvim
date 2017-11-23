@@ -117,6 +117,7 @@ class Deoplete(logger.LoggingMixin):
                     continue
 
                 ctx['is_async'] = False
+                ctx['is_refresh'] = True
                 ctx['max_abbr_width'] = min(source.max_abbr_width,
                                             ctx['max_abbr_width'])
                 ctx['max_kind_width'] = min(source.max_kind_width,
@@ -174,6 +175,7 @@ class Deoplete(logger.LoggingMixin):
 
             # Gather async results
             if result['is_async']:
+                result['context']['is_refresh'] = False
                 async_candidates = source.gather_candidates(
                     result['context'])
                 result['is_async'] = result['context']['is_async']
