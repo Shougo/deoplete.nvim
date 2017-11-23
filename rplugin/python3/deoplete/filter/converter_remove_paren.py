@@ -10,7 +10,7 @@ from .base import Base
 
 class Filter(Base):
     def __init__(self, vim):
-        Base.__init__(self, vim)
+        super().__init__(vim)
 
         self.name = 'converter_remove_paren'
         self.description = 'remove parentheses converter'
