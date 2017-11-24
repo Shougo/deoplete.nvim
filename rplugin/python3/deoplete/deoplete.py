@@ -92,7 +92,6 @@ class Deoplete(logger.LoggingMixin):
                 if source.disabled_syntaxes and 'syntax_names' not in context:
                     context['syntax_names'] = get_syn_names(self._vim)
                 ctx = copy.deepcopy(context)
-                ctx['is_async'] = False
 
                 charpos = source.get_complete_position(ctx)
                 if charpos >= 0 and source.is_bytepos:
@@ -110,13 +109,15 @@ class Deoplete(logger.LoggingMixin):
                     # Skip
                     continue
 
-                if (not source.is_volatile and
-                        source.name in self._prev_results and
+                if (source.name in self._prev_results and
                         self.use_previous_result(
-                            context, self._prev_results[source.name])):
+                            context, self._prev_results[source.name],
+                            source.is_volatile)):
                     results.append(self._prev_results[source.name])
                     continue
 
+                ctx['is_async'] = False
+                ctx['is_refresh'] = True
                 ctx['max_abbr_width'] = min(source.max_abbr_width,
                                             ctx['max_abbr_width'])
                 ctx['max_kind_width'] = min(source.max_kind_width,
@@ -174,6 +175,7 @@ class Deoplete(logger.LoggingMixin):
 
             # Gather async results
             if result['is_async']:
+                result['context']['is_refresh'] = False
                 async_candidates = source.gather_candidates(
                     result['context'])
                 result['is_async'] = result['context']['is_async']
@@ -424,11 +426,15 @@ class Deoplete(logger.LoggingMixin):
                 setattr(source, attr, get_custom(context['custom'],
                                                  name, attr, source_attr))
 
-    def use_previous_result(self, context, result):
-        return (context['position'][1] == result['prev_linenr'] and
-                re.sub(r'\w*$', '', context['input']) ==
-                re.sub(r'\w*$', '', result['prev_input']) and
-                context['input'].find(result['prev_input']) == 0)
+    def use_previous_result(self, context, result, is_volatile):
+        if context['position'][1] != result['prev_linenr']:
+            return False
+        if is_volatile:
+            return context['input'] == result['prev_input']
+        else:
+            return (re.sub(r'\w*$', '', context['input']) ==
+                    re.sub(r'\w*$', '', result['prev_input']) and
+                    context['input'].find(result['prev_input']) == 0)
 
     def is_skip(self, context, source):
         if 'syntax_names' in context and source.disabled_syntaxes:

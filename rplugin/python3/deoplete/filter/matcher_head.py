@@ -11,7 +11,7 @@ from deoplete.util import binary_search_begin, binary_search_end
 class Filter(Base):
 
     def __init__(self, vim):
-        Base.__init__(self, vim)
+        super().__init__(vim)
 
         self.name = 'matcher_head'
         self.description = 'head matcher'

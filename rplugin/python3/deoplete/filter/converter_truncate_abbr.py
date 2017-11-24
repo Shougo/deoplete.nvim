@@ -10,7 +10,7 @@ from deoplete.util import truncate_skipping
 
 class Filter(Base):
     def __init__(self, vim):
-        Base.__init__(self, vim)
+        super().__init__(vim)
 
         self.name = 'converter_truncate_abbr'
         self.description = 'truncate abbr converter'

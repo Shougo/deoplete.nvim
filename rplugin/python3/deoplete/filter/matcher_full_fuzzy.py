@@ -12,7 +12,7 @@ from deoplete.util import fuzzy_escape
 class Filter(Base):
 
     def __init__(self, vim):
-        Base.__init__(self, vim)
+        super().__init__(vim)
 
         self.name = 'matcher_full_fuzzy'
         self.description = 'full fuzzy matcher'
