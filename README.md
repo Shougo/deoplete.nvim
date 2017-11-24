@@ -90,14 +90,15 @@ https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
 ```
-
-<br>
-<br>
 <br>
 <br>
 <br>
 
 ---
+
+<br>
+<br>
+<br>
 
 ## Screenshots
 
