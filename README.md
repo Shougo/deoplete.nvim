@@ -84,6 +84,20 @@ If you want to read the Neovim-python/python3 interface install documentation,
 you should read `:help provider-python` and the Wiki.
 https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
 
+## Configuration Examples
+
+```vim
+" Use deoplete.
+let g:deoplete#enable_at_startup = 1
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+---
 
 ## Screenshots
 
@@ -117,9 +131,4 @@ https://www.youtube.com/watch?v=oanoPTpiSF4
 ### deoplete-fsharp sample ( Enjoy! )
 ![FSharp completion using deopletefs](https://github.com/callmekohei/deoplete-fsharp/blob/master/pic/sample.gif)
 
-## Configuration Examples
 
-```vim
-" Use deoplete.
-let g:deoplete#enable_at_startup = 1
-```
