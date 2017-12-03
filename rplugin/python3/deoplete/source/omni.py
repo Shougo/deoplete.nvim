@@ -68,10 +68,6 @@ class Source(Base):
                         'LanguageClient#complete',
                         'phpcomplete#CompletePHP']:
                     # In the blacklist
-                    self.print_error('omni source does not support: ' +
-                                     self.__omnifunc)
-                    self.print_error('You must use g:deoplete#omni_patterns' +
-                                     ' instead.')
                     return -1
                 try:
                     complete_pos = self.vim.call(self.__omnifunc, 1, '')
