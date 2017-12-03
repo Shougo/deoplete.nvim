@@ -129,8 +129,10 @@ function! s:completion_begin(event) abort
             \ 'b:deoplete_omni_patterns',
             \ 'g:deoplete#omni_patterns',
             \ 'g:deoplete#_omni_patterns'))
+        let blacklist = ['LanguageClient#complete']
         if pattern !=# '' && &l:omnifunc !=# ''
               \ && context.input =~# '\%('.pattern.'\)$'
+              \ && index(blacklist, &l:omnifunc) < 0
           let g:deoplete#_context.candidates = []
           call deoplete#mapping#_set_completeopt()
           call feedkeys("\<C-x>\<C-o>", 'in')

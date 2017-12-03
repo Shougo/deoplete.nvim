@@ -65,6 +65,7 @@ class Source(Base):
                 if filetype == current_ft and self.__omnifunc in [
                         'ccomplete#Complete',
                         'htmlcomplete#CompleteTags',
+                        'LanguageClient#complete',
                         'phpcomplete#CompletePHP']:
                     # In the blacklist
                     self.print_error('omni source does not support: ' +
