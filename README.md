@@ -46,6 +46,7 @@ if !has('nvim')
 endif
 ```
 
+
 ## Requirements
 
 deoplete requires Neovim or Vim8 with if\_python3.
@@ -67,6 +68,13 @@ If Deoplete was installed prior to Python support being added to Neovim,
 `:UpdateRemotePlugins` should be executed manually in order to enable
 auto-completion.
 
+
+## Configuration Examples
+
+```vim
+" Use deoplete.
+let g:deoplete#enable_at_startup = 1
+```
 
 ## Sources
 
@@ -116,10 +124,3 @@ https://www.youtube.com/watch?v=oanoPTpiSF4
 
 ### deoplete-fsharp sample ( Enjoy! )
 ![FSharp completion using deopletefs](https://github.com/callmekohei/deoplete-fsharp/blob/master/pic/sample.gif)
-
-## Configuration Examples
-
-```vim
-" Use deoplete.
-let g:deoplete#enable_at_startup = 1
-```
