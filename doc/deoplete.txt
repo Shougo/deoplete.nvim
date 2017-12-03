@@ -144,6 +144,13 @@ g:deoplete#enable_refresh_always
 
 		Default value: 0
 
+					*g:deoplete#enable_on_insert_enter*
+g:deoplete#enable_on_insert_enter
+		Deoplete enables the auto completion on |InsertEnter| autocmd
+		if this value is 1.
+
+		Default value: 1
+
 				*g:deoplete#auto_complete_start_length*
 g:deoplete#auto_complete_start_length
 		This variable controls the number of the input completion

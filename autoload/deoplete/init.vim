@@ -115,6 +115,8 @@ function! deoplete#init#_variables() abort
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_refresh_always', 0)
   call deoplete#util#set_default(
+        \ 'g:deoplete#enable_on_insert_enter', 1)
+  call deoplete#util#set_default(
         \ 'g:deoplete#disable_auto_complete', 0)
   call deoplete#util#set_default(
         \ 'g:deoplete#delimiters', ['/'])
