@@ -49,7 +49,7 @@ class Deoplete(logger.LoggingMixin):
     def enable_logging(self, context):
         logging = self._vim.vars['deoplete#_logging']
         logger.setup(self._vim, logging['level'], logging['logfile'])
-        self.debug_enabled = True
+        self.is_debug_enabled = True
 
     def completion_begin(self, context):
         self.check_recache(context)
@@ -322,7 +322,7 @@ class Deoplete(logger.LoggingMixin):
             yield source_name, source
 
     def profile_start(self, context, name):
-        if self._profile_flag is 0 or not self.debug_enabled:
+        if self._profile_flag is 0 or not self.is_debug_enabled:
             return
 
         if not self._profile_flag:
@@ -412,7 +412,7 @@ class Deoplete(logger.LoggingMixin):
             'sorters',
             'converters',
             'mark',
-            'debug_enabled',
+            'is_debug_enabled',
             'is_silent',
         )
 

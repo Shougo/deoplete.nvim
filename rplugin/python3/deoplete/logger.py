@@ -65,12 +65,12 @@ def logmethod(func):
     """Decorator for setting up the logger in LoggingMixin subclasses.
 
     This does not guarantee that log messages will be generated.  If
-    `LoggingMixin.debug_enabled` is True, it will be propagated up to the root
-    'deoplete' logger.
+    `LoggingMixin.is_debug_enabled` is True, it will be propagated up to the
+    root 'deoplete' logger.
     """
     @wraps(func)
     def wrapper(self, *args, **kwargs):
-        if not init or not self.debug_enabled:
+        if not init or not self.is_debug_enabled:
             return
         if self._logger is None:
             self._logger = getLogger(getattr(self, 'name', 'unknown'))
@@ -81,7 +81,7 @@ def logmethod(func):
 class LoggingMixin(object):
     """Class that adds logging functions to a subclass.
     """
-    debug_enabled = False
+    is_debug_enabled = False
     _logger = None  # type: logging.Logger
 
     @logmethod

@@ -480,7 +480,7 @@ deoplete#custom#source({source-name}, {option-name}, {value})
 		" Enable jedi source debug messages
 		" let g:deoplete#enable_profile = 1
 		" call deoplete#enable_logging('DEBUG', 'deoplete.log')
-		" call deoplete#custom#source('jedi', 'debug_enabled', 1)
+		" call deoplete#custom#source('jedi', 'is_debug_enabled', 1)
 <
 						*deoplete#enable_logging()*
 deoplete#enable_logging({level}, {logfile})
@@ -491,7 +491,7 @@ deoplete#enable_logging({level}, {logfile})
 		Messages are appended to this file.  Each log session will
 		start with "--- Deoplete Log Start ---".
 		Note: You must enable
-		|deoplete-source-attribute-debug_enabled| to debug the
+		|deoplete-source-attribute-is_debug_enabled| to debug the
 		sources.
 
 
@@ -876,8 +876,8 @@ is_volatile
 
 		Default value: False
 
-				*deoplete-source-attribute-debug_enabled*
-debug_enabled
+				*deoplete-source-attribute-is_debug_enabled*
+is_debug_enabled
 		(Bool)				(Optional)
 		If it is True, the debug log feature is enabled in the source.
 
@@ -1373,7 +1373,7 @@ A: Please enable logging feature like this. >
 
        let g:deoplete#enable_profile = 1
        call deoplete#enable_logging('DEBUG', 'deoplete.log')
-       call deoplete#custom#source('jedi', 'debug_enabled', 1)
+       call deoplete#custom#source('jedi', 'is_debug_enabled', 1)
 <
                                                          *deoplete-faq-config*
 2. Configuration~
@@ -1619,6 +1619,9 @@ A: https://github.com/zchee/deoplete-jedi/issues/35
 
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
+
+2017.12.04
+* "debug_enabled" is deprecated.  Please use "is_debug_enabled" instead.
 
 2017.07.22
 * "deoplete#custom#set()" is deprecated.
