@@ -413,6 +413,7 @@ class Deoplete(logger.LoggingMixin):
             'converters',
             'mark',
             'debug_enabled',
+            'is_silent',
         )
 
         for name, source in self._sources.items():
