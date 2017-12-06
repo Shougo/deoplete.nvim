@@ -50,7 +50,7 @@ endif
 ## Requirements
 
 deoplete requires Neovim or Vim8 with if\_python3.
-If `:echo has("python3")` returns `1`, then you're done; otherwise, see below.
+If `:echo has("python3")` returns `1`, then you have python 3 support; otherwise, see below.
 
 You can enable Python3 interface with pip:
 
