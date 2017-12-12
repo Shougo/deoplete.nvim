@@ -20,8 +20,7 @@ aren't sure whether you have this.
 
 1. Extract the files and put them in your Neovim or .vim directory
    (usually `$XDG_CONFIG_HOME/nvim/`).
-2. Write `call deoplete#enable()` or `let g:deoplete#enable_at_startup = 1` in
-   your `init.vim`
+2. Write `let g:deoplete#enable_at_startup = 1` in your `init.vim`. Upon reloading vim and typing, the complete prompt should automatically become visible without having to press c-n.
 
 
 For vim-plug
