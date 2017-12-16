@@ -13,6 +13,14 @@ function! deoplete#init#_is_enabled() abort
 endfunction
 
 function! deoplete#init#_initialize() abort
+  if has('vim_starting')
+    augroup deoplete
+      autocmd!
+      autocmd VimEnter * call deoplete#enable()
+    augroup END
+    return 1
+  endif
+
   if !deoplete#init#_check_channel()
     return 1
   endif
@@ -78,7 +86,7 @@ function! deoplete#init#_channel() abort
   endtry
 endfunction
 function! deoplete#init#_check_channel() abort
-  return !has('vim_starting') && !exists('g:deoplete#_initialized')
+  return !exists('g:deoplete#_initialized')
 endfunction
 function! deoplete#init#_enable() abort
   call deoplete#handler#_init()
