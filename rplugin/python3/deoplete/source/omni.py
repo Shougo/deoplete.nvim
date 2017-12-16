@@ -81,9 +81,9 @@ class Source(Base):
     def gather_candidates(self, context):
         try:
             candidates = self.vim.call(self.__omnifunc, 0, '')
-            if candidates is dict:
+            if isinstance(candidates, dict):
                 candidates = candidates['words']
-            elif candidates is int:
+            elif isinstance(candidates, int):
                 candidates = []
         except Exception as e:
             self.print_error('Error occurred calling omnifunction: ' +
