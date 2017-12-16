@@ -16,6 +16,8 @@ class Filter(Base):
         self.description = 'remove overlap converter'
 
     def filter(self, context):
+        if not context['next_input']:
+            return context['candidates']
         m = re.match('\S+', context['next_input'])
         if not m:
             return context['candidates']
