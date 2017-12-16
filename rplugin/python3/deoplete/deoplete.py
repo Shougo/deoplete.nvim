@@ -161,10 +161,30 @@ class Deoplete(logger.LoggingMixin):
                           'is restarted.' % source.name)
                     self._sources.pop(source.name)
                     continue
-                error_tb(self._vim,
-                         'Could not get completions from: %s' % source.name)
+                error_tb(self._vim, 'Errors from: %s' % source.name)
 
         return results
+
+    def gather_async_results(self, result, source):
+        try:
+            result['context']['is_refresh'] = False
+            async_candidates = source.gather_candidates(result['context'])
+            result['is_async'] = result['context']['is_async']
+            if async_candidates is None:
+                return
+            result['context']['candidates'] += convert2candidates(
+                async_candidates)
+        except Exception:
+            self._source_errors[source.name] += 1
+            if source.is_silent:
+                return
+            if self._source_errors[source.name] > 2:
+                error(self._vim, 'Too many errors from "%s". '
+                      'This source is disabled until Neovim '
+                      'is restarted.' % source.name)
+                self._sources.pop(source.name)
+            else:
+                error_tb(self._vim, 'Errors from: %s' % source.name)
 
     def merge_results(self, results, context_input):
         merged_results = []
@@ -175,14 +195,7 @@ class Deoplete(logger.LoggingMixin):
 
             # Gather async results
             if result['is_async']:
-                result['context']['is_refresh'] = False
-                async_candidates = source.gather_candidates(
-                    result['context'])
-                result['is_async'] = result['context']['is_async']
-                if async_candidates is None:
-                    continue
-                result['context']['candidates'] += convert2candidates(
-                    async_candidates)
+                self.gather_async_results(result, source)
 
             if not result['context']['candidates']:
                 continue
@@ -230,7 +243,7 @@ class Deoplete(logger.LoggingMixin):
                               'is restarted.' % f.name)
                         self._filters.pop(f.name)
                         continue
-                    error_tb(self._vim, 'Could not filter using: %s' % f)
+                    error_tb(self._vim, 'Errors from: %s' % f)
 
             context['ignorecase'] = ignorecase
 
