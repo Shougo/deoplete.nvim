@@ -62,7 +62,7 @@ class Deoplete(logger.LoggingMixin):
 
         try:
             is_async, complete_position, candidates = self.merge_results(
-                self.gather_results(context), context['input'])
+                self.gather_results(context), context)
 
         except Exception:
             error_tb(self._vim, 'Error while gathering completions')
@@ -192,73 +192,80 @@ class Deoplete(logger.LoggingMixin):
             else:
                 error_tb(self._vim, 'Errors from: %s' % source.name)
 
-    def merge_results(self, results, context_input):
+    def process_filter(self, f, context):
+        try:
+            self.profile_start(context, f.name)
+            if (isinstance(context['candidates'], dict) and
+                    'sorted_candidates' in context['candidates']):
+                context_candidates = []
+                context['is_sorted'] = True
+                for candidates in context['candidates']['sorted_candidates']:
+                    context['candidates'] = candidates
+                    context_candidates += f.filter(context)
+                context['candidates'] = context_candidates
+            else:
+                context['candidates'] = f.filter(context)
+            self.profile_end(f.name)
+        except Exception:
+            self._filter_errors[f.name] += 1
+            if self._source_errors[f.name] > 2:
+                error(self._vim, 'Too many errors from "%s". '
+                      'This filter is disabled until Neovim '
+                      'is restarted.' % f.name)
+                self._filters.pop(f.name)
+                return
+            error_tb(self._vim, 'Errors from: %s' % f)
+
+    def source_result(self, result, context_input):
+        source = result['source']
+
+        # Gather async results
+        if result['is_async']:
+            self.gather_async_results(result, source)
+
+        if not result['context']['candidates']:
+            return []
+
+        # Source context
+        ctx = copy.deepcopy(result['context'])
+
+        ctx['input'] = context_input
+        ctx['complete_str'] = context_input[ctx['char_position']:]
+        ctx['is_sorted'] = False
+
+        # Filtering
+        ignorecase = ctx['ignorecase']
+        smartcase = ctx['smartcase']
+        camelcase = ctx['camelcase']
+
+        # Set ignorecase
+        if (smartcase or camelcase) and re.search(
+                r'[A-Z]', ctx['complete_str']):
+            ctx['ignorecase'] = 0
+
+        for f in [self._filters[x] for x
+                  in source.matchers + source.sorters + source.converters
+                  if x in self._filters]:
+            self.process_filter(f, ctx)
+
+        ctx['ignorecase'] = ignorecase
+
+        # On post filter
+        if hasattr(source, 'on_post_filter'):
+            ctx['candidates'] = source.on_post_filter(ctx)
+
+        if ctx['candidates']:
+            return [ctx['candidates'], result]
+        return []
+
+    def merge_results(self, results, context):
         merged_results = []
         all_candidates = []
         for result in [x for x in results
                        if not self.is_skip(x['context'], x['source'])]:
-            source = result['source']
-
-            # Gather async results
-            if result['is_async']:
-                self.gather_async_results(result, source)
-
-            if not result['context']['candidates']:
-                continue
-
-            context = copy.deepcopy(result['context'])
-
-            context['input'] = context_input
-            context['complete_str'] = context['input'][
-                context['char_position']:]
-            context['is_sorted'] = False
-
-            # Filtering
-            ignorecase = context['ignorecase']
-            smartcase = context['smartcase']
-            camelcase = context['camelcase']
-
-            # Set ignorecase
-            if (smartcase or camelcase) and re.search(
-                    r'[A-Z]', context['complete_str']):
-                context['ignorecase'] = 0
-
-            for f in [self._filters[x] for x
-                      in source.matchers + source.sorters + source.converters
-                      if x in self._filters]:
-                try:
-                    self.profile_start(context, f.name)
-                    if (isinstance(context['candidates'], dict) and
-                            'sorted_candidates' in context['candidates']):
-                        context_candidates = []
-                        sorted_candidates = context['candidates'][
-                            'sorted_candidates']
-                        context['is_sorted'] = True
-                        for candidates in sorted_candidates:
-                            context['candidates'] = candidates
-                            context_candidates += f.filter(context)
-                        context['candidates'] = context_candidates
-                    else:
-                        context['candidates'] = f.filter(context)
-                    self.profile_end(f.name)
-                except Exception:
-                    self._filter_errors[f.name] += 1
-                    if self._source_errors[f.name] > 2:
-                        error(self._vim, 'Too many errors from "%s". '
-                              'This filter is disabled until Neovim '
-                              'is restarted.' % f.name)
-                        self._filters.pop(f.name)
-                        continue
-                    error_tb(self._vim, 'Errors from: %s' % f)
-
-            context['ignorecase'] = ignorecase
-
-            # On post filter
-            if hasattr(source, 'on_post_filter'):
-                context['candidates'] = source.on_post_filter(context)
-
-            if context['candidates']:
-                merged_results.append([context['candidates'], result])
+            source_result = self.source_result(result, context['input'])
+            if source_result:
+                merged_results.append(source_result)
 
         is_async = len([x for x in results if x['context']['is_async']]) > 0
 
@@ -269,10 +276,9 @@ class Deoplete(logger.LoggingMixin):
                                  for x in merged_results])
 
         for [candidates, result] in merged_results:
-            context = result['context']
+            ctx = result['context']
             source = result['source']
-            prefix = context['input'][
-                complete_position:context['complete_position']]
+            prefix = ctx['input'][complete_position:ctx['complete_position']]
 
             mark = source.mark + ' '
             for candidate in candidates:
