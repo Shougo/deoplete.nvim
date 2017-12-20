@@ -29,6 +29,11 @@ function! deoplete#handler#_init() abort
     autocmd deoplete InsertCharPre *
           \ call s:completion_begin('InsertCharPre')
   endif
+
+  " Note: MacVim GUI is broken
+  if !has('nvim')
+    call deoplete#handler#_async_timer_start()
+  endif
 endfunction
 
 function! s:do_complete(timer) abort
