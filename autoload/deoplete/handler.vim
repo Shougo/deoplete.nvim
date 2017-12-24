@@ -82,6 +82,12 @@ function! deoplete#handler#_completion_timer_start() abort
   let s:prev_completion = {
         \ 'complete_position': [], 'candidates': [], 'event': ''
         \ }
+
+  " Note: Vim 8 GUI is broken
+  " dummy timer call is needed before complete()
+  if !has('nvim') && has('gui_running')
+    let s:dummy_timer = timer_start(100, {timer -> 0}, {'repeat': -1})
+  endif
 endfunction
 function! s:completion_timer_stop() abort
   if !exists('s:completion_timer')
@@ -90,6 +96,11 @@ function! s:completion_timer_stop() abort
 
   call timer_stop(s:completion_timer)
   unlet s:completion_timer
+
+  if exists('s:dummy_timer')
+    call timer_stop(s:dummy_timer)
+    unlet s:dummy_timer
+  endif
 endfunction
 
 function! deoplete#handler#_async_timer_start() abort
@@ -101,22 +112,11 @@ function! deoplete#handler#_async_timer_start() abort
   let s:async_timer.id = timer_start(
         \ max([50, g:deoplete#auto_refresh_delay]),
         \ function('s:completion_async'), {'repeat': -1})
-
-  " Note: Vim 8 GUI is broken
-  " dummy timer call is needed before complete()
-  if !has('nvim') && has('gui_running')
-    let s:dummy_timer = timer_start(100, {timer -> 0}, {'repeat': -1})
-  endif
 endfunction
 function! deoplete#handler#_async_timer_stop() abort
   if exists('s:async_timer')
     call timer_stop(s:async_timer.id)
     unlet s:async_timer
-  endif
-
-  if exists('s:dummy_timer')
-    call timer_stop(s:dummy_timer)
-    unlet s:dummy_timer
   endif
 endfunction
 function! s:completion_async(timer) abort
