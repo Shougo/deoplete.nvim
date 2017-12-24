@@ -29,6 +29,12 @@ function! deoplete#handler#_init() abort
     autocmd deoplete InsertCharPre *
           \ call s:completion_begin('InsertCharPre')
   endif
+
+  " Note: Vim 8 GUI is broken
+  " dummy timer call is needed before complete()
+  if !has('nvim') && has('gui_running')
+    let s:dummy_timer = timer_start(200, {timer -> 0}, {'repeat': -1})
+  endif
 endfunction
 
 function! s:do_complete(timer) abort
@@ -82,12 +88,6 @@ function! deoplete#handler#_completion_timer_start() abort
   let s:prev_completion = {
         \ 'complete_position': [], 'candidates': [], 'event': ''
         \ }
-
-  " Note: Vim 8 GUI is broken
-  " dummy timer call is needed before complete()
-  if !has('nvim') && has('gui_running')
-    let s:dummy_timer = timer_start(100, {timer -> 0})
-  endif
 endfunction
 function! s:completion_timer_stop() abort
   if !exists('s:completion_timer')
@@ -96,11 +96,6 @@ function! s:completion_timer_stop() abort
 
   call timer_stop(s:completion_timer)
   unlet s:completion_timer
-
-  if exists('s:dummy_timer')
-    call timer_stop(s:dummy_timer)
-    unlet s:dummy_timer
-  endif
 endfunction
 
 function! deoplete#handler#_async_timer_start() abort
