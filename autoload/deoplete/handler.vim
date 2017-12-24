@@ -86,7 +86,7 @@ function! deoplete#handler#_completion_timer_start() abort
   " Note: Vim 8 GUI is broken
   " dummy timer call is needed before complete()
   if !has('nvim') && has('gui_running')
-    let s:dummy_timer = timer_start(100, {timer -> 0}, {'repeat': -1})
+    let s:dummy_timer = timer_start(100, {timer -> 0})
   endif
 endfunction
 function! s:completion_timer_stop() abort
