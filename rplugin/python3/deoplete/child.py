@@ -7,15 +7,14 @@
 import re
 import copy
 import time
-import os.path
 
 from collections import defaultdict
 
 from deoplete import logger
 from deoplete.exceptions import SourceInitError
 from deoplete.util import (bytepos2charpos, charpos2bytepos, error, error_tb,
-                           find_rplugins, get_buffer_config, get_custom,
-                           get_syn_names, import_plugin, convert2candidates)
+                           get_buffer_config, get_custom,
+                           get_syn_names, convert2candidates)
 
 
 class Child(logger.LoggingMixin):
@@ -287,33 +286,6 @@ class Child(logger.LoggingMixin):
 
     def set_custom(self, custom):
         self._custom = custom
-
-    def load_filters(self, context):
-        # Load filters from runtimepath
-        for path in find_rplugins(context, 'filter'):
-            if path in self._loaded_paths:
-                continue
-            self._loaded_paths.add(path)
-
-            name = os.path.splitext(os.path.basename(path))[0]
-
-            f = None
-            try:
-                Filter = import_plugin(path, 'filter', 'Filter')
-                if not Filter:
-                    continue
-
-                f = Filter(self._vim)
-                f.name = getattr(f, 'name', name)
-                f.path = path
-                self._filters[f.name] = f
-            except Exception:
-                # Exception occurred when loading a filter.  Log stack trace.
-                error_tb(self._vim, 'Could not load filter: %s' % name)
-            finally:
-                if f:
-                    self._filters[f.name] = f
-                    self.debug('Loaded Filter: %s (%s)', f.name, path)
 
     def use_previous_result(self, context, result, is_volatile):
         if context['position'][1] != result['prev_linenr']:
