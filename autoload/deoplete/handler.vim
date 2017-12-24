@@ -33,7 +33,7 @@ function! deoplete#handler#_init() abort
   " Note: Vim 8 GUI is broken
   " dummy timer call is needed before complete()
   if !has('nvim')
-    let s:dummy_timer = timer_start(100, {timer -> 0})
+    let s:dummy_timer = timer_start(100, {timer -> 0}, {'repeat': -1})
   endif
 endfunction
 
