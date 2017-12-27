@@ -56,6 +56,8 @@ class Deoplete(logger.LoggingMixin):
             child.enable_logging()
 
     def completion_begin(self, context):
+        self.debug('completion_begin: %s', context['input'])
+
         self.check_recache(context)
 
         try:
@@ -76,7 +78,6 @@ class Deoplete(logger.LoggingMixin):
                                in context['vars']):
             self._vim.call('deoplete#mapping#_restore_completeopt')
 
-        # error(self._vim, context['input'])
         # error(self._vim, candidates)
         self._vim.vars['deoplete#_context'] = {
             'complete_position': position,
@@ -85,6 +86,8 @@ class Deoplete(logger.LoggingMixin):
             'input': context['input'],
         }
         self._vim.call('deoplete#handler#_completion_timer_start')
+
+        self.debug('completion_end: %s', context['input'])
 
     def merge_results(self, context):
         is_async = False
