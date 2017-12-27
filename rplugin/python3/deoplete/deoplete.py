@@ -24,8 +24,6 @@ class Deoplete(logger.LoggingMixin):
         self._vim = vim
         self._runtimepath = ''
         self._custom = []
-        self._profile_flag = None
-        self._profile_start = 0
         self._loaded_paths = set()
 
         self._children = []
