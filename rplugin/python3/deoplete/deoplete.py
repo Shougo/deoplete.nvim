@@ -4,7 +4,6 @@
 # License: MIT license
 # ============================================================================
 
-import time
 import os.path
 
 import deoplete.util  # noqa
@@ -25,6 +24,8 @@ class Deoplete(logger.LoggingMixin):
         self._runtimepath = ''
         self._custom = []
         self._loaded_paths = set()
+        self._loaded_sources = {}
+        self._loaded_filters = {}
 
         self._children = []
         self._child_count = 0
@@ -145,10 +146,17 @@ class Deoplete(logger.LoggingMixin):
                 source = Source(self._vim)
                 source.name = getattr(source, 'name', name)
                 source.path = path
+                if source.name in self._loaded_sources:
+                    # Duplicated name
+                    error_tb(self._vim, 'duplicated source: %s' % source.name)
+                    error_tb(self._vim, 'path: "%s" "%s"' %
+                             (path, self._loaded_sources[source.name]))
+                    source = None
             except Exception:
                 error_tb(self._vim, 'Could not load source: %s' % name)
             finally:
                 if source:
+                    self._loaded_sources[source.name] = path
                     self._children[self._child_count].add_source(source)
                     self._child_count += 1
                     self._child_count %= self._max_children
@@ -175,11 +183,18 @@ class Deoplete(logger.LoggingMixin):
                 f = Filter(self._vim)
                 f.name = getattr(f, 'name', name)
                 f.path = path
+                if f.name in self._loaded_filters:
+                    # Duplicated name
+                    error_tb(self._vim, 'duplicated filter: %s' % f.name)
+                    error_tb(self._vim, 'path: "%s" "%s"' %
+                             (path, self._loaded_filters[f.name]))
+                    f = None
             except Exception:
                 # Exception occurred when loading a filter.  Log stack trace.
                 error_tb(self._vim, 'Could not load filter: %s' % name)
             finally:
                 if f:
+                    self._loaded_filters[f.name] = path
                     for child in self._children:
                         child.add_filter(f)
                     self.debug('Loaded Filter: %s (%s)', f.name, path)
