@@ -9,6 +9,9 @@ import copy
 import time
 
 from collections import defaultdict
+from threading import Thread
+from queue import Queue
+from time import time, sleep
 
 from deoplete import logger
 from deoplete.exceptions import SourceInitError
@@ -31,6 +34,10 @@ class Child(logger.LoggingMixin):
         self._source_errors = defaultdict(int)
         self._filter_errors = defaultdict(int)
         self._prev_results = {}
+
+        self._thread = None
+        self._queue_in = Queue()
+        self._queue_out = Queue()
 
     def enable_logging(self):
         self.is_debug_enabled = True
@@ -276,6 +283,8 @@ class Child(logger.LoggingMixin):
                 name, time.clock() - self._profile_start))
 
     def add_source(self, s):
+        if not self._sources:
+            self._thread = Thread(target=self._main_loop)
         self._sources[s.name] = s
 
     def add_filter(self, f):
@@ -352,3 +361,6 @@ class Child(logger.LoggingMixin):
                     error_tb(self._vim, 'Exception during {}.on_event '
                              'for event {!r}: {}'.format(
                                  source_name, context['event'], exc))
+
+    def _main_loop(self):
+        pass
