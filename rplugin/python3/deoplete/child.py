@@ -178,16 +178,13 @@ class Child(logger.LoggingMixin):
         ctx['complete_str'] = context_input[ctx['char_position']:]
         ctx['is_sorted'] = False
 
-        # Filtering
-        ignorecase = ctx['ignorecase']
-        smartcase = ctx['smartcase']
-        camelcase = ctx['camelcase']
-
         # Set ignorecase
-        if (smartcase or camelcase) and re.search(
-                r'[A-Z]', ctx['complete_str']):
+        case = ctx['smartcase'] or ctx['camelcase']
+        if case and re.search(r'[A-Z]', ctx['complete_str']):
             ctx['ignorecase'] = 0
+        ignorecase = ctx['ignorecase']
 
+        # Filtering
         for f in [self._filters[x] for x
                   in source.matchers + source.sorters + source.converters
                   if x in self._filters]:
