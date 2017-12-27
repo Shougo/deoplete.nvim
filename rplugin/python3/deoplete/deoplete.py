@@ -53,6 +53,8 @@ class Deoplete(logger.LoggingMixin):
         logging = self._vim.vars['deoplete#_logging']
         logger.setup(self._vim, logging['level'], logging['logfile'])
         self.is_debug_enabled = True
+        for child in self._children:
+            child.enable_logging()
 
     def completion_begin(self, context):
         self.check_recache(context)
@@ -126,23 +128,6 @@ class Deoplete(logger.LoggingMixin):
             all_candidates = all_candidates[: max_list]
 
         return (is_async, complete_position, all_candidates)
-
-    def profile_start(self, context, name):
-        if self._profile_flag is 0 or not self.is_debug_enabled:
-            return
-
-        if not self._profile_flag:
-            self._profile_flag = context['vars']['deoplete#enable_profile']
-            if self._profile_flag:
-                return self.profile_start(context, name)
-        elif self._profile_flag:
-            self.debug('Profile Start: {0}'.format(name))
-            self._profile_start = time.clock()
-
-    def profile_end(self, name):
-        if self._profile_start:
-            self.debug('Profile End  : {0:<25} time={1:2.10f}'.format(
-                name, time.clock() - self._profile_start))
 
     def load_sources(self, context):
         # Load sources from runtimepath

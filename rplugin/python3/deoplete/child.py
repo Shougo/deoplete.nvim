@@ -32,7 +32,7 @@ class Child(logger.LoggingMixin):
         self._filter_errors = defaultdict(int)
         self._prev_results = {}
 
-    def enable_logging(self, context):
+    def enable_logging(self):
         self.is_debug_enabled = True
 
     def gather_results(self, context):
