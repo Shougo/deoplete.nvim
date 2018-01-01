@@ -283,7 +283,7 @@ class Child(logger.LoggingMixin):
                 name, time.clock() - self._profile_start))
 
     def add_source(self, s):
-        if not self._sources:
+        if not self._thread:
             self._thread = Thread(target=self._main_loop)
         self._sources[s.name] = s
 
