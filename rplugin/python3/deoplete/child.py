@@ -11,6 +11,7 @@ import time
 from collections import defaultdict
 from threading import Thread
 from queue import Queue
+from neovim import attach
 
 from deoplete import logger
 from deoplete.exceptions import SourceInitError
@@ -21,10 +22,10 @@ from deoplete.util import (bytepos2charpos, charpos2bytepos, error, error_tb,
 
 class Child(logger.LoggingMixin):
 
-    def __init__(self, vim):
+    def __init__(self):
         self.name = 'child'
 
-        self._vim = vim
+        self._vim = None
         self._filters = {}
         self._sources = {}
         self._custom = []
@@ -41,29 +42,45 @@ class Child(logger.LoggingMixin):
     def enable_logging(self):
         self.is_debug_enabled = True
 
-    def add_source(self, s):
+    def add_source(self, s, serveraddr):
         if not self._thread:
-            self._thread = Thread(target=self._main_loop)
+            self._thread = Thread(target=self._main_loop,
+                                  args=(serveraddr))
             self._thread.start()
-        self._queue_in.put(['add_source', [s]])
+        self._queue_put('add_source', [s])
 
     def add_filter(self, f):
-        self._queue_in.put(['add_filter', [f]])
+        self._queue_put('add_filter', [f])
 
     def set_source_attributes(self, context):
-        self._queue_in.put(['set_source_attributes', [context]])
+        self._queue_put('set_source_attributes', [context])
 
     def set_custom(self, custom):
-        self._queue_in.put(['set_custom', [custom]])
+        self._queue_put('set_custom', [custom])
 
     def merge_results(self, context):
-        self._queue_in.put(['merge_results', [context]])
+        self._queue_put('merge_results', [context])
+        if self._queue_out.empty():
+            return (False, [])
         return self._queue_out.get()
 
     def on_event(self, context):
-        self._queue_in.put(['on_event', [context]])
+        self._queue_put('on_event', [context])
 
-    def _main_loop(self):
+    def _queue_put(self, name, args):
+        self._queue_in.put([name, args])
+
+    def _attach_vim(self, serveraddr):
+        if len(serveraddr.split(':')) == 2:
+            serveraddr, port = serveraddr.split(':')
+            port = int(port)
+            self._vim = attach('tcp', address=serveraddr, port=port)
+        else:
+            self._vim = attach('socket', address=serveraddr)
+
+    def _main_loop(self, serveraddr):
+        self._attach_vim(serveraddr)
+
         while 1:
             self.debug('main_loop: begin')
             [message, args] = self._queue_in.get()
@@ -78,8 +95,8 @@ class Child(logger.LoggingMixin):
                 self._set_custom(args[0])
             elif message == 'on_event':
                 self._on_event(args[0])
-            # elif message == 'merge_results':
-            #     self._merge_results(args[0])
+            elif message == 'merge_results':
+                self._merge_results(args[0])
 
     def _add_source(self, s):
         self._sources[s.name] = s

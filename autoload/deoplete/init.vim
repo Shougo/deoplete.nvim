@@ -221,6 +221,8 @@ function! deoplete#init#_context(event, sources) abort
 
   return {
         \ 'changedtick': b:changedtick,
+        \ 'serveraddr': (has('nvim') ?
+        \                v:servername : neovim_rpc#serveraddr()),
         \ 'event': event,
         \ 'input': input,
         \ 'is_windows': ((has('win32') || has('win64')) ? v:true : v:false),

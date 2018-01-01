@@ -31,7 +31,7 @@ class Deoplete(logger.LoggingMixin):
         self._child_count = 0
         self._max_children = 1
         for n in range(0, self._max_children):
-            self._children.append(Child(vim))
+            self._children.append(Child())
 
         # Enable logging before "Init" for more information, and e.g.
         # deoplete-jedi picks up the log filename from deoplete's handler in
@@ -90,12 +90,14 @@ class Deoplete(logger.LoggingMixin):
         self.debug('completion_end: %s', context['input'])
 
     def merge_results(self, context):
+        error(self._vim, 'merge')
         is_async = False
         merged_results = []
         for child in self._children:
             result = child.merge_results(context)
             is_async = is_async or result[0]
             merged_results += result[1]
+        error(self._vim, 'results')
 
         if not merged_results:
             return (is_async, -1, [])
@@ -160,7 +162,8 @@ class Deoplete(logger.LoggingMixin):
             finally:
                 if source:
                     self._loaded_sources[source.name] = path
-                    self._children[self._child_count].add_source(source)
+                    self._children[self._child_count].add_source(
+                        source, context['serveraddr'])
                     self._child_count += 1
                     self._child_count %= self._max_children
                     self.debug('Loaded Source: %s (%s)', source.name, path)
