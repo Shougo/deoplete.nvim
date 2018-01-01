@@ -21,7 +21,6 @@ Create filter		|deoplete-create-filter|
 FILTERS			|deoplete-filters|
 External sources	|deoplete-external-sources|
 External plugins	|deoplete-external-plugins|
-Vim8 async API support	|deoplete-vim8|
 FAQ			|deoplete-faq|
 Compatibility		|deoplete-compatibility|
 
@@ -1286,10 +1285,6 @@ FREQUENTLY ASKED QUESTIONS (FAQ)                                *deoplete-faq*
 
                                                         *deoplete-faq-trouble*
 1. Troubleshooting~
-
-Q: Does deoplete support Vim8?
-
-A: see |deoplete-vim8|
 
 Q: deoplete does not work.
 
