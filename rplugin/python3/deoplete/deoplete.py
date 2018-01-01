@@ -12,7 +12,7 @@ import deoplete.source  # noqa
 
 from deoplete import logger
 from deoplete.child import Child
-from deoplete.util import (error_tb, find_rplugins, import_plugin)
+from deoplete.util import (error, error_tb, find_rplugins, import_plugin)
 
 
 class Deoplete(logger.LoggingMixin):
@@ -29,7 +29,7 @@ class Deoplete(logger.LoggingMixin):
 
         self._children = []
         self._child_count = 0
-        self._max_children = 5
+        self._max_children = 1
         for n in range(0, self._max_children):
             self._children.append(Child(vim))
 

@@ -11,7 +11,6 @@ import time
 from collections import defaultdict
 from threading import Thread
 from queue import Queue
-from time import time, sleep
 
 from deoplete import logger
 from deoplete.exceptions import SourceInitError
@@ -30,7 +29,7 @@ class Child(logger.LoggingMixin):
         self._sources = {}
         self._custom = []
         self._profile_flag = None
-        self._profile_start = 0
+        self._profile_start_time = 0
         self._source_errors = defaultdict(int)
         self._filter_errors = defaultdict(int)
         self._prev_results = {}
@@ -42,10 +41,70 @@ class Child(logger.LoggingMixin):
     def enable_logging(self):
         self.is_debug_enabled = True
 
-    def gather_results(self, context):
+    def add_source(self, s):
+        if not self._thread:
+            self._thread = Thread(target=self._main_loop)
+            self._thread.start()
+        self._queue_in.put(['add_source', [s]])
+
+    def add_filter(self, f):
+        self._queue_in.put(['add_filter', [f]])
+
+    def set_source_attributes(self, context):
+        self._queue_in.put(['set_source_attributes', [context]])
+
+    def set_custom(self, custom):
+        self._queue_in.put(['set_custom', [custom]])
+
+    def merge_results(self, context):
+        self._queue_in.put(['merge_results', [context]])
+        return self._queue_out.get()
+
+    def on_event(self, context):
+        self._queue_in.put(['on_event', [context]])
+
+    def _main_loop(self):
+        while 1:
+            self.debug('main_loop: begin')
+            [message, args] = self._queue_in.get()
+            self.debug('main_loop: %s', message)
+            if message == 'add_source':
+                self._add_source(args[0])
+            elif message == 'add_filter':
+                self._add_filter(args[0])
+            elif message == 'set_source_attributes':
+                self._set_source_attributes(args[0])
+            elif message == 'set_custom':
+                self._set_custom(args[0])
+            elif message == 'on_event':
+                self._on_event(args[0])
+            # elif message == 'merge_results':
+            #     self._merge_results(args[0])
+
+    def _add_source(self, s):
+        self._sources[s.name] = s
+
+    def _add_filter(self, f):
+        self._filters[f.name] = f
+
+    def _merge_results(self, context):
+        results = self._gather_results(context)
+
+        merged_results = []
+        for result in [x for x in results
+                       if not self._is_skip(x['context'], x['source'])]:
+            source_result = self._source_result(result, context['input'])
+            if source_result:
+                merged_results.append(source_result)
+
+        is_async = len([x for x in results if x['context']['is_async']]) > 0
+
+        self._queue_out.put((is_async, merged_results))
+
+    def _gather_results(self, context):
         results = []
 
-        for source in [x[1] for x in self.itersource(context)]:
+        for source in [x[1] for x in self._itersource(context)]:
             try:
                 if source.disabled_syntaxes and 'syntax_names' not in context:
                     context['syntax_names'] = get_syn_names(self._vim)
@@ -61,14 +120,14 @@ class Child(logger.LoggingMixin):
                     ctx['encoding'], ctx['input'], charpos)
                 ctx['complete_str'] = ctx['input'][ctx['char_position']:]
 
-                if charpos < 0 or self.is_skip(ctx, source):
+                if charpos < 0 or self._is_skip(ctx, source):
                     if source.name in self._prev_results:
                         self._prev_results.pop(source.name)
                     # Skip
                     continue
 
                 if (source.name in self._prev_results and
-                        self.use_previous_result(
+                        self._use_previous_result(
                             context, self._prev_results[source.name],
                             source.is_volatile)):
                     results.append(self._prev_results[source.name])
@@ -90,9 +149,9 @@ class Child(logger.LoggingMixin):
                     ctx['max_menu_width'] = max(10, ctx['max_menu_width'])
 
                 # Gathering
-                self.profile_start(ctx, source.name)
+                self._profile_start(ctx, source.name)
                 ctx['candidates'] = source.gather_candidates(ctx)
-                self.profile_end(source.name)
+                self._profile_end(source.name)
 
                 if ctx['candidates'] is None:
                     continue
@@ -123,7 +182,7 @@ class Child(logger.LoggingMixin):
 
         return results
 
-    def gather_async_results(self, result, source):
+    def _gather_async_results(self, result, source):
         try:
             result['context']['is_refresh'] = False
             async_candidates = source.gather_candidates(result['context'])
@@ -144,9 +203,9 @@ class Child(logger.LoggingMixin):
             else:
                 error_tb(self._vim, 'Errors from: %s' % source.name)
 
-    def process_filter(self, f, context):
+    def _process_filter(self, f, context):
         try:
-            self.profile_start(context, f.name)
+            self._profile_start(context, f.name)
             if (isinstance(context['candidates'], dict) and
                     'sorted_candidates' in context['candidates']):
                 context_candidates = []
@@ -157,7 +216,7 @@ class Child(logger.LoggingMixin):
                 context['candidates'] = context_candidates
             else:
                 context['candidates'] = f.filter(context)
-            self.profile_end(f.name)
+            self._profile_end(f.name)
         except Exception:
             self._filter_errors[f.name] += 1
             if self._source_errors[f.name] > 2:
@@ -168,12 +227,12 @@ class Child(logger.LoggingMixin):
                 return
             error_tb(self._vim, 'Errors from: %s' % f)
 
-    def source_result(self, result, context_input):
+    def _source_result(self, result, context_input):
         source = result['source']
 
         # Gather async results
         if result['is_async']:
-            self.gather_async_results(result, source)
+            self._gather_async_results(result, source)
 
         if not result['context']['candidates']:
             return []
@@ -195,7 +254,7 @@ class Child(logger.LoggingMixin):
         for f in [self._filters[x] for x
                   in source.matchers + source.sorters + source.converters
                   if x in self._filters]:
-            self.process_filter(f, ctx)
+            self._process_filter(f, ctx)
 
         ctx['ignorecase'] = ignorecase
 
@@ -207,21 +266,7 @@ class Child(logger.LoggingMixin):
             return [ctx['candidates'], result]
         return []
 
-    def merge_results(self, context):
-        results = self.gather_results(context)
-
-        merged_results = []
-        for result in [x for x in results
-                       if not self.is_skip(x['context'], x['source'])]:
-            source_result = self.source_result(result, context['input'])
-            if source_result:
-                merged_results.append(source_result)
-
-        is_async = len([x for x in results if x['context']['is_async']]) > 0
-
-        return (is_async, merged_results)
-
-    def itersource(self, context):
+    def _itersource(self, context):
         sources = sorted(self._sources.items(),
                          key=lambda x: get_custom(
                              context['custom'],
@@ -265,35 +310,24 @@ class Child(logger.LoggingMixin):
                     source.is_initialized = True
             yield source_name, source
 
-    def profile_start(self, context, name):
+    def _profile_start(self, context, name):
         if self._profile_flag is 0 or not self.is_debug_enabled:
             return
 
         if not self._profile_flag:
             self._profile_flag = context['vars']['deoplete#enable_profile']
             if self._profile_flag:
-                return self.profile_start(context, name)
+                return self._profile_start(context, name)
         elif self._profile_flag:
             self.debug('Profile Start: {0}'.format(name))
-            self._profile_start = time.clock()
+            self._profile_start_time = time.clock()
 
-    def profile_end(self, name):
-        if self._profile_start:
+    def _profile_end(self, name):
+        if self._profile_start_time:
             self.debug('Profile End  : {0:<25} time={1:2.10f}'.format(
-                name, time.clock() - self._profile_start))
+                name, time.clock() - self._profile_start_time))
 
-    def add_source(self, s):
-        if not self._thread:
-            self._thread = Thread(target=self._main_loop)
-        self._sources[s.name] = s
-
-    def add_filter(self, f):
-        self._filters[f.name] = f
-
-    def set_custom(self, custom):
-        self._custom = custom
-
-    def use_previous_result(self, context, result, is_volatile):
+    def _use_previous_result(self, context, result, is_volatile):
         if context['position'][1] != result['prev_linenr']:
             return False
         if is_volatile:
@@ -303,7 +337,7 @@ class Child(logger.LoggingMixin):
                     re.sub(r'\w*$', '', result['prev_input']) and
                     context['input'].find(result['prev_input']) == 0)
 
-    def is_skip(self, context, source):
+    def _is_skip(self, context, source):
         if 'syntax_names' in context and source.disabled_syntaxes:
             p = re.compile('(' + '|'.join(source.disabled_syntaxes) + ')$')
             if next(filter(p.search, context['syntax_names']), None):
@@ -317,7 +351,7 @@ class Child(logger.LoggingMixin):
         return not (source.min_pattern_length <=
                     len(context['complete_str']) <= source.max_pattern_length)
 
-    def set_source_attributes(self, context):
+    def _set_source_attributes(self, context):
         """Set source attributes from the context.
 
         Each item in `attrs` is the attribute name.  If the default value is in
@@ -351,8 +385,11 @@ class Child(logger.LoggingMixin):
                 setattr(source, attr, get_custom(context['custom'],
                                                  name, attr, source_attr))
 
-    def on_event(self, context):
-        for source_name, source in self.itersource(context):
+    def _set_custom(self, custom):
+        self._custom = custom
+
+    def _on_event(self, context):
+        for source_name, source in self._itersource(context):
             if hasattr(source, 'on_event'):
                 self.debug('on_event: Source: %s', source_name)
                 try:
@@ -361,6 +398,3 @@ class Child(logger.LoggingMixin):
                     error_tb(self._vim, 'Exception during {}.on_event '
                              'for event {!r}: {}'.format(
                                  source_name, context['event'], exc))
-
-    def _main_loop(self):
-        pass
