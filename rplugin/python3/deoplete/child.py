@@ -43,10 +43,7 @@ class Child(logger.LoggingMixin):
         self.is_debug_enabled = True
 
     def add_source(self, s, serveraddr):
-        if not self._thread:
-            self._thread = Thread(target=self._main_loop,
-                                  args=(serveraddr))
-            self._thread.start()
+        self._start_thread(serveraddr)
         self._queue_put('add_source', [s])
 
     def add_filter(self, f):
@@ -66,6 +63,19 @@ class Child(logger.LoggingMixin):
 
     def on_event(self, context):
         self._queue_put('on_event', [context])
+        if context['event'] == 'VimLeavePre':
+            self._stop_thread()
+
+    def _start_thread(self, serveraddr):
+        if not self._thread:
+            self._thread = Thread(target=self._main_loop,
+                                  args=(serveraddr))
+            self._thread.start()
+
+    def _stop_thread(self):
+        if self._thread:
+            self._thread.join(1.0)
+            self._thread = None
 
     def _queue_put(self, name, args):
         self._queue_in.put([name, args])
@@ -85,18 +95,18 @@ class Child(logger.LoggingMixin):
             self.debug('main_loop: begin')
             [message, args] = self._queue_in.get()
             self.debug('main_loop: %s', message)
-            # if message == 'add_source':
-            #     self._add_source(args[0])
-            # elif message == 'add_filter':
-            #     self._add_filter(args[0])
-            # elif message == 'set_source_attributes':
-            #     self._set_source_attributes(args[0])
-            # elif message == 'set_custom':
-            #     self._set_custom(args[0])
-            # elif message == 'on_event':
-            #     self._on_event(args[0])
-            # elif message == 'merge_results':
-            #     self._merge_results(args[0])
+            if message == 'add_source':
+                self._add_source(args[0])
+            elif message == 'add_filter':
+                self._add_filter(args[0])
+            elif message == 'set_source_attributes':
+                self._set_source_attributes(args[0])
+            elif message == 'set_custom':
+                self._set_custom(args[0])
+            elif message == 'on_event':
+                self._on_event(args[0])
+            elif message == 'merge_results':
+                self._merge_results(args[0])
 
     def _add_source(self, s):
         self._sources[s.name] = s
