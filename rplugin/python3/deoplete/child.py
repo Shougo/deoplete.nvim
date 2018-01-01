@@ -85,18 +85,18 @@ class Child(logger.LoggingMixin):
             self.debug('main_loop: begin')
             [message, args] = self._queue_in.get()
             self.debug('main_loop: %s', message)
-            if message == 'add_source':
-                self._add_source(args[0])
-            elif message == 'add_filter':
-                self._add_filter(args[0])
-            elif message == 'set_source_attributes':
-                self._set_source_attributes(args[0])
-            elif message == 'set_custom':
-                self._set_custom(args[0])
-            elif message == 'on_event':
-                self._on_event(args[0])
-            elif message == 'merge_results':
-                self._merge_results(args[0])
+            # if message == 'add_source':
+            #     self._add_source(args[0])
+            # elif message == 'add_filter':
+            #     self._add_filter(args[0])
+            # elif message == 'set_source_attributes':
+            #     self._set_source_attributes(args[0])
+            # elif message == 'set_custom':
+            #     self._set_custom(args[0])
+            # elif message == 'on_event':
+            #     self._on_event(args[0])
+            # elif message == 'merge_results':
+            #     self._merge_results(args[0])
 
     def _add_source(self, s):
         self._sources[s.name] = s
@@ -201,13 +201,13 @@ class Child(logger.LoggingMixin):
 
     def _gather_async_results(self, result, source):
         try:
-            result['context']['is_refresh'] = False
-            async_candidates = source.gather_candidates(result['context'])
-            result['is_async'] = result['context']['is_async']
+            context = result['context']
+            context['is_refresh'] = False
+            async_candidates = source.gather_candidates(context)
+            result['is_async'] = context['is_async']
             if async_candidates is None:
                 return
-            result['context']['candidates'] += convert2candidates(
-                async_candidates)
+            context['candidates'] += convert2candidates(async_candidates)
         except Exception:
             self._source_errors[source.name] += 1
             if source.is_silent:
