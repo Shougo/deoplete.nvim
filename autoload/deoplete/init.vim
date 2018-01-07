@@ -4,6 +4,9 @@
 " License: MIT license
 "=============================================================================
 
+let s:dp_main = fnamemodify(expand('<sfile>'), ':h:h:h')
+      \ . '/rplugin/python3/deoplete/dp_main.py'
+
 if !exists('s:is_enabled')
   let s:is_enabled = 0
 endif
@@ -223,6 +226,8 @@ function! deoplete#init#_context(event, sources) abort
         \ 'changedtick': b:changedtick,
         \ 'serveraddr': (has('nvim') ?
         \                v:servername : neovim_rpc#serveraddr()),
+        \ 'python3': get(g:, 'python3_host_prog', 'python3'),
+        \ 'dp_main': s:dp_main,
         \ 'event': event,
         \ 'input': input,
         \ 'is_windows': ((has('win32') || has('win64')) ? v:true : v:false),

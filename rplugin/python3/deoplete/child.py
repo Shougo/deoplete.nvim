@@ -15,6 +15,7 @@ from neovim import attach
 
 from deoplete import logger
 from deoplete.exceptions import SourceInitError
+from deoplete.process import Process
 from deoplete.util import (bytepos2charpos, charpos2bytepos, error, error_tb,
                            get_buffer_config, get_custom,
                            get_syn_names, convert2candidates)
@@ -22,10 +23,10 @@ from deoplete.util import (bytepos2charpos, charpos2bytepos, error, error_tb,
 
 class Child(logger.LoggingMixin):
 
-    def __init__(self):
+    def __init__(self, vim):
         self.name = 'child'
 
-        self._vim = None
+        self._vim = vim
         self._filters = {}
         self._sources = {}
         self._custom = []
@@ -35,15 +36,15 @@ class Child(logger.LoggingMixin):
         self._filter_errors = defaultdict(int)
         self._prev_results = {}
 
-        self._thread = None
+        self._proc = None
         self._queue_in = Queue()
         self._queue_out = Queue()
 
     def enable_logging(self):
         self.is_debug_enabled = True
 
-    def add_source(self, s, serveraddr):
-        self._start_thread(serveraddr)
+    def add_source(self, s, context):
+        self._start_thread(context, context['serveraddr'])
         self._queue_put('add_source', [s])
 
     def add_filter(self, f):
@@ -66,16 +67,18 @@ class Child(logger.LoggingMixin):
         if context['event'] == 'VimLeavePre':
             self._stop_thread()
 
-    def _start_thread(self, serveraddr):
-        if not self._thread:
-            self._thread = Thread(target=self._main_loop,
-                                  args=(serveraddr,), daemon=True)
-            self._thread.start()
+    def _start_thread(self, context, serveraddr):
+        if not self._proc:
+            self._proc = Process(
+                [context['python3'], context['dp_main']],
+                context, context['cwd'])
+            time.sleep(0.1)
+            error(self._vim, self._proc.communicate(100))
 
     def _stop_thread(self):
-        if self._thread:
-            self._thread.join(1.0)
-            self._thread = None
+        if self._proc:
+            self._proc.kill()
+            self._proc = None
 
     def _queue_put(self, name, args):
         self._queue_in.put([name, args])
