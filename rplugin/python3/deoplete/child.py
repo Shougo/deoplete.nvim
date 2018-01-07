@@ -69,7 +69,7 @@ class Child(logger.LoggingMixin):
     def _start_thread(self, serveraddr):
         if not self._thread:
             self._thread = Thread(target=self._main_loop,
-                                  args=(serveraddr))
+                                  args=(serveraddr,), daemon=True)
             self._thread.start()
 
     def _stop_thread(self):
@@ -89,6 +89,7 @@ class Child(logger.LoggingMixin):
             self._vim = attach('socket', address=serveraddr)
 
     def _main_loop(self, serveraddr):
+        self._vim.vars['hoge'] = 1
         self._attach_vim(serveraddr)
 
         while 1:
