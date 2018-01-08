@@ -4,19 +4,17 @@
 # License: MIT license
 # ============================================================================
 
+import os.path
 import re
 import copy
 import time
 
 from collections import defaultdict
-from threading import Thread
-from queue import Queue
-from neovim import attach
 
 from deoplete import logger
 from deoplete.exceptions import SourceInitError
-from deoplete.process import Process
 from deoplete.util import (bytepos2charpos, charpos2bytepos, error, error_tb,
+                           import_plugin,
                            get_buffer_config, get_custom,
                            get_syn_names, convert2candidates)
 
@@ -32,68 +30,17 @@ class Child(logger.LoggingMixin):
         self._custom = []
         self._profile_flag = None
         self._profile_start_time = 0
+        self._loaded_sources = {}
+        self._loaded_filters = {}
         self._source_errors = defaultdict(int)
         self._filter_errors = defaultdict(int)
         self._prev_results = {}
 
-        self._proc = None
-        self._queue_in = Queue()
-        self._queue_out = Queue()
-
     def enable_logging(self):
         self.is_debug_enabled = True
 
-    def add_source(self, s, context):
-        self._start_thread(context, context['serveraddr'])
-        self._queue_put('add_source', [s])
-
-    def add_filter(self, f):
-        self._queue_put('add_filter', [f])
-
-    def set_source_attributes(self, context):
-        self._queue_put('set_source_attributes', [context])
-
-    def set_custom(self, custom):
-        self._queue_put('set_custom', [custom])
-
-    def merge_results(self, context):
-        self._queue_put('merge_results', [context])
-        if self._queue_out.empty():
-            return (False, [])
-        return self._queue_out.get()
-
-    def on_event(self, context):
-        self._queue_put('on_event', [context])
-        if context['event'] == 'VimLeavePre':
-            self._stop_thread()
-
-    def _start_thread(self, context, serveraddr):
-        if not self._proc:
-            self._proc = Process(
-                [context['python3'], context['dp_main']],
-                context, context['cwd'])
-            time.sleep(0.1)
-            error(self._vim, self._proc.communicate(100))
-
-    def _stop_thread(self):
-        if self._proc:
-            self._proc.kill()
-            self._proc = None
-
-    def _queue_put(self, name, args):
-        self._queue_in.put([name, args])
-
-    def _attach_vim(self, serveraddr):
-        if len(serveraddr.split(':')) == 2:
-            serveraddr, port = serveraddr.split(':')
-            port = int(port)
-            self._vim = attach('tcp', address=serveraddr, port=port)
-        else:
-            self._vim = attach('socket', address=serveraddr)
-
-    def _main_loop(self, serveraddr):
+    def main_loop(self, serveraddr):
         self._vim.vars['hoge'] = 1
-        self._attach_vim(serveraddr)
 
         while 1:
             self.debug('main_loop: begin')
@@ -112,11 +59,56 @@ class Child(logger.LoggingMixin):
             elif message == 'merge_results':
                 self._merge_results(args[0])
 
-    def _add_source(self, s):
-        self._sources[s.name] = s
+    def _add_source(self, path):
+        source = None
+        try:
+            Source = import_plugin(path, 'source', 'Source')
+            if not Source:
+                return
 
-    def _add_filter(self, f):
-        self._filters[f.name] = f
+            source = Source(self._vim)
+            name = os.path.splitext(os.path.basename(path))[0]
+            source.name = getattr(source, 'name', name)
+            source.path = path
+            if source.name in self._loaded_sources:
+                # Duplicated name
+                error_tb(self._vim, 'duplicated source: %s' % source.name)
+                error_tb(self._vim, 'path: "%s" "%s"' %
+                         (path, self._loaded_sources[source.name]))
+                source = None
+        except Exception:
+            error_tb(self._vim, 'Could not load source: %s' % name)
+        finally:
+            if source:
+                self._loaded_sources[source.name] = path
+                self._sources[source.name] = source
+                self.debug('Loaded Source: %s (%s)', source.name, path)
+
+    def _add_filter(self, path):
+        f = None
+        try:
+            Filter = import_plugin(path, 'filter', 'Filter')
+            if not Filter:
+                return
+
+            f = Filter(self._vim)
+            name = os.path.splitext(os.path.basename(path))[0]
+            f.name = getattr(f, 'name', name)
+            f.path = path
+            if f.name in self._loaded_filters:
+                # Duplicated name
+                error_tb(self._vim, 'duplicated filter: %s' % f.name)
+                error_tb(self._vim, 'path: "%s" "%s"' %
+                         (path, self._loaded_filters[f.name]))
+                f = None
+        except Exception:
+            # Exception occurred when loading a filter.  Log stack trace.
+            error_tb(self._vim, 'Could not load filter: %s' % name)
+        finally:
+            if f:
+                self._loaded_filters[f.name] = path
+                self._filters[f.name] = f
+                self.debug('Loaded Filter: %s (%s)', f.name, path)
 
     def _merge_results(self, context):
         results = self._gather_results(context)

@@ -4,15 +4,13 @@
 # License: MIT license
 # ============================================================================
 
-import os.path
-
 import deoplete.util  # noqa
 import deoplete.filter  # noqa
 import deoplete.source  # noqa
 
 from deoplete import logger
-from deoplete.child import Child
-from deoplete.util import (error, error_tb, find_rplugins, import_plugin)
+from deoplete.parent import Parent
+from deoplete.util import (error, error_tb, find_rplugins)
 
 
 class Deoplete(logger.LoggingMixin):
@@ -27,11 +25,11 @@ class Deoplete(logger.LoggingMixin):
         self._loaded_sources = {}
         self._loaded_filters = {}
 
-        self._children = []
-        self._child_count = 0
-        self._max_children = 1
-        for n in range(0, self._max_children):
-            self._children.append(Child(vim))
+        self._parents = []
+        self._parent_count = 0
+        self._max_parents = 1
+        for n in range(0, self._max_parents):
+            self._parents.append(Parent(vim))
 
         # Enable logging before "Init" for more information, and e.g.
         # deoplete-jedi picks up the log filename from deoplete's handler in
@@ -52,8 +50,8 @@ class Deoplete(logger.LoggingMixin):
         logging = self._vim.vars['deoplete#_logging']
         logger.setup(self._vim, logging['level'], logging['logfile'])
         self.is_debug_enabled = True
-        for child in self._children:
-            child.enable_logging()
+        for parent in self._parents:
+            parent.enable_logging()
 
     def completion_begin(self, context):
         self.debug('completion_begin: %s', context['input'])
@@ -92,8 +90,8 @@ class Deoplete(logger.LoggingMixin):
     def merge_results(self, context):
         is_async = False
         merged_results = []
-        for child in self._children:
-            result = child.merge_results(context)
+        for parent in self._parents:
+            result = parent.merge_results(context)
             is_async = is_async or result[0]
             merged_results += result[1]
 
@@ -138,33 +136,10 @@ class Deoplete(logger.LoggingMixin):
                 continue
             self._loaded_paths.add(path)
 
-            name = os.path.splitext(os.path.basename(path))[0]
+            self._parents[self._parent_count].add_source(path, context)
 
-            source = None
-            try:
-                Source = import_plugin(path, 'source', 'Source')
-                if not Source:
-                    continue
-
-                source = Source(self._vim)
-                source.name = getattr(source, 'name', name)
-                source.path = path
-                if source.name in self._loaded_sources:
-                    # Duplicated name
-                    error_tb(self._vim, 'duplicated source: %s' % source.name)
-                    error_tb(self._vim, 'path: "%s" "%s"' %
-                             (path, self._loaded_sources[source.name]))
-                    source = None
-            except Exception:
-                error_tb(self._vim, 'Could not load source: %s' % name)
-            finally:
-                if source:
-                    self._loaded_sources[source.name] = path
-                    self._children[self._child_count].add_source(
-                        source, context)
-                    self._child_count += 1
-                    self._child_count %= self._max_children
-                    self.debug('Loaded Source: %s (%s)', source.name, path)
+            self._parent_count += 1
+            self._parent_count %= self._max_parents
 
         self.set_source_attributes(context)
         self.set_custom(context)
@@ -176,41 +151,17 @@ class Deoplete(logger.LoggingMixin):
                 continue
             self._loaded_paths.add(path)
 
-            name = os.path.splitext(os.path.basename(path))[0]
-
-            f = None
-            try:
-                Filter = import_plugin(path, 'filter', 'Filter')
-                if not Filter:
-                    continue
-
-                f = Filter(self._vim)
-                f.name = getattr(f, 'name', name)
-                f.path = path
-                if f.name in self._loaded_filters:
-                    # Duplicated name
-                    error_tb(self._vim, 'duplicated filter: %s' % f.name)
-                    error_tb(self._vim, 'path: "%s" "%s"' %
-                             (path, self._loaded_filters[f.name]))
-                    f = None
-            except Exception:
-                # Exception occurred when loading a filter.  Log stack trace.
-                error_tb(self._vim, 'Could not load filter: %s' % name)
-            finally:
-                if f:
-                    self._loaded_filters[f.name] = path
-                    for child in self._children:
-                        child.add_filter(f)
-                    self.debug('Loaded Filter: %s (%s)', f.name, path)
+            for parent in self._parents:
+                parent.add_filter(path, context)
 
     def set_source_attributes(self, context):
-        for child in self._children:
-            child.set_source_attributes(context)
+        for parent in self._parents:
+            parent.set_source_attributes(context)
 
     def set_custom(self, context):
         self._custom = context['custom']
-        for child in self._children:
-            child.set_custom(self._custom)
+        for parent in self._parents:
+            parent.set_custom(self._custom)
 
     def check_recache(self, context):
         if context['runtimepath'] != self._runtimepath:
@@ -228,5 +179,5 @@ class Deoplete(logger.LoggingMixin):
         self.debug('on_event: %s', context['event'])
         self.check_recache(context)
 
-        for child in self._children:
-            child.on_event(context)
+        for parent in self._parents:
+            parent.on_event(context)
