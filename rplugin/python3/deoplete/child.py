@@ -53,6 +53,10 @@ class Child(logger.LoggingMixin):
             args = child_in[queue_id]['args']
             self.debug('main_loop: %s', name)
 
+            # Clear child_in
+            child_in[queue_id] = {}
+            self._vim.vars['deoplete#_child_in'] = child_in
+
             if name == 'add_source':
                 self._add_source(args[0])
             elif name == 'add_filter':
