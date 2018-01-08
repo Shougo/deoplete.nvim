@@ -8,7 +8,7 @@ import time
 
 from deoplete import logger
 from deoplete.process import Process
-from deoplete.util import error
+# from deoplete.util import error
 
 
 class Parent(logger.LoggingMixin):
@@ -45,10 +45,14 @@ class Parent(logger.LoggingMixin):
         if not queue_id:
             return (False, [])
 
-        time.sleep(0.5)
+        time.sleep(1.0)
 
         results = self._get(queue_id)
-        return results if results else (False, [])
+        if not results:
+            return (False, [])
+        self._vim.vars['deoplete#_child_out'] = {}
+        return (results['is_async'],
+                results['merged_results']) if results else (False, [])
 
     def on_event(self, context):
         if context['event'] == 'VimLeavePre':
@@ -60,8 +64,6 @@ class Parent(logger.LoggingMixin):
             self._proc = Process(
                 [context['python3'], context['dp_main'], serveraddr],
                 context, context['cwd'])
-            time.sleep(1)
-            error(self._vim, self._proc.communicate(100))
 
     def _stop_process(self):
         if self._proc:

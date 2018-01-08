@@ -6,7 +6,8 @@
 
 from deoplete import logger
 from deoplete.parent import Parent
-from deoplete.util import (error, error_tb, find_rplugins)
+from deoplete.util import (error_tb, find_rplugins)
+# from deoplete.util import error
 
 
 class Deoplete(logger.LoggingMixin):
@@ -92,26 +93,26 @@ class Deoplete(logger.LoggingMixin):
         if not merged_results:
             return (is_async, -1, [])
 
-        complete_position = min([x[1]['context']['complete_position']
+        complete_position = min([x['complete_position']
                                  for x in merged_results])
 
         all_candidates = []
-        for [candidates, result] in merged_results:
-            ctx = result['context']
-            source = result['source']
-            prefix = ctx['input'][complete_position:ctx['complete_position']]
+        for result in merged_results:
+            candidates = result['candidates']
+            prefix = result['input'][
+                complete_position:result['complete_position']]
 
-            mark = source.mark + ' '
+            mark = result['mark'] + ' '
             for candidate in candidates:
                 # Add prefix
                 candidate['word'] = prefix + candidate['word']
 
                 # Set default menu and icase
                 candidate['icase'] = 1
-                if (source.mark != '' and
+                if (mark != ' ' and
                         candidate.get('menu', '').find(mark) != 0):
                     candidate['menu'] = mark + candidate.get('menu', '')
-                if source.filetypes:
+                if result['filetypes']:
                     candidate['dup'] = 1
 
             all_candidates += candidates

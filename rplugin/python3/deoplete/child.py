@@ -43,6 +43,7 @@ class Child(logger.LoggingMixin):
     def main_loop(self):
         for queue_id in sys.stdin:
             queue_id = queue_id.strip()
+
             if queue_id not in self._vim.vars['deoplete#_child_in']:
                 continue
 
@@ -50,21 +51,20 @@ class Child(logger.LoggingMixin):
             child_in = self._vim.vars['deoplete#_child_in']
             name = child_in[queue_id]['name']
             args = child_in[queue_id]['args']
-            error(self._vim, name)
             self.debug('main_loop: %s', name)
 
-            # if name == 'add_source':
-            #     self._add_source(args[0])
-            # elif name == 'add_filter':
-            #     self._add_filter(args[0])
-            # elif name == 'set_source_attributes':
-            #     self._set_source_attributes(args[0])
-            # elif name == 'set_custom':
-            #     self._set_custom(args[0])
-            # elif name == 'on_event':
-            #     self._on_event(args[0])
-            # elif name == 'merge_results':
-            #     self._merge_results(args[0])
+            if name == 'add_source':
+                self._add_source(args[0])
+            elif name == 'add_filter':
+                self._add_filter(args[0])
+            elif name == 'set_source_attributes':
+                self._set_source_attributes(args[0])
+            elif name == 'set_custom':
+                self._set_custom(args[0])
+            elif name == 'on_event':
+                self._on_event(args[0])
+            elif name == 'merge_results':
+                self._merge_results(args[0], queue_id)
 
     def _add_source(self, path):
         source = None
@@ -125,7 +125,13 @@ class Child(logger.LoggingMixin):
                        if not self._is_skip(x['context'], x['source'])]:
             source_result = self._source_result(result, context['input'])
             if source_result:
-                merged_results.append(source_result)
+                merged_results.append({
+                    'input': source_result['input'],
+                    'complete_position': source_result['complete_position'],
+                    'mark': result['source'].mark,
+                    'filetypes': result['source'].filetypes,
+                    'candidates': result['candidates'],
+                })
 
         is_async = len([x for x in results if x['context']['is_async']]) > 0
 
@@ -199,6 +205,9 @@ class Child(logger.LoggingMixin):
                     'is_async': ctx['is_async'],
                     'prev_linenr': ctx['position'][1],
                     'prev_input': ctx['input'],
+                    'input': ctx['input'],
+                    'complete_position': ctx['complete_position'],
+                    'candidates': ctx['candidates'],
                 }
                 self._prev_results[source.name] = result
                 results.append(result)
@@ -268,8 +277,8 @@ class Child(logger.LoggingMixin):
         if result['is_async']:
             self._gather_async_results(result, source)
 
-        if not result['context']['candidates']:
-            return []
+        if not result['candidates']:
+            return None
 
         # Source context
         ctx = copy.deepcopy(result['context'])
@@ -296,9 +305,8 @@ class Child(logger.LoggingMixin):
         if hasattr(source, 'on_post_filter'):
             ctx['candidates'] = source.on_post_filter(ctx)
 
-        if ctx['candidates']:
-            return [ctx['candidates'], result]
-        return []
+        result['candidates'] = ctx['candidates']
+        return result if result['candidates'] else None
 
     def _itersource(self, context):
         sources = sorted(self._sources.items(),
