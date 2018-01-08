@@ -18,7 +18,7 @@ class Process(object):
             startupinfo = subprocess.STARTUPINFO()
             startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
         self.__proc = subprocess.Popen(commands,
-                                       stdin=subprocess.DEVNULL,
+                                       stdin=subprocess.PIPE,
                                        stdout=subprocess.PIPE,
                                        stderr=subprocess.PIPE,
                                        startupinfo=startupinfo,
@@ -41,6 +41,11 @@ class Process(object):
         self.__queue_out = None
         self.__thread.join(1.0)
         self.__thread = None
+
+    def write(self, text):
+        self.__proc.stdin.write(text.encode(
+            self.__context['encoding'], errors='replace'))
+        self.__proc.stdin.flush()
 
     def enqueue_output(self):
         for line in self.__proc.stdout:

@@ -19,34 +19,41 @@ class Parent(logger.LoggingMixin):
         self._vim = vim
         self._proc = None
 
+        if 'deoplete#_child_in' not in self._vim.vars:
+            self._vim.vars['deoplete#_child_in'] = {}
+        if 'deoplete#_child_out' not in self._vim.vars:
+            self._vim.vars['deoplete#_child_out'] = {}
+
     def enable_logging(self):
         self.is_debug_enabled = True
 
-    def add_source(self, path, context):
-        self._start_thread(context, context['serveraddr'])
-        self._queue_put('add_source', [path])
+    def add_source(self, context, path):
+        self._start_process(context, context['serveraddr'])
+        self._put('add_source', [path])
 
     def add_filter(self, path):
-        self._queue_put('add_filter', [path])
+        self._put('add_filter', [path])
 
     def set_source_attributes(self, context):
-        self._queue_put('set_source_attributes', [context])
+        self._put('set_source_attributes', [context])
 
     def set_custom(self, custom):
-        self._queue_put('set_custom', [custom])
+        self._put('set_custom', [custom])
 
     def merge_results(self, context):
-        self._queue_put('merge_results', [context])
-        if self._queue_out.empty():
+        queue_id = self._put('merge_results', [context])
+        if not queue_id:
             return (False, [])
-        return self._queue_out.get()
+
+        results = self._get(queue_id)
+        return results if results else (False, [])
 
     def on_event(self, context):
-        self._queue_put('on_event', [context])
         if context['event'] == 'VimLeavePre':
-            self._stop_thread()
+            self._stop_process()
+        self._put('on_event', [context])
 
-    def _start_thread(self, context, serveraddr):
+    def _start_process(self, context, serveraddr):
         if not self._proc:
             self._proc = Process(
                 [context['python3'], context['dp_main'], serveraddr],
@@ -54,10 +61,23 @@ class Parent(logger.LoggingMixin):
             time.sleep(1)
             error(self._vim, self._proc.communicate(100))
 
-    def _stop_thread(self):
+    def _stop_process(self):
         if self._proc:
             self._proc.kill()
             self._proc = None
 
-    def _queue_put(self, name, args):
-        self._queue_in.put([name, args])
+    def _put(self, name, args):
+        if not self._proc:
+            return None
+
+        queue_id = str(time.time())
+
+        child_in = self._vim.vars['deoplete#_child_in']
+        child_in[queue_id] = { 'name': name, 'args': args }
+        self._vim.vars['deoplete#_child_in'] = child_in
+
+        self._proc.write(queue_id + '\n')
+        return queue_id
+
+    def _get(self, queue_id):
+        return self._vim.vars['deoplete#_child_out'].get(queue_id, None)

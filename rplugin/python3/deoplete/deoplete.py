@@ -4,10 +4,6 @@
 # License: MIT license
 # ============================================================================
 
-import deoplete.util  # noqa
-import deoplete.filter  # noqa
-import deoplete.source  # noqa
-
 from deoplete import logger
 from deoplete.parent import Parent
 from deoplete.util import (error, error_tb, find_rplugins)
@@ -22,8 +18,6 @@ class Deoplete(logger.LoggingMixin):
         self._runtimepath = ''
         self._custom = []
         self._loaded_paths = set()
-        self._loaded_sources = {}
-        self._loaded_filters = {}
 
         self._parents = []
         self._parent_count = 0
@@ -136,7 +130,7 @@ class Deoplete(logger.LoggingMixin):
                 continue
             self._loaded_paths.add(path)
 
-            self._parents[self._parent_count].add_source(path, context)
+            self._parents[self._parent_count].add_source(context, path)
 
             self._parent_count += 1
             self._parent_count %= self._max_parents
@@ -152,7 +146,7 @@ class Deoplete(logger.LoggingMixin):
             self._loaded_paths.add(path)
 
             for parent in self._parents:
-                parent.add_filter(path, context)
+                parent.add_filter(path)
 
     def set_source_attributes(self, context):
         for parent in self._parents:

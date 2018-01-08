@@ -30,7 +30,11 @@ def attach_vim(serveraddr):
 def main(serveraddr):
     vim = attach_vim(serveraddr)
     from deoplete.util import error
-    error(vim, 'hoge')
+    for queue_id in sys.stdin:
+        if 'deoplete#_child_in' not in vim.vars:
+            continue
+        if queue_id.strip() in vim.vars['deoplete#_child_in']:
+            error(vim, queue_id)
     return
 
 
