@@ -45,6 +45,8 @@ class Parent(logger.LoggingMixin):
         if not queue_id:
             return (False, [])
 
+        time.sleep(0.5)
+
         results = self._get(queue_id)
         return results if results else (False, [])
 
@@ -73,7 +75,7 @@ class Parent(logger.LoggingMixin):
         queue_id = str(time.time())
 
         child_in = self._vim.vars['deoplete#_child_in']
-        child_in[queue_id] = { 'name': name, 'args': args }
+        child_in[queue_id] = {'name': name, 'args': args}
         self._vim.vars['deoplete#_child_in'] = child_in
 
         self._proc.write(queue_id + '\n')

@@ -4,9 +4,10 @@
 # License: MIT license
 # ============================================================================
 
+import copy
 import os.path
 import re
-import copy
+import sys
 import time
 
 from collections import defaultdict
@@ -39,25 +40,31 @@ class Child(logger.LoggingMixin):
     def enable_logging(self):
         self.is_debug_enabled = True
 
-    def main_loop(self, serveraddr):
-        self._vim.vars['hoge'] = 1
+    def main_loop(self):
+        for queue_id in sys.stdin:
+            queue_id = queue_id.strip()
+            if queue_id not in self._vim.vars['deoplete#_child_in']:
+                continue
 
-        while 1:
             self.debug('main_loop: begin')
-            [message, args] = self._queue_in.get()
-            self.debug('main_loop: %s', message)
-            if message == 'add_source':
-                self._add_source(args[0])
-            elif message == 'add_filter':
-                self._add_filter(args[0])
-            elif message == 'set_source_attributes':
-                self._set_source_attributes(args[0])
-            elif message == 'set_custom':
-                self._set_custom(args[0])
-            elif message == 'on_event':
-                self._on_event(args[0])
-            elif message == 'merge_results':
-                self._merge_results(args[0])
+            child_in = self._vim.vars['deoplete#_child_in']
+            name = child_in[queue_id]['name']
+            args = child_in[queue_id]['args']
+            error(self._vim, name)
+            self.debug('main_loop: %s', name)
+
+            # if name == 'add_source':
+            #     self._add_source(args[0])
+            # elif name == 'add_filter':
+            #     self._add_filter(args[0])
+            # elif name == 'set_source_attributes':
+            #     self._set_source_attributes(args[0])
+            # elif name == 'set_custom':
+            #     self._set_custom(args[0])
+            # elif name == 'on_event':
+            #     self._on_event(args[0])
+            # elif name == 'merge_results':
+            #     self._merge_results(args[0])
 
     def _add_source(self, path):
         source = None
@@ -110,7 +117,7 @@ class Child(logger.LoggingMixin):
                 self._filters[f.name] = f
                 self.debug('Loaded Filter: %s (%s)', f.name, path)
 
-    def _merge_results(self, context):
+    def _merge_results(self, context, queue_id):
         results = self._gather_results(context)
 
         merged_results = []
@@ -122,7 +129,11 @@ class Child(logger.LoggingMixin):
 
         is_async = len([x for x in results if x['context']['is_async']]) > 0
 
-        self._queue_out.put((is_async, merged_results))
+        child_out = self._vim.vars['deoplete#_child_out']
+        child_out[queue_id] = {
+            'is_async': is_async, 'merged_results': merged_results
+        }
+        self._vim.vars['deoplete#_child_out'] = child_out
 
     def _gather_results(self, context):
         results = []

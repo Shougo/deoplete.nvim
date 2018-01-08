@@ -213,6 +213,8 @@ endfunction
 function! s:on_insert_leave() abort
   call deoplete#mapping#_restore_completeopt()
   let g:deoplete#_context = {}
+  let g:deoplete#_child_in = {}
+  let g:deoplete#_child_out = {}
 endfunction
 
 function! s:on_complete_done() abort
