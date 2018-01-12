@@ -1,4 +1,4 @@
-**Warning:  I will close the issue without the minimal init.vim and the reproduce ways.**
+**Warning:  I will close the issue without the minimal init.vim and the reproduction instructions.**
 
 # Problems summary
 
