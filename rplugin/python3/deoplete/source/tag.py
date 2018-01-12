@@ -11,7 +11,6 @@ from .base import Base
 
 from collections import namedtuple
 from os.path import exists, getmtime, getsize
-from deoplete.util import parse_file_pattern
 
 TagsCacheItem = namedtuple('TagsCacheItem', 'mtime candidates')
 
