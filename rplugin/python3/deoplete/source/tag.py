@@ -5,11 +5,12 @@
 # License: MIT license
 # ============================================================================
 
+import re
+
 from .base import Base
 
 from collections import namedtuple
 from os.path import exists, getmtime, getsize
-from deoplete.util import parse_file_pattern
 
 TagsCacheItem = namedtuple('TagsCacheItem', 'mtime candidates')
 
@@ -32,27 +33,41 @@ class Source(Base):
         self.__make_cache(context)
 
     def gather_candidates(self, context):
-        tagfiles = self.__make_cache(context)
-
+        self.__make_cache(context)
         candidates = []
-        for filename in [x for x in tagfiles if x in self.__cache]:
-            candidates.append(self.__cache[filename].candidates)
-        return {'sorted_candidates': candidates}
+        for c in self.__cache.values():
+            candidates.extend(c.candidates)
+        return candidates
 
     def __make_cache(self, context):
-        tagfiles = self.__get_tagfiles(context)
-
-        for filename in tagfiles:
+        for filename in self.__get_tagfiles(context):
             mtime = getmtime(filename)
             if filename in self.__cache and self.__cache[
                     filename].mtime == mtime:
                 continue
+
+            items = []
+
             with open(filename, 'r', errors='replace') as f:
-                self.__cache[filename] = TagsCacheItem(
-                    mtime, [{'word': x} for x in sorted(
-                        parse_file_pattern(f, '^[^!][^\t]+'), key=str.lower)]
-                )
-        return tagfiles
+                for line in f:
+                    cols = line.strip().split('\t')
+                    if not cols or cols[0].startswith('!_'):
+                        continue
+                    i = cols[2].find('(')
+                    if i != -1 and cols[2].find(')', i+1) != -1:
+                        m = re.search(r'(\w+\(.*\))', cols[2])
+                        if m:
+                            items.append({'word': cols[0],
+                                          'abbr': m.group(1),
+                                          'kind': 'f'})
+                            continue
+                    items.append({'word': cols[0]})
+
+            if not items:
+                continue
+
+            self.__cache[filename] = TagsCacheItem(
+                mtime, sorted(items, key=lambda x: x['word'].lower()))
 
     def __get_tagfiles(self, context):
         include_files = self.vim.call(
