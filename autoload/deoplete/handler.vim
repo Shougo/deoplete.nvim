@@ -39,8 +39,9 @@ endfunction
 
 function! s:do_complete(timer) abort
   let context = g:deoplete#_context
-  if s:is_exiting()
-        \ || (get(context, 'event', '') !=# 'InsertEnter' && mode() !=# 'i')
+  let event = get(context, 'event', '')
+  let modes = (event == 'InsertEnter') ? ['n', 'i'] : ['i']
+  if s:is_exiting() || index(modes, mode()) < 0
     call s:completion_timer_stop()
     return
   endif
