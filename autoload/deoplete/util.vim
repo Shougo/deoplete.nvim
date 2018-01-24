@@ -182,7 +182,7 @@ function! deoplete#util#get_context_filetype(input, event) abort
   if empty(s:context_filetype)
         \ || s:context_filetype.prev_filetype !=# &filetype
         \ || s:context_filetype.line != line('.')
-        \ || s:context_filetype.bufnr != bufnr('.')
+        \ || s:context_filetype.bufnr != bufnr('%')
         \ || (a:input =~# '\W$' &&
         \     substitute(a:input, '\s\zs\s\+$', '', '') !=#
         \     substitute(s:context_filetype.input, '\s\zs\s\+$', '', ''))
@@ -192,7 +192,7 @@ function! deoplete#util#get_context_filetype(input, event) abort
         \ || a:event ==# 'InsertEnter'
 
     let s:context_filetype.line = line('.')
-    let s:context_filetype.bufnr = bufnr('.')
+    let s:context_filetype.bufnr = bufnr('%')
     let s:context_filetype.input = a:input
     let s:context_filetype.prev_filetype = &filetype
     let s:context_filetype.filetype =
