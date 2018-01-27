@@ -41,7 +41,7 @@ class Deoplete(logger.LoggingMixin):
         # deoplete-jedi picks up the log filename from deoplete's handler in
         # its on_init.
         if self._vim.vars['deoplete#_logging']:
-            self.enable_logging({})
+            self.enable_logging()
 
         # on_init() call
         context = self._vim.call('deoplete#init#_context', 'Init', [])
@@ -52,7 +52,7 @@ class Deoplete(logger.LoggingMixin):
         if hasattr(self._vim, 'channel_id'):
             self._vim.vars['deoplete#_channel_id'] = self._vim.channel_id
 
-    def enable_logging(self, context):
+    def enable_logging(self):
         logging = self._vim.vars['deoplete#_logging']
         logger.setup(self._vim, logging['level'], logging['logfile'])
         self.is_debug_enabled = True
