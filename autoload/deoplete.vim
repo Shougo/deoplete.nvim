@@ -27,6 +27,7 @@ endfunction
 
 function! deoplete#enable_logging(level, logfile) abort
   let g:deoplete#_logging = {'level': a:level, 'logfile': a:logfile}
+  call deoplete#util#rpcnotify('deoplete_enable_logging', {})
 endfunction
 
 function! deoplete#manual_complete(...) abort

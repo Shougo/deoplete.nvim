@@ -217,13 +217,6 @@ function! deoplete#util#rpcnotify(event, context) abort
   if deoplete#init#_check_channel()
     return ''
   endif
-
-  if !exists('s:logged') && !empty(g:deoplete#_logging)
-    call s:notify('deoplete_enable_logging',
-          \ deoplete#init#_context(a:event, []))
-    let s:logged = 1
-  endif
-
   call s:notify(a:event, a:context)
   return ''
 endfunction

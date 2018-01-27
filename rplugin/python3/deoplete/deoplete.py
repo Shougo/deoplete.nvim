@@ -37,6 +37,12 @@ class Deoplete(logger.LoggingMixin):
         self._loaded_paths = set()
         self._prev_results = {}
 
+        # Enable logging before "Init" for more information, and e.g.
+        # deoplete-jedi picks up the log filename from deoplete's handler in
+        # its on_init.
+        if self._vim.vars['deoplete#_logging']:
+            self.enable_logging({})
+
         # on_init() call
         context = self._vim.call('deoplete#init#_context', 'Init', [])
         context['rpc'] = 'deoplete_on_event'
