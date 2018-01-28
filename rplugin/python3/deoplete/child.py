@@ -45,7 +45,12 @@ class Child(logger.LoggingMixin):
         self.is_debug_enabled = True
 
     def main_loop(self):
-        unpacker = msgpack.Unpacker(encoding='utf-8')
+        unpacker = msgpack.Unpacker(
+            encoding='utf-8',
+            unicode_errors='surrogateescape')
+        packer = msgpack.Packer(
+            use_bin_type=True,
+            unicode_errors='surrogateescape')
 
         while 1:
             b = sys.stdin.buffer.read(1)
@@ -70,8 +75,7 @@ class Child(logger.LoggingMixin):
                     self._on_event(args[0])
                 elif name == 'merge_results':
                     result = self._merge_results(args[0], queue_id)
-                    sys.stdout.buffer.write(msgpack.packb(
-                        result, use_bin_type=True))
+                    sys.stdout.buffer.write(packer.pack(result))
                     sys.stdout.flush()
 
     def _add_source(self, path):

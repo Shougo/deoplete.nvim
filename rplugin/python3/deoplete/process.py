@@ -26,7 +26,12 @@ class Process(object):
                                       cwd=cwd)
         self._eof = False
         self._context = context
-        self._unpacker = msgpack.Unpacker(encoding='utf-8')
+        self._packer = msgpack.Packer(
+            use_bin_type=True,
+            unicode_errors='surrogateescape')
+        self._unpacker = msgpack.Unpacker(
+            encoding='utf-8',
+            unicode_errors='surrogateescape')
         self._queue_out = Queue()
         self._thread = Thread(target=self.enqueue_output)
         self._thread.start()
@@ -65,5 +70,5 @@ class Process(object):
         return outs
 
     def write(self, expr):
-        self._proc.stdin.write(msgpack.packb(expr, use_bin_type=True))
+        self._proc.stdin.write(self._packer.pack(expr))
         self._proc.stdin.flush()
