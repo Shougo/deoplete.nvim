@@ -8,7 +8,7 @@ import time
 
 from deoplete import logger
 from deoplete.process import Process
-# from deoplete.util import error
+from deoplete.util import error
 
 
 class Parent(logger.LoggingMixin):
@@ -18,11 +18,6 @@ class Parent(logger.LoggingMixin):
 
         self._vim = vim
         self._proc = None
-
-        if 'deoplete#_child_in' not in self._vim.vars:
-            self._vim.vars['deoplete#_child_in'] = {}
-        if 'deoplete#_child_out' not in self._vim.vars:
-            self._vim.vars['deoplete#_child_out'] = {}
 
     def enable_logging(self):
         self.is_debug_enabled = True
@@ -45,12 +40,9 @@ class Parent(logger.LoggingMixin):
         if not queue_id:
             return (False, [])
 
-        time.sleep(1.0)
-
         results = self._get(queue_id)
         if not results:
             return (False, [])
-        self._vim.vars['deoplete#_child_out'] = {}
         return (results['is_async'],
                 results['merged_results']) if results else (False, [])
 
@@ -76,12 +68,8 @@ class Parent(logger.LoggingMixin):
 
         queue_id = str(time.time())
 
-        child_in = self._vim.vars['deoplete#_child_in']
-        child_in[queue_id] = {'name': name, 'args': args}
-        self._vim.vars['deoplete#_child_in'] = child_in
-
-        self._proc.write(queue_id + '\n')
+        self._proc.write({'name': name, 'args': args, 'queue_id': queue_id})
         return queue_id
 
     def _get(self, queue_id):
-        return self._vim.vars['deoplete#_child_out'].get(queue_id, None)
+        return self._proc.read()

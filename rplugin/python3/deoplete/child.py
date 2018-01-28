@@ -9,6 +9,7 @@ import os.path
 import re
 import sys
 import time
+import msgpack
 
 from collections import defaultdict
 
@@ -44,34 +45,33 @@ class Child(logger.LoggingMixin):
         self.is_debug_enabled = True
 
     def main_loop(self):
-        for queue_id in sys.stdin:
-            queue_id = queue_id.strip()
+        unpacker = msgpack.Unpacker(encoding='utf-8')
 
-            if queue_id not in self._vim.vars['deoplete#_child_in']:
-                continue
+        while 1:
+            b = sys.stdin.buffer.read(1)
+            unpacker.feed(b)
 
-            self.debug('main_loop: begin')
-            child_in = self._vim.vars['deoplete#_child_in']
-            name = child_in[queue_id]['name']
-            args = child_in[queue_id]['args']
-            self.debug('main_loop: %s', name)
+            for child_in in unpacker:
+                self.debug('main_loop: begin')
+                name = child_in['name']
+                args = child_in['args']
+                self.debug('main_loop: %s', name)
 
-            # Clear child_in
-            child_in[queue_id] = {}
-            self._vim.vars['deoplete#_child_in'] = child_in
-
-            if name == 'add_source':
-                self._add_source(args[0])
-            elif name == 'add_filter':
-                self._add_filter(args[0])
-            elif name == 'set_source_attributes':
-                self._set_source_attributes(args[0])
-            elif name == 'set_custom':
-                self._set_custom(args[0])
-            elif name == 'on_event':
-                self._on_event(args[0])
-            elif name == 'merge_results':
-                self._merge_results(args[0], queue_id)
+                if name == 'add_source':
+                    self._add_source(args[0])
+                elif name == 'add_filter':
+                    self._add_filter(args[0])
+                elif name == 'set_source_attributes':
+                    self._set_source_attributes(args[0])
+                elif name == 'set_custom':
+                    self._set_custom(args[0])
+                elif name == 'on_event':
+                    self._on_event(args[0])
+                elif name == 'merge_results':
+                    result = self._merge_results(args[0])
+                    sys.stdout.buffer.write(msgpack.packb(
+                        result, use_bin_type=True))
+                    sys.stdout.flush()
 
     def _add_source(self, path):
         source = None
@@ -124,7 +124,7 @@ class Child(logger.LoggingMixin):
                 self._filters[f.name] = f
                 self.debug('Loaded Filter: %s (%s)', f.name, path)
 
-    def _merge_results(self, context, queue_id):
+    def _merge_results(self, context):
         results = self._gather_results(context)
 
         merged_results = []
@@ -142,11 +142,9 @@ class Child(logger.LoggingMixin):
 
         is_async = len([x for x in results if x['context']['is_async']]) > 0
 
-        child_out = self._vim.vars['deoplete#_child_out']
-        child_out[queue_id] = {
+        return {
             'is_async': is_async, 'merged_results': merged_results
         }
-        self._vim.vars['deoplete#_child_out'] = child_out
 
     def _gather_results(self, context):
         results = []
