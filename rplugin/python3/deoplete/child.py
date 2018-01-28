@@ -12,6 +12,9 @@ import time
 
 from collections import defaultdict
 
+import deoplete.source  # noqa
+import deoplete.filter  # noqa
+
 from deoplete import logger
 from deoplete.exceptions import SourceInitError
 from deoplete.util import (bytepos2charpos, charpos2bytepos, error, error_tb,
