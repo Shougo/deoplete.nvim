@@ -55,6 +55,7 @@ class Child(logger.LoggingMixin):
                 self.debug('main_loop: begin')
                 name = child_in['name']
                 args = child_in['args']
+                queue_id = child_in['queue_id']
                 self.debug('main_loop: %s', name)
 
                 if name == 'add_source':
@@ -68,7 +69,7 @@ class Child(logger.LoggingMixin):
                 elif name == 'on_event':
                     self._on_event(args[0])
                 elif name == 'merge_results':
-                    result = self._merge_results(args[0])
+                    result = self._merge_results(args[0], queue_id)
                     sys.stdout.buffer.write(msgpack.packb(
                         result, use_bin_type=True))
                     sys.stdout.flush()
@@ -124,7 +125,7 @@ class Child(logger.LoggingMixin):
                 self._filters[f.name] = f
                 self.debug('Loaded Filter: %s (%s)', f.name, path)
 
-    def _merge_results(self, context):
+    def _merge_results(self, context, queue_id):
         results = self._gather_results(context)
 
         merged_results = []
@@ -143,7 +144,9 @@ class Child(logger.LoggingMixin):
         is_async = len([x for x in results if x['context']['is_async']]) > 0
 
         return {
-            'is_async': is_async, 'merged_results': merged_results
+            'queue_id': queue_id,
+            'is_async': is_async,
+            'merged_results': merged_results,
         }
 
     def _gather_results(self, context):

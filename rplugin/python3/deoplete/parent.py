@@ -8,7 +8,7 @@ import time
 
 from deoplete import logger
 from deoplete.process import Process
-from deoplete.util import error
+# from deoplete.util import error
 
 
 class Parent(logger.LoggingMixin):
@@ -18,6 +18,7 @@ class Parent(logger.LoggingMixin):
 
         self._vim = vim
         self._proc = None
+        self._queue_id = ''
 
     def enable_logging(self):
         self.is_debug_enabled = True
@@ -36,13 +37,24 @@ class Parent(logger.LoggingMixin):
         self._put('set_custom', [custom])
 
     def merge_results(self, context):
-        queue_id = self._put('merge_results', [context])
-        if not queue_id:
-            return (False, [])
+        prev_pos = context['vars'][
+            'deoplete#_prev_completion']['complete_position']
+        if context['position'] == prev_pos and (
+                self._queue_id or context['event'] == 'Async'):
+            # Use previous id
+            queue_id = self._queue_id
+        else:
+            queue_id = self._put('merge_results', [context])
+            if not queue_id:
+                return (False, [])
 
-        results = self._get(queue_id)
-        if not results:
-            return (False, [])
+        get = self._get(queue_id)
+        if not get:
+            # Skip the next merge_results
+            self._queue_id = queue_id
+            return (True, [])
+        self._queue_id = ''
+        results = get[0]
         return (results['is_async'],
                 results['merged_results']) if results else (False, [])
 
@@ -52,10 +64,12 @@ class Parent(logger.LoggingMixin):
         self._put('on_event', [context])
 
     def _start_process(self, context, serveraddr):
-        if not self._proc:
-            self._proc = Process(
-                [context['python3'], context['dp_main'], serveraddr],
-                context, context['cwd'])
+        if self._proc:
+            return
+
+        self._proc = Process(
+            [context['python3'], context['dp_main'], serveraddr],
+            context, context['cwd'])
 
     def _stop_process(self):
         if self._proc:
@@ -72,4 +86,5 @@ class Parent(logger.LoggingMixin):
         return queue_id
 
     def _get(self, queue_id):
-        return self._proc.read()
+        return [x for x in self._proc.communicate(50)
+                if x['queue_id'] == queue_id]

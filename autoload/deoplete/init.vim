@@ -103,6 +103,11 @@ function! deoplete#init#_disable() abort
 endfunction
 
 function! deoplete#init#_variables() abort
+  let g:deoplete#_prev_completion = {
+        \ 'complete_position': [],
+        \ 'candidates': [],
+        \ 'event': '',
+        \ }
   let g:deoplete#_context = {}
   let g:deoplete#_rank = {}
   if !exists('g:deoplete#_logging')
@@ -147,6 +152,8 @@ function! deoplete#init#_variables() abort
         \ 'g:deoplete#skip_chars', [])
   call deoplete#util#set_default(
         \ 'g:deoplete#complete_method', 'complete')
+  call deoplete#util#set_default(
+        \ 'g:deoplete#max_processes', 4)
 
   call deoplete#util#set_default(
         \ 'g:deoplete#keyword_patterns', {})

@@ -7,6 +7,9 @@
 import subprocess
 import os
 import msgpack
+from threading import Thread
+from queue import Queue
+from time import time, sleep
 
 
 class Process(object):
@@ -24,6 +27,9 @@ class Process(object):
         self._eof = False
         self._context = context
         self._unpacker = msgpack.Unpacker(encoding='utf-8')
+        self._queue_out = Queue()
+        self._thread = Thread(target=self.enqueue_output)
+        self._thread.start()
 
     def eof(self):
         return self._eof
@@ -34,13 +40,29 @@ class Process(object):
         self._proc.kill()
         self._proc.wait()
         self._proc = None
+        self._queue_out = None
+        self._thread.join(1.0)
+        self._thread = None
 
-    def read(self):
+    def enqueue_output(self):
         while 1:
             b = self._proc.stdout.read(1)
             self._unpacker.feed(b)
             for child_out in self._unpacker:
-                return child_out
+                self._queue_out.put(child_out)
+
+    def communicate(self, timeout):
+        if not self._proc:
+            return []
+
+        start = time()
+        outs = []
+
+        if self._queue_out.empty():
+            sleep(timeout / 1000.0)
+        while not self._queue_out.empty() and time() < start + timeout:
+            outs.append(self._queue_out.get_nowait())
+        return outs
 
     def write(self, expr):
         self._proc.stdin.write(msgpack.packb(expr, use_bin_type=True))

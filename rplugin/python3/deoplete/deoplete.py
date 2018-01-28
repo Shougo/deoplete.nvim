@@ -22,7 +22,8 @@ class Deoplete(logger.LoggingMixin):
 
         self._parents = []
         self._parent_count = 0
-        self._max_parents = 1
+        self._max_parents = max(
+            [1, self._vim.vars['deoplete#max_processes']])
         for n in range(0, self._max_parents):
             self._parents.append(Parent(vim))
 
@@ -71,12 +72,19 @@ class Deoplete(logger.LoggingMixin):
                                in context['vars']):
             self._vim.call('deoplete#mapping#_restore_completeopt')
 
+        # Check the previous completion
+        prev_candidates = context['vars'][
+            'deoplete#_prev_completion']['candidates']
+        if context['event'] == 'Async' and candidates == prev_candidates:
+            return
+
         # error(self._vim, candidates)
         self._vim.vars['deoplete#_context'] = {
             'complete_position': position,
             'candidates': candidates,
             'event': context['event'],
             'input': context['input'],
+            'is_async': is_async,
         }
         self._vim.call('deoplete#handler#_completion_timer_start')
 

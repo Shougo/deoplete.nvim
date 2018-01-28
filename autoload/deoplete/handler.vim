@@ -51,15 +51,16 @@ function! s:do_complete(timer) abort
     return
   endif
 
+  let prev = g:deoplete#_prev_completion
   if context.event !=# 'Manual'
-        \ && s:prev_completion.complete_position == getpos('.')
-        \ && s:prev_completion.candidates ==# context.candidates
+        \ && prev.complete_position == getpos('.')
+        \ && prev.candidates ==# context.candidates
     return
   endif
 
-  let s:prev_completion.event = context.event
-  let s:prev_completion.candidates = context.candidates
-  let s:prev_completion.complete_position = getpos('.')
+  let prev.event = context.event
+  let prev.candidates = context.candidates
+  let prev.complete_position = getpos('.')
 
   if context.event ==# 'Manual'
     let context.event = ''
@@ -86,8 +87,10 @@ function! deoplete#handler#_completion_timer_start() abort
   let delay = max([50, g:deoplete#auto_complete_delay])
   let s:completion_timer = timer_start(delay, function('s:do_complete'))
 
-  let s:prev_completion = {
-        \ 'complete_position': [], 'candidates': [], 'event': ''
+  let g:deoplete#_prev_completion = {
+        \ 'complete_position': [],
+        \ 'candidates': [],
+        \ 'event': '',
         \ }
 endfunction
 function! s:completion_timer_stop() abort
@@ -132,7 +135,7 @@ function! s:completion_begin(event) abort
     return
   endif
 
-  if exists('s:prev_completion') && s:prev_completion.event !=# 'Manual'
+  if g:deoplete#_prev_completion.event !=# 'Manual'
     " Call omni completion
     for filetype in context.filetypes
       for pattern in deoplete#util#convert2list(

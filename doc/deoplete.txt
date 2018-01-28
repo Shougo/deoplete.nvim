@@ -195,6 +195,14 @@ g:deoplete#max_list
 
 		Default value: 100
 
+						*g:deoplete#max_processes*
+g:deoplete#max_processes
+		The max number of processes used for the asynchronous
+		completion.
+		If it is less than equal 1, this feature is disabled.
+
+		Default value: 4
+
 						*g:deoplete#max_abbr_width*
 g:deoplete#max_abbr_width
 		If the candidate abbr length exceeds the length it will be cut
