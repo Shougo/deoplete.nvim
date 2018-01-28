@@ -19,6 +19,7 @@ class Parent(logger.LoggingMixin):
         self._vim = vim
         self._proc = None
         self._queue_id = ''
+        self._prev_pos = []
 
     def enable_logging(self):
         self.is_debug_enabled = True
@@ -37,9 +38,7 @@ class Parent(logger.LoggingMixin):
         self._put('set_custom', [custom])
 
     def merge_results(self, context):
-        prev_pos = context['vars'][
-            'deoplete#_prev_completion']['complete_position']
-        if context['position'] == prev_pos and (
+        if context['position'] == self._prev_pos and (
                 self._queue_id or context['event'] == 'Async'):
             # Use previous id
             queue_id = self._queue_id
@@ -52,6 +51,7 @@ class Parent(logger.LoggingMixin):
         if not get:
             # Skip the next merge_results
             self._queue_id = queue_id
+            self._prev_pos = context['position']
             return (True, [])
         self._queue_id = ''
         results = get[0]

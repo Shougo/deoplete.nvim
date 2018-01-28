@@ -133,12 +133,16 @@ class Child(logger.LoggingMixin):
                        if not self._is_skip(x['context'], x['source'])]:
             source_result = self._source_result(result, context['input'])
             if source_result:
+                rank = get_custom(self._custom,
+                                  result['source'].name, 'rank',
+                                  result['source'].rank)
                 merged_results.append({
-                    'input': source_result['input'],
                     'complete_position': source_result['complete_position'],
                     'mark': result['source'].mark,
-                    'filetypes': result['source'].filetypes,
+                    'dup': bool(result['source'].filetypes),
                     'candidates': result['candidates'],
+                    'source_name': result['source'].name,
+                    'rank': rank,
                 })
 
         is_async = len([x for x in results if x['context']['is_async']]) > 0
@@ -317,11 +321,6 @@ class Child(logger.LoggingMixin):
         return result if result['candidates'] else None
 
     def _itersource(self, context):
-        sources = sorted(self._sources.items(),
-                         key=lambda x: get_custom(
-                             context['custom'],
-                             x[1].name, 'rank', x[1].rank),
-                         reverse=True)
         filetypes = context['filetypes']
         ignore_sources = set()
         for ft in filetypes:
@@ -331,7 +330,7 @@ class Child(logger.LoggingMixin):
                                   'deoplete#ignore_sources',
                                   {}))
 
-        for source_name, source in sources:
+        for source_name, source in self._sources.items():
             if source.limit > 0 and context['bufsize'] > source.limit:
                 continue
             if source.filetypes is None or source_name in ignore_sources:

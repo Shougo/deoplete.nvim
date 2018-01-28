@@ -19,6 +19,8 @@ class Deoplete(logger.LoggingMixin):
         self._runtimepath = ''
         self._custom = []
         self._loaded_paths = set()
+        self._prev_merged_results = {}
+        self._prev_pos = []
 
         self._parents = []
         self._parent_count = 0
@@ -91,12 +93,23 @@ class Deoplete(logger.LoggingMixin):
         self.debug('completion_end: %s', context['input'])
 
     def merge_results(self, context):
+        use_prev = context['position'] == self._prev_pos
+        if not use_prev:
+            self._prev_merged_results = {}
+
         is_async = False
         merged_results = []
-        for parent in self._parents:
-            result = parent.merge_results(context)
-            is_async = is_async or result[0]
-            merged_results += result[1]
+        for cnt, parent in enumerate(self._parents):
+            if use_prev and cnt in self._prev_merged_results:
+                # Use previous result
+                merged_results += self._prev_merged_results[cnt]
+            else:
+                result = parent.merge_results(context)
+                is_async = is_async or result[0]
+                if not result[0]:
+                    self._prev_merged_results[cnt] = result[1]
+                merged_results += result[1]
+        self._prev_pos = context['position']
 
         if not merged_results:
             return (is_async, -1, [])
@@ -105,9 +118,10 @@ class Deoplete(logger.LoggingMixin):
                                  for x in merged_results])
 
         all_candidates = []
-        for result in merged_results:
+        for result in sorted(merged_results,
+                             key=lambda x: x['rank'], reverse=True):
             candidates = result['candidates']
-            prefix = result['input'][
+            prefix = context['input'][
                 complete_position:result['complete_position']]
 
             mark = result['mark'] + ' '
@@ -120,7 +134,7 @@ class Deoplete(logger.LoggingMixin):
                 if (mark != ' ' and
                         candidate.get('menu', '').find(mark) != 0):
                     candidate['menu'] = mark + candidate.get('menu', '')
-                if result['filetypes']:
+                if result['dup']:
                     candidate['dup'] = 1
 
             all_candidates += candidates
