@@ -34,7 +34,8 @@ def main(serveraddr):
     try:
         from deoplete.child import Child
         child = Child(vim)
-        child.main_loop()
+        while 1:
+            child.main()
     except Exception:
         error_tb(vim, 'Error in child')
     return

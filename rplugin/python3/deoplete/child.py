@@ -40,43 +40,44 @@ class Child(logger.LoggingMixin):
         self._source_errors = defaultdict(int)
         self._filter_errors = defaultdict(int)
         self._prev_results = {}
+        self._unpacker = msgpack.Unpacker(
+            encoding='utf-8',
+            unicode_errors='surrogateescape')
+        self._packer = msgpack.Packer(
+            use_bin_type=True,
+            unicode_errors='surrogateescape')
 
     def enable_logging(self):
         self.is_debug_enabled = True
 
-    def main_loop(self):
-        unpacker = msgpack.Unpacker(
-            encoding='utf-8',
-            unicode_errors='surrogateescape')
-        packer = msgpack.Packer(
-            use_bin_type=True,
-            unicode_errors='surrogateescape')
+    def main(self):
+        for child_in in self._read():
+            self.debug('main_loop: begin')
+            name = child_in['name']
+            args = child_in['args']
+            queue_id = child_in['queue_id']
+            self.debug('main_loop: %s', name)
 
-        while 1:
-            b = sys.stdin.buffer.read(1)
-            unpacker.feed(b)
+            if name == 'add_source':
+                self._add_source(args[0])
+            elif name == 'add_filter':
+                self._add_filter(args[0])
+            elif name == 'set_source_attributes':
+                self._set_source_attributes(args[0])
+            elif name == 'set_custom':
+                self._set_custom(args[0])
+            elif name == 'on_event':
+                self._on_event(args[0])
+            elif name == 'merge_results':
+                self._write(self._merge_results(args[0], queue_id))
 
-            for child_in in unpacker:
-                self.debug('main_loop: begin')
-                name = child_in['name']
-                args = child_in['args']
-                queue_id = child_in['queue_id']
-                self.debug('main_loop: %s', name)
+    def _read(self):
+        self._unpacker.feed(sys.stdin.buffer.read(1))
+        return self._unpacker
 
-                if name == 'add_source':
-                    self._add_source(args[0])
-                elif name == 'add_filter':
-                    self._add_filter(args[0])
-                elif name == 'set_source_attributes':
-                    self._set_source_attributes(args[0])
-                elif name == 'set_custom':
-                    self._set_custom(args[0])
-                elif name == 'on_event':
-                    self._on_event(args[0])
-                elif name == 'merge_results':
-                    result = self._merge_results(args[0], queue_id)
-                    sys.stdout.buffer.write(packer.pack(result))
-                    sys.stdout.flush()
+    def _write(self, expr):
+        sys.stdout.buffer.write(self._packer.pack(expr))
+        sys.stdout.flush()
 
     def _add_source(self, path):
         source = None
