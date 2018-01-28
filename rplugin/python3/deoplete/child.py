@@ -88,7 +88,7 @@ class Child(logger.LoggingMixin):
                          (path, self._loaded_sources[source.name]))
                 source = None
         except Exception:
-            error_tb(self._vim, 'Could not load source: %s' % name)
+            error_tb(self._vim, 'Could not load source: %s' % path)
         finally:
             if source:
                 self._loaded_sources[source.name] = path
@@ -114,7 +114,7 @@ class Child(logger.LoggingMixin):
                 f = None
         except Exception:
             # Exception occurred when loading a filter.  Log stack trace.
-            error_tb(self._vim, 'Could not load filter: %s' % name)
+            error_tb(self._vim, 'Could not load filter: %s' % path)
         finally:
             if f:
                 self._loaded_filters[f.name] = path
