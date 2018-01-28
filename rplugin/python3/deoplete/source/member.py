@@ -21,21 +21,21 @@ class Source(Base):
         self.mark = '[M]'
         self.min_pattern_length = 0
 
-        self.__object_pattern = r'[a-zA-Z_]\w*(?:\(\)?)?'
-        self.__prefix = ''
+        self._object_pattern = r'[a-zA-Z_]\w*(?:\(\)?)?'
+        self._prefix = ''
 
-        self.__prefix_patterns = {}
-        set_pattern(self.__prefix_patterns,
+        self._prefix_patterns = {}
+        set_pattern(self._prefix_patterns,
                     '_', '\.')
-        set_pattern(self.__prefix_patterns,
+        set_pattern(self._prefix_patterns,
                     'c,objc', ['\.', '->'])
-        set_pattern(self.__prefix_patterns,
+        set_pattern(self._prefix_patterns,
                     'cpp,objcpp', ['\.', '->', '::'])
-        set_pattern(self.__prefix_patterns,
+        set_pattern(self._prefix_patterns,
                     'perl,php', ['->'])
-        set_pattern(self.__prefix_patterns,
+        set_pattern(self._prefix_patterns,
                     'ruby', ['\.', '::'])
-        set_pattern(self.__prefix_patterns,
+        set_pattern(self._prefix_patterns,
                     'lua', ['\.', ':'])
 
     def get_complete_position(self, context):
@@ -44,12 +44,12 @@ class Source(Base):
                 get_buffer_config(context, context['filetype'],
                                   'deoplete_member_prefix_patterns',
                                   'deoplete#member#prefix_patterns',
-                                  self.__prefix_patterns)):
-            m = re.search(self.__object_pattern + prefix_pattern + r'\w*$',
+                                  self._prefix_patterns)):
+            m = re.search(self._object_pattern + prefix_pattern + r'\w*$',
                           context['input'])
             if m is None or prefix_pattern == '':
                 continue
-            self.__prefix = re.sub(r'\w*$', '', m.group(0))
+            self._prefix = re.sub(r'\w*$', '', m.group(0))
             return re.search(r'\w*$', context['input']).start()
         return -1
 
@@ -57,6 +57,6 @@ class Source(Base):
         return [{'word': x} for x in
                 parse_buffer_pattern(
                     getlines(self.vim),
-                    r'(?<=' + re.escape(self.__prefix) + r')\w+'
+                    r'(?<=' + re.escape(self._prefix) + r')\w+'
                 )
                 if x != context['complete_str']]

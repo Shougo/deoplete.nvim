@@ -21,14 +21,14 @@ class Source(Base):
         self.mark = '[F]'
         self.min_pattern_length = 0
         self.rank = 150
-        self.__isfname = ''
+        self._isfname = ''
 
     def on_init(self, context):
-        self.__buffer_path = context['vars'].get(
+        self._buffer_path = context['vars'].get(
             'deoplete#file#enable_buffer_path', 0)
 
     def on_event(self, context):
-        self.__isfname = self.vim.call(
+        self._isfname = self.vim.call(
             'deoplete#util#vimoption2python_not',
             self.vim.options['isfname'])
 
@@ -37,13 +37,13 @@ class Source(Base):
         return pos if pos < 0 else pos + 1
 
     def gather_candidates(self, context):
-        if not self.__isfname:
+        if not self._isfname:
             return []
 
-        p = self.__longest_path_that_exists(context, context['input'])
+        p = self._longest_path_that_exists(context, context['input'])
         if p in (None, []) or p == '/' or re.search('//+$', p):
             return []
-        complete_str = self.__substitute_path(context, dirname(p) + '/')
+        complete_str = self._substitute_path(context, dirname(p) + '/')
         if not os.path.isdir(complete_str):
             return []
         hidden = context['complete_str'].find('.') == 0
@@ -60,19 +60,19 @@ class Source(Base):
         return [{'word': x, 'abbr': x + '/'} for x in dirs
                 ] + [{'word': x} for x in files]
 
-    def __longest_path_that_exists(self, context, input_str):
+    def _longest_path_that_exists(self, context, input_str):
         input_str = re.sub(r'[^/]*$', '', input_str)
         data = re.split(r'((?:%s+|(?:(?<![\w\s/\.])(?:~|\.{1,2})?/)+))' %
-                        self.__isfname, input_str)
+                        self._isfname, input_str)
         data = [''.join(data[i:]) for i in range(len(data))]
         existing_paths = sorted(filter(lambda x: exists(
-            dirname(self.__substitute_path(context, x))), data))
+            dirname(self._substitute_path(context, x))), data))
         return existing_paths[-1] if existing_paths else None
 
-    def __substitute_path(self, context, path):
+    def _substitute_path(self, context, path):
         m = re.match(r'(\.{1,2})/+', path)
         if m:
-            if self.__buffer_path and context['bufpath']:
+            if self._buffer_path and context['bufpath']:
                 base = context['bufpath']
             else:
                 base = os.path.join(context['cwd'], 'x')
