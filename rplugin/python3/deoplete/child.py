@@ -47,9 +47,6 @@ class Child(logger.LoggingMixin):
             use_bin_type=True,
             unicode_errors='surrogateescape')
 
-    def enable_logging(self):
-        self.is_debug_enabled = True
-
     def main(self):
         for child_in in self._read():
             self.debug('main_loop: begin')
@@ -58,7 +55,9 @@ class Child(logger.LoggingMixin):
             queue_id = child_in['queue_id']
             self.debug('main_loop: %s', name)
 
-            if name == 'add_source':
+            if name == 'enable_logging':
+                self._enable_logging()
+            elif name == 'add_source':
                 self._add_source(args[0])
             elif name == 'add_filter':
                 self._add_filter(args[0])
@@ -78,6 +77,11 @@ class Child(logger.LoggingMixin):
     def _write(self, expr):
         sys.stdout.buffer.write(self._packer.pack(expr))
         sys.stdout.flush()
+
+    def _enable_logging(self):
+        logging = self._vim.vars['deoplete#_logging']
+        logger.setup(self._vim, logging['level'], logging['logfile'])
+        self.is_debug_enabled = True
 
     def _add_source(self, path):
         source = None

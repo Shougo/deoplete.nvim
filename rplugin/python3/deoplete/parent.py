@@ -13,19 +13,20 @@ from deoplete.process import Process
 
 class Parent(logger.LoggingMixin):
 
-    def __init__(self, vim):
+    def __init__(self, vim, context):
         self.name = 'parent'
 
         self._vim = vim
         self._proc = None
         self._queue_id = ''
         self._prev_pos = []
+        self._start_process(context, context['serveraddr'])
 
     def enable_logging(self):
+        self._put('enable_logging', [])
         self.is_debug_enabled = True
 
-    def add_source(self, context, path):
-        self._start_process(context, context['serveraddr'])
+    def add_source(self, path):
         self._put('add_source', [path])
 
     def add_filter(self, path):
