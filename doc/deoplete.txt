@@ -1289,9 +1289,9 @@ phpcd.vim: another PHP omnifunc. Faster.
 https://github.com/php-vim/phpcd.vim
 
 ==============================================================================
-FREQUENTLY ASKED QUESTIONS (FAQ)                                *deoplete-faq*
+FREQUENTLY ASKED QUESTIONS (FAQ)			*deoplete-faq*
 
-                                                        *deoplete-faq-trouble*
+							*deoplete-faq-trouble*
 1. Troubleshooting~
 
 Q: deoplete does not work.
@@ -1378,7 +1378,7 @@ A: Please enable logging feature like this. >
        call deoplete#enable_logging('DEBUG', 'deoplete.log')
        call deoplete#custom#source('jedi', 'is_debug_enabled', 1)
 <
-                                                         *deoplete-faq-config*
+							*deoplete-faq-config*
 2. Configuration~
 
 Q: I want to silence the |ins-completion-menu| messages in the command line
@@ -1523,7 +1523,7 @@ Q: What does each part of a line on the pop up mean?  For example I see:
 A: It is the source mark. [~] is from around source.  A is from
    |deoplete-source-around|.
 
-                                                    *deoplete-faq-ft-specific*
+						    *deoplete-faq-ft-specific*
 3. Filetype Specific Questions~
 
 Q: I want to disable the auto completion for certain filetypes.
@@ -1587,7 +1587,7 @@ Q: I want to complete AAA using deoplete.
 
 A: You can create the source for it. Why don't create the source if you need?
 
-                                                        *deoplete-faq-general*
+							*deoplete-faq-general*
 4. General Questions~
 
 Q: How to donate money to you?
