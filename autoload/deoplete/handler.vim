@@ -84,7 +84,7 @@ function! deoplete#handler#_completion_timer_start() abort
     call s:completion_timer_stop()
   endif
 
-  let delay = max([50, g:deoplete#auto_complete_delay])
+  let delay = max([20, g:deoplete#auto_complete_delay])
   let s:completion_timer = timer_start(delay, function('s:do_complete'))
 
   let g:deoplete#_prev_completion = {
@@ -109,7 +109,7 @@ function! deoplete#handler#_async_timer_start() abort
 
   let s:async_timer = { 'event': 'Async', 'changedtick': b:changedtick }
   let s:async_timer.id = timer_start(
-        \ max([50, g:deoplete#auto_refresh_delay]),
+        \ max([20, g:deoplete#auto_refresh_delay]),
         \ function('s:completion_async'), {'repeat': -1})
 endfunction
 function! deoplete#handler#_async_timer_stop() abort
