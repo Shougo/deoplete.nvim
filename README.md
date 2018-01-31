@@ -6,11 +6,12 @@
 [![Doc](https://img.shields.io/badge/doc-%3Ah%20deoplete-orange.svg)](doc/deoplete.txt)
 
 Deoplete is the abbreviation of "dark powered neo-completion".  It
-provides an asynchronous keyword completion system in the
-current buffer.
-To view the current options, please consult the
-[documentation](https://github.com/Shougo/deoplete.nvim/blob/master/doc%2Fdeoplete.txt).
+provides an extensible and asynchronous completion framwork for
+neovim/vim8.
 
+deoplete will display completions via `complete()` by default.
+
+Here are some [completion sources](https://github.com/Shougo/deoplete.nvim/wiki/Completion-Sources) specifically made for deoplete.nvim.
 
 ## Installation
 
@@ -76,11 +77,7 @@ auto-completion.
 let g:deoplete#enable_at_startup = 1
 ```
 
-## Sources
 
-deoplete will display completions via `complete()` by default.
-
-Here are some [completion sources](https://github.com/Shougo/deoplete.nvim/wiki/Completion-Sources) specifically made for deoplete.nvim.
 
 
 ## Note: deoplete needs neovim-python ver.0.1.8+.
