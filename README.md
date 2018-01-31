@@ -13,7 +13,13 @@ deoplete will display completions via `complete()` by default.
 
 Here are some [completion sources](https://github.com/Shougo/deoplete.nvim/wiki/Completion-Sources) specifically made for deoplete.nvim.
 
-## Installation
+- [Install](#install)
+  - [Requirements](#requirements)
+- [Features](#Features)
+- [Configration](#configrationn)
+- [Screenshorts](#Screenshorts)
+
+## Install
 
 **Note:** deoplete requires Neovim(latest is recommended) or Vim8 with Python3 and
 timers(neovim ver.0.1.5+) enabled.  See [requirements](#requirements) if you
@@ -48,7 +54,7 @@ endif
 ```
 
 
-## Requirements
+### Requirements
 
 deoplete requires Neovim or Vim8 with if\_python3.
 If `:echo has("python3")` returns `1`, then you have python 3 support; otherwise, see below.
@@ -64,23 +70,14 @@ Please install vim-hug-neovim-rpc plugin for Vim8.
 https://github.com/roxma/vim-hug-neovim-rpc
 
 
-## Note: Python3 must be enabled before updating remote plugins
+**Note: Python3 must be enabled before updating remote plugins**
+
 If Deoplete was installed prior to Python support being added to Neovim,
 `:UpdateRemotePlugins` should be executed manually in order to enable
 auto-completion.
 
+**Note: deoplete needs neovim-python ver.0.1.8+.**
 
-## Configuration Examples
-
-```vim
-" Use deoplete.
-let g:deoplete#enable_at_startup = 1
-```
-
-
-
-
-## Note: deoplete needs neovim-python ver.0.1.8+.
 You need update neovim-python module.
 
     pip3 install --upgrade neovim
@@ -89,6 +86,13 @@ If you want to read the Neovim-python/python3 interface install documentation,
 you should read `:help provider-python` and the Wiki.
 https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
 
+
+## Configuration
+
+```vim
+" Use deoplete.
+let g:deoplete#enable_at_startup = 1
+```
 
 ## Screenshots
 
