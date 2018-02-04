@@ -47,6 +47,14 @@ function! deoplete#init#_channel() abort
     return 1
   endif
 
+  let python3 = get(g:, 'python3_host_prog', 'python3')
+  if !executable(python3)
+    call deoplete#util#print_error(
+          \ string(python3) . ' is not executble.')
+    call deoplete#util#print_error(
+          \ 'You need to set g:python3_host_prog.')
+  endif
+
   try
     if deoplete#util#has_yarp()
       let g:deoplete#_yarp = yarp#py3('deoplete')
