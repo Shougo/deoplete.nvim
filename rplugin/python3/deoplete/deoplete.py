@@ -201,3 +201,6 @@ class Deoplete(logger.LoggingMixin):
 
         for parent in self._parents:
             parent.on_event(context)
+
+        if context['event'] == 'VimLeavePre':
+            self._vim.vars['deoplete#_process_stopped'] = True
