@@ -28,7 +28,7 @@ if 'neovim' in locals() and hasattr(neovim, 'plugin'):
             self._deoplete = Deoplete(self._vim)
 
         @neovim.rpc_export('deoplete_enable_logging')
-        def enable_logging(self):
+        def enable_logging(self, context):
             self._deoplete.enable_logging()
 
         @neovim.rpc_export('deoplete_auto_completion_begin')
@@ -51,7 +51,7 @@ if find_loader('yarp'):
     def deoplete_init():
         pass
 
-    def deoplete_enable_logging():
+    def deoplete_enable_logging(context):
         global_deoplete.enable_logging()
 
     def deoplete_auto_completion_begin(context):
