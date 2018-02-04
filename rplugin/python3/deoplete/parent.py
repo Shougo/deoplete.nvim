@@ -68,8 +68,9 @@ class Parent(logger.LoggingMixin):
         if self._proc:
             return
 
+        python3 = self._vim.vars.get('python3_host_prog', 'python3')
         self._proc = Process(
-            [context['python3'], context['dp_main'], serveraddr],
+            [python3, context['dp_main'], serveraddr],
             context, context['cwd'])
 
     def _stop_process(self):

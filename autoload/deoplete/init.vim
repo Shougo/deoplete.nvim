@@ -241,7 +241,6 @@ function! deoplete#init#_context(event, sources) abort
         \ 'changedtick': b:changedtick,
         \ 'serveraddr': (has('nvim') ?
         \                v:servername : neovim_rpc#serveraddr()),
-        \ 'python3': get(g:, 'python3_host_prog', 'python3'),
         \ 'dp_main': s:dp_main,
         \ 'event': event,
         \ 'input': input,
