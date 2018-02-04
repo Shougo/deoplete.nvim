@@ -5,10 +5,11 @@
 # ============================================================================
 
 import time
+import os
 
 from deoplete import logger
 from deoplete.process import Process
-# from deoplete.util import error
+from deoplete.util import error
 
 
 class Parent(logger.LoggingMixin):
@@ -66,6 +67,11 @@ class Parent(logger.LoggingMixin):
 
     def _start_process(self, context, serveraddr):
         if self._proc:
+            return
+
+        if not os.access(context['python3'], os.X_OK):
+            error(self._vim, str(context['python3']) + ' is not executble.')
+            error(self._vim, 'You need to set g:python3_host_prog.')
             return
 
         self._proc = Process(
