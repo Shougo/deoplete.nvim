@@ -50,7 +50,7 @@ function! deoplete#init#_channel() abort
   let python3 = get(g:, 'python3_host_prog', 'python3')
   if !executable(python3)
     call deoplete#util#print_error(
-          \ string(python3) . ' is not executble.')
+          \ string(python3) . ' is not executable.')
     call deoplete#util#print_error(
           \ 'You need to set g:python3_host_prog.')
   endif
