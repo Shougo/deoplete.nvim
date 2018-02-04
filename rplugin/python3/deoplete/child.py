@@ -45,6 +45,7 @@ class Child(logger.LoggingMixin):
             unicode_errors='surrogateescape')
         self._packer = msgpack.Packer(
             use_bin_type=True,
+            encoding='utf-8',
             unicode_errors='surrogateescape')
 
     def main(self):
