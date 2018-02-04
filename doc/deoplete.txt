@@ -230,7 +230,7 @@ g:deoplete#auto_complete_delay
 g:deoplete#auto_refresh_delay
 		Delay the refresh when asynchronous.
 
-		Default value: 500
+		Default value: 50
 
 					*g:deoplete#skip_chars*
 g:deoplete#skip_chars
