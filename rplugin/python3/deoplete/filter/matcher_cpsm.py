@@ -18,15 +18,15 @@ class Filter(Base):
         self.name = 'matcher_cpsm'
         self.description = 'cpsm matcher'
 
-        self.__initialized = False
-        self.__disabled = False
+        self._initialized = False
+        self._disabled = False
 
     def filter(self, context):
         if not context['candidates'] or not context[
-                'input'] or self.__disabled:
+                'input'] or self._disabled:
             return context['candidates']
 
-        if not self.__initialized:
+        if not self._initialized:
             # cpsm installation check
             ext = '.pyd' if context['is_windows'] else '.so'
             if globruntime(context['runtimepath'], 'bin/cpsm_py' + ext):
@@ -34,13 +34,13 @@ class Filter(Base):
                 sys.path.append(os.path.dirname(
                     globruntime(context['runtimepath'],
                                 'bin/cpsm_py' + ext)[0]))
-                self.__initialized = True
+                self._initialized = True
             else:
                 error(self.vim, 'matcher_cpsm: bin/cpsm_py' + ext +
                       ' is not found in your runtimepath.')
                 error(self.vim, 'matcher_cpsm: You must install/build' +
                       ' Python3 support enabled cpsm.')
-                self.__disabled = True
+                self._disabled = True
                 return []
 
         cpsm_result = self._get_cpsm_result(

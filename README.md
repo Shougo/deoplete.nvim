@@ -15,13 +15,8 @@ To view the current options, please consult the
 ## Installation
 
 **Note:** deoplete requires Neovim(latest is recommended) or Vim8 with Python3 and
-timers(neovim ver.0.1.5+) enabled.  See [requirements](#requirements) if you
-aren't sure whether you have this.
-
-1. Extract the files and put them in your Neovim or .vim directory
-   (usually `$XDG_CONFIG_HOME/nvim/`).
-2. Write `call deoplete#enable()` or `let g:deoplete#enable_at_startup = 1` in
-   your `init.vim`
+timers enabled.  See [requirements](#requirements) if you aren't sure whether
+you have this.
 
 
 For vim-plug
@@ -34,6 +29,7 @@ else
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
+let g:deoplete#enable_at_startup = 1
 ```
 
 For dein.vim
@@ -44,13 +40,22 @@ if !has('nvim')
   call dein#add('roxma/nvim-yarp')
   call dein#add('roxma/vim-hug-neovim-rpc')
 endif
+let g:deoplete#enable_at_startup = 1
 ```
+
+For manual installation(not recommended)
+
+1. Extract the files and put them in your Neovim or .vim directory
+   (usually `$XDG_CONFIG_HOME/nvim/`).
+
+2. Write `call deoplete#enable()` or `let g:deoplete#enable_at_startup = 1` in
+   your `init.vim`
 
 
 ## Requirements
 
-deoplete requires Neovim or Vim8 with if\_python3.
-If `:echo has("python3")` returns `1`, then you have python 3 support; otherwise, see below.
+deoplete requires Neovim or Vim8 with if\_python3.  If `:echo has("python3")`
+returns `1`, then you have python 3 support; otherwise, see below.
 
 You can enable Python3 interface with pip:
 
@@ -75,6 +80,7 @@ auto-completion.
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
 ```
+
 
 ## Sources
 
@@ -122,5 +128,4 @@ https://www.youtube.com/watch?v=oanoPTpiSF4
 
 [Register/Extract list completions](https://camo.githubusercontent.com/6a6df993ad0e05c014c72c8f8702447f9b34ad90/68747470733a2f2f692e696d6775722e636f6d2f5131663731744a2e676966)
 
-### deoplete-fsharp sample ( Enjoy! )
 ![FSharp completion using deopletefs](https://github.com/callmekohei/deoplete-fsharp/blob/master/pic/sample.gif)

@@ -4,6 +4,9 @@
 " License: MIT license
 "=============================================================================
 
+let s:dp_main = fnamemodify(expand('<sfile>'), ':h:h:h')
+      \ . '/rplugin/python3/deoplete/dp_main.py'
+
 if !exists('s:is_enabled')
   let s:is_enabled = 0
 endif
@@ -100,6 +103,11 @@ function! deoplete#init#_disable() abort
 endfunction
 
 function! deoplete#init#_variables() abort
+  let g:deoplete#_prev_completion = {
+        \ 'complete_position': [],
+        \ 'candidates': [],
+        \ 'event': '',
+        \ }
   let g:deoplete#_context = {}
   let g:deoplete#_rank = {}
   if !exists('g:deoplete#_logging')
@@ -135,7 +143,7 @@ function! deoplete#init#_variables() abort
   call deoplete#util#set_default(
         \ 'g:deoplete#auto_complete_delay', 50)
   call deoplete#util#set_default(
-        \ 'g:deoplete#auto_refresh_delay', 500)
+        \ 'g:deoplete#auto_refresh_delay', 50)
   call deoplete#util#set_default(
         \ 'g:deoplete#max_abbr_width', 80)
   call deoplete#util#set_default(
@@ -144,6 +152,8 @@ function! deoplete#init#_variables() abort
         \ 'g:deoplete#skip_chars', [])
   call deoplete#util#set_default(
         \ 'g:deoplete#complete_method', 'complete')
+  call deoplete#util#set_default(
+        \ 'g:deoplete#max_processes', 4)
 
   call deoplete#util#set_default(
         \ 'g:deoplete#keyword_patterns', {})
@@ -221,6 +231,10 @@ function! deoplete#init#_context(event, sources) abort
 
   return {
         \ 'changedtick': b:changedtick,
+        \ 'serveraddr': (has('nvim') ?
+        \                v:servername : neovim_rpc#serveraddr()),
+        \ 'python3': get(g:, 'python3_host_prog', 'python3'),
+        \ 'dp_main': s:dp_main,
         \ 'event': event,
         \ 'input': input,
         \ 'is_windows': ((has('win32') || has('win64')) ? v:true : v:false),
