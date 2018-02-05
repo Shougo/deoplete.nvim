@@ -62,6 +62,7 @@ class Parent(logger.LoggingMixin):
     def on_event(self, context):
         if context['event'] == 'VimLeavePre':
             self._stop_process()
+            self._vim.vars['deoplete#_stopped_processes'] += 1
         self._put('on_event', [context])
 
     def _start_process(self, context, serveraddr):
