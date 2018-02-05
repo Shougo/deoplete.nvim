@@ -51,7 +51,7 @@ class Process(object):
         self._thread = None
 
     def enqueue_output(self):
-        while 1:
+        while self._proc:
             b = self._proc.stdout.read(1)
             self._unpacker.feed(b)
             for child_out in self._unpacker:
