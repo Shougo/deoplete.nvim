@@ -661,7 +661,7 @@ around						    *deoplete-source-around*
 		    B - below the cursor
 		    C - in changes
 
-		rank: 800
+		rank: 300
 
 ==============================================================================
 FILTERS							*deoplete-filters*

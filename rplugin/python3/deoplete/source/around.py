@@ -18,7 +18,7 @@ class Source(Base):
         super().__init__(vim)
         self.name = 'around'
         self.mark = '[~]'
-        self.rank = 800
+        self.rank = 300
 
     def gather_candidates(self, context):
         line = context['position'][1]
