@@ -10,7 +10,7 @@ import logging
 from functools import wraps
 from collections import defaultdict
 
-log_format = '%(asctime)s %(levelname)-8s (%(name)s) %(message)s'
+log_format = '%(asctime)s %(levelname)-8s [%(process)d] (%(name)s) %(message)s'
 log_message_cooldown = 0.5
 
 root = logging.getLogger('deoplete')
