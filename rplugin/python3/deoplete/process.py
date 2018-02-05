@@ -41,33 +41,29 @@ class Process(object):
         return self._eof
 
     def kill(self):
-        if not self._proc:
-            return
-        self._proc.kill()
-        self._proc.wait()
-        self._proc = None
-        self._queue_out = None
-        self._thread.join(1.0)
-        self._thread = None
+        if self._proc:
+            self._proc.kill()
+            self._proc.wait()
+            self._proc = None
+            self._queue_out = None
+            self._thread.join(1.0)
+            self._thread = None
 
     def enqueue_output(self):
-        while 1:
+        while True:
             b = self._proc.stdout.read(1)
             self._unpacker.feed(b)
             for child_out in self._unpacker:
                 self._queue_out.put(child_out)
 
     def communicate(self, timeout):
-        if not self._proc:
-            return []
-
-        start = time()
         outs = []
-
-        if self._queue_out.empty():
-            sleep(timeout / 1000.0)
-        while not self._queue_out.empty() and time() < start + timeout:
-            outs.append(self._queue_out.get_nowait())
+        if self._proc:
+            start = time()
+            if self._queue_out.empty():
+                sleep(timeout / 1000.0)
+            while not self._queue_out.empty() and time() < start + timeout:
+                outs.append(self._queue_out.get_nowait())
         return outs
 
     def write(self, expr):
