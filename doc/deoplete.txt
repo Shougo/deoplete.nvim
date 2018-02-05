@@ -1195,8 +1195,8 @@ https://github.com/landaire/deoplete-d
 deoplete-rtags: "rtags" source for "c", "cpp", "objc" and "objcpp" filetypes
 https://github.com/LuXuryPro/deoplete-rtags
 
-deoplete-ruby: "ruby" source for Ruby language
-https://github.com/fishbullet/deoplete-ruby
+deoplete-solargraph "solargraph" source for Ruby language
+https://github.com/uplus/deoplete-solargraph
 
 deoplete-padawan: "padawan" source for padawan.php
 https://github.com/pbogut/deoplete-padawan
@@ -1225,9 +1225,6 @@ https://github.com/zefei/deoplete-hack
 deoplete-laravel-plugin: "laravel-plugin" source for "php" and "blade"
 filetypes
 https://github.com/rafaelndev/deoplete-laravel-plugin
-
-deoplete-rct: "rct" source for Ruby
-https://github.com/Shougo/deoplete-rct
 
 deoplete-zsh: "zsh" source for Zsh
 https://github.com/zchee/deoplete-zsh
@@ -1531,14 +1528,6 @@ Q: I want to disable the auto completion for certain filetypes.
 A: Please use |b:deoplete_disable_auto_complete|. >
 
        autocmd FileType tex let b:deoplete_disable_auto_complete = 1
-
-Q: Ruby omni completion does not work in neovim.
-
-A: Ruby omni completion support was added to nvim 0.1.5. For it to work you
-   will need to install the neovim gem.
-   https://github.com/alexgenco/neovim-ruby >
-
-       $ gem install neovim
 
 Q: I want to use C/C++ omni completion with deoplete.
 
