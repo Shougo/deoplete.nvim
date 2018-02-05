@@ -65,13 +65,11 @@ class Parent(logger.LoggingMixin):
         self._put('on_event', [context])
 
     def _start_process(self, context, serveraddr):
-        if self._proc:
-            return
-
-        python3 = self._vim.vars.get('python3_host_prog', 'python3')
-        self._proc = Process(
-            [python3, context['dp_main'], serveraddr],
-            context, context['cwd'])
+        if not self._proc:
+            python3 = self._vim.vars.get('python3_host_prog', 'python3')
+            self._proc = Process(
+                [python3, context['dp_main'], serveraddr],
+                context, context['cwd'])
 
     def _stop_process(self):
         if self._proc:
@@ -79,13 +77,12 @@ class Parent(logger.LoggingMixin):
             self._proc = None
 
     def _put(self, name, args):
-        if not self._proc:
-            return None
-
-        queue_id = str(time.time())
-
-        self._proc.write({'name': name, 'args': args, 'queue_id': queue_id})
-        return queue_id
+        if self._proc:
+            queue_id = str(time.time())
+            self._proc.write({'name': name,
+                              'args': args,
+                              'queue_id': queue_id})
+            return queue_id
 
     def _get(self, queue_id):
         return [x for x in self._proc.communicate(15)
