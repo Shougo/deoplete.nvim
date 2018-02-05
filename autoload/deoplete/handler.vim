@@ -86,12 +86,6 @@ function! deoplete#handler#_completion_timer_start() abort
 
   let delay = max([20, g:deoplete#auto_complete_delay])
   let s:completion_timer = timer_start(delay, function('s:do_complete'))
-
-  let g:deoplete#_prev_completion = {
-        \ 'complete_position': [],
-        \ 'candidates': [],
-        \ 'event': '',
-        \ }
 endfunction
 function! s:completion_timer_stop() abort
   if !exists('s:completion_timer')
@@ -216,6 +210,11 @@ endfunction
 function! s:on_insert_leave() abort
   call deoplete#mapping#_restore_completeopt()
   let g:deoplete#_context = {}
+  let g:deoplete#_prev_completion = {
+        \ 'complete_position': [],
+        \ 'candidates': [],
+        \ 'event': '',
+        \ }
 endfunction
 
 function! s:on_complete_done() abort
