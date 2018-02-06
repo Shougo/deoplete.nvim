@@ -1,23 +1,33 @@
-deoplete.nvim
-=============
+# deoplete.nvim
+
+> Dark powered asynchronous completion framework for neovim/Vim8
 
 [![Build Status](https://travis-ci.org/Shougo/deoplete.nvim.svg?branch=master)](https://travis-ci.org/Shougo/deoplete.nvim)
-
 [![Join the chat at https://gitter.im/Shougo/deoplete.nvim](https://badges.gitter.im/Shougo/deoplete.nvim.svg)](https://gitter.im/Shougo/deoplete.nvim?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Doc](https://img.shields.io/badge/doc-%3Ah%20deoplete-orange.svg)](doc/deoplete.txt)
 
 Deoplete is the abbreviation of "dark powered neo-completion".  It
-provides an asynchronous keyword completion system in the
-current buffer.
-To view the current options, please consult the
-[documentation](https://github.com/Shougo/deoplete.nvim/blob/master/doc%2Fdeoplete.txt).
+provides an extensible and asynchronous completion framwork for
+neovim/Vim8.
 
+deoplete will display completions via `complete()` by default.
 
-## Installation
+Here are some [completion sources](https://github.com/Shougo/deoplete.nvim/wiki/Completion-Sources) specifically made for deoplete.nvim.
+
+<!-- vim-markdown-toc GFM -->
+
+- [Install](#install)
+  - [Requirements](#requirements)
+- [Configuration](#configuration)
+- [Screenshots](#screenshots)
+
+<!-- vim-markdown-toc -->
+
+## Install
 
 **Note:** deoplete requires Neovim(latest is recommended) or Vim8 with Python3 and
 timers enabled.  See [requirements](#requirements) if you aren't sure whether
 you have this.
-
 
 For vim-plug
 
@@ -51,58 +61,48 @@ For manual installation(not recommended)
 2. Write `call deoplete#enable()` or `let g:deoplete#enable_at_startup = 1` in
    your `init.vim`
 
+### Requirements
 
-## Requirements
+deoplete requires Neovim or Vim8 with `if_python3`.
 
-deoplete requires Neovim or Vim8 with if\_python3.  If `:echo has("python3")`
-returns `1`, then you have python 3 support; otherwise, see below.
+If `:echo has("python3")` returns `1`, then you have python 3 support; otherwise, see below.
 
 You can enable Python3 interface with pip:
 
     pip3 install neovim
 
-Please install nvim-yarp plugin for Vim8.
-https://github.com/roxma/nvim-yarp
+Please install nvim-yarp and vim-hug-neovim-rpc for Vim8.
 
-Please install vim-hug-neovim-rpc plugin for Vim8.
-https://github.com/roxma/vim-hug-neovim-rpc
+- <https://github.com/roxma/nvim-yarp>
+- <https://github.com/roxma/vim-hug-neovim-rpc>
 
+**Note: Python3 must be enabled before updating remote plugins**
 
-## Note: Python3 must be enabled before updating remote plugins
 If Deoplete was installed prior to Python support being added to Neovim,
 `:UpdateRemotePlugins` should be executed manually in order to enable
 auto-completion.
 
+**Note: deoplete needs neovim-python ver.0.1.8+.**
 
-## Configuration Examples
-
-```vim
-" Use deoplete.
-let g:deoplete#enable_at_startup = 1
-```
-
-
-## Sources
-
-deoplete will display completions via `complete()` by default.
-
-Here are some [completion sources](https://github.com/Shougo/deoplete.nvim/wiki/Completion-Sources) specifically made for deoplete.nvim.
-
-
-## Note: deoplete needs neovim-python ver.0.1.8+.
 You need update neovim-python module.
 
     pip3 install --upgrade neovim
 
 If you want to read the Neovim-python/python3 interface install documentation,
 you should read `:help provider-python` and the Wiki.
-https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
+<https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim>
 
+## Configuration
+
+```vim
+" Use deoplete.
+let g:deoplete#enable_at_startup = 1
+```
 
 ## Screenshots
 
 Deoplete for JavaScript
-https://www.youtube.com/watch?v=oanoPTpiSF4
+<https://www.youtube.com/watch?v=oanoPTpiSF4>
 
 ![File Name Completion](https://cloud.githubusercontent.com/assets/7141867/11717027/a99cac54-9f73-11e5-91ce-bce9274692e4.png)
 
