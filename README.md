@@ -1,4 +1,5 @@
 # deoplete.nvim
+
 > Dark powered asynchronous completion framework for neovim/Vim8
 
 [![Build Status](https://travis-ci.org/Shougo/deoplete.nvim.svg?branch=master)](https://travis-ci.org/Shougo/deoplete.nvim)
@@ -13,11 +14,14 @@ deoplete will display completions via `complete()` by default.
 
 Here are some [completion sources](https://github.com/Shougo/deoplete.nvim/wiki/Completion-Sources) specifically made for deoplete.nvim.
 
+<!-- vim-markdown-toc GFM -->
+
 - [Install](#install)
   - [Requirements](#requirements)
-- [Features](#Features)
-- [Configration](#configrationn)
-- [Screenshorts](#Screenshorts)
+- [Configuration](#configuration)
+- [Screenshots](#screenshots)
+
+<!-- vim-markdown-toc -->
 
 ## Install
 
@@ -29,7 +33,6 @@ aren't sure whether you have this.
    (usually `$XDG_CONFIG_HOME/nvim/`).
 2. Write `call deoplete#enable()` or `let g:deoplete#enable_at_startup = 1` in
    your `init.vim`
-
 
 For vim-plug
 
@@ -53,22 +56,20 @@ if !has('nvim')
 endif
 ```
 
-
 ### Requirements
 
-deoplete requires Neovim or Vim8 with if\_python3.
+deoplete requires Neovim or Vim8 with `if_python3`.
+
 If `:echo has("python3")` returns `1`, then you have python 3 support; otherwise, see below.
 
 You can enable Python3 interface with pip:
 
     pip3 install neovim
 
-Please install nvim-yarp plugin for Vim8.
-https://github.com/roxma/nvim-yarp
+Please install nvim-yarp and vim-hug-neovim-rpc for Vim8.
 
-Please install vim-hug-neovim-rpc plugin for Vim8.
-https://github.com/roxma/vim-hug-neovim-rpc
-
+- <https://github.com/roxma/nvim-yarp>
+- <https://github.com/roxma/vim-hug-neovim-rpc>
 
 **Note: Python3 must be enabled before updating remote plugins**
 
@@ -84,8 +85,7 @@ You need update neovim-python module.
 
 If you want to read the Neovim-python/python3 interface install documentation,
 you should read `:help provider-python` and the Wiki.
-https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
-
+<https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim>
 
 ## Configuration
 
@@ -97,7 +97,7 @@ let g:deoplete#enable_at_startup = 1
 ## Screenshots
 
 Deoplete for JavaScript
-https://www.youtube.com/watch?v=oanoPTpiSF4
+<https://www.youtube.com/watch?v=oanoPTpiSF4>
 
 ![File Name Completion](https://cloud.githubusercontent.com/assets/7141867/11717027/a99cac54-9f73-11e5-91ce-bce9274692e4.png)
 
@@ -123,5 +123,4 @@ https://www.youtube.com/watch?v=oanoPTpiSF4
 
 [Register/Extract list completions](https://camo.githubusercontent.com/6a6df993ad0e05c014c72c8f8702447f9b34ad90/68747470733a2f2f692e696d6775722e636f6d2f5131663731744a2e676966)
 
-### deoplete-fsharp sample ( Enjoy! )
 ![FSharp completion using deopletefs](https://github.com/callmekohei/deoplete-fsharp/blob/master/pic/sample.gif)
