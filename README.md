@@ -8,7 +8,7 @@
 
 Deoplete is the abbreviation of "dark powered neo-completion".  It
 provides an extensible and asynchronous completion framwork for
-neovim/vim8.
+neovim/Vim8.
 
 deoplete will display completions via `complete()` by default.
 
