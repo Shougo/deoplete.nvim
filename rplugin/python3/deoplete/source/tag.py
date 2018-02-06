@@ -23,26 +23,26 @@ class Source(Base):
         self.name = 'tag'
         self.mark = '[T]'
 
-        self.__cache = {}
+        self._cache = {}
 
     def on_init(self, context):
-        self.__limit = context['vars'].get(
+        self._limit = context['vars'].get(
             'deoplete#tag#cache_limit_size', 500000)
 
     def on_event(self, context):
-        self.__make_cache(context)
+        self._make_cache(context)
 
     def gather_candidates(self, context):
-        self.__make_cache(context)
+        self._make_cache(context)
         candidates = []
-        for c in self.__cache.values():
+        for c in self._cache.values():
             candidates.extend(c.candidates)
         return candidates
 
-    def __make_cache(self, context):
-        for filename in self.__get_tagfiles(context):
+    def _make_cache(self, context):
+        for filename in self._get_tagfiles(context):
             mtime = getmtime(filename)
-            if filename in self.__cache and self.__cache[
+            if filename in self._cache and self._cache[
                     filename].mtime == mtime:
                 continue
 
@@ -66,14 +66,14 @@ class Source(Base):
             if not items:
                 continue
 
-            self.__cache[filename] = TagsCacheItem(
+            self._cache[filename] = TagsCacheItem(
                 mtime, sorted(items, key=lambda x: x['word'].lower()))
 
-    def __get_tagfiles(self, context):
+    def _get_tagfiles(self, context):
         include_files = self.vim.call(
             'neoinclude#include#get_tag_files') if self.vim.call(
                 'exists', '*neoinclude#include#get_tag_files') else []
         return [x for x in self.vim.call(
                 'map', self.vim.call('tagfiles') + include_files,
                 'fnamemodify(v:val, ":p")')
-                if exists(x) and getsize(x) < self.__limit]
+                if exists(x) and getsize(x) < self._limit]

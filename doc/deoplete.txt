@@ -195,6 +195,14 @@ g:deoplete#max_list
 
 		Default value: 100
 
+						*g:deoplete#max_processes*
+g:deoplete#max_processes
+		The max number of processes used for the asynchronous
+		completion.
+		If it is less than equal 1, this feature is disabled.
+
+		Default value: 4
+
 						*g:deoplete#max_abbr_width*
 g:deoplete#max_abbr_width
 		If the candidate abbr length exceeds the length it will be cut
@@ -222,7 +230,7 @@ g:deoplete#auto_complete_delay
 g:deoplete#auto_refresh_delay
 		Delay the refresh when asynchronous.
 
-		Default value: 500
+		Default value: 50
 
 					*g:deoplete#skip_chars*
 g:deoplete#skip_chars
@@ -653,7 +661,7 @@ around						    *deoplete-source-around*
 		    B - below the cursor
 		    C - in changes
 
-		rank: 800
+		rank: 300
 
 ==============================================================================
 FILTERS							*deoplete-filters*
@@ -1187,8 +1195,8 @@ https://github.com/landaire/deoplete-d
 deoplete-rtags: "rtags" source for "c", "cpp", "objc" and "objcpp" filetypes
 https://github.com/LuXuryPro/deoplete-rtags
 
-deoplete-ruby: "ruby" source for Ruby language
-https://github.com/fishbullet/deoplete-ruby
+deoplete-solargraph "solargraph" source for Ruby language
+https://github.com/uplus/deoplete-solargraph
 
 deoplete-padawan: "padawan" source for padawan.php
 https://github.com/pbogut/deoplete-padawan
@@ -1217,9 +1225,6 @@ https://github.com/zefei/deoplete-hack
 deoplete-laravel-plugin: "laravel-plugin" source for "php" and "blade"
 filetypes
 https://github.com/rafaelndev/deoplete-laravel-plugin
-
-deoplete-rct: "rct" source for Ruby
-https://github.com/Shougo/deoplete-rct
 
 deoplete-zsh: "zsh" source for Zsh
 https://github.com/zchee/deoplete-zsh
@@ -1281,9 +1286,9 @@ phpcd.vim: another PHP omnifunc. Faster.
 https://github.com/php-vim/phpcd.vim
 
 ==============================================================================
-FREQUENTLY ASKED QUESTIONS (FAQ)                                *deoplete-faq*
+FREQUENTLY ASKED QUESTIONS (FAQ)			*deoplete-faq*
 
-                                                        *deoplete-faq-trouble*
+							*deoplete-faq-trouble*
 1. Troubleshooting~
 
 Q: deoplete does not work.
@@ -1370,7 +1375,7 @@ A: Please enable logging feature like this. >
        call deoplete#enable_logging('DEBUG', 'deoplete.log')
        call deoplete#custom#source('jedi', 'is_debug_enabled', 1)
 <
-                                                         *deoplete-faq-config*
+							*deoplete-faq-config*
 2. Configuration~
 
 Q: I want to silence the |ins-completion-menu| messages in the command line
@@ -1515,7 +1520,7 @@ Q: What does each part of a line on the pop up mean?  For example I see:
 A: It is the source mark. [~] is from around source.  A is from
    |deoplete-source-around|.
 
-                                                    *deoplete-faq-ft-specific*
+						    *deoplete-faq-ft-specific*
 3. Filetype Specific Questions~
 
 Q: I want to disable the auto completion for certain filetypes.
@@ -1523,14 +1528,6 @@ Q: I want to disable the auto completion for certain filetypes.
 A: Please use |b:deoplete_disable_auto_complete|. >
 
        autocmd FileType tex let b:deoplete_disable_auto_complete = 1
-
-Q: Ruby omni completion does not work in neovim.
-
-A: Ruby omni completion support was added to nvim 0.1.5. For it to work you
-   will need to install the neovim gem.
-   https://github.com/alexgenco/neovim-ruby >
-
-       $ gem install neovim
 
 Q: I want to use C/C++ omni completion with deoplete.
 
@@ -1579,7 +1576,7 @@ Q: I want to complete AAA using deoplete.
 
 A: You can create the source for it. Why don't create the source if you need?
 
-                                                        *deoplete-faq-general*
+							*deoplete-faq-general*
 4. General Questions~
 
 Q: How to donate money to you?

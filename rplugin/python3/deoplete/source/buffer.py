@@ -17,14 +17,14 @@ class Source(Base):
         self.name = 'buffer'
         self.mark = '[B]'
         self.limit = 1000000
-        self.__buffers = {}
-        self.__max_lines = 5000
+        self._buffers = {}
+        self._max_lines = 5000
 
     def on_event(self, context):
         bufnr = context['bufnr']
-        if (bufnr not in self.__buffers or
+        if (bufnr not in self._buffers or
                 context['event'] == 'BufWritePost'):
-            self.__make_cache(context, bufnr)
+            self._make_cache(context, bufnr)
 
     def gather_candidates(self, context):
         self.on_event(context)
@@ -32,16 +32,16 @@ class Source(Base):
         same_filetype = context['vars'].get(
             'deoplete#buffer#require_same_filetype', True)
         return {'sorted_candidates': [
-            x['candidates'] for x in self.__buffers.values()
+            x['candidates'] for x in self._buffers.values()
             if not same_filetype or
             x['filetype'] in context['filetypes'] or
             x['filetype'] in context['same_filetypes'] or
             x['bufnr'] in tab_bufnrs
         ]}
 
-    def __make_cache(self, context, bufnr):
+    def _make_cache(self, context, bufnr):
         try:
-            self.__buffers[bufnr] = {
+            self._buffers[bufnr] = {
                 'bufnr': bufnr,
                 'filetype': self.vim.eval('&l:filetype'),
                 'candidates': [

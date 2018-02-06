@@ -48,7 +48,7 @@ class Source(Base):
                 omnifunc = context['omni__omnifunc']
             if omnifunc == '':
                 continue
-            self.__omnifunc = omnifunc
+            self._omnifunc = omnifunc
             for input_pattern in convert2list(
                     get_buffer_config(context, filetype,
                                       'deoplete_omni_input_patterns',
@@ -62,7 +62,7 @@ class Source(Base):
                                            'Manual' and m is None):
                     continue
 
-                if filetype == current_ft and self.__omnifunc in [
+                if filetype == current_ft and self._omnifunc in [
                         'ccomplete#Complete',
                         'htmlcomplete#CompleteTags',
                         'LanguageClient#complete',
@@ -70,24 +70,24 @@ class Source(Base):
                     # In the blacklist
                     return -1
                 try:
-                    complete_pos = self.vim.call(self.__omnifunc, 1, '')
+                    complete_pos = self.vim.call(self._omnifunc, 1, '')
                 except Exception as e:
                     self.print_error('Error occurred calling omnifunction: ' +
-                                     self.__omnifunc)
+                                     self._omnifunc)
                     return -1
                 return complete_pos
         return -1
 
     def gather_candidates(self, context):
         try:
-            candidates = self.vim.call(self.__omnifunc, 0, '')
+            candidates = self.vim.call(self._omnifunc, 0, '')
             if isinstance(candidates, dict):
                 candidates = candidates['words']
             elif isinstance(candidates, int):
                 candidates = []
         except Exception as e:
             self.print_error('Error occurred calling omnifunction: ' +
-                             self.__omnifunc)
+                             self._omnifunc)
             candidates = []
 
         candidates = convert2candidates(candidates)

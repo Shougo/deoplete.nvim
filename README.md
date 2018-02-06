@@ -26,13 +26,8 @@ Here are some [completion sources](https://github.com/Shougo/deoplete.nvim/wiki/
 ## Install
 
 **Note:** deoplete requires Neovim(latest is recommended) or Vim8 with Python3 and
-timers(neovim ver.0.1.5+) enabled.  See [requirements](#requirements) if you
-aren't sure whether you have this.
-
-1. Extract the files and put them in your Neovim or .vim directory
-   (usually `$XDG_CONFIG_HOME/nvim/`).
-2. Write `call deoplete#enable()` or `let g:deoplete#enable_at_startup = 1` in
-   your `init.vim`
+timers enabled.  See [requirements](#requirements) if you aren't sure whether
+you have this.
 
 For vim-plug
 
@@ -44,6 +39,7 @@ else
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
+let g:deoplete#enable_at_startup = 1
 ```
 
 For dein.vim
@@ -54,7 +50,16 @@ if !has('nvim')
   call dein#add('roxma/nvim-yarp')
   call dein#add('roxma/vim-hug-neovim-rpc')
 endif
+let g:deoplete#enable_at_startup = 1
 ```
+
+For manual installation(not recommended)
+
+1. Extract the files and put them in your Neovim or .vim directory
+   (usually `$XDG_CONFIG_HOME/nvim/`).
+
+2. Write `call deoplete#enable()` or `let g:deoplete#enable_at_startup = 1` in
+   your `init.vim`
 
 ### Requirements
 

@@ -19,32 +19,32 @@ class Source(Base):
         self.name = 'dictionary'
         self.mark = '[D]'
 
-        self.__cache = {}
+        self._cache = {}
 
     def on_event(self, context):
-        self.__make_cache(context)
+        self._make_cache(context)
 
     def gather_candidates(self, context):
-        self.__make_cache(context)
+        self._make_cache(context)
 
         candidates = []
-        for filename in [x for x in self.__get_dictionaries(context)
-                         if x in self.__cache]:
-            candidates.append(self.__cache[filename].candidates)
+        for filename in [x for x in self._get_dictionaries(context)
+                         if x in self._cache]:
+            candidates.append(self._cache[filename].candidates)
         return {'sorted_candidates': candidates}
 
-    def __make_cache(self, context):
-        for filename in self.__get_dictionaries(context):
+    def _make_cache(self, context):
+        for filename in self._get_dictionaries(context):
             mtime = getmtime(filename)
-            if filename in self.__cache and self.__cache[
+            if filename in self._cache and self._cache[
                     filename].mtime == mtime:
                 continue
             with open(filename, 'r', errors='replace') as f:
-                self.__cache[filename] = DictCacheItem(
+                self._cache[filename] = DictCacheItem(
                     mtime, [{'word': x} for x in sorted(
                         [x.strip() for x in f], key=str.lower)]
                 )
 
-    def __get_dictionaries(self, context):
+    def _get_dictionaries(self, context):
         return [x for x in context['dict__dictionary'].split(',')
                 if exists(x)]
