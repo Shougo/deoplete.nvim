@@ -89,5 +89,5 @@ class Parent(logger.LoggingMixin):
         return queue_id
 
     def _get(self, queue_id):
-        return [x for x in self._proc.communicate(15)
+        return [x for x in self._proc.communicate(40)
                 if x['queue_id'] == queue_id]

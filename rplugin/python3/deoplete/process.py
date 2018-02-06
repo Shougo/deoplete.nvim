@@ -61,12 +61,12 @@ class Process(object):
         if not self._proc:
             return []
 
-        start = time()
-        outs = []
+        end = time() + timeout
+        while self._queue_out.empty() and time() < end:
+            sleep(0.005)
 
-        if self._queue_out.empty():
-            sleep(timeout / 1000.0)
-        while not self._queue_out.empty() and time() < start + timeout:
+        outs = []
+        while not self._queue_out.empty():
             outs.append(self._queue_out.get_nowait())
         return outs
 
