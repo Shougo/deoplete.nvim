@@ -49,31 +49,36 @@ class Child(logger.LoggingMixin):
             unicode_errors='surrogateescape')
 
     def main(self):
-        for child_in in self._read():
-            self.debug('main_loop: begin')
-            name = child_in['name']
-            args = child_in['args']
-            queue_id = child_in['queue_id']
-            self.debug('main_loop: %s', name)
+        while True:
+            feed = sys.stdin.buffer.raw.read(102400)
+            if feed == b'':
+                # EOF
+                return
 
-            if name == 'enable_logging':
-                self._enable_logging()
-            elif name == 'add_source':
-                self._add_source(args[0])
-            elif name == 'add_filter':
-                self._add_filter(args[0])
-            elif name == 'set_source_attributes':
-                self._set_source_attributes(args[0])
-            elif name == 'set_custom':
-                self._set_custom(args[0])
-            elif name == 'on_event':
-                self._on_event(args[0])
-            elif name == 'merge_results':
-                self._write(self._merge_results(args[0], queue_id))
+            self._unpacker.feed(feed)
+            self.debug('_read: %d bytes', len(feed))
 
-    def _read(self):
-        self._unpacker.feed(sys.stdin.buffer.read(1))
-        return self._unpacker
+            for child_in in self._unpacker:
+                self.debug('main_loop: begin')
+                name = child_in['name']
+                args = child_in['args']
+                queue_id = child_in['queue_id']
+                self.debug('main_loop: %s', name)
+
+                if name == 'enable_logging':
+                    self._enable_logging()
+                elif name == 'add_source':
+                    self._add_source(args[0])
+                elif name == 'add_filter':
+                    self._add_filter(args[0])
+                elif name == 'set_source_attributes':
+                    self._set_source_attributes(args[0])
+                elif name == 'set_custom':
+                    self._set_custom(args[0])
+                elif name == 'on_event':
+                    self._on_event(args[0])
+                elif name == 'merge_results':
+                    self._write(self._merge_results(args[0], queue_id))
 
     def _write(self, expr):
         sys.stdout.buffer.write(self._packer.pack(expr))

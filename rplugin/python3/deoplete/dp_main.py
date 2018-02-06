@@ -30,16 +30,13 @@ def attach_vim(serveraddr):
 
 def main(serveraddr):
     vim = attach_vim(serveraddr)
+    from deoplete.child import Child
     from deoplete.util import error_tb
-    child = None
     try:
-        from deoplete.child import Child
         child = Child(vim)
-        while 1:
-            child.main()
+        child.main()
     except Exception:
         error_tb(vim, 'Error in child')
-    return
 
 
 if __name__ == '__main__':
