@@ -52,12 +52,6 @@ function! s:do_complete(timer) abort
   endif
 
   let prev = g:deoplete#_prev_completion
-  if context.event !=# 'Manual'
-        \ && prev.complete_position == getpos('.')
-        \ && prev.candidates ==# context.candidates
-    return
-  endif
-
   let prev.event = context.event
   let prev.candidates = context.candidates
   let prev.complete_position = getpos('.')
