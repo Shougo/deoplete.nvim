@@ -48,7 +48,10 @@ class Process(object):
 
     def enqueue_output(self):
         while self._proc:
-            b = self._proc.stdout.read(1)
+            b = self._proc.stdout.raw.read(102400)
+            if b == b'':
+                # EOF
+                break
             self._unpacker.feed(b)
             for child_out in self._unpacker:
                 self._queue_out.put(child_out)
