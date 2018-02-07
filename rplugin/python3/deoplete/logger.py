@@ -58,7 +58,7 @@ def setup(vim, level, output_file=None):
                  vim.call('deoplete#util#neovim_version'),
                  '.'.join(map(str, sys.version_info[:3])),
                  neovim_version)
-        vim.call('deoplete#util#print_warning', 'Logging to %s' % output_file)
+        vim.call('deoplete#util#print_debug', 'Logging to %s' % output_file)
 
 
 def logmethod(func):
