@@ -122,9 +122,8 @@ function! deoplete#init#_variables() abort
     let g:deoplete#_logging = {}
   endif
   unlet! g:deoplete#_initialized
-  let g:deoplete#_stopped_processes = 0
 
-  " User vairables
+  " User variables
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_at_startup', 0)
   call deoplete#util#set_default(

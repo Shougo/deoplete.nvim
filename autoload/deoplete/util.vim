@@ -218,12 +218,6 @@ function! deoplete#util#rpcnotify(event, context) abort
     return ''
   endif
   call s:notify(a:event, a:context)
-  if has('nvim') && a:event ==# 'deoplete_on_event'
-        \ && a:context['event'] ==# 'VimLeavePre'
-    while g:deoplete#_stopped_processes < g:deoplete#max_processes
-      sleep 50m
-    endwhile
-  endif
   return ''
 endfunction
 
