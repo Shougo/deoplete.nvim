@@ -22,6 +22,7 @@ class Source(Base):
 
         self.name = 'tag'
         self.mark = '[T]'
+        self.abbr_blacklist = ['require(']
 
         self._cache = {}
 
@@ -54,7 +55,11 @@ class Source(Base):
                     if not cols or cols[0].startswith('!_'):
                         continue
                     i = cols[2].find('(')
-                    if i != -1 and cols[2].find(')', i+1) != -1:
+                    blacklisted = any(
+                        item in cols[2] for item in self.abbr_blacklist
+                    )
+                    if (i != -1 and cols[2].find(')', i+1) != -1
+                            and not blacklisted):
                         m = re.search(r'(\w+\(.*\))', cols[2])
                         if m:
                             items.append({'word': cols[0],
