@@ -32,8 +32,13 @@ function! deoplete#custom#set(source_name, option_name, value) abort
   return deoplete#custom#source(a:source_name, a:option_name, a:value)
 endfunction
 function! deoplete#custom#source(source_name, option_name, value) abort
+  let value = index([
+        \ 'filetypes', 'disabled_syntaxes',
+        \ 'matchers', 'sorters', 'converters'
+        \ ], a:option_name) < 0 ? a:value :
+        \ deoplete#util#convert2list(a:value)
   for key in split(a:source_name, '\s*,\s*')
     let custom_source = deoplete#custom#get_source_var(key)
-    let custom_source[a:option_name] = a:value
+    let custom_source[a:option_name] = value
   endfor
 endfunction
