@@ -25,7 +25,7 @@ class Deoplete(logger.LoggingMixin):
         self._parents = []
         self._parent_count = 0
         self._max_parents = max(
-            [1, self._vim.vars['deoplete#max_processes']])
+            [1, self._vim.vars['deoplete#num_processes']])
 
         # Enable logging before "Init" for more information, and e.g.
         # deoplete-jedi picks up the log filename from deoplete's handler in
