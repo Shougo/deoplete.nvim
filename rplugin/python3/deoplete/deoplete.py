@@ -156,6 +156,7 @@ class Deoplete(logger.LoggingMixin):
             self._loaded_paths.add(path)
 
             self._parents[self._parent_count].add_source(path)
+            self.debug('Process %d: %s', self._parent_count, path)
 
             self._parent_count += 1
             self._parent_count %= self._max_parents

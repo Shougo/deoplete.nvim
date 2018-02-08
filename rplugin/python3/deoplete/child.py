@@ -79,6 +79,7 @@ class Child(logger.LoggingMixin):
                     self._on_event(args[0])
                 elif name == 'merge_results':
                     self._write(self._merge_results(args[0], queue_id))
+                self.debug('main_loop: end')
 
     def _write(self, expr):
         sys.stdout.buffer.write(self._packer.pack(expr))
@@ -102,7 +103,7 @@ class Child(logger.LoggingMixin):
             source.path = path
             if source.name in self._loaded_sources:
                 # Duplicated name
-                error_tb(self._vim, 'duplicated source: %s' % source.name)
+                error_tb(self._vim, 'Duplicated source: %s' % source.name)
                 error_tb(self._vim, 'path: "%s" "%s"' %
                          (path, self._loaded_sources[source.name]))
                 source = None
@@ -141,6 +142,7 @@ class Child(logger.LoggingMixin):
                 self.debug('Loaded Filter: %s (%s)', f.name, path)
 
     def _merge_results(self, context, queue_id):
+        self.debug('merged_results: begin')
         results = self._gather_results(context)
 
         merged_results = []
@@ -162,6 +164,7 @@ class Child(logger.LoggingMixin):
 
         is_async = len([x for x in results if x['context']['is_async']]) > 0
 
+        self.debug('merged_results: end')
         return {
             'queue_id': queue_id,
             'is_async': is_async,
