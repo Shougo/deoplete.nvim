@@ -124,7 +124,7 @@ function! deoplete#init#_variables() abort
   unlet! g:deoplete#_initialized
   let g:deoplete#_serveraddr = has('nvim') ?
         \ v:servername : neovim_rpc#serveraddr()
-  if g:deoplete#_serveraddr == ''
+  if g:deoplete#_serveraddr ==# ''
     " Use NVIM_LISTEN_ADDRESS
     let g:deoplete#_serveraddr = $NVIM_LISTEN_ADDRESS
   endif
