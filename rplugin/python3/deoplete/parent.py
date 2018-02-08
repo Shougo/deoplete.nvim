@@ -20,7 +20,7 @@ class Parent(logger.LoggingMixin):
         self._proc = None
         self._queue_id = ''
         self._prev_pos = []
-        self._start_process(context, context['serveraddr'])
+        self._start_process(context)
 
     def enable_logging(self):
         self._put('enable_logging', [])
@@ -64,13 +64,14 @@ class Parent(logger.LoggingMixin):
             self._stop_process()
         self._put('on_event', [context])
 
-    def _start_process(self, context, serveraddr):
+    def _start_process(self, context):
         if self._proc:
             return
 
         python3 = self._vim.vars.get('python3_host_prog', 'python3')
         self._proc = Process(
-            [python3, context['dp_main'], serveraddr],
+            [python3, context['dp_main'],
+             self._vim.vars['deoplete#_serveraddr']],
             context, context['cwd'])
 
     def _stop_process(self):
