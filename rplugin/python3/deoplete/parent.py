@@ -60,9 +60,9 @@ class Parent(logger.LoggingMixin):
                 results['merged_results']) if results else (False, [])
 
     def on_event(self, context):
+        self._put('on_event', [context])
         if context['event'] == 'VimLeavePre':
             self._stop_process()
-        self._put('on_event', [context])
 
     def _start_process(self, context):
         if self._proc:
