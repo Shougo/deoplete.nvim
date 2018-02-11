@@ -18,6 +18,7 @@ class Parent(logger.LoggingMixin):
 
         self._vim = vim
         self._proc = None
+        self._child = None
         self._queue_id = ''
         self._prev_pos = []
         self._start_process(context)
@@ -39,23 +40,26 @@ class Parent(logger.LoggingMixin):
         self._put('set_custom', [custom])
 
     def merge_results(self, context):
-        if context['position'] == self._prev_pos and (
-                self._queue_id or context['event'] == 'Async'):
-            # Use previous id
-            queue_id = self._queue_id
+        if self._child:
+            results = self._put('merge_results', [context])
         else:
-            queue_id = self._put('merge_results', [context])
-            if not queue_id:
-                return (False, [])
+            if context['position'] == self._prev_pos and (
+                    self._queue_id or context['event'] == 'Async'):
+                # Use previous id
+                queue_id = self._queue_id
+            else:
+                queue_id = self._put('merge_results', [context])
+                if not queue_id:
+                    return (False, [])
 
-        get = self._get(queue_id)
-        if not get:
-            # Skip the next merge_results
-            self._queue_id = queue_id
-            self._prev_pos = context['position']
-            return (True, [])
-        self._queue_id = ''
-        results = get[0]
+            get = self._get(queue_id)
+            if not get:
+                # Skip the next merge_results
+                self._queue_id = queue_id
+                self._prev_pos = context['position']
+                return (True, [])
+            self._queue_id = ''
+            results = get[0]
         return (results['is_async'],
                 results['merged_results']) if results else (False, [])
 
@@ -65,14 +69,17 @@ class Parent(logger.LoggingMixin):
             self._stop_process()
 
     def _start_process(self, context):
-        if self._proc:
-            return
-
-        python3 = self._vim.vars.get('python3_host_prog', 'python3')
-        self._proc = Process(
-            [python3, context['dp_main'],
-             self._vim.vars['deoplete#_serveraddr']],
-            context, context['cwd'])
+        if self._vim.vars['deoplete#num_processes'] > 1:
+            # Parallel
+            python3 = self._vim.vars.get('python3_host_prog', 'python3')
+            self._proc = Process(
+                [python3, context['dp_main'],
+                 self._vim.vars['deoplete#_serveraddr']],
+                context, context['cwd'])
+        else:
+            # Serial
+            from deoplete.child import Child
+            self._child = Child(self._vim)
 
     def _stop_process(self):
         if self._proc:
@@ -80,14 +87,21 @@ class Parent(logger.LoggingMixin):
             self._proc = None
 
     def _put(self, name, args):
-        if not self._proc:
-            return None
-
         queue_id = str(time.time())
 
-        self._proc.write({'name': name, 'args': args, 'queue_id': queue_id})
-        return queue_id
+        if self._proc:
+            self._proc.write({
+                'name': name, 'args': args, 'queue_id': queue_id
+            })
+            return queue_id
+        elif self._child:
+            return self._child.main(name, args, queue_id)
+        else:
+            return None
 
     def _get(self, queue_id):
+        if not self._proc:
+            return []
+
         return [x for x in self._proc.communicate(0.02)
                 if x['queue_id'] == queue_id]

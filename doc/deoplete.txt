@@ -197,8 +197,9 @@ g:deoplete#max_list
 
 						*g:deoplete#num_processes*
 g:deoplete#num_processes
-		The number of processes used for the asynchronous completion.
-		If it is less than equal 1, this feature is disabled.
+		The number of processes used for the deoplete parallel
+		feature.  If it is less than equal 1, this feature is
+		disabled.
 
 		Default value: 4
 
