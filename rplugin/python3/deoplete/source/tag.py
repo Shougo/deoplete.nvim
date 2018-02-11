@@ -50,18 +50,31 @@ class Source(Base):
 
             with open(filename, 'r', errors='replace') as f:
                 for line in f:
-                    cols = line.strip().split('\t')
+                    cols = line.strip().split('\t', 2)
                     if not cols or cols[0].startswith('!_'):
                         continue
-                    i = cols[2].find('(')
-                    if i != -1 and cols[2].find(')', i+1) != -1:
-                        m = re.search(r'(\w+\(.*\))', cols[2])
-                        if m:
-                            items.append({'word': cols[0],
-                                          'abbr': m.group(1),
-                                          'kind': 'f'})
-                            continue
-                    items.append({'word': cols[0]})
+
+                    tagfield = {}
+                    if ';"' in cols[-1]:
+                        cols[-1], fields = cols[-1].split(';"', 1)
+                        for pair in fields.split('\t'):
+                            if ':' not in pair:
+                                tagfield['kind'] = pair
+                            else:
+                                k, v = pair.split(':', 1)
+                                tagfield[k] = v
+
+                    kind = tagfield.get('kind', '')
+                    if kind == 'f':
+                        i = cols[2].find('(')
+                        if i != -1 and cols[2].find(')', i+1) != -1:
+                            m = re.search(r'(\w+\(.*\))', cols[2])
+                            if m:
+                                items.append({'word': cols[0],
+                                              'abbr': m.group(1),
+                                              'kind': kind})
+                                continue
+                    items.append({'word': cols[0], 'kind': kind})
 
             if not items:
                 continue
