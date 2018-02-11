@@ -26,8 +26,13 @@ function! deoplete#handler#_init() abort
           \ call s:completion_begin('InsertEnter')
   endif
   if g:deoplete#enable_refresh_always
-    autocmd deoplete InsertCharPre *
-          \ call s:completion_begin('InsertCharPre')
+    if exists('##TextChangedP')
+      autocmd deoplete TextChangedP *
+            \ call s:completion_begin('TextChangedP')
+    else
+      autocmd deoplete InsertCharPre *
+            \ call s:completion_begin('InsertCharPre')
+    endif
   endif
 
   " Note: Vim 8 GUI is broken
@@ -212,17 +217,15 @@ function! s:on_insert_leave() abort
 endfunction
 
 function! s:on_complete_done() abort
-  if get(v:completed_item, 'word', '') !=# ''
-    let word = v:completed_item.word
-    if !has_key(g:deoplete#_rank, word)
-      let g:deoplete#_rank[word] = 1
-    else
-      let g:deoplete#_rank[word] += 1
-    endif
+  if get(v:completed_item, 'word', '') ==# ''
+    return
   endif
 
-  if !g:deoplete#enable_refresh_always
-    call deoplete#handler#_skip_next_completion()
+  let word = v:completed_item.word
+  if !has_key(g:deoplete#_rank, word)
+    let g:deoplete#_rank[word] = 1
+  else
+    let g:deoplete#_rank[word] += 1
   endif
 endfunction
 
