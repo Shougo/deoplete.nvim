@@ -48,7 +48,7 @@ class Process(object):
 
     def enqueue_output(self):
         while self._proc:
-            b = self._proc.stderr.raw.read(102400)
+            b = self._proc.stdout.raw.read(102400)
             if b == b'':
                 # EOF
                 break

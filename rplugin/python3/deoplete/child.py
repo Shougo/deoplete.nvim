@@ -91,8 +91,8 @@ class Child(logger.LoggingMixin):
         return ret
 
     def _write(self, expr):
-        sys.stderr.buffer.write(self._packer.pack(expr))
-        sys.stderr.flush()
+        sys.stdout.buffer.write(self._packer.pack(expr))
+        sys.stdout.flush()
 
     def _enable_logging(self):
         logging = self._vim.vars['deoplete#_logging']
