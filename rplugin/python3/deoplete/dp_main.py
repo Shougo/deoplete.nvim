@@ -47,7 +47,7 @@ def main(serveraddr):
     sys.stdout = RedirectStream(lambda data: vim.out_write(data))
     try:
         child = Child(vim)
-        child.main()
+        child.main_loop()
     except Exception:
         error_tb(vim, 'Error in child')
 
