@@ -51,6 +51,8 @@ class Child(logger.LoggingMixin):
     def main(self):
         while True:
             feed = sys.stdin.buffer.raw.read(102400)
+            if feed is None:
+                continue
             if feed == b'':
                 # EOF
                 return
