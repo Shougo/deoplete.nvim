@@ -44,10 +44,12 @@ def main(serveraddr):
     vim = attach_vim(serveraddr)
     from deoplete.child import Child
     from deoplete.util import error_tb
+    stdout = sys.stdout
+    sys.stdout = RedirectStream(lambda data: vim.out_write(data))
     sys.stderr = RedirectStream(lambda data: vim.err_write(data))
     try:
         child = Child(vim)
-        child.main_loop()
+        child.main_loop(stdout)
     except Exception:
         error_tb(vim, 'Error in child')
 

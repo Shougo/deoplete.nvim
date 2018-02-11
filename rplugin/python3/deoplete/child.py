@@ -48,7 +48,7 @@ class Child(logger.LoggingMixin):
             encoding='utf-8',
             unicode_errors='surrogateescape')
 
-    def main_loop(self):
+    def main_loop(self, stdout):
         while True:
             feed = sys.stdin.buffer.raw.read(102400)
             if feed is None:
@@ -68,7 +68,7 @@ class Child(logger.LoggingMixin):
 
                 ret = self.main(name, args, queue_id)
                 if ret:
-                    self._write(ret)
+                    self._write(stdout, ret)
 
                 self.debug('main_loop: end')
 
@@ -90,9 +90,9 @@ class Child(logger.LoggingMixin):
             ret = self._merge_results(args[0], queue_id)
         return ret
 
-    def _write(self, expr):
-        sys.stdout.buffer.write(self._packer.pack(expr))
-        sys.stdout.flush()
+    def _write(self, stdout, expr):
+        stdout.buffer.write(self._packer.pack(expr))
+        stdout.flush()
 
     def _enable_logging(self):
         logging = self._vim.vars['deoplete#_logging']
