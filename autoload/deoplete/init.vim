@@ -47,7 +47,7 @@ function! deoplete#init#_channel() abort
     return 1
   endif
   if !exists('v:t_list')
-    call deoplete#util#print_error('deoplete requires 0.2.0+.')
+    call deoplete#util#print_error('deoplete requires neovim 0.2.0+.')
     return 1
   endif
 
