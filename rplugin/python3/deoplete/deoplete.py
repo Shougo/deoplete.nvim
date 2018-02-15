@@ -47,9 +47,9 @@ class Deoplete(logger.LoggingMixin):
         # on_init() call
         self.on_event(context)
 
-        self._vim.vars['deoplete#_initialized'] = True
         if hasattr(self._vim, 'channel_id'):
             self._vim.vars['deoplete#_channel_id'] = self._vim.channel_id
+        self._vim.vars['deoplete#_initialized'] = True
 
     def enable_logging(self):
         logging = self._vim.vars['deoplete#_logging']
