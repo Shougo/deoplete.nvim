@@ -38,7 +38,6 @@ class Child(logger.LoggingMixin):
         self._loaded_sources = {}
         self._loaded_filters = {}
         self._source_errors = defaultdict(int)
-        self._filter_errors = defaultdict(int)
         self._prev_results = {}
         self._unpacker = msgpack.Unpacker(
             encoding='utf-8',
@@ -47,6 +46,7 @@ class Child(logger.LoggingMixin):
             use_bin_type=True,
             encoding='utf-8',
             unicode_errors='surrogateescape')
+        self._ignore_sources = []
 
     def main_loop(self, stdout):
         while True:
@@ -258,7 +258,7 @@ class Child(logger.LoggingMixin):
                     error(self._vim, 'Too many errors from "%s". '
                           'This source is disabled until Neovim '
                           'is restarted.' % source.name)
-                    self._sources.pop(source.name)
+                    self._ignore_sources.append(source.name)
                     continue
                 error_tb(self._vim, 'Errors from: %s' % source.name)
 
@@ -281,7 +281,7 @@ class Child(logger.LoggingMixin):
                 error(self._vim, 'Too many errors from "%s". '
                       'This source is disabled until Neovim '
                       'is restarted.' % source.name)
-                self._sources.pop(source.name)
+                self._ignore_sources.append(source.name)
             else:
                 error_tb(self._vim, 'Errors from: %s' % source.name)
 
@@ -300,13 +300,6 @@ class Child(logger.LoggingMixin):
                 context['candidates'] = f.filter(context)
             self._profile_end(f.name)
         except Exception:
-            self._filter_errors[f.name] += 1
-            if self._source_errors[f.name] > 2:
-                error(self._vim, 'Too many errors from "%s". '
-                      'This filter is disabled until Neovim '
-                      'is restarted.' % f.name)
-                self._filters.pop(f.name)
-                return
             error_tb(self._vim, 'Errors from: %s' % f)
 
     def _source_result(self, result, context_input):
@@ -349,7 +342,7 @@ class Child(logger.LoggingMixin):
 
     def _itersource(self, context):
         filetypes = context['filetypes']
-        ignore_sources = set()
+        ignore_sources = set(self._ignore_sources)
         for ft in filetypes:
             ignore_sources.update(
                 get_buffer_config(context, ft,
