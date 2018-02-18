@@ -47,7 +47,7 @@ class Process(object):
         self._thread = None
 
     def enqueue_output(self):
-        while self._proc:
+        while self._proc and self._proc.stdout:
             b = self._proc.stdout.raw.read(102400)
             if b is None:
                 continue
@@ -71,6 +71,13 @@ class Process(object):
             outs.append(self._queue_out.get_nowait())
         return outs
 
+    def read_error(self):
+        if not self._proc or not self._proc.stderr:
+            return ''
+        return self._proc.stderr.read()
+
     def write(self, expr):
+        if not self._proc or not self._proc.stdin:
+            return
         self._proc.stdin.write(self._packer.pack(expr))
         self._proc.stdin.flush()

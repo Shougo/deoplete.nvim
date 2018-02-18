@@ -8,7 +8,7 @@ import time
 
 from deoplete import logger
 from deoplete.process import Process
-# from deoplete.util import error
+from deoplete.util import error_tb, error
 
 
 class Parent(logger.LoggingMixin):
@@ -90,9 +90,14 @@ class Parent(logger.LoggingMixin):
         queue_id = str(time.time())
 
         if self._proc:
-            self._proc.write({
-                'name': name, 'args': args, 'queue_id': queue_id
-            })
+            try:
+                self._proc.write({
+                    'name': name, 'args': args, 'queue_id': queue_id
+                })
+            except BrokenPipeError as e:
+                error_tb(self._vim, 'Crash in child process')
+                error(self._vim, 'stderr=' + str(self._proc.read_error()))
+                self._proc.kill()
             return queue_id
         elif self._child:
             return self._child.main(name, args, queue_id)
