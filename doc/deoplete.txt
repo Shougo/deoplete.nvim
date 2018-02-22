@@ -73,7 +73,7 @@ If you want to read for Neovim-python/python3 interface install documentation,
 you should read |provider-python| and the Wiki.
 https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
 
-You can check the Python3 installation by |:CheckHealth| command.
+You can check the Python3 installation by using the |:checkhealth| command.
 
 ==============================================================================
 INTERFACE						*deoplete-interface*
