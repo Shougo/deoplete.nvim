@@ -136,7 +136,8 @@ class DeopleteLogFilter(logging.Filter):
                 # Only permit 2 errors in succession from a logging source to
                 # display errors inside of Neovim.  After this, it is no longer
                 # permitted to emit any more errors and should be addressed.
-                self.vim.call('deoplete#util#print_error', record.getMessage())
+                self.vim.call('deoplete#util#print_error', record.getMessage(),
+                              record.name)
             if record.exc_info and record.stack_info:
                 # Add a penalty for messages that generate exceptions to avoid
                 # making the log harder to read with doubled stack traces.

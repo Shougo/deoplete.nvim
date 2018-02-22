@@ -36,9 +36,10 @@ endfunction
 function! deoplete#util#get_simple_buffer_config(buffer_var, user_var) abort
   return exists(a:buffer_var) ? {a:buffer_var} : {a:user_var}
 endfunction
-function! deoplete#util#print_error(string) abort
-  echohl Error | echomsg '[deoplete] '
-        \ . deoplete#util#string(a:string) | echohl None
+function! deoplete#util#print_error(string, ...) abort
+  let name = a:0 ? a:1 : 'deoplete'
+  echohl Error | echomsg printf('[%s] %s', name,
+        \ deoplete#util#string(a:string)) | echohl None
 endfunction
 function! deoplete#util#print_warning(string) abort
   echohl WarningMsg | echomsg '[deoplete] '
