@@ -116,16 +116,26 @@ Deoplete for JavaScript
 
 ![deoplete + deoplete-typescript integration](https://github.com/mhartington/deoplete-typescript/blob/master/deoplete-tss.gif)
 
-[Python completion using deoplete-jedi](https://cloud.githubusercontent.com/assets/3712731/17458493/8e10d1c0-5c44-11e6-8bd9-964f45365962.gif)
+![Python completion using deoplete-jedi](https://cloud.githubusercontent.com/assets/3712731/17458493/8e10d1c0-5c44-11e6-8bd9-964f45365962.gif)
 
-[C++ completion using clang_complete](https://cloud.githubusercontent.com/assets/3712731/17458501/cf88f89e-5c44-11e6-89a4-b4646aaa8021.gif)
+![C++ completion using clang_complete](https://cloud.githubusercontent.com/assets/3712731/17458501/cf88f89e-5c44-11e6-89a4-b4646aaa8021.gif)
 
-[Java completion using vim-javacomplete2](https://cloud.githubusercontent.com/assets/3712731/17458504/f075e76a-5c44-11e6-97d5-c5525f61c4a9.gif)
+![Java completion using vim-javacomplete2](https://cloud.githubusercontent.com/assets/3712731/17458504/f075e76a-5c44-11e6-97d5-c5525f61c4a9.gif)
 
-[Vim Script completion using neco-vim](https://cloud.githubusercontent.com/assets/3712731/17461000/660e15be-5caf-11e6-8c02-eb9f9c169f3c.gif)
+![Vim Script completion using neco-vim](https://cloud.githubusercontent.com/assets/3712731/17461000/660e15be-5caf-11e6-8c02-eb9f9c169f3c.gif)
 
-[C# completion using deoplete-omnisharp](https://camo.githubusercontent.com/f429dc72f91b25619980dbb9d436065ba3fb0a44/68747470733a2f2f692e696d6775722e636f6d2f464e634c4441752e676966)
+![C# completion using deoplete-omnisharp](https://camo.githubusercontent.com/f429dc72f91b25619980dbb9d436065ba3fb0a44/68747470733a2f2f692e696d6775722e636f6d2f464e634c4441752e676966)
 
-[Register/Extract list completions](https://camo.githubusercontent.com/6a6df993ad0e05c014c72c8f8702447f9b34ad90/68747470733a2f2f692e696d6775722e636f6d2f5131663731744a2e676966)
+![Register/Extract list completions](https://camo.githubusercontent.com/6a6df993ad0e05c014c72c8f8702447f9b34ad90/68747470733a2f2f692e696d6775722e636f6d2f5131663731744a2e676966)
 
 ![FSharp completion using deopletefs](https://github.com/callmekohei/deoplete-fsharp/blob/master/pic/sample.gif)
+
+![Typescript](https://user-images.githubusercontent.com/29815830/36537450-bfbf4884-1802-11e8-8ad4-dd4a0dccfed3.png)
+
+![Javascript](https://user-images.githubusercontent.com/29815830/36537514-ef01ef7a-1802-11e8-944e-c33017dfbe2b.png)
+
+![Css, scss, sass](https://user-images.githubusercontent.com/29815830/36537545-1184f10a-1803-11e8-81a1-097222a58752.png)
+
+![Html](https://user-images.githubusercontent.com/29815830/36537602-40b19848-1803-11e8-8ac8-49b3b9ba2094.png)
+
+![My custom snippets](https://user-images.githubusercontent.com/29815830/36537646-6578262e-1803-11e8-9bff-64874a606150.png)
