@@ -4,13 +4,12 @@
 # License: MIT license
 # ============================================================================
 
+import glob
 import os
 import re
 import sys
-import glob
 import traceback
 import unicodedata
-
 from importlib.machinery import SourceFileLoader
 
 
