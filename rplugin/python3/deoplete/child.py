@@ -373,7 +373,7 @@ class Child(logger.LoggingMixin):
                         error_tb(self._vim,
                                  'Error when loading source {}: {}. '
                                  'Ignoring.'.format(source_name, exc))
-                    self._sources.pop(source_name)
+                    self._ignore_sources.append(source_name)
                     continue
                 else:
                     source.is_initialized = True
