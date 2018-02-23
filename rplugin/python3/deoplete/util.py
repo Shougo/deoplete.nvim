@@ -4,13 +4,12 @@
 # License: MIT license
 # ============================================================================
 
+import glob
 import os
 import re
 import sys
-import glob
 import traceback
 import unicodedata
-
 from importlib.machinery import SourceFileLoader
 
 
@@ -180,13 +179,6 @@ def fuzzy_escape(string, camelcase):
                                 '['+pat.group(1)+pat.group(1).upper()+']'), p)
     p = re.sub(r'([a-zA-Z0-9_])\.\*', r'\1[^\1]*', p)
     return p
-
-
-def load_external_module(file, module):
-    current = os.path.dirname(os.path.abspath(file))
-    module_dir = os.path.join(os.path.dirname(current), module)
-    if module_dir not in sys.path:
-        sys.path.insert(0, module_dir)
 
 
 def truncate_skipping(string, max_width, footer, footer_len):
