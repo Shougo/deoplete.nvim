@@ -116,9 +116,13 @@ def error(vim, expr):
 
 
 def error_tb(vim, msg):
-    for line in traceback.format_exc().splitlines():
-        error(vim, str(line))
-    error(vim, '%s.  Use :messages for error details.' % msg)
+    lines = traceback.format_exc().splitlines()
+    lines += ['%s.  Use :messages / see above for error details.' % msg]
+    if hasattr(vim, 'err_write'):
+        vim.err_write('[deoplete] %s\n' % '\n'.join(lines))
+    else:
+        for line in lines:
+            vim.call('deoplete#util#print_error', line)
 
 
 def error_vim(vim, msg):
