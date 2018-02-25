@@ -7,7 +7,7 @@
 [![Doc](https://img.shields.io/badge/doc-%3Ah%20deoplete-orange.svg)](doc/deoplete.txt)
 
 Deoplete is the abbreviation of "dark powered neo-completion".  It
-provides an extensible and asynchronous completion framwork for
+provides an extensible and asynchronous completion framework for
 neovim/Vim8.
 
 deoplete will display completions via `complete()` by default.
