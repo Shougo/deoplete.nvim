@@ -1383,6 +1383,13 @@ https://github.com/Shougo/deoplete.nvim/issues/656
 A: Have you quit Vim/neovim inside autocmd?  Please read |autocmd-nested|
 section.  deoplete uses |VimLeavePre| autocmd to quit the child processes.
 >
+	function! OnTermClose()
+	  if len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
+	    quit!
+	  else
+	    call feedkeys(' ')
+	  endif
+	endfunction
 	autocmd TermClose * nested call OnTermClose()
 <
 Q: "Channel id must be a positive integer" error.
