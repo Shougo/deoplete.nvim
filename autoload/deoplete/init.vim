@@ -46,10 +46,6 @@ function! deoplete#init#_channel() abort
           \ 'deoplete requires timers support("+timers").')
     return 1
   endif
-  if !exists('v:t_list')
-    call deoplete#util#print_error('deoplete requires neovim 0.2.0+.')
-    return 1
-  endif
 
   let python3 = get(g:, 'python3_host_prog', 'python3')
   if !executable(python3)

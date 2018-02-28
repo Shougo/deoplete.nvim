@@ -14,6 +14,15 @@ function! s:check_neovim() abort
   endif
 endfunction
 
+function! s:check_t_list() abort
+  if exists('v:t_list')
+    call health#report_ok('exists("v:t_list") was successful')
+  else
+    call health#report_error('exists("v:t_list") was not successful',
+          \ 'Deoplete requires neovim 0.2.0+!')
+  endif
+endfunction
+
 function! s:check_required_python_for_deoplete() abort
   if has('python3')
     call health#report_ok('has("python3") was successful')
@@ -43,6 +52,7 @@ endfunction
 function! health#deoplete#check() abort
   call health#report_start('deoplete.nvim')
   call s:check_neovim()
+  call s:check_t_list()
   call s:check_required_python_for_deoplete()
   call s:still_have_issues()
 endfunction
