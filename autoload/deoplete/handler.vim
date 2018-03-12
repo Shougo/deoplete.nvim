@@ -13,7 +13,7 @@ function! deoplete#handler#_init() abort
     autocmd InsertLeave * call s:completion_timer_stop()
   augroup END
 
-  for event in ['BufNewFile', 'BufRead', 'BufWritePost', 'VimLeavePre']
+  for event in ['BufNewFile', 'BufNew', 'BufWritePost', 'VimLeavePre']
     call s:define_on_event(event)
   endfor
 
