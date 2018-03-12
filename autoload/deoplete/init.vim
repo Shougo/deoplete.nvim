@@ -41,12 +41,6 @@ function! deoplete#init#_initialize() abort
   call deoplete#mapping#_init()
 endfunction
 function! deoplete#init#_channel() abort
-  if !has('timers')
-    call deoplete#util#print_error(
-          \ 'deoplete requires timers support("+timers").')
-    return 1
-  endif
-
   let python3 = get(g:, 'python3_host_prog', 'python3')
   if !executable(python3)
     call deoplete#util#print_error(
