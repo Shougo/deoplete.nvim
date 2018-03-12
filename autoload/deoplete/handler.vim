@@ -202,8 +202,7 @@ endfunction
 
 function! s:define_on_event(event) abort
   execute 'autocmd deoplete' a:event
-        \ '* call deoplete#util#rpcnotify("deoplete_on_event",'
-        \.'deoplete#init#_context('.string(a:event).', []))'
+        \ '* call deoplete#send_event('.string(a:event).')'
 endfunction
 
 function! s:on_insert_leave() abort

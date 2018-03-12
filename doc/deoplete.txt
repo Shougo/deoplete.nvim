@@ -502,6 +502,10 @@ deoplete#enable_logging({level}, {logfile})
 		|deoplete-source-attribute-is_debug_enabled| to debug the
 		sources.
 
+						*deoplete#send_event()*
+deoplete#send_event({event})
+		Call |deoplete-source-attribute-on_event| manually.
+		{event} is event name.
 
 ------------------------------------------------------------------------------
 KEY MAPPINGS 					*deoplete-key-mappings*
@@ -953,8 +957,9 @@ on_post_filter
 
 					*deoplete-source-attribute-on_event*
 on_event	(Function)			(Optional)
-		It is called when |BufRead|, |BufNewFile|, |BufWritePost|,
-		|VimLeavePre| or deoplete is initialized.
+		It is called when |BufNew|, |BufNewFile|, |BufWritePost|,
+		|VimLeavePre| or |deoplete#send_event()| or deoplete is
+		initialized.
 		It is useful to make cache.
 		It takes {self} and {context} as its parameter.
 
