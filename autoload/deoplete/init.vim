@@ -11,6 +11,8 @@ if !exists('s:is_enabled')
   let s:is_enabled = 0
 endif
 
+let s:is_windows = ((has('win32') || has('win64')) ? v:true : v:false)
+
 function! deoplete#init#_is_enabled() abort
   return s:is_enabled
 endfunction
@@ -230,10 +232,21 @@ function! deoplete#init#_context(event, sources) abort
         \ 'Manual' : a:event
 
   let width = winwidth(0) - col('.') + len(matchstr(input, '\w*$'))
+  let max_width = (width * 2 / 3)
 
-  let bufname = bufname('%')
+  if a:event ==# 'BufNew'
+    let bufnr = expand('<abuf>')
+    let bytes = 0
+  else
+    let bufnr = bufnr('%')
+    let bytes = line2byte(line('$') + 1) - 1
+    if bytes < 0
+      let bytes = 0
+    endif
+  endif
+  let bufname = bufname(bufnr)
   let bufpath = fnamemodify(bufname, ':p')
-  if &l:buftype =~# 'nofile' || !filereadable(bufpath)
+  if !filereadable(bufpath) || getbufvar(bufnr, '&buftype') =~# 'nofile'
     let bufpath = ''
   endif
 
@@ -242,7 +255,7 @@ function! deoplete#init#_context(event, sources) abort
         \ 'dp_main': s:dp_main,
         \ 'event': event,
         \ 'input': input,
-        \ 'is_windows': ((has('win32') || has('win64')) ? v:true : v:false),
+        \ 'is_windows': s:is_windows,
         \ 'next_input': deoplete#util#get_next_input(a:event),
         \ 'complete_str': '',
         \ 'encoding': &encoding,
@@ -256,14 +269,14 @@ function! deoplete#init#_context(event, sources) abort
         \ 'delay': g:deoplete#auto_complete_delay,
         \ 'sources': sources,
         \ 'keyword_patterns': keyword_patterns,
-        \ 'max_abbr_width': (width * 2 / 3),
-        \ 'max_kind_width': (width * 2 / 3),
-        \ 'max_menu_width': (width * 2 / 3),
+        \ 'max_abbr_width': max_width,
+        \ 'max_kind_width': max_width,
+        \ 'max_menu_width': max_width,
         \ 'runtimepath': &runtimepath,
-        \ 'bufnr': bufnr('%'),
+        \ 'bufnr': bufnr,
         \ 'bufname': bufname,
         \ 'bufpath': bufpath,
-        \ 'bufsize': wordcount().bytes,
+        \ 'bufsize': bytes,
         \ 'cwd': getcwd(),
         \ 'vars': filter(copy(g:),
         \       "stridx(v:key, 'deoplete#') == 0
