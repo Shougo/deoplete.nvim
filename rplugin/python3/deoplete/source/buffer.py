@@ -21,9 +21,10 @@ class Source(Base):
         self._max_lines = 5000
 
     def on_event(self, context):
+        event = context['event']
         bufnr = context['bufnr']
-        if (bufnr not in self._buffers or
-                context['event'] == 'BufWritePost'):
+        if (event == 'BufWritePost' or (
+                event != 'BufNew' and bufnr not in self._buffers)):
             self._make_cache(context, bufnr)
 
     def gather_candidates(self, context):
