@@ -397,7 +397,8 @@ class Child(logger.LoggingMixin):
                 name, time.clock() - self._profile_start_time))
 
     def _use_previous_result(self, context, result, is_volatile):
-        if context['position'][1] != result['prev_linenr']:
+        if (context['position'][1] != result['prev_linenr'] or
+                not result['candidates']):
             return False
         if is_volatile:
             return context['input'] == result['prev_input']
