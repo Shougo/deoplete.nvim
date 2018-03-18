@@ -163,7 +163,8 @@ function! s:is_skip(event, context) abort
         \   'g:deoplete#disable_auto_complete')
 
   if &paste
-        \ || (a:event !=# 'Manual' && disable_auto_complete)
+        \ || (a:event !=# 'Manual' && a:event !=# 'Async'
+        \     && disable_auto_complete)
         \ || (&l:completefunc !=# '' && &l:buftype =~# 'nofile')
         \ || (a:event !=# 'InsertEnter' && mode() !=# 'i')
     return 1
