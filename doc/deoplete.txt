@@ -202,7 +202,7 @@ g:deoplete#num_processes
 		feature.  If it is less than equal 1, this feature is
 		disabled.
 
-		Default value: 4
+		Default value: 1 (Windows) or 4 (Others)
 
 						*g:deoplete#max_abbr_width*
 g:deoplete#max_abbr_width
@@ -1652,6 +1652,7 @@ COMPATIBILITY					*deoplete-compatibility*
 
 2018.03.18
 * limit attribute in source is removed.
+* neovim-python 0.2.4+ is needed for asyncio feature.
 
 2017.12.04
 * "debug_enabled" is deprecated.  Please use "is_debug_enabled" instead.
