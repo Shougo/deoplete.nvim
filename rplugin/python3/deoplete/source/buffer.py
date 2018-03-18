@@ -16,15 +16,14 @@ class Source(Base):
 
         self.name = 'buffer'
         self.mark = '[B]'
-        self.limit = 1000000
+        self._limit = 1000000
         self._buffers = {}
         self._max_lines = 5000
 
     def on_event(self, context):
-        bufnr = context['bufnr']
-        if (bufnr not in self._buffers or
+        if (context['bufnr'] not in self._buffers or
                 context['event'] == 'BufWritePost'):
-            self._make_cache(context, bufnr)
+            self._make_cache(context)
 
     def gather_candidates(self, context):
         self.on_event(context)
@@ -39,10 +38,16 @@ class Source(Base):
             x['bufnr'] in tab_bufnrs
         ]}
 
-    def _make_cache(self, context, bufnr):
+    def _make_cache(self, context):
+        # Bufsize check
+        size = self.vim.call('line2byte',
+                             self.vim.call('line', '$') + 1) - 1
+        if size > self._limit:
+            return
+
         try:
-            self._buffers[bufnr] = {
-                'bufnr': bufnr,
+            self._buffers[context['bufnr']] = {
+                'bufnr': context['bufnr'],
                 'filetype': self.vim.eval('&l:filetype'),
                 'candidates': [
                     {'word': x} for x in

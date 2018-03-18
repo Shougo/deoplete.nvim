@@ -236,13 +236,8 @@ function! deoplete#init#_context(event, sources) abort
 
   if a:event ==# 'BufNew'
     let bufnr = expand('<abuf>')
-    let bytes = 0
   else
     let bufnr = bufnr('%')
-    let bytes = line2byte(line('$') + 1) - 1
-    if bytes < 0
-      let bytes = 0
-    endif
   endif
   let bufname = bufname(bufnr)
   let bufpath = fnamemodify(bufname, ':p')
@@ -276,7 +271,6 @@ function! deoplete#init#_context(event, sources) abort
         \ 'bufnr': bufnr,
         \ 'bufname': bufname,
         \ 'bufpath': bufpath,
-        \ 'bufsize': bytes,
         \ 'cwd': getcwd(),
         \ 'vars': filter(copy(g:),
         \       "stridx(v:key, 'deoplete#') == 0

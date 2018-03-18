@@ -351,8 +351,6 @@ class Child(logger.LoggingMixin):
                                   {}))
 
         for source_name, source in self._sources.items():
-            if source.limit > 0 and context['bufsize'] > source.limit:
-                continue
             if source.filetypes is None or source_name in ignore_sources:
                 continue
             if context['sources'] and source_name not in context['sources']:
