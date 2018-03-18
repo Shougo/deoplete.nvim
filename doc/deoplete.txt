@@ -911,6 +911,13 @@ disabled_syntaxes
 
 		If you omit it, this feature is ignored.
 
+					*deoplete-source-attribute-on_event*
+events		(List[str])			(Optional)
+		Calling event names list when
+		|deoplete-source-attribute-on_event|.
+
+		If you omit it, the feature is disabled.
+
 			*deoplete-source-attribute-get_complete_position*
 get_complete_position
 		(Function)			(Optional)
@@ -949,16 +956,15 @@ on_post_filter
 
 					*deoplete-source-attribute-on_event*
 on_event	(Function)			(Optional)
-		It is called when |BufNew|, |BufNewFile|, |BufWritePost|,
-		|VimLeavePre| or |deoplete#send_event()| or deoplete is
-		initialized.
+		It is called when |InsertEnter|, |BufWritePost|, |VimLeavePre|
+		|DirChanged|, or |deoplete#send_event()| or deoplete is
+		initialized("Init" event).
 		It is useful to make cache.
 		It takes {self} and {context} as its parameter.
 
 		" Examples:
 		def on_event(self, context):
 		    if context['event'] == 'Init':
-			# BufNewFile, BufRead
 			pass
 		    elif context['event'] == 'BufWritePost':
 			# BufWritePost

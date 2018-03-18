@@ -458,7 +458,7 @@ class Child(logger.LoggingMixin):
 
     def _on_event(self, context):
         for source_name, source in self._itersource(context):
-            if hasattr(source, 'on_event'):
+            if not source.events or context['event'] in source.events:
                 self.debug('on_event: Source: %s', source_name)
                 try:
                     source.on_event(context)

@@ -22,6 +22,7 @@ class Source(Base):
 
         self.name = 'tag'
         self.mark = '[T]'
+        self.events = ['InsertEnter']
 
         self._cache = {}
 

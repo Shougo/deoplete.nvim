@@ -18,6 +18,7 @@ class Source(Base):
 
         self.name = 'dictionary'
         self.mark = '[D]'
+        self.events = ['InsertEnter']
 
         self._cache = {}
 

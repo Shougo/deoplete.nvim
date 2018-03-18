@@ -16,17 +16,20 @@ class Source(Base):
 
         self.name = 'buffer'
         self.mark = '[B]'
+        self.events = ['InsertEnter', 'BufWritePost']
+
         self._limit = 1000000
         self._buffers = {}
         self._max_lines = 5000
 
     def on_event(self, context):
-        if (context['bufnr'] not in self._buffers or
-                context['event'] == 'BufWritePost'):
+        if (context['bufnr'] not in self._buffers
+                or context['event'] == 'BufWritePost'):
             self._make_cache(context)
 
     def gather_candidates(self, context):
         self.on_event(context)
+
         tab_bufnrs = self.vim.call('tabpagebuflist')
         same_filetype = context['vars'].get(
             'deoplete#buffer#require_same_filetype', True)
