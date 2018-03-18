@@ -163,7 +163,7 @@ function! deoplete#init#_variables() abort
   call deoplete#util#set_default(
         \ 'g:deoplete#complete_method', 'complete')
   call deoplete#util#set_default(
-        \ 'g:deoplete#num_processes', 4)
+        \ 'g:deoplete#num_processes', s:is_windows ? 1 : 4)
 
   call deoplete#util#set_default(
         \ 'g:deoplete#keyword_patterns', {})
