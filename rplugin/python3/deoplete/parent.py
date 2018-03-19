@@ -58,8 +58,7 @@ class Parent(logger.LoggingMixin):
         if self._child:
             results = self._put('merge_results', [context])
         else:
-            if context['position'] == self._prev_pos and (
-                    self._queue_id or context['event'] == 'Async'):
+            if context['position'] == self._prev_pos and self._queue_id:
                 # Use previous id
                 queue_id = self._queue_id
             else:

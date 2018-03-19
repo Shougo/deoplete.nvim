@@ -87,7 +87,7 @@ class Deoplete(logger.LoggingMixin):
         prev_candidates = prev_completion['candidates']
         prev_pos = prev_completion['complete_position']
         if (context['event'] == 'Async' and
-                prev_pos == position and
+                prev_pos == self._vim.call('getpos', '.') and
                 prev_candidates and candidates == prev_candidates):
             return
 

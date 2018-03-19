@@ -171,7 +171,7 @@ class Child(logger.LoggingMixin):
                     'rank': rank,
                 })
 
-        is_async = len([x for x in results if x['context']['is_async']]) > 0
+        is_async = len([x for x in results if x['is_async']]) > 0
 
         self.debug('merged_results: end')
         return {
