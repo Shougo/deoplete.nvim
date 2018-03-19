@@ -911,7 +911,7 @@ disabled_syntaxes
 
 		If you omit it, this feature is ignored.
 
-					*deoplete-source-attribute-on_event*
+					*deoplete-source-attribute-events*
 events		(List[str])			(Optional)
 		Calling event names list when
 		|deoplete-source-attribute-on_event|.
