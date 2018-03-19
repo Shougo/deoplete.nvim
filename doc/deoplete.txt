@@ -956,9 +956,9 @@ on_post_filter
 
 					*deoplete-source-attribute-on_event*
 on_event	(Function)			(Optional)
-		It is called when |InsertEnter|, |BufWritePost|, |VimLeavePre|
-		|DirChanged|, or |deoplete#send_event()| or deoplete is
-		initialized("Init" event).
+		It is called when |InsertEnter|, |BufWritePost|, |DirChanged|,
+		or |deoplete#send_event()| or deoplete is initialized("Init"
+		event).
 		It is useful to make cache.
 		It takes {self} and {context} as its parameter.
 
@@ -970,7 +970,6 @@ on_event	(Function)			(Optional)
 			# BufWritePost
 			pass
 		    else:
-			# VimLeavePre
 			pass
 
 					*deoplete-source-attribute-on_init*
