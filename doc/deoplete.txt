@@ -1396,6 +1396,13 @@ https://github.com/neovim/python-client#usage-through-the-python-repl
 Note: You can disable parallel feature by |g:deoplete#num_processes|.  It is
 workaround.
 
+Q: "[deoplete] neovim-python 0.2.4+ is required." error
+https://github.com/Shougo/deoplete.nvim/issues/694
+
+A: You must upgrade neovim-python client. >
+
+       $ pip3 install neovim --upgrade
+
 							*deoplete-faq-config*
 2. Configuration~
 
