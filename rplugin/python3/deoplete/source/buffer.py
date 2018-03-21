@@ -16,7 +16,7 @@ class Source(Base):
 
         self.name = 'buffer'
         self.mark = '[B]'
-        self.events = ['InsertEnter', 'BufWritePost']
+        self.events = ['Init', 'InsertEnter', 'BufWritePost']
 
         self._limit = 1000000
         self._buffers = {}

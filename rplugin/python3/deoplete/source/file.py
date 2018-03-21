@@ -21,7 +21,7 @@ class Source(Base):
         self.mark = '[F]'
         self.min_pattern_length = 0
         self.rank = 150
-        self.events = ['InsertEnter']
+        self.events = ['Init', 'InsertEnter']
 
         self._isfname = ''
 
