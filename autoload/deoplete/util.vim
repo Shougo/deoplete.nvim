@@ -226,6 +226,9 @@ function! s:notify(event, context) abort
   let a:context['rpc'] = a:event
 
   if deoplete#util#has_yarp()
+    if g:deoplete#_yarp.job_is_dead
+      return
+    endif
     call g:deoplete#_yarp.notify(a:event, a:context)
   else
     call rpcnotify(g:deoplete#_channel_id, a:event, a:context)

@@ -40,6 +40,12 @@ function! deoplete#handler#_init() abort
   if !has('nvim') && has('gui_running')
     let s:dummy_timer = timer_start(200, {timer -> 0}, {'repeat': -1})
   endif
+
+  if deoplete#util#has_yarp()
+    " To fix "RuntimeError: Event loop is closed" issue
+    " Note: Workaround
+    autocmd deoplete VimLeavePre * call s:kill_yarp()
+  endif
 endfunction
 
 function! s:do_complete(timer) abort
@@ -242,4 +248,24 @@ endfunction
 
 function! s:is_exiting() abort
   return exists('v:exiting') && v:exiting != v:null
+endfunction
+
+function! s:kill_yarp() abort
+  if g:deoplete#_yarp.job_is_dead
+    return
+  endif
+
+  let job = g:deoplete#_yarp.job
+  if !has('nvim') && !exists('g:yarp_jobstart')
+    " Get job object from vim-hug-neovim-rpc
+    let job = g:_neovim_rpc_jobs[job].job
+  endif
+
+  if has('nvim')
+    call jobstop(job)
+  else
+    call job_stop(job, 'kill')
+  endif
+
+  let g:deoplete#_yarp.job_is_dead = 1
 endfunction
