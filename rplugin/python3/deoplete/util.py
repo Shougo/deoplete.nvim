@@ -236,7 +236,7 @@ def charwidth(c):
 
 
 def expand(path):
-    return os.path.expandvars(os.path.expanduser(path))
+    return os.path.expanduser(os.path.expandvars(path))
 
 
 def getlines(vim, start=1, end='$'):
