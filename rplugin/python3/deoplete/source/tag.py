@@ -56,9 +56,7 @@ class Source(Base):
             if i != -1 and cols[2].find(')', i+1) != -1:
                 m = re.search(r'(\w+\(.*\))', cols[2])
                 if m:
-                    return {'word': cols[0],
-                            'abbr': m.group(1),
-                            'kind': kind}
+                    return {'word': cols[0], 'abbr': m.group(1), 'kind': kind}
         return {'word': cols[0], 'kind': kind}
 
     def _get_tagfiles(self, context):
