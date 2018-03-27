@@ -163,9 +163,10 @@ class Child(logger.LoggingMixin):
                                   result['source'].rank)
                 dup = bool(result['source'].filetypes)
                 candidates = result['candidates']
-                if dup:
-                    # Remove duplicates
-                    candidates = sorted(set(candidates), key=candidates.index)
+                # Note: cannot use set() for dict
+                # if dup:
+                #     # Remove duplicates
+                #     candidates = sorted(set(candidates), key=candidates.index)
                 merged_results.append({
                     'complete_position': result['complete_position'],
                     'mark': result['source'].mark,
