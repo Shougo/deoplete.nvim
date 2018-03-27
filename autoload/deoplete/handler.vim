@@ -26,13 +26,8 @@ function! deoplete#handler#_init() abort
           \ call s:completion_begin('InsertEnter')
   endif
   if g:deoplete#enable_refresh_always
-    if exists('##TextChangedP')
-      autocmd deoplete TextChangedP *
-            \ call s:completion_begin('TextChangedP')
-    else
-      autocmd deoplete InsertCharPre *
-            \ call s:completion_begin('InsertCharPre')
-    endif
+    autocmd deoplete InsertCharPre *
+          \ call s:completion_begin('InsertCharPre')
   endif
 
   " Note: Vim 8 GUI is broken

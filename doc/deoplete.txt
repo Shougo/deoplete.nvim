@@ -140,7 +140,6 @@ g:deoplete#enable_refresh_always
 		Deoplete refreshes the candidates automatically if this value
 		is 1.
 		Note: It increases the screen flicker.
-		Note: If |TextChangedP| autocmd is supported, deoplete uses it.
 
 		Default value: 0
 
