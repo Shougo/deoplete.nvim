@@ -9,25 +9,19 @@ function! deoplete#handler#_init() abort
     autocmd!
     autocmd InsertLeave * call s:on_insert_leave()
     autocmd CompleteDone * call s:on_complete_done()
-    autocmd TextChangedI * call s:completion_begin('TextChangedI')
     autocmd InsertLeave * call s:completion_timer_stop()
   augroup END
 
-  for event in ['InsertEnter', 'BufWritePost']
+  for event in ['InsertEnter', 'BufWritePost', 'DirChanged']
     call s:define_on_event(event)
   endfor
 
-  if exists('##DirChanged')
-    call s:define_on_event('DirChanged')
-  endif
-
+  call s:define_completion_begin('TextChangedI')
   if g:deoplete#enable_on_insert_enter
-    autocmd deoplete InsertEnter *
-          \ call s:completion_begin('InsertEnter')
+    call s:define_completion_begin('InsertEnter')
   endif
   if g:deoplete#enable_refresh_always
-    autocmd deoplete InsertCharPre *
-          \ call s:completion_begin('InsertCharPre')
+    call s:define_completion_begin('InsertCharPre')
   endif
 
   " Note: Vim 8 GUI is broken
@@ -211,8 +205,20 @@ function! s:is_skip_text(event) abort
 endfunction
 
 function! s:define_on_event(event) abort
+  if !exists('##' . a:event)
+    return
+  endif
+
   execute 'autocmd deoplete' a:event
         \ '* call deoplete#send_event('.string(a:event).')'
+endfunction
+function! s:define_completion_begin(event) abort
+  if !exists('##' . a:event)
+    return
+  endif
+
+  execute 'autocmd deoplete' a:event
+        \ '* call s:completion_begin('.string(a:event).')'
 endfunction
 
 function! s:on_insert_leave() abort
