@@ -29,6 +29,10 @@ function! deoplete#custom#get_source_var(source_name) abort
 endfunction
 
 function! deoplete#custom#set(source_name, option_name, value) abort
+  call deoplete#util#print_error(
+        \ 'deoplete#custom#set() is deprecated.')
+  call deoplete#util#print_error(
+        \ 'Please use deoplete#custom#source() instead.')
   return deoplete#custom#source(a:source_name, a:option_name, a:value)
 endfunction
 function! deoplete#custom#source(source_name, option_name, value) abort
