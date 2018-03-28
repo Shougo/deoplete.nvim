@@ -297,3 +297,12 @@ def binary_search_end(l, prefix):
         else:
             s = index + 1
     return -1
+
+
+def uniq_list_dict(l):
+    # Uniq list of dictionaries
+    ret = []
+    for d in l:
+        if d not in ret:
+            ret.append(d)
+    return ret

@@ -54,3 +54,16 @@ def test_binary_search():
     assert util.binary_search_end([
         {'word': 'a'}, {'word': 'aaa'}, {'word': 'aac'}, {'word': 'abc'},
     ], 'aa') == 2
+
+
+def test_uniq_list_dict():
+    assert util.uniq_list_dict([
+        {'abbr': 'word', 'word': 'foobar'},
+        {'word': 'bar'},
+        {'word': 'foobar', 'abbr': 'word'},
+        {'word': 'baz'},
+    ]) == [
+        {'word': 'foobar', 'abbr': 'word'},
+        {'word': 'bar'},
+        {'word': 'baz'}
+    ]

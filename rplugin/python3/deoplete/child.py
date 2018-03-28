@@ -21,7 +21,7 @@ from deoplete.exceptions import SourceInitError
 from deoplete.util import (bytepos2charpos, charpos2bytepos, error, error_tb,
                            import_plugin,
                            get_buffer_config, get_custom,
-                           get_syn_names, convert2candidates)
+                           get_syn_names, convert2candidates, uniq_list_dict)
 
 
 class Child(logger.LoggingMixin):
@@ -164,9 +164,9 @@ class Child(logger.LoggingMixin):
                 dup = bool(result['source'].filetypes)
                 candidates = result['candidates']
                 # Note: cannot use set() for dict
-                # if dup:
-                #     # Remove duplicates
-                #     candidates = sorted(set(candidates), key=candidates.index)
+                if dup:
+                    # Remove duplicates
+                    candidates = uniq_list_dict(candidates)
                 merged_results.append({
                     'complete_position': result['complete_position'],
                     'mark': result['source'].mark,
