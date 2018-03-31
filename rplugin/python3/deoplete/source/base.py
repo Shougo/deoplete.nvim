@@ -33,7 +33,7 @@ class Base(LoggingMixin):
         self.is_silent = False
         self.rank = 100
         self.disabled_syntaxes = []
-        self.events = []
+        self.events = None
 
     def get_complete_position(self, context):
         m = re.search('(?:' + context['keyword_patterns'] + ')$',
