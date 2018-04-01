@@ -380,13 +380,6 @@ g:deoplete#omni#functions
 b:deoplete_omni_functions
 		Buffer local variable of |g:deoplete#omni#functions|.
 
-					*g:deoplete#file#enable_buffer_path*
-g:deoplete#file#enable_buffer_path
-		If it is 1, file source complete the files from the buffer
-		path instead of the current directory.
-
-		Default value: 0
-
 					*g:deoplete#tag#cache_limit_size*
 g:deoplete#tag#cache_limit_size
 		It sets file size to make a cache of a file in
@@ -428,11 +421,6 @@ deoplete#disable()
 deoplete#toggle()
 		Toggle deoplete auto completion.
 		Note: It changes the global state.
-
-						*deoplete#custom#set()*
-deoplete#custom#set({source-name}, {option-name}, {value})
-		It is the deprecated option.
-		Please use |deoplete#custom#source()| instead.
 
 						*deoplete#custom#source()*
 deoplete#custom#source({source-name}, {option-name}, {value})
@@ -489,6 +477,12 @@ deoplete#custom#source({source-name}, {option-name}, {value})
 		" call deoplete#enable_logging('DEBUG', 'deoplete.log')
 		" call deoplete#custom#source('jedi', 'is_debug_enabled', 1)
 <
+							*deoplete#custom#var()*
+deoplete#custom#var({source-name}, {var-name}, {value})
+		Set {source-name} source specialized variable {variable-name}
+		to {value}.  You may specify multiple sources with the
+		separator "," in {source-name}.
+
 						*deoplete#enable_logging()*
 deoplete#enable_logging({level}, {logfile})
 		Enable logging for debugging purposes.
@@ -623,6 +617,13 @@ file							*deoplete-source-file*
 		/usr/lib/share.
 
 		rank: 150
+
+		Source custom variables:
+		enable_buffer_path
+				If it is True, file source complete the files
+				from the buffer path instead of the current
+				directory.
+				(default: False)
 
 omni							*deoplete-source-omni*
 		This source collects keywords from 'omnifunc'.
@@ -917,6 +918,10 @@ events		(List[str])			(Optional)
 
 		It defaults to `None`, which means that `on_event` gets
 		called for all events.
+
+					*deoplete-source-attribute-vars*
+vars		(Dictionary)			(Optional)
+		List of source customization variables.
 
 			*deoplete-source-attribute-get_complete_position*
 get_complete_position
@@ -1639,6 +1644,9 @@ A: https://github.com/zchee/deoplete-jedi/issues/35
 
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
+
+2018.04.04
+* Remove "g:deoplete#file#enable_buffer_path" variable.
 
 2018.03.18
 * limit attribute in source is removed.

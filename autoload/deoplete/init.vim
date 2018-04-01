@@ -182,6 +182,8 @@ function! deoplete#init#_variables() abort
         \ 'g:deoplete#omni#functions', {})
   call deoplete#util#set_default(
         \ 'g:deoplete#member#prefix_patterns', {})
+  call s:check_custom_var('file',
+        \ 'g:deoplete#file#enable_buffer_path', 'enable_buffer_path')
 
   " Initialize default keyword pattern.
   call deoplete#util#set_pattern(
@@ -276,4 +278,10 @@ function! deoplete#init#_context(event, sources) abort
         \ 'omni__omnifunc': &l:omnifunc,
         \ 'dict__dictionary': &l:dictionary,
         \ }
+endfunction
+
+function! s:check_custom_var(source_name, old_var, new_var) abort
+  if exists(a:old_var)
+    call deoplete#custom#var(a:source_name, a:new_var, eval(a:old_var))
+  endif
 endfunction

@@ -444,6 +444,7 @@ class Child(logger.LoggingMixin):
             'mark',
             'is_debug_enabled',
             'is_silent',
+            'vars',
         )
 
         for name, source in self._sources.items():
