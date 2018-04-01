@@ -455,8 +455,13 @@ class Child(logger.LoggingMixin):
                 else:
                     default_val = None
                 source_attr = getattr(source, attr, default_val)
-                setattr(source, attr, get_custom(context['custom'],
-                                                 name, attr, source_attr))
+                custom = get_custom(context['custom'],
+                                    name, attr, source_attr)
+                if custom and isinstance(source_attr, dict):
+                    # Update values if it is dict
+                    source_attr.update(custom)
+                else:
+                    setattr(source, attr, custom)
 
     def _set_custom(self, custom):
         self._custom = custom
