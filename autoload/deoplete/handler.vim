@@ -116,13 +116,13 @@ function! s:completion_async(timer) abort
 endfunction
 
 function! s:completion_begin(event) abort
-  let context = deoplete#init#_context(a:event, [])
-  if s:is_skip(a:event, context)
+  if s:is_skip(a:event)
     call deoplete#mapping#_restore_completeopt()
     let g:deoplete#_context.candidates = []
     return
   endif
 
+  let context = deoplete#init#_context(a:event, [])
   if g:deoplete#_prev_completion.event !=# 'Manual'
     " Call omni completion
     let prev = g:deoplete#_prev_completion
@@ -155,7 +155,7 @@ function! s:completion_begin(event) abort
   call deoplete#util#rpcnotify(
         \ 'deoplete_auto_completion_begin', context)
 endfunction
-function! s:is_skip(event, context) abort
+function! s:is_skip(event) abort
   if s:is_skip_text(a:event)
     return 1
   endif
