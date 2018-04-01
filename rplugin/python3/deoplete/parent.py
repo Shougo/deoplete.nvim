@@ -135,11 +135,3 @@ class Parent(logger.LoggingMixin):
         while not self._queue_out.empty():
             outs.append(self._queue_out.get_nowait())
         return [x for x in outs if x['queue_id'] == queue_id]
-
-    def _on_connection(self, transport):
-        self._stdin = transport.get_pipe_transport(0)
-
-    def _on_output(self, fd, data):
-        self._unpacker.feed(data)
-        for child_out in self._unpacker:
-            self._queue_out.put(child_out)
