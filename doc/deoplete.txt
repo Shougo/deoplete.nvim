@@ -912,10 +912,11 @@ disabled_syntaxes
 
 					*deoplete-source-attribute-events*
 events		(List[str])			(Optional)
-		Calling event names list when
-		|deoplete-source-attribute-on_event|.
+		List of events for which |deoplete-source-attribute-on_event|
+		should get called.
 
-		If you omit it, the feature is disabled.
+		It defaults to `None`, which means that `on_event` gets
+		called for all events.
 
 			*deoplete-source-attribute-get_complete_position*
 get_complete_position
@@ -955,9 +956,9 @@ on_post_filter
 
 					*deoplete-source-attribute-on_event*
 on_event	(Function)			(Optional)
-		It is called when |InsertEnter|, |BufWritePost|, |DirChanged|,
-		or |deoplete#send_event()| or deoplete is initialized("Init"
-		event).
+		Called for |InsertEnter|, |BufWritePost|, |DirChanged|
+		autocommands, through |deoplete#send_event()|, and when
+		deoplete gets initialized ("Init" event).
 		It is useful to make cache.
 		It takes {self} and {context} as its parameter.
 
