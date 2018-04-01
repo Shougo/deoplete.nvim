@@ -55,3 +55,10 @@ class Base(LoggingMixin):
 
     def on_event(self, context):
         pass
+
+    def get_filetype_var(self, context, var_name):
+        # Todo: buffer custom vars support
+
+        var = self.vars[var_name]
+        ft = context['filetype'] if (context['filetype'] in var) else '_'
+        return var.get(ft, '')

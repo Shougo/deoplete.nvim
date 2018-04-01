@@ -298,21 +298,6 @@ b:deoplete_ignore_sources
 		Buffer local variable of |g:deoplete#ignore_sources|.
 		It must be the source names list.
 
-					*g:deoplete#member#prefix_patterns*
-g:deoplete#member#prefix_patterns
-		This dictionary records prefix patterns to member completion.
-		This is appointed in regular expression string or list every
-		file type.
-		If this pattern is not defined or empty pattern, deoplete
-		does not complete member candidates.
-		Note: It is Python3 regexp.
-
-		Default value: defined in member.py
-
-					*b:deoplete_member_prefix_patterns*
-b:deoplete_member_prefix_patterns
-		Buffer local variable of |g:deoplete#member#prefix_patterns|.
-
 					*g:deoplete#omni#input_patterns*
 g:deoplete#omni#input_patterns
 		This dictionary records keyword patterns to Omni completion.
@@ -579,6 +564,17 @@ member						*deoplete-source-member*
 		It collects members from current buffer.
 
 		rank: 100
+
+		Source custom variables:
+		prefix_patterns
+				This dictionary records prefix patterns to
+				member completion.  This is appointed in
+				regular expression string or list every file
+				type.  If this pattern is not defined or
+				empty pattern, deoplete does not complete
+				member candidates.
+				Note: It is Python3 regexp.
+				(default: See in member.py)
 
 tag							*deoplete-source-tag*
 		It collects keywords from |ctags| files.
@@ -1631,6 +1627,7 @@ COMPATIBILITY					*deoplete-compatibility*
 * Remove "g:deoplete#max_abbr_width" and "g:deoplete#max_menu_width".
 * Remove "g:deoplete#tag#cache_limit_size" variable.
 * Remove "g:deoplete#buffer#require_same_filetype" variable.
+* Remove "g:deoplete#member#prefix_patterns" variable.
 
 2018.03.18
 * limit attribute in source is removed.

@@ -176,8 +176,6 @@ function! deoplete#init#_variables() abort
         \ 'g:deoplete#omni#input_patterns', {})
   call deoplete#util#set_default(
         \ 'g:deoplete#omni#functions', {})
-  call deoplete#util#set_default(
-        \ 'g:deoplete#member#prefix_patterns', {})
   call s:check_custom_var('file',
         \ 'g:deoplete#file#enable_buffer_path', 'enable_buffer_path')
 
