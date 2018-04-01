@@ -123,33 +123,33 @@ function! s:completion_begin(event) abort
     return
   endif
 
-  if g:deoplete#_prev_completion.event !=# 'Manual'
-    " Call omni completion
-    let prev = g:deoplete#_prev_completion
+  " Call omni completion?
+  let prev = g:deoplete#_prev_completion
+  if prev.event !=# 'Manual'
+    let blacklist = ['LanguageClient#complete']
+    if !empty(&l:omnifunc)
+          \ && index(blacklist, &l:omnifunc) < 0
+          \ && prev.complete_position !=# getpos('.')
+      for filetype in context.filetypes
+        for pattern in deoplete#util#convert2list(
+              \ deoplete#util#get_buffer_config(filetype,
+              \ 'b:deoplete_omni_patterns',
+              \ 'g:deoplete#omni_patterns',
+              \ 'g:deoplete#_omni_patterns'))
+          if !empty(pattern) && context.input =~# '\%('.pattern.'\)$'
+            let g:deoplete#_context.candidates = []
 
-    for filetype in context.filetypes
-      for pattern in deoplete#util#convert2list(
-            \ deoplete#util#get_buffer_config(filetype,
-            \ 'b:deoplete_omni_patterns',
-            \ 'g:deoplete#omni_patterns',
-            \ 'g:deoplete#_omni_patterns'))
-        let blacklist = ['LanguageClient#complete']
-        if pattern !=# '' && &l:omnifunc !=# ''
-              \ && context.input =~# '\%('.pattern.'\)$'
-              \ && index(blacklist, &l:omnifunc) < 0
-              \ && prev.complete_position !=# getpos('.')
-          let g:deoplete#_context.candidates = []
+            let prev.event = context.event
+            let prev.candidates = []
+            let prev.complete_position = getpos('.')
 
-          let prev.event = context.event
-          let prev.candidates = []
-          let prev.complete_position = getpos('.')
-
-          call deoplete#mapping#_set_completeopt()
-          call feedkeys("\<C-x>\<C-o>", 'in')
-          return
-        endif
+            call deoplete#mapping#_set_completeopt()
+            call feedkeys("\<C-x>\<C-o>", 'in')
+            return
+          endif
+        endfor
       endfor
-    endfor
+    endif
   endif
 
   call deoplete#util#rpcnotify(
