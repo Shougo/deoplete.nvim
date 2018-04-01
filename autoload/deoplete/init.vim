@@ -4,9 +4,6 @@
 " License: MIT license
 "=============================================================================
 
-let s:dp_main = fnamemodify(expand('<sfile>'), ':h:h:h')
-      \ . '/rplugin/python3/deoplete/dp_main.py'
-
 if !exists('s:is_enabled')
   let s:is_enabled = 0
 endif
@@ -247,7 +244,6 @@ function! deoplete#init#_context(event, sources) abort
 
   return {
         \ 'changedtick': b:changedtick,
-        \ 'dp_main': s:dp_main,
         \ 'event': event,
         \ 'input': input,
         \ 'is_windows': s:is_windows,
