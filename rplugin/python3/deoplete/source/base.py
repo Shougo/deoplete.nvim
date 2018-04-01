@@ -49,7 +49,7 @@ class Base(LoggingMixin):
             error_vim(self.vim, expr)
 
     @abstractmethod
-    def gather_candidate(self, context):
+    def gather_candidates(self, context):
         pass
 
     def on_event(self, context):
