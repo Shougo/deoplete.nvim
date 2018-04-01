@@ -364,14 +364,6 @@ g:deoplete#omni#functions
 b:deoplete_omni_functions
 		Buffer local variable of |g:deoplete#omni#functions|.
 
-					*g:deoplete#tag#cache_limit_size*
-g:deoplete#tag#cache_limit_size
-		It sets file size to make a cache of a file in
-		tag source.  If a tag file is bigger than this size,
-		deoplete does not make the tag file cache.
-
-		Default value: 500000
-
 				*g:deoplete#buffer#require_same_filetype*
 g:deoplete#buffer#require_same_filetype
 		If it is zero, deoplete collects keywords from buffers of any
@@ -594,6 +586,12 @@ tag							*deoplete-source-tag*
 		Note: It only supports UTF-8 encoding tag file.
 
 		rank: 100
+
+		Source custom variables:
+		cache_limit_size
+				If a tag file is bigger than this size,
+				deoplete does not make the tag file cache.
+				(default: 500000)
 
 file							*deoplete-source-file*
 		This source collects keywords from local files. Specifically,
@@ -1340,7 +1338,7 @@ A: If it is enabled, Neovim will enable and load deoplete in startup. It
 Q: |deoplete-source-tag| does not work.
    https://github.com/Shougo/deoplete.nvim/issues/309
 
-A: Please increase |g:deoplete#tag#cache_limit_size| value.
+A: Please increase cache_limit_size value in tag source.
 
 Q: deoplete cannot complete filename after "=".
 
@@ -1629,9 +1627,10 @@ A: https://github.com/zchee/deoplete-jedi/issues/35
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
 
-2018.04.04
+2018.04.01
 * Remove "g:deoplete#file#enable_buffer_path" variable.
 * Remove "g:deoplete#max_abbr_width" and "g:deoplete#max_menu_width".
+* Remove "g:deoplete#tag#cache_limit_size" variable.
 
 2018.03.18
 * limit attribute in source is removed.

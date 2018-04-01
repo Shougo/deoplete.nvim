@@ -20,10 +20,9 @@ class Source(Base):
 
         self.name = 'tag'
         self.mark = '[T]'
-
-    def on_init(self, context):
-        self._limit = context['vars'].get(
-            'deoplete#tag#cache_limit_size', 500000)
+        self.vars = {
+            'cache_limit_size': 500000,
+        }
 
     def gather_candidates(self, context):
         candidates = []
@@ -66,7 +65,7 @@ class Source(Base):
         return [x for x in self.vim.call(
                 'map', self.vim.call('tagfiles') + include_files,
                 'fnamemodify(v:val, ":p")')
-                if exists(x) and getsize(x) < self._limit]
+                if exists(x) and getsize(x) < self.vars['cache_limit_size']]
 
 
 def binary_search_lines_by_prefix(prefix, filename):
