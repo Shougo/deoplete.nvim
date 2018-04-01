@@ -203,22 +203,6 @@ g:deoplete#num_processes
 
 		Default value: 1 (Windows) or 4 (Others)
 
-						*g:deoplete#max_abbr_width*
-g:deoplete#max_abbr_width
-		If the candidate abbr length exceeds the length it will be cut
-		down.  If it is less than equal 0, this feature will be
-		disabled.
-
-		Default value: 80
-
-						*g:deoplete#max_menu_width*
-g:deoplete#max_menu_width
-		If the candidate menu length exceeds the length it will be cut
-		down.  If it is less than equal 0, this feature will be
-		disabled.
-
-		Default value: 40
-
 					*g:deoplete#auto_complete_delay*
 g:deoplete#auto_complete_delay
 		Delay the completion after input in milliseconds.
@@ -796,7 +780,7 @@ filetypes	(List[str])			(Optional)
 					*deoplete-source-attribute-rank*
 rank		(Integer)			(Optional)
 		Source priority.  Higher values imply higher priority.
-		If you omit it, it is set 100.
+		If you omit it, it is set "100" value.
 		Note: It is high priority than match position.
 
 				*deoplete-source-attribute-min_pattern_length*
@@ -821,7 +805,7 @@ max_abbr_width
 		down.
 		It it is less than or equal 0, it will be disabled.
 
-		If you omit it, it is set |g:deoplete#max_abbr_width| value.
+		If you omit it, it is set "80" value.
 
 				*deoplete-source-attribute-max_kind_width*
 max_kind_width
@@ -830,7 +814,7 @@ max_kind_width
 		down.
 		It it is less than or equal 0, it will be disabled.
 
-		If you omit it, it is set |g:deoplete#max_menu_width| value.
+		If you omit it, it is set "40" value.
 
 				*deoplete-source-attribute-max_menu_width*
 max_menu_width
@@ -839,7 +823,7 @@ max_menu_width
 		down.
 		It it is less than or equal 0, it will be disabled.
 
-		If you omit it, it is set |g:deoplete#max_menu_width| value.
+		If you omit it, it is set "40" value.
 
 				*deoplete-source-attribute-input_pattern*
 input_pattern
@@ -1647,6 +1631,7 @@ COMPATIBILITY					*deoplete-compatibility*
 
 2018.04.04
 * Remove "g:deoplete#file#enable_buffer_path" variable.
+* Remove "g:deoplete#max_abbr_width" and "g:deoplete#max_menu_width".
 
 2018.03.18
 * limit attribute in source is removed.
