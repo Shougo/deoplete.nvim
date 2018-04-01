@@ -364,13 +364,6 @@ g:deoplete#omni#functions
 b:deoplete_omni_functions
 		Buffer local variable of |g:deoplete#omni#functions|.
 
-				*g:deoplete#buffer#require_same_filetype*
-g:deoplete#buffer#require_same_filetype
-		If it is zero, deoplete collects keywords from buffers of any
-		filetype
-
-		Default value: 1
-
 ------------------------------------------------------------------------------
 FUNCTIONS 						*deoplete-functions*
 
@@ -575,6 +568,12 @@ buffer						*deoplete-source-buffer*
 		you want to edit the large files(like Vim 22000 lines eval.c).
 
 		rank: 100
+
+		Source custom variables:
+		require_same_filetype
+				If it is False, deoplete collects keywords from
+				buffers of any filetype
+				(default: True)
 
 member						*deoplete-source-member*
 		It collects members from current buffer.
@@ -1631,6 +1630,7 @@ COMPATIBILITY					*deoplete-compatibility*
 * Remove "g:deoplete#file#enable_buffer_path" variable.
 * Remove "g:deoplete#max_abbr_width" and "g:deoplete#max_menu_width".
 * Remove "g:deoplete#tag#cache_limit_size" variable.
+* Remove "g:deoplete#buffer#require_same_filetype" variable.
 
 2018.03.18
 * limit attribute in source is removed.
