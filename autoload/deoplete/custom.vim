@@ -50,7 +50,7 @@ function! deoplete#custom#var(source_name, var_name, value) abort
   for key in split(a:source_name, '\s*,\s*')
     let custom_source = deoplete#custom#get_source_var(key)
     let vars = get(custom_source, 'vars', {})
-    let vars[var_name] = value
+    let vars[a:var_name] = a:value
     call deoplete#custom#source(key, 'vars', vars)
   endfor
 endfunction
