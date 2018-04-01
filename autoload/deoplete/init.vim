@@ -172,12 +172,12 @@ function! deoplete#init#_variables() abort
         \ 'g:deoplete#ignore_sources', {})
 
   " Source variables
-  call deoplete#util#set_default(
-        \ 'g:deoplete#omni#input_patterns', {})
-  call deoplete#util#set_default(
-        \ 'g:deoplete#omni#functions', {})
   call s:check_custom_var('file',
         \ 'g:deoplete#file#enable_buffer_path', 'enable_buffer_path')
+  call s:check_custom_var('omni',
+        \ 'g:deoplete#omni#input_patterns', 'input_patterns')
+  call s:check_custom_var('omni',
+        \ 'g:deoplete#omni#functions', 'functions')
 
   " Initialize default keyword pattern.
   call deoplete#util#set_pattern(

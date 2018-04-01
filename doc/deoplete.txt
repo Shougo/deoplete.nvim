@@ -298,57 +298,6 @@ b:deoplete_ignore_sources
 		Buffer local variable of |g:deoplete#ignore_sources|.
 		It must be the source names list.
 
-					*g:deoplete#omni#input_patterns*
-g:deoplete#omni#input_patterns
-		This dictionary records keyword patterns to Omni completion.
-		This is appointed in regular expression string or list every
-		file type.
-		If this pattern is not defined or empty pattern, deoplete
-		does not call 'omnifunc'.
-		Note: Some omnifuncs which moves the cursor is not worked.
-		For example, htmlcomplete, phpcomplete, etc...
-		Note: It is Python3 regexp.
->
-		let g:deoplete#omni#input_patterns = {}
-		let g:deoplete#omni#input_patterns.ruby =
-		\ ['[^. *\t]\.\w*', '[a-zA-Z_]\w*::']
-		let g:deoplete#omni#input_patterns.java = '[^. *\t]\.\w*'
-		let g:deoplete#omni#input_patterns.php =
-		\ '\w+|[^. \t]->\w*|\w+::\w*'
-<
-		Default value: defined in omni.py.
-
-					*b:deoplete_omni_input_patterns*
-b:deoplete_omni_input_patterns
-		Buffer local variable of |g:deoplete#omni#input_patterns|.
-
-						*g:deoplete#omni#functions*
-g:deoplete#omni#functions
-		It defines a dictionary for omni completion with deoplete:
-		- `keys` consist of filetypes;
-		- `values` consist of either a string containing a single
-		  omnifunc or a list with omnifuncs to be used for each
-		  filetype.
-		In case there is no omnifunc setting for the current filetype
-		in the dictionary, deoplete will use the 'omnifunc' setting.
->
-		let g:deoplete#omni#functions = {}
-		let g:deoplete#omni#functions.ruby = 'rubycomplete#Complete'
-		let g:deoplete#omni#functions.javascript = [
-		  \ 'tern#Complete',
-		  \ 'jspc#omni'
-		  \]
-<
-		Note: It supports context filetype feature instead of
-		'omnifunc'.  You can call the omnifunc in the embedded
-		language.
-		Note: For omnifunctions to work with deoplete, it's necessary
-		to setup the g:deoplete#omni#input_patterns setting.
-
-						*b:deoplete_omni_functions*
-b:deoplete_omni_functions
-		Buffer local variable of |g:deoplete#omni#functions|.
-
 ------------------------------------------------------------------------------
 FUNCTIONS 						*deoplete-functions*
 
@@ -608,6 +557,48 @@ omni							*deoplete-source-omni*
 
 		rank: 500
 
+		Source custom variables:
+		input_patterns
+				This dictionary records keyword patterns to
+				Omni completion.  This is appointed in regular
+				expression string or list every file type.  If
+				this pattern is not defined or empty pattern,
+				deoplete does not call 'omnifunc'.
+				Note: Some omnifuncs which moves the cursor is
+				not worked.  For example, htmlcomplete,
+				phpcomplete, etc...
+				Note: It is Python3 regexp.
+				(default: See in omni.py)
+>
+		call deoplete#custom#source('omni', 'input_patterns', {
+		    \ 'ruby': ['[^. *\t]\.\w*', '[a-zA-Z_]\w*::'],
+		    \ 'java': '[^. *\t]\.\w*',
+		    \ 'php': '\w+|[^. \t]->\w*|\w+::\w*',
+		    \})
+<
+		functions
+				It defines a dictionary for omni completion
+				with deoplete:
+				- `keys` consist of filetypes;
+				- `values` consist of either a string
+				  containing a single omnifunc or a list with
+				  omnifuncs to be used for each filetype.
+				In case there is no omnifunc setting for the
+				current filetype in the dictionary, deoplete
+				will use the 'omnifunc' setting.
+				Note: It supports context filetype feature
+				instead of 'omnifunc'.  You can call the
+				omnifunc in the embedded language.
+				Note: For omnifunctions to work with deoplete,
+				it's necessary to setup the "input_patterns"
+				setting.
+				(default: {})
+>
+		call deoplete#custom#source('omni', 'functions', {
+		    \ 'ruby':  'rubycomplete#Complete',
+		    \ 'javascript': ['tern#Complete', 'jspc#omni']
+		    \})
+<
 dictionary					*deoplete-source-dictionary*
 		This source collects |g:deoplete#keyword_patterns| keywords
 		from 'dictionary'. Note: it uses buffer-local 'dictionary'
@@ -1500,20 +1491,20 @@ A: You must install |context_filetype| plugin.
    And you must set |g:context_filetype#same_filetypes| variable.
 
 Q: What is the difference of |g:deoplete#omni_patterns| and
-   |g:deoplete#omni#input_patterns| ?
+   "input_patterns" in omni source?
 
 A: |g:deoplete#omni_patterns| offers:
     - can call all omni functions
     - called by Vim
     - Vim regexp
 
-   |g:deoplete#omni#input_patterns| offers:
+   "input_patterns" offers:
     - cannot call some omni functions
     - can use deoplete features
     - called by deoplete
     - Python3 regexp
 
-   You should use |g:deoplete#omni#input_patterns| if possible.
+   You should use "input_patterns" if possible.
 
 Q: Is there a way to control the colors used for popup menu using highlight
    groups?
@@ -1564,10 +1555,11 @@ A: You should install deoplete-jedi instead of jedi-vim.
 
 Q: I want to use Java script omnifunc.
 
-A: Please set |g:deoplete#omni#input_patterns| manually. >
+A: Please set "input_patterns" manually. >
 
-       let g:deoplete#omni#input_patterns = {}
-       let g:deoplete#omni#input_patterns.javascript = '[^. *\t]\.\w*'
+       call deoplete#custom#source('omni', 'input_patterns', {
+       \ 'javascript': '[^. *\t]\.\w*',
+       \ )
 
 Q: I want to use "vim-lua-ftplugin".
    https://github.com/xolox/vim-lua-ftplugin
@@ -1579,8 +1571,9 @@ A: Please set the config as below.  >
        let g:lua_complete_dynamic = 0
        let g:lua_define_completion_mappings = 0
 
-       let g:deoplete#omni#functions.lua = 'xolox#lua#omnifunc'
-       "let g:deoplete#omni#functions.lua = 'xolox#lua#completefunc'
+       call deoplete#custom#source('omni', 'functions', {
+       \ 'lua': 'xolox#lua#omnifunc',
+       \ })
 
 Q: I want to complete AAA using deoplete.
 
@@ -1628,6 +1621,8 @@ COMPATIBILITY					*deoplete-compatibility*
 * Remove "g:deoplete#tag#cache_limit_size" variable.
 * Remove "g:deoplete#buffer#require_same_filetype" variable.
 * Remove "g:deoplete#member#prefix_patterns" variable.
+* Remove "g:deoplete#omni#input_patterns" variable.
+* Remove "g:deoplete#omni#functions" variable.
 
 2018.03.18
 * limit attribute in source is removed.

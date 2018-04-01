@@ -8,8 +8,7 @@ from .base import Base
 
 import re
 from deoplete.util import (
-    get_buffer_config, convert2list,
-    parse_buffer_pattern, set_pattern, getlines)
+    convert2list, parse_buffer_pattern, set_pattern, getlines)
 
 
 class Source(Base):
@@ -38,13 +37,14 @@ class Source(Base):
         set_pattern(prefix_patterns,
                     'lua', ['\.', ':'])
         self.vars = {
-            'prefix_patterns': prefix_patterns
+            'prefix_patterns': prefix_patterns,
         }
 
     def get_complete_position(self, context):
         # Check member prefix pattern.
         for prefix_pattern in convert2list(
-                self.get_filetype_var(context, 'prefix_patterns')):
+                self.get_filetype_var(
+                    context['filetype'], 'prefix_patterns')):
             m = re.search(self._object_pattern + prefix_pattern + r'\w*$',
                           context['input'])
             if m is None or prefix_pattern == '':
