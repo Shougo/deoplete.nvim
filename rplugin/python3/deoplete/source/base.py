@@ -35,6 +35,9 @@ class Base(LoggingMixin):
         self.disabled_syntaxes = []
         self.events = None
         self.vars = {}
+        self.max_abbr_width = 80
+        self.max_kind_width = 40
+        self.max_menu_width = 40
 
     def get_complete_position(self, context):
         m = re.search('(?:' + context['keyword_patterns'] + ')$',
