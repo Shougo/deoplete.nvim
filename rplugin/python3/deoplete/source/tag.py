@@ -69,78 +69,92 @@ class Source(Base):
                 if exists(x) and getsize(x) < self._limit]
 
 
-# Based on cm_tags.py in nvim-completion-manager
 def binary_search_lines_by_prefix(prefix, filename):
 
     with open(filename, 'r', errors='ignore') as f:
+        # to properly keep bounds of this loop it's important to understand
+        # *exactly* what our variables mean.
+        #
+        # to make sure we process only full lines, we are going to always seek
+        # to file position (x - 1), then skip partial or full line found there.
+        # except for position 0 which we know belongs to full 1st line.
 
-        def yield_results():
-            while True:
-                line = f.readline()
-                if not line:
-                    return
-                if line.startswith(prefix):
-                    yield line
-                else:
-                    return
+        # each line (except 1st one) will have multiple corresponding seeking
+        # positions.
+        #
+        # we are interested in finding such a seeking position for the first
+        # line in the file that matches our prefix. (let's call it target)
 
+        # begin - guaranteed not to exceed our target position
+        # e.g. (begin <= target) at any time.
         begin = 0
-        # Seek to the end
+
+        # end - guaranteed to be higher then at least one seeking position for
+        # the target. e.g. (target < end) at any time.
+        # Note that this means it can be below the actual target line
         f.seek(0, os.SEEK_END)
         end = f.tell()
 
-        while begin < end:
-            middle_cursor = int((begin + end) / 2)
+        while end > begin + 1:
 
-            f.seek(middle_cursor, os.SEEK_SET)
+            # pos - current seeking position
+            pos = int((begin + end) / 2) - 1
+
+            if pos == 0:
+                f.seek(0, os.SEEK_SET)
+            else:
+                f.seek(pos - 1, os.SEEK_SET)
+                f.readline() # skip partial line
+
+            # l1 - exact position of the current full line
+            l1 = f.tell() # exact start of current line
+
+            line = f.readline()
+
+            l2 = f.tell() # start of next line (or end of file)
+
+            if l2 == 1:
+                # this is a corner case of a single empty first line.
+                # we mast advance here or we'll have an endless loop
+                begin = 1
+                next
+
+            if line:
+                key = line[:len(prefix)]
+
+                if key < prefix:
+                    # we are strictly before the target line.
+                    # so it starts at least from l2
+                    begin = max(begin, l2)
+
+                elif key > prefix:
+                    # we are strictly past the target line.
+                    # our target seeking position is less than current pos
+                    end = pos
+                else:
+                    # current line is a possible target.  it's reachable from
+                    # current 'pos', so `target pos is <= current pos`, or
+                    # `target post < current post + 1`
+                    end = min(end, pos + 1);
+
+            else:
+                # we reached end of file. our current seeking position doesn't
+                # correspond to any line
+                end = min(end, pos)
+
+
+        # now we are at a *seeking position* for the target line. need to skip
+        # to the actual line
+        if begin == 0:
+            f.seek(0, os.SEEK_SET)
+        else:
+            f.seek(begin - 1, os.SEEK_SET)
             f.readline()
 
-            line1 = f.readline()
-
-            line2pos = f.tell()
-            line2 = f.readline()
-
-            line2end = f.tell()
-
-            key1 = '~~'
-            # If f.readline() returns an empty string, the end of the file has
-            # been reached
-            if line1:
-                key1 = line1[:len(prefix)]
-
-            key2 = '~~'
-            if line2:
-                key2 = line2[:len(prefix)]
-
-            if key1 >= prefix:
-                if line2pos < end:
-                    end = line2pos
-                else:
-                    # (begin) ... | line0 int((begin+end)/2) | line1 (end) |
-                    # line2 |
-                    #
-                    # This assignment push the middle_cursor forward, it may
-                    # also result in a case where begin==end
-                    #
-                    # Do not use end = line1pos, may results in infinite loop
-                    end = int((begin + end) / 2)
-                    if end == begin:
-                        if key1 == prefix:
-                            # Find success
-                            # Seek to the start
-                            f.seek(line2pos, os.SEEK_SET)
-                            yield from yield_results()
-                        return
-            elif key2 == prefix:
-                # Find success
-                # key1 < prefix  && next line key2 == prefix
-                # Seek to the start
-                f.seek(line2pos, os.SEEK_SET)
-                yield from yield_results()
-                return
-            elif key2 < prefix:
-                begin = line2end
-                # If begin==end, then exit the loop
+        while True:
+            line = f.readline()
+            if line.startswith(prefix):
+                yield line
             else:
-                # key1 < prefix &&  next line key2 > prefix here, not found
-                return
+                break
+        return
