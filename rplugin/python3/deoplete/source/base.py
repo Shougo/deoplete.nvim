@@ -11,29 +11,30 @@ from deoplete.util import debug, error_vim
 
 
 class Base(LoggingMixin):
+    description = ''
+    mark = ''
+    max_pattern_length = 80
+    input_pattern = ''
+    matchers = ['matcher_fuzzy']
+    sorters = ['sorter_rank']
+    converters = [
+        'converter_remove_overlap',
+        'converter_truncate_abbr',
+        'converter_truncate_kind',
+        'converter_truncate_menu',
+    ]
+    filetypes = []
+    debug_enabled = False
+    is_bytepos = False
+    is_initialized = False
+    is_volatile = False
+    is_silent = False
+    rank = 100
+    disabled_syntaxes = []
+    events = None
 
     def __init__(self, vim):
         self.vim = vim
-        self.description = ''
-        self.mark = ''
-        self.max_pattern_length = 80
-        self.input_pattern = ''
-        self.matchers = ['matcher_fuzzy']
-        self.sorters = ['sorter_rank']
-        self.converters = [
-            'converter_remove_overlap',
-            'converter_truncate_abbr',
-            'converter_truncate_kind',
-            'converter_truncate_menu']
-        self.filetypes = []
-        self.debug_enabled = False
-        self.is_bytepos = False
-        self.is_initialized = False
-        self.is_volatile = False
-        self.is_silent = False
-        self.rank = 100
-        self.disabled_syntaxes = []
-        self.events = None
 
     def get_complete_position(self, context):
         m = re.search('(?:' + context['keyword_patterns'] + ')$',
