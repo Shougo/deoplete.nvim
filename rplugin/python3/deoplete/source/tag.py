@@ -104,14 +104,11 @@ def binary_search_lines_by_prefix(prefix, filename):
                 f.seek(0, os.SEEK_SET)
             else:
                 f.seek(pos - 1, os.SEEK_SET)
-                f.readline() # skip partial line
-
-            # l1 - exact position of the current full line
-            l1 = f.tell() # exact start of current line
+                f.readline()  # skip partial line
 
             line = f.readline()
 
-            l2 = f.tell() # start of next line (or end of file)
+            l2 = f.tell()  # start of next line (or end of file)
 
             if l2 == 1:
                 # this is a corner case of a single empty first line.
@@ -135,13 +132,12 @@ def binary_search_lines_by_prefix(prefix, filename):
                     # current line is a possible target.  it's reachable from
                     # current 'pos', so `target pos is <= current pos`, or
                     # `target post < current post + 1`
-                    end = min(end, pos + 1);
+                    end = min(end, pos + 1)
 
             else:
                 # we reached end of file. our current seeking position doesn't
                 # correspond to any line
                 end = min(end, pos)
-
 
         # now we are at a *seeking position* for the target line. need to skip
         # to the actual line
