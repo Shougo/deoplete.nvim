@@ -1,0 +1,18 @@
+sudo: false
+dist: trusty
+
+language: python
+
+python:
+    - 3.5
+    - 3.6
+
+install:
+    # Install Neovim via Gist
+    # https://gist.github.com/lambdalisue/0f461f6a91743895394e63a9a1c65232
+    - curl -sL https://gist.githubusercontent.com/lambdalisue/0f461f6a91743895394e63a9a1c65232/raw/install_nvim_for_ci.sh | bash
+    - make install
+
+script:
+    - PATH="$HOME/neovim/bin:$PATH" make test
+    - make lint
