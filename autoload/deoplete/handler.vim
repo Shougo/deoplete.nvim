@@ -123,33 +123,8 @@ function! s:completion_begin(event) abort
   endif
 
   let context = deoplete#init#_context(a:event, [])
-  if g:deoplete#_prev_completion.event !=# 'Manual'
-    " Call omni completion
-    let prev = g:deoplete#_prev_completion
-
-    for filetype in context.filetypes
-      for pattern in deoplete#util#convert2list(
-            \ deoplete#util#get_buffer_config(filetype,
-            \ 'b:deoplete_omni_patterns',
-            \ 'g:deoplete#omni_patterns',
-            \ 'g:deoplete#_omni_patterns'))
-        let blacklist = ['LanguageClient#complete']
-        if pattern !=# '' && &l:omnifunc !=# ''
-              \ && context.input =~# '\%('.pattern.'\)$'
-              \ && index(blacklist, &l:omnifunc) < 0
-              \ && prev.complete_position !=# getpos('.')
-          let g:deoplete#_context.candidates = []
-
-          let prev.event = context.event
-          let prev.candidates = []
-          let prev.complete_position = getpos('.')
-
-          call deoplete#mapping#_set_completeopt()
-          call feedkeys("\<C-x>\<C-o>", 'in')
-          return
-        endif
-      endfor
-    endfor
+  if s:check_omnifunc(context)
+    return
   endif
 
   call deoplete#util#rpcnotify(
@@ -202,6 +177,36 @@ function! s:is_skip_text(event) abort
   return (!pumvisible() && virtcol('.') != displaywidth)
         \ || (a:event !=# 'Manual' && input !=# ''
         \     && index(skip_chars, input[-1:]) >= 0)
+endfunction
+function! s:check_omnifunc(context) abort
+  let prev = g:deoplete#_prev_completion
+  let blacklist = ['LanguageClient#complete']
+  if prev.event ==# 'Manual'
+        \ || &l:omnifunc ==# ''
+        \ || index(blacklist, &l:omnifunc) >= 0
+        \ || prev.complete_position ==# getpos('.')
+    return
+  endif
+
+  for filetype in a:context.filetypes
+    for pattern in deoplete#util#convert2list(
+          \ deoplete#util#get_buffer_config(filetype,
+          \ 'b:deoplete_omni_patterns',
+          \ 'g:deoplete#omni_patterns',
+          \ 'g:deoplete#_omni_patterns'))
+      if pattern !=# '' && a:context.input =~# '\%('.pattern.'\)$'
+        let g:deoplete#_context.candidates = []
+
+        let prev.event = a:context.event
+        let prev.candidates = []
+        let prev.complete_position = getpos('.')
+
+        call deoplete#mapping#_set_completeopt()
+        call feedkeys("\<C-x>\<C-o>", 'in')
+        return 1
+      endif
+    endfor
+  endfor
 endfunction
 
 function! s:define_on_event(event) abort
