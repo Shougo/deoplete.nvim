@@ -16,12 +16,12 @@ function! deoplete#handler#_init() abort
     call s:define_on_event(event)
   endfor
 
-  call s:define_completion_begin('TextChangedI')
+  call s:define_completion_via_timer('TextChangedI')
   if g:deoplete#enable_on_insert_enter
-    call s:define_completion_begin('InsertEnter')
+    call s:define_completion_via_timer('InsertEnter')
   endif
   if g:deoplete#enable_refresh_always
-    call s:define_completion_begin('InsertCharPre')
+    call s:define_completion_via_timer('InsertCharPre')
   endif
 
   " Note: Vim 8 GUI is broken
@@ -37,7 +37,7 @@ function! deoplete#handler#_init() abort
   endif
 endfunction
 
-function! s:do_complete(timer) abort
+function! deoplete#handler#_do_complete() abort
   let context = g:deoplete#_context
   let event = get(context, 'event', '')
   let modes = (event ==# 'InsertEnter') ? ['n', 'i'] : ['i']
@@ -73,13 +73,14 @@ function! s:do_complete(timer) abort
   endif
 endfunction
 
-function! deoplete#handler#_completion_timer_start() abort
+function! s:completion_timer_start(event) abort
   if exists('s:completion_timer')
     call s:completion_timer_stop()
   endif
 
   let delay = max([20, g:deoplete#auto_complete_delay])
-  let s:completion_timer = timer_start(delay, function('s:do_complete'))
+  " TODO: wrapper instead of lambda?!
+  let s:completion_timer = timer_start(delay, {-> s:completion_begin(a:event)})
 endfunction
 function! s:completion_timer_stop() abort
   if !exists('s:completion_timer')
@@ -217,13 +218,13 @@ function! s:define_on_event(event) abort
   execute 'autocmd deoplete' a:event
         \ '* call deoplete#send_event('.string(a:event).')'
 endfunction
-function! s:define_completion_begin(event) abort
+function! s:define_completion_via_timer(event) abort
   if !exists('##' . a:event)
     return
   endif
 
   execute 'autocmd deoplete' a:event
-        \ '* call s:completion_begin('.string(a:event).')'
+        \ '* call s:completion_timer_start('.string(a:event).')'
 endfunction
 
 function! s:on_insert_leave() abort

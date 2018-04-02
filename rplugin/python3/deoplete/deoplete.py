@@ -99,7 +99,7 @@ class Deoplete(logger.LoggingMixin):
             'input': context['input'],
             'is_async': is_async,
         }
-        self._vim.call('deoplete#handler#_completion_timer_start')
+        self._vim.call('deoplete#handler#_do_complete')
 
         self.debug('completion_end: %s', context['input'])
 
