@@ -9,11 +9,11 @@ from deoplete.logger import LoggingMixin
 
 
 class Base(LoggingMixin):
-    name = 'base'
-    description = ''
 
     def __init__(self, vim):
         self.vim = vim
+        self.name = 'base'
+        self.description = ''
 
     @abstractmethod
     def filter(self, context):
