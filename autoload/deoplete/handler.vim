@@ -79,8 +79,8 @@ function! s:completion_timer_start(event) abort
   endif
 
   let delay = max([20, g:deoplete#auto_complete_delay])
-  " TODO: wrapper instead of lambda?!
-  let s:completion_timer = timer_start(delay, {-> s:completion_begin(a:event)})
+  let s:completion_timer = timer_start(
+        \ delay, {-> s:completion_begin(a:event)})
 endfunction
 function! s:completion_timer_stop() abort
   if !exists('s:completion_timer')
