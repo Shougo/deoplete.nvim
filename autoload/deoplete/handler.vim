@@ -24,9 +24,10 @@ function! deoplete#handler#_init() abort
     call s:define_completion_via_timer('InsertCharPre')
   endif
 
-  " Note: Vim 8 GUI is broken
+  " Note: Vim 8 GUI(MacVim and Win32) is broken
   " dummy timer call is needed before complete()
   if !has('nvim') && has('gui_running')
+        \ && (has('gui_macvim') || has('win32') || has('win64'))
     let s:dummy_timer = timer_start(200, {timer -> 0}, {'repeat': -1})
   endif
 
