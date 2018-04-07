@@ -34,6 +34,10 @@ class Base(LoggingMixin):
         self.rank = 100
         self.disabled_syntaxes = []
         self.events = None
+        self.vars = {}
+        self.max_abbr_width = 80
+        self.max_kind_width = 40
+        self.max_menu_width = 40
 
     def get_complete_position(self, context):
         m = re.search('(?:' + context['keyword_patterns'] + ')$',
@@ -54,3 +58,10 @@ class Base(LoggingMixin):
 
     def on_event(self, context):
         pass
+
+    def get_filetype_var(self, filetype, var_name):
+        # Todo: buffer custom vars support
+
+        var = self.vars[var_name]
+        ft = filetype if (filetype in var) else '_'
+        return var.get(ft, '')

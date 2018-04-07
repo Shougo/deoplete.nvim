@@ -29,6 +29,10 @@ function! deoplete#custom#get_source_var(source_name) abort
 endfunction
 
 function! deoplete#custom#set(source_name, option_name, value) abort
+  call deoplete#util#print_error(
+        \ 'deoplete#custom#set() is deprecated.')
+  call deoplete#util#print_error(
+        \ 'Please use deoplete#custom#source() instead.')
   return deoplete#custom#source(a:source_name, a:option_name, a:value)
 endfunction
 function! deoplete#custom#source(source_name, option_name, value) abort
@@ -40,5 +44,13 @@ function! deoplete#custom#source(source_name, option_name, value) abort
   for key in split(a:source_name, '\s*,\s*')
     let custom_source = deoplete#custom#get_source_var(key)
     let custom_source[a:option_name] = value
+  endfor
+endfunction
+function! deoplete#custom#var(source_name, var_name, value) abort
+  for key in split(a:source_name, '\s*,\s*')
+    let custom_source = deoplete#custom#get_source_var(key)
+    let vars = get(custom_source, 'vars', {})
+    let vars[a:var_name] = a:value
+    call deoplete#custom#source(key, 'vars', vars)
   endfor
 endfunction

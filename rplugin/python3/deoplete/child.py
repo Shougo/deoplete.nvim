@@ -435,15 +435,16 @@ class Child(logger.LoggingMixin):
             'input_pattern',
             ('min_pattern_length', 'deoplete#auto_complete_start_length'),
             'max_pattern_length',
-            ('max_abbr_width', 'deoplete#max_abbr_width'),
-            ('max_kind_width', 'deoplete#max_menu_width'),
-            ('max_menu_width', 'deoplete#max_menu_width'),
+            'max_abbr_width',
+            'max_kind_width',
+            'max_menu_width',
             'matchers',
             'sorters',
             'converters',
             'mark',
             'is_debug_enabled',
             'is_silent',
+            'vars',
         )
 
         for name, source in self._sources.items():
@@ -454,8 +455,13 @@ class Child(logger.LoggingMixin):
                 else:
                     default_val = None
                 source_attr = getattr(source, attr, default_val)
-                setattr(source, attr, get_custom(context['custom'],
-                                                 name, attr, source_attr))
+                custom = get_custom(context['custom'],
+                                    name, attr, source_attr)
+                if custom and isinstance(source_attr, dict):
+                    # Update values if it is dict
+                    source_attr.update(custom)
+                else:
+                    setattr(source, attr, custom)
 
     def _set_custom(self, custom):
         self._custom = custom

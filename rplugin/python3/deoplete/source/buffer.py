@@ -17,6 +17,9 @@ class Source(Base):
         self.name = 'buffer'
         self.mark = '[B]'
         self.events = ['Init', 'InsertEnter', 'BufWritePost']
+        self.vars = {
+            'require_same_filetype': True,
+        }
 
         self._limit = 1000000
         self._buffers = {}
@@ -31,8 +34,7 @@ class Source(Base):
         self.on_event(context)
 
         tab_bufnrs = self.vim.call('tabpagebuflist')
-        same_filetype = context['vars'].get(
-            'deoplete#buffer#require_same_filetype', True)
+        same_filetype = self.vars['require_same_filetype']
         return {'sorted_candidates': [
             x['candidates'] for x in self._buffers.values()
             if not same_filetype or

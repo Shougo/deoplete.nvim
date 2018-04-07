@@ -203,22 +203,6 @@ g:deoplete#num_processes
 
 		Default value: 1 (Windows) or 4 (Others)
 
-						*g:deoplete#max_abbr_width*
-g:deoplete#max_abbr_width
-		If the candidate abbr length exceeds the length it will be cut
-		down.  If it is less than equal 0, this feature will be
-		disabled.
-
-		Default value: 80
-
-						*g:deoplete#max_menu_width*
-g:deoplete#max_menu_width
-		If the candidate menu length exceeds the length it will be cut
-		down.  If it is less than equal 0, this feature will be
-		disabled.
-
-		Default value: 40
-
 					*g:deoplete#auto_complete_delay*
 g:deoplete#auto_complete_delay
 		Delay the completion after input in milliseconds.
@@ -314,94 +298,6 @@ b:deoplete_ignore_sources
 		Buffer local variable of |g:deoplete#ignore_sources|.
 		It must be the source names list.
 
-					*g:deoplete#member#prefix_patterns*
-g:deoplete#member#prefix_patterns
-		This dictionary records prefix patterns to member completion.
-		This is appointed in regular expression string or list every
-		file type.
-		If this pattern is not defined or empty pattern, deoplete
-		does not complete member candidates.
-		Note: It is Python3 regexp.
-
-		Default value: defined in member.py
-
-					*b:deoplete_member_prefix_patterns*
-b:deoplete_member_prefix_patterns
-		Buffer local variable of |g:deoplete#member#prefix_patterns|.
-
-					*g:deoplete#omni#input_patterns*
-g:deoplete#omni#input_patterns
-		This dictionary records keyword patterns to Omni completion.
-		This is appointed in regular expression string or list every
-		file type.
-		If this pattern is not defined or empty pattern, deoplete
-		does not call 'omnifunc'.
-		Note: Some omnifuncs which moves the cursor is not worked.
-		For example, htmlcomplete, phpcomplete, etc...
-		Note: It is Python3 regexp.
->
-		let g:deoplete#omni#input_patterns = {}
-		let g:deoplete#omni#input_patterns.ruby =
-		\ ['[^. *\t]\.\w*', '[a-zA-Z_]\w*::']
-		let g:deoplete#omni#input_patterns.java = '[^. *\t]\.\w*'
-		let g:deoplete#omni#input_patterns.php =
-		\ '\w+|[^. \t]->\w*|\w+::\w*'
-<
-		Default value: defined in omni.py.
-
-					*b:deoplete_omni_input_patterns*
-b:deoplete_omni_input_patterns
-		Buffer local variable of |g:deoplete#omni#input_patterns|.
-
-						*g:deoplete#omni#functions*
-g:deoplete#omni#functions
-		It defines a dictionary for omni completion with deoplete:
-		- `keys` consist of filetypes;
-		- `values` consist of either a string containing a single
-		  omnifunc or a list with omnifuncs to be used for each
-		  filetype.
-		In case there is no omnifunc setting for the current filetype
-		in the dictionary, deoplete will use the 'omnifunc' setting.
->
-		let g:deoplete#omni#functions = {}
-		let g:deoplete#omni#functions.ruby = 'rubycomplete#Complete'
-		let g:deoplete#omni#functions.javascript = [
-		  \ 'tern#Complete',
-		  \ 'jspc#omni'
-		  \]
-<
-		Note: It supports context filetype feature instead of
-		'omnifunc'.  You can call the omnifunc in the embedded
-		language.
-		Note: For omnifunctions to work with deoplete, it's necessary
-		to setup the g:deoplete#omni#input_patterns setting.
-
-						*b:deoplete_omni_functions*
-b:deoplete_omni_functions
-		Buffer local variable of |g:deoplete#omni#functions|.
-
-					*g:deoplete#file#enable_buffer_path*
-g:deoplete#file#enable_buffer_path
-		If it is 1, file source complete the files from the buffer
-		path instead of the current directory.
-
-		Default value: 0
-
-					*g:deoplete#tag#cache_limit_size*
-g:deoplete#tag#cache_limit_size
-		It sets file size to make a cache of a file in
-		tag source.  If a tag file is bigger than this size,
-		deoplete does not make the tag file cache.
-
-		Default value: 500000
-
-				*g:deoplete#buffer#require_same_filetype*
-g:deoplete#buffer#require_same_filetype
-		If it is zero, deoplete collects keywords from buffers of any
-		filetype
-
-		Default value: 1
-
 ------------------------------------------------------------------------------
 FUNCTIONS 						*deoplete-functions*
 
@@ -428,11 +324,6 @@ deoplete#disable()
 deoplete#toggle()
 		Toggle deoplete auto completion.
 		Note: It changes the global state.
-
-						*deoplete#custom#set()*
-deoplete#custom#set({source-name}, {option-name}, {value})
-		It is the deprecated option.
-		Please use |deoplete#custom#source()| instead.
 
 						*deoplete#custom#source()*
 deoplete#custom#source({source-name}, {option-name}, {value})
@@ -489,6 +380,12 @@ deoplete#custom#source({source-name}, {option-name}, {value})
 		" call deoplete#enable_logging('DEBUG', 'deoplete.log')
 		" call deoplete#custom#source('jedi', 'is_debug_enabled', 1)
 <
+							*deoplete#custom#var()*
+deoplete#custom#var({source-name}, {var-name}, {value})
+		Set {source-name} source specialized variable {variable-name}
+		to {value}.  You may specify multiple sources with the
+		separator "," in {source-name}.
+
 						*deoplete#enable_logging()*
 deoplete#enable_logging({level}, {logfile})
 		Enable logging for debugging purposes.
@@ -606,16 +503,39 @@ buffer						*deoplete-source-buffer*
 
 		rank: 100
 
+		Source custom variables:
+		require_same_filetype
+				If it is False, deoplete collects keywords from
+				buffers of any filetype
+				(default: True)
+
 member						*deoplete-source-member*
 		It collects members from current buffer.
 
 		rank: 100
+
+		Source custom variables:
+		prefix_patterns
+				This dictionary records prefix patterns to
+				member completion.  This is appointed in
+				regular expression string or list every file
+				type.  If this pattern is not defined or
+				empty pattern, deoplete does not complete
+				member candidates.
+				Note: It is Python3 regexp.
+				(default: See in member.py)
 
 tag							*deoplete-source-tag*
 		It collects keywords from |ctags| files.
 		Note: It only supports UTF-8 encoding tag file.
 
 		rank: 100
+
+		Source custom variables:
+		cache_limit_size
+				If a tag file is bigger than this size,
+				deoplete does not make the tag file cache.
+				(default: 500000)
 
 file							*deoplete-source-file*
 		This source collects keywords from local files. Specifically,
@@ -624,12 +544,61 @@ file							*deoplete-source-file*
 
 		rank: 150
 
+		Source custom variables:
+		enable_buffer_path
+				If it is True, file source complete the files
+				from the buffer path instead of the current
+				directory.
+				(default: False)
+
 omni							*deoplete-source-omni*
 		This source collects keywords from 'omnifunc'.
 		Note: It is not asynchronous.
 
 		rank: 500
 
+		Source custom variables:
+		input_patterns
+				This dictionary records keyword patterns to
+				Omni completion.  This is appointed in regular
+				expression string or list every file type.  If
+				this pattern is not defined or empty pattern,
+				deoplete does not call 'omnifunc'.
+				Note: Some omnifuncs which moves the cursor is
+				not worked.  For example, htmlcomplete,
+				phpcomplete, etc...
+				Note: It is Python3 regexp.
+				(default: See in omni.py)
+>
+		call deoplete#custom#source('omni', 'input_patterns', {
+		    \ 'ruby': ['[^. *\t]\.\w*', '[a-zA-Z_]\w*::'],
+		    \ 'java': '[^. *\t]\.\w*',
+		    \ 'php': '\w+|[^. \t]->\w*|\w+::\w*',
+		    \})
+<
+		functions
+				It defines a dictionary for omni completion
+				with deoplete:
+				- `keys` consist of filetypes;
+				- `values` consist of either a string
+				  containing a single omnifunc or a list with
+				  omnifuncs to be used for each filetype.
+				In case there is no omnifunc setting for the
+				current filetype in the dictionary, deoplete
+				will use the 'omnifunc' setting.
+				Note: It supports context filetype feature
+				instead of 'omnifunc'.  You can call the
+				omnifunc in the embedded language.
+				Note: For omnifunctions to work with deoplete,
+				it's necessary to setup the "input_patterns"
+				setting.
+				(default: {})
+>
+		call deoplete#custom#source('omni', 'functions', {
+		    \ 'ruby':  'rubycomplete#Complete',
+		    \ 'javascript': ['tern#Complete', 'jspc#omni']
+		    \})
+<
 dictionary					*deoplete-source-dictionary*
 		This source collects |g:deoplete#keyword_patterns| keywords
 		from 'dictionary'. Note: it uses buffer-local 'dictionary'
@@ -795,7 +764,7 @@ filetypes	(List[str])			(Optional)
 					*deoplete-source-attribute-rank*
 rank		(Integer)			(Optional)
 		Source priority.  Higher values imply higher priority.
-		If you omit it, it is set 100.
+		If you omit it, it is set "100" value.
 		Note: It is high priority than match position.
 
 				*deoplete-source-attribute-min_pattern_length*
@@ -820,7 +789,7 @@ max_abbr_width
 		down.
 		It it is less than or equal 0, it will be disabled.
 
-		If you omit it, it is set |g:deoplete#max_abbr_width| value.
+		If you omit it, it is set "80" value.
 
 				*deoplete-source-attribute-max_kind_width*
 max_kind_width
@@ -829,7 +798,7 @@ max_kind_width
 		down.
 		It it is less than or equal 0, it will be disabled.
 
-		If you omit it, it is set |g:deoplete#max_menu_width| value.
+		If you omit it, it is set "40" value.
 
 				*deoplete-source-attribute-max_menu_width*
 max_menu_width
@@ -838,7 +807,7 @@ max_menu_width
 		down.
 		It it is less than or equal 0, it will be disabled.
 
-		If you omit it, it is set |g:deoplete#max_menu_width| value.
+		If you omit it, it is set "40" value.
 
 				*deoplete-source-attribute-input_pattern*
 input_pattern
@@ -917,6 +886,10 @@ events		(List[str])			(Optional)
 
 		It defaults to `None`, which means that `on_event` gets
 		called for all events.
+
+					*deoplete-source-attribute-vars*
+vars		(Dictionary)			(Optional)
+		List of source customization variables.
 
 			*deoplete-source-attribute-get_complete_position*
 get_complete_position
@@ -1351,7 +1324,7 @@ A: If it is enabled, Neovim will enable and load deoplete in startup. It
 Q: |deoplete-source-tag| does not work.
    https://github.com/Shougo/deoplete.nvim/issues/309
 
-A: Please increase |g:deoplete#tag#cache_limit_size| value.
+A: Please increase cache_limit_size value in tag source.
 
 Q: deoplete cannot complete filename after "=".
 
@@ -1518,20 +1491,20 @@ A: You must install |context_filetype| plugin.
    And you must set |g:context_filetype#same_filetypes| variable.
 
 Q: What is the difference of |g:deoplete#omni_patterns| and
-   |g:deoplete#omni#input_patterns| ?
+   "input_patterns" in omni source?
 
 A: |g:deoplete#omni_patterns| offers:
     - can call all omni functions
     - called by Vim
     - Vim regexp
 
-   |g:deoplete#omni#input_patterns| offers:
+   "input_patterns" offers:
     - cannot call some omni functions
     - can use deoplete features
     - called by deoplete
     - Python3 regexp
 
-   You should use |g:deoplete#omni#input_patterns| if possible.
+   You should use "input_patterns" if possible.
 
 Q: Is there a way to control the colors used for popup menu using highlight
    groups?
@@ -1582,10 +1555,11 @@ A: You should install deoplete-jedi instead of jedi-vim.
 
 Q: I want to use Java script omnifunc.
 
-A: Please set |g:deoplete#omni#input_patterns| manually. >
+A: Please set "input_patterns" manually. >
 
-       let g:deoplete#omni#input_patterns = {}
-       let g:deoplete#omni#input_patterns.javascript = '[^. *\t]\.\w*'
+       call deoplete#custom#source('omni', 'input_patterns', {
+       \ 'javascript': '[^. *\t]\.\w*',
+       \ )
 
 Q: I want to use "vim-lua-ftplugin".
    https://github.com/xolox/vim-lua-ftplugin
@@ -1597,8 +1571,9 @@ A: Please set the config as below.  >
        let g:lua_complete_dynamic = 0
        let g:lua_define_completion_mappings = 0
 
-       let g:deoplete#omni#functions.lua = 'xolox#lua#omnifunc'
-       "let g:deoplete#omni#functions.lua = 'xolox#lua#completefunc'
+       call deoplete#custom#source('omni', 'functions', {
+       \ 'lua': 'xolox#lua#omnifunc',
+       \ })
 
 Q: I want to complete AAA using deoplete.
 
@@ -1639,6 +1614,15 @@ A: https://github.com/zchee/deoplete-jedi/issues/35
 
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
+
+2018.04.01
+* Remove "g:deoplete#file#enable_buffer_path" variable.
+* Remove "g:deoplete#max_abbr_width" and "g:deoplete#max_menu_width".
+* Remove "g:deoplete#tag#cache_limit_size" variable.
+* Remove "g:deoplete#buffer#require_same_filetype" variable.
+* Remove "g:deoplete#member#prefix_patterns" variable.
+* Remove "g:deoplete#omni#input_patterns" variable.
+* Remove "g:deoplete#omni#functions" variable.
 
 2018.03.18
 * limit attribute in source is removed.
