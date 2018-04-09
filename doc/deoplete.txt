@@ -145,6 +145,13 @@ keyword_patterns
 <
 		Default value: {}
 
+						*deoplete-options-max_list*
+max_list
+		If the list of candidates exceeds the limit, not all
+		candidates will show up.
+
+		Default value: 100
+
 					*deoplete-options-omni_patterns*
 omni_patterns
 		It is the keyword patterns to Omni completion.
@@ -236,13 +243,6 @@ g:deoplete#enable_at_startup
 
 		With the default value 0, you cannot use deoplete
 		unless you start it manually.
-
-							*g:deoplete#max_list*
-g:deoplete#max_list
-		If the list of candidates exceeds the limit, not all
-		candidates will show up.
-
-		Default value: 100
 
 						*g:deoplete#num_processes*
 g:deoplete#num_processes
@@ -1611,6 +1611,7 @@ COMPATIBILITY					*deoplete-compatibility*
 * Remove "g:deoplete#enable_on_insert_enter" variable.
 * Remove "g:deoplete#enable_profile" variable.
 * Remove "g:deoplete#delimiters" variable.
+* Remove "g:deoplete#max_list" variable.
 
 2018.04.01
 * Remove "g:deoplete#file#enable_buffer_path" variable.

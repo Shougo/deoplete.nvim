@@ -151,7 +151,7 @@ class Deoplete(logger.LoggingMixin):
             all_candidates += candidates
 
         # self.debug(candidates)
-        max_list = context['vars']['deoplete#max_list']
+        max_list = self._vim.call('deoplete#custom#_get_option', 'max_list')
         if max_list > 0:
             all_candidates = all_candidates[: max_list]
 

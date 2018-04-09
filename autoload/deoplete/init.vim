@@ -124,8 +124,6 @@ function! deoplete#init#_variables() abort
 
   " User variables
   call deoplete#util#set_default(
-        \ 'g:deoplete#max_list', 100)
-  call deoplete#util#set_default(
         \ 'g:deoplete#auto_complete_delay', 50)
   call deoplete#util#set_default(
         \ 'g:deoplete#auto_refresh_delay', 50)
@@ -151,6 +149,9 @@ function! deoplete#init#_variables() abort
   call s:check_custom_option(
         \ 'g:deoplete#keyword_patterns',
         \ 'keyword_patterns')
+  call s:check_custom_option(
+        \ 'g:deoplete#max_list',
+        \ 'max_list')
   call s:check_custom_option(
         \ 'g:deoplete#auto_complete_start_length',
         \ 'min_pattern_length')
@@ -281,6 +282,7 @@ function! deoplete#init#_option() abort
         \ 'delimiters': ['/'],
         \ 'ignore_case': &ignorecase,
         \ 'ignore_sources': {},
+        \ 'max_list': 100,
         \ 'keyword_patterns': {'_': '[a-zA-Z_]\k*'},
         \ 'omni_patterns': {
         \  'html': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],
