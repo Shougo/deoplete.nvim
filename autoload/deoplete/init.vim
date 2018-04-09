@@ -148,8 +148,6 @@ function! deoplete#init#_variables() abort
   call deoplete#util#set_default(
         \ 'g:deoplete#auto_refresh_delay', 50)
   call deoplete#util#set_default(
-        \ 'g:deoplete#complete_method', 'complete')
-  call deoplete#util#set_default(
         \ 'g:deoplete#num_processes', s:is_windows ? 1 : 4)
 
   call deoplete#util#set_default(
@@ -293,6 +291,7 @@ endfunction
 function! deoplete#init#_option() abort
   return {
         \ 'auto_complete': v:true,
+        \ 'complete_method': 'complete',
         \ 'min_pattern_length': 2,
         \ }
 endfunction

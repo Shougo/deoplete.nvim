@@ -89,6 +89,18 @@ auto_complete
 
 		Default: v:true
 
+					*deoplete-options-complete_method*
+complete_method
+		If it is "complete", deoplete use |complete()|.
+
+		If it is "completefunc", deoplete use |i_CTRL-X_CTRL-U|.
+		Note: It changes current 'completefunc' value.
+
+		If it is "omnifunc", deoplete use |i_CTRL-X_CTRL-O|.
+		Note: It changes current 'omnifunc' value.
+
+		Default value: "complete"
+
 					*deoplete-options-min_pattern_length*
 min_pattern_length
 		The default number of the input completion at the time of key
@@ -117,18 +129,6 @@ g:deoplete#enable_yarp
 		https://github.com/roxma/nvim-yarp
 
 		Default value: 0
-
-						*g:deoplete#complete_method*
-g:deoplete#complete_method
-		If it is "complete", deoplete use |complete()|.
-
-		If it is "completefunc", deoplete use |i_CTRL-X_CTRL-U|.
-		Note: It changes current 'completefunc' value.
-
-		If it is "omnifunc", deoplete use |i_CTRL-X_CTRL-O|.
-		Note: It changes current 'omnifunc' value.
-
-		Default value: "complete"
 
 					*g:deoplete#enable_ignore_case*
 g:deoplete#enable_ignore_case
@@ -1623,6 +1623,7 @@ COMPATIBILITY					*deoplete-compatibility*
 * Remove "g:deoplete#auto_complete_start_length" variable.
 * Remove "g:deoplete#skip_chars" variable.
 * Remove "g:deoplete#disable_auto_complete" variable.
+* Remove "g:deoplete#complete_method" variable.
 
 2018.04.01
 * Remove "g:deoplete#file#enable_buffer_path" variable.

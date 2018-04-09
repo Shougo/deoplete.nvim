@@ -63,12 +63,13 @@ function! deoplete#handler#_do_complete() abort
     call deoplete#mapping#_set_completeopt()
   endif
 
-  if g:deoplete#complete_method ==# 'complete'
+  let complete_method = deoplete#custom#_get_option('complete_method')
+  if complete_method ==# 'complete'
     call feedkeys("\<Plug>_", 'i')
-  elseif g:deoplete#complete_method ==# 'completefunc'
+  elseif complete_method ==# 'completefunc'
     let &l:completefunc = 'deoplete#mapping#_completefunc'
     call feedkeys("\<C-x>\<C-u>", 'in')
-  elseif g:deoplete#complete_method ==# 'omnifunc'
+  elseif complete_method ==# 'omnifunc'
     let &l:omnifunc = 'deoplete#mapping#_completefunc'
     call feedkeys("\<C-x>\<C-o>", 'in')
   endif
