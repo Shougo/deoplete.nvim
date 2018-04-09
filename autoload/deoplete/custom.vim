@@ -10,6 +10,10 @@ function! deoplete#custom#_init() abort
   let s:custom.source._ = {}
   let s:custom.option = deoplete#init#_option()
 endfunction
+function! deoplete#custom#_init_buffer() abort
+  let b:custom = {}
+  let b:custom.option = {}
+endfunction
 
 function! deoplete#custom#_get() abort
   if !exists('s:custom')
@@ -20,8 +24,7 @@ function! deoplete#custom#_get() abort
 endfunction
 function! deoplete#custom#_get_buffer() abort
   if !exists('b:custom')
-    let b:custom = {}
-    let b:custom.option = {}
+    call deoplete#custom#_init_buffer()
   endif
 
   return b:custom
