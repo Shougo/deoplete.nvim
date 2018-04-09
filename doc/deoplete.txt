@@ -112,6 +112,13 @@ complete_method
 
 		Default value: "complete"
 
+						*deoplete-options-delimiters*
+delimiters
+		Delimiters list.  It is used in
+		|deoplete-filter-converter_auto_delimiter|.
+
+		Default value: ['/']
+
 						*deoplete-options-ignore_case*
 ignore_case
 		If it is True, deoplete ignores case.
@@ -229,13 +236,6 @@ g:deoplete#enable_at_startup
 
 		With the default value 0, you cannot use deoplete
 		unless you start it manually.
-
-						*g:deoplete#delimiters*
-g:deoplete#delimiters
-		Delimiters list.  It is used in
-		|deoplete-filter-converter_auto_delimiter|.
-
-		Default value: ['/']
 
 							*g:deoplete#max_list*
 g:deoplete#max_list
@@ -678,8 +678,8 @@ converter_remove_overlap
 
 				*deoplete-filter-converter_auto_delimiter*
 converter_auto_delimiter
-		It adds |g:deoplete#delimiters| characters in a candidate's
-		word.
+		It adds |deoplete-options-delimiters| characters in a
+		candidate's word.
 
 				*deoplete-filter-converter_auto_paren*
 converter_auto_paren
@@ -1610,6 +1610,7 @@ COMPATIBILITY					*deoplete-compatibility*
 * Remove "g:deoplete#enable_refresh_always" variable.
 * Remove "g:deoplete#enable_on_insert_enter" variable.
 * Remove "g:deoplete#enable_profile" variable.
+* Remove "g:deoplete#delimiters" variable.
 
 2018.04.01
 * Remove "g:deoplete#file#enable_buffer_path" variable.

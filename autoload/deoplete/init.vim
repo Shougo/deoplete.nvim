@@ -126,8 +126,6 @@ function! deoplete#init#_variables() abort
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_at_startup', 0)
   call deoplete#util#set_default(
-        \ 'g:deoplete#delimiters', ['/'])
-  call deoplete#util#set_default(
         \ 'g:deoplete#max_list', 100)
   call deoplete#util#set_default(
         \ 'g:deoplete#auto_complete_delay', 50)
@@ -143,6 +141,9 @@ function! deoplete#init#_variables() abort
   call s:check_custom_option(
         \ 'g:deoplete#camel_case',
         \ 'camel_case')
+  call s:check_custom_option(
+        \ 'g:deoplete#delimiters',
+        \ 'delimiters')
   call s:check_custom_option(
         \ 'g:deoplete#ignore_case',
         \ 'ignore_case')
@@ -279,6 +280,7 @@ function! deoplete#init#_option() abort
         \ 'auto_complete': v:true,
         \ 'camel_case': v:false,
         \ 'complete_method': 'complete',
+        \ 'delimiters': ['/'],
         \ 'ignore_case': &ignorecase,
         \ 'ignore_sources': {},
         \ 'keyword_patterns': {'_': '[a-zA-Z_]\k*'},
