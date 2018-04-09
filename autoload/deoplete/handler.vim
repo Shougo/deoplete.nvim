@@ -100,7 +100,7 @@ function! deoplete#handler#_async_timer_start() abort
 
   let s:async_timer = { 'event': 'Async', 'changedtick': b:changedtick }
   let s:async_timer.id = timer_start(
-        \ max([20, g:deoplete#auto_refresh_delay]),
+        \ max([20, deoplete#custom#_get_option('auto_refresh_delay')]),
         \ function('s:completion_async'), {'repeat': -1})
 endfunction
 function! deoplete#handler#_async_timer_stop() abort

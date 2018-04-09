@@ -96,6 +96,12 @@ auto_complete_delay
 
 		Default value: 50
 
+					*deoplete-options-auto_refresh_delay*
+auto_refresh_delay
+		Delay the refresh when asynchronous.
+
+		Default value: 50
+
 						*deoplete-options-camel_case*
 camel_case
 		When a capital letter is matched with the uppercase, but a
@@ -258,12 +264,6 @@ g:deoplete#num_processes
 		disabled.
 
 		Default value: 1 (Windows) or 4 (Others)
-
-					*g:deoplete#auto_refresh_delay*
-g:deoplete#auto_refresh_delay
-		Delay the refresh when asynchronous.
-
-		Default value: 50
 
 ------------------------------------------------------------------------------
 FUNCTIONS 						*deoplete-functions*
@@ -1613,6 +1613,7 @@ COMPATIBILITY					*deoplete-compatibility*
 * Remove "g:deoplete#delimiters" variable.
 * Remove "g:deoplete#max_list" variable.
 * Remove "g:deoplete#auto_complete_delay" variable.
+* Remove "g:deoplete#auto_refresh_delay" variable.
 
 2018.04.01
 * Remove "g:deoplete#file#enable_buffer_path" variable.
