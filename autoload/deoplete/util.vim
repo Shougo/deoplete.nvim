@@ -33,9 +33,6 @@ function! deoplete#util#get_buffer_config(
   return get({a:user_var}, filetype,
         \   get(eval(a:default_var), filetype, default_val))
 endfunction
-function! deoplete#util#get_simple_buffer_config(buffer_var, user_var) abort
-  return exists(a:buffer_var) ? {a:buffer_var} : {a:user_var}
-endfunction
 function! deoplete#util#print_error(string, ...) abort
   let name = a:0 ? a:1 : 'deoplete'
   echohl Error | echomsg printf('[%s] %s', name,
