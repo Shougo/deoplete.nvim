@@ -101,6 +101,22 @@ complete_method
 
 		Default value: "complete"
 
+					*deoplete-options-sources*
+sources
+		It is a dictionary to decide use source names.  The key is
+		filetype and the value is source names list.  If the key is
+		"_", the value will be used for default filetypes.  For
+		example, you can load some sources in C++ filetype.
+		If the value is [], it will load all sources.
+
+		Default value: {}
+>
+		" Examples:
+		call deoplete#custom#option('sources', {
+		\ '_': ['buffer'],
+		\ 'cpp': ['buffer', 'tag'],
+		\)
+
 					*deoplete-options-min_pattern_length*
 min_pattern_length
 		The default number of the input completion at the time of key
@@ -254,31 +270,7 @@ g:deoplete#omni_patterns
 b:deoplete_omni_patterns
 		Buffer local variable of |g:deoplete#omni_patterns|.
 
-							*g:deoplete#sources*
-g:deoplete#sources
-		It is a dictionary to decide use source names.  The key is
-		filetype and the value is source names list.  If the key is
-		"_", the value will be used for default filetypes.  For
-		example, you can load some sources in C++ filetype.
-		If the value is [], it will load all sources.
-
-		Default value: {}
->
-		" Examples:
-		let g:deoplete#sources = {}
-		let g:deoplete#sources._ = ['buffer']
-		let g:deoplete#sources.cpp = ['buffer', 'tag']
-
-<							*b:deoplete_sources*
-b:deoplete_sources
-		Buffer local variable of |g:deoplete#sources|.
-		It must be the source names list.
->
-		" Examples:
-		" In cmdwin, only use buffer source.
-		autocmd CmdwinEnter * let b:deoplete_sources = ['buffer']
-
-<						*g:deoplete#ignore_sources*
+						*g:deoplete#ignore_sources*
 g:deoplete#ignore_sources
 		It is a dictionary to decide ignore source names.
 		The key is filetype and the value is source names list.
@@ -1624,6 +1616,7 @@ COMPATIBILITY					*deoplete-compatibility*
 * Remove "g:deoplete#skip_chars" variable.
 * Remove "g:deoplete#disable_auto_complete" variable.
 * Remove "g:deoplete#complete_method" variable.
+* Remove "g:deoplete#sources" variable.
 
 2018.04.01
 * Remove "g:deoplete#file#enable_buffer_path" variable.

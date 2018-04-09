@@ -41,6 +41,12 @@ function! deoplete#custom#_get_option(name) abort
         \ deoplete#custom#_get_buffer().option)
   return custom[a:name]
 endfunction
+function! deoplete#custom#_get_filetype_option(name, filetype, default) abort
+  let option = deoplete#custom#_get_option(a:name)
+  let filetype = !has_key(option, a:filetype)
+        \ && !has_key(option, a:filetype) ? '_' : a:filetype
+  return get(option, filetype, a:default)
+endfunction
 
 function! deoplete#custom#set(source_name, option_name, value) abort
   call deoplete#util#print_error(

@@ -159,11 +159,12 @@ function! deoplete#init#_variables() abort
   call deoplete#util#set_default(
         \ 'g:deoplete#_omni_patterns', {})
   call deoplete#util#set_default(
-        \ 'g:deoplete#sources', {})
-  call deoplete#util#set_default(
         \ 'g:deoplete#ignore_sources', {})
 
   " Options
+  call s:check_custom_option(
+        \ 'g:deoplete#sources',
+        \ 'sources')
   call s:check_custom_option(
         \ 'g:deoplete#auto_complete_start_length',
         \ 'min_pattern_length')
@@ -205,11 +206,8 @@ function! deoplete#init#_context(event, sources) abort
   let sources = deoplete#util#convert2list(a:sources)
   if a:event !=# 'Manual' && empty(sources)
     " Use default sources
-    let sources = deoplete#util#get_buffer_config(
-          \ filetype,
-          \ 'b:deoplete_sources',
-          \ 'g:deoplete#sources',
-          \ '{}', [])
+    let sources = deoplete#custom#_get_filetype_option(
+          \ 'sources', filetype, [])
   endif
 
   let keyword_patterns = join(deoplete#util#convert2list(
@@ -292,6 +290,7 @@ function! deoplete#init#_option() abort
   return {
         \ 'auto_complete': v:true,
         \ 'complete_method': 'complete',
+        \ 'sources': {},
         \ 'min_pattern_length': 2,
         \ }
 endfunction
