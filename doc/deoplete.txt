@@ -115,6 +115,22 @@ keyword_patterns
 <
 		Default value: {}
 
+					*deoplete-options-omni_patterns*
+omni_patterns
+		It is the keyword patterns to Omni completion.
+
+		If this pattern is not defined or empty pattern, deoplete
+		does not call 'omnifunc'.
+		Note: If it is a set, deoplete will call 'omnifunc'
+		directly.  So almost deoplete features are disabled.
+		Note: It is Vim regexp.
+>
+		call deoplete#custom#option('omni_patterns', {
+		\ 'java': '[^. *\t]\.\w*',
+		\)
+<
+		Default value: in init.vim
+
 					*deoplete-options-sources*
 sources
 		It is a dictionary to decide use source names.  The key is
@@ -245,26 +261,6 @@ g:deoplete#auto_refresh_delay
 		Delay the refresh when asynchronous.
 
 		Default value: 50
-
-						*g:deoplete#omni_patterns*
-g:deoplete#omni_patterns
-		This dictionary records keyword patterns to Omni completion.
-		This is appointed in regular expression string or list every
-		file type.
-		If this pattern is not defined or empty pattern, deoplete
-		does not call 'omnifunc'.
-		Note: If it is a set, deoplete will call 'omnifunc'
-		directly.  So almost deoplete features are disabled.
-		Note: It is Vim regexp.
->
-		let g:deoplete#omni_patterns = {}
-		let g:deoplete#omni_patterns.java = '[^. *\t]\.\w*'
-<
-		Default value: in g:deoplete#_omni_patterns
-
-						*b:deoplete_omni_patterns*
-b:deoplete_omni_patterns
-		Buffer local variable of |g:deoplete#omni_patterns|.
 
 						*g:deoplete#ignore_sources*
 g:deoplete#ignore_sources
@@ -1481,10 +1477,10 @@ A: You must install |context_filetype| plugin.
    https://github.com/Shougo/context_filetype.vim
    And you must set |g:context_filetype#same_filetypes| variable.
 
-Q: What is the difference of |g:deoplete#omni_patterns| and
+Q: What is the difference of |deoplete-options-omni_patterns| and
    "input_patterns" in omni source?
 
-A: |g:deoplete#omni_patterns| offers:
+A: |deoplete-options-omni_patterns| offers:
     - can call all omni functions
     - called by Vim
     - Vim regexp
@@ -1614,6 +1610,7 @@ COMPATIBILITY					*deoplete-compatibility*
 * Remove "g:deoplete#complete_method" variable.
 * Remove "g:deoplete#sources" variable.
 * Remove "g:deoplete#keyword_patterns" variable.
+* Remove "g:deoplete#omni_patterns" variable.
 
 2018.04.01
 * Remove "g:deoplete#file#enable_buffer_path" variable.

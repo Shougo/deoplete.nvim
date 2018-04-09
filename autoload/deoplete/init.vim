@@ -151,10 +151,6 @@ function! deoplete#init#_variables() abort
         \ 'g:deoplete#num_processes', s:is_windows ? 1 : 4)
 
   call deoplete#util#set_default(
-        \ 'g:deoplete#omni_patterns', {})
-  call deoplete#util#set_default(
-        \ 'g:deoplete#_omni_patterns', {})
-  call deoplete#util#set_default(
         \ 'g:deoplete#ignore_sources', {})
 
   " Options
@@ -181,12 +177,6 @@ function! deoplete#init#_variables() abort
   call s:check_custom_var('omni',
         \ 'g:deoplete#omni#functions',
         \ 'functions')
-
-  " Initialize omni completion pattern.
-  " Note: HTML omni func use search().
-  call deoplete#util#set_pattern(
-        \ g:deoplete#_omni_patterns,
-        \ 'html,xhtml,xml', ['<', '</', '<[^>]*\s[[:alnum:]-]*'])
 endfunction
 
 function! deoplete#init#_context(event, sources) abort
@@ -277,10 +267,18 @@ function! s:check_custom_option(old_var, new_var) abort
 endfunction
 
 function! deoplete#init#_option() abort
+  " Initialize omni completion pattern.
+  " Note: HTML omni func use search().
+  let omni_patterns = {}
+  call deoplete#util#set_pattern(
+        \ omni_patterns,
+        \ 'html,xhtml,xml', ['<', '</', '<[^>]*\s[[:alnum:]-]*'])
+
   return {
         \ 'auto_complete': v:true,
         \ 'complete_method': 'complete',
         \ 'keyword_patterns': {'_': '[a-zA-Z_]\k*'},
+        \ 'omni_patterns': omni_patterns,
         \ 'min_pattern_length': 2,
         \ 'sources': {},
         \ }

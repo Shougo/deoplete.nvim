@@ -184,10 +184,8 @@ function! s:check_omnifunc(context) abort
 
   for filetype in a:context.filetypes
     for pattern in deoplete#util#convert2list(
-          \ deoplete#util#get_buffer_config(filetype,
-          \ 'b:deoplete_omni_patterns',
-          \ 'g:deoplete#omni_patterns',
-          \ 'g:deoplete#_omni_patterns'))
+          \ deoplete#custom#_get_filetype_option(
+          \   'omni_patterns', filetype, ''))
       if pattern !=# '' && a:context.input =~# '\%('.pattern.'\)$'
         let g:deoplete#_context.candidates = []
 
