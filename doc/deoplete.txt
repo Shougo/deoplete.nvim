@@ -161,6 +161,15 @@ on_insert_enter
 
 		Default value: v:true
 
+						*deoplete-options-profile*
+profile
+		If it is True, deoplete will print the time information to
+		|deoplete#enable_logging()| logfile.
+		Must be set in init.vim before to start the Neovim.
+		Does not support command line.
+
+		Default value: v:false
+
 					*deoplete-options-refresh_always*
 refresh_always
 		Deoplete refreshes the candidates automatically if this value
@@ -220,16 +229,6 @@ g:deoplete#enable_at_startup
 
 		With the default value 0, you cannot use deoplete
 		unless you start it manually.
-
-						*g:deoplete#enable_profile*
-g:deoplete#enable_profile
-		It enables deoplete profile mode.
-		If it is 1, deoplete will print the time information to
-		|deoplete#enable_logging()| logfile.
-		Must be set in init.vim before to start the Neovim.
-		Does not support command line.
-
-		Default value: 0
 
 						*g:deoplete#delimiters*
 g:deoplete#delimiters
@@ -1610,6 +1609,7 @@ COMPATIBILITY					*deoplete-compatibility*
 * Remove "g:deoplete#enable_yarp" variable.
 * Remove "g:deoplete#enable_refresh_always" variable.
 * Remove "g:deoplete#enable_on_insert_enter" variable.
+* Remove "g:deoplete#enable_profile" variable.
 
 2018.04.01
 * Remove "g:deoplete#file#enable_buffer_path" variable.

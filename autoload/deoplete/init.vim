@@ -130,8 +130,6 @@ function! deoplete#init#_variables() abort
   call deoplete#util#set_default(
         \ 'g:deoplete#max_list', 100)
   call deoplete#util#set_default(
-        \ 'g:deoplete#enable_profile', 0)
-  call deoplete#util#set_default(
         \ 'g:deoplete#auto_complete_delay', 50)
   call deoplete#util#set_default(
         \ 'g:deoplete#auto_refresh_delay', 50)
@@ -160,6 +158,9 @@ function! deoplete#init#_variables() abort
   call s:check_custom_option(
         \ 'g:deoplete#enable_on_insert_enter',
         \ 'on_insert_enter')
+  call s:check_custom_option(
+        \ 'g:deoplete#enable_profile',
+        \ 'profile')
   call s:check_custom_option(
         \ 'g:deoplete#enable_refresh_always',
         \ 'refresh_always')
@@ -287,6 +288,7 @@ function! deoplete#init#_option() abort
         \  'xml': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],
         \ },
         \ 'on_insert_enter': v:true,
+        \ 'profile': v:false,
         \ 'min_pattern_length': 2,
         \ 'refresh_always': v:false,
         \ 'smart_case': &smartcase,

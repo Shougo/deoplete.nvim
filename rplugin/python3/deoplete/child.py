@@ -384,7 +384,8 @@ class Child(logger.LoggingMixin):
             return
 
         if not self._profile_flag:
-            self._profile_flag = context['vars']['deoplete#enable_profile']
+            self._profile_flag = self._vim.call(
+                'deoplete#custom#_get_option', 'profile')
             if self._profile_flag:
                 return self._profile_start(context, name)
         elif self._profile_flag:
