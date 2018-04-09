@@ -4,14 +4,6 @@
 " License: MIT license
 "=============================================================================
 
-function! deoplete#util#set_default(var, val, ...)  abort
-  if !exists(a:var) || type({a:var}) != type(a:val)
-    let alternate_var = get(a:000, 0, '')
-
-    let {a:var} = exists(alternate_var) ?
-          \ {alternate_var} : a:val
-  endif
-endfunction
 function! deoplete#util#print_error(string, ...) abort
   let name = a:0 ? a:1 : 'deoplete'
   echohl Error | echomsg printf('[%s] %s', name,
