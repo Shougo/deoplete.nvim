@@ -19,20 +19,6 @@ function! deoplete#util#set_pattern(variable, keys, pattern) abort
     endif
   endfor
 endfunction
-function! deoplete#util#get_buffer_config(
-      \ filetype, buffer_var, user_var, default_var, ...) abort
-  let default_val = get(a:000, 0, '')
-
-  if exists(a:buffer_var)
-    return {a:buffer_var}
-  endif
-
-  let filetype = !has_key({a:user_var}, a:filetype)
-        \ && !has_key(eval(a:default_var), a:filetype) ? '_' : a:filetype
-
-  return get({a:user_var}, filetype,
-        \   get(eval(a:default_var), filetype, default_val))
-endfunction
 function! deoplete#util#print_error(string, ...) abort
   let name = a:0 ? a:1 : 'deoplete'
   echohl Error | echomsg printf('[%s] %s', name,
