@@ -68,4 +68,15 @@ function! s:suite.custom_option() abort
   call s:assert.equals(
         \ deoplete#custom#_get_filetype_option(
         \   'keyword_patterns', 'tex', ''), s:tex_pattern)
+
+  " Dict type format
+  call deoplete#custom#_init()
+  call deoplete#custom#_init_buffer()
+  call deoplete#custom#option({
+        \ 'auto_complete': v:true, 'camel_case': v:true
+        \ })
+  call s:assert.equals(
+        \ deoplete#custom#_get_option('auto_complete'), v:true)
+  call s:assert.equals(
+        \ deoplete#custom#_get_option('camel_case'), v:true)
 endfunction
