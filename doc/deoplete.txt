@@ -187,6 +187,14 @@ min_pattern_length
 
 		Default: 2
 
+						*deoplete-options-yarp*
+yarp
+		Use nvim-yarp library instead of neovim remote plugin feature.
+		Note: nvim-yarp plugin is needed.
+		https://github.com/roxma/nvim-yarp
+
+		Default value: v:false
+
 ------------------------------------------------------------------------------
 VARIABLES	 					*deoplete-variables*
 
@@ -197,14 +205,6 @@ g:deoplete#enable_at_startup
 
 		With the default value 0, you cannot use deoplete
 		unless you start it manually.
-
-						*g:deoplete#enable_yarp*
-g:deoplete#enable_yarp
-		Use nvim-yarp library instead of neovim remote plugin feature.
-		Note: nvim-yarp plugin is needed.
-		https://github.com/roxma/nvim-yarp
-
-		Default value: 0
 
 					*g:deoplete#enable_refresh_always*
 g:deoplete#enable_refresh_always
@@ -1268,7 +1268,7 @@ A: 1. Please update neovim to the latest version.
 
    https://github.com/neovim/neovim/wiki/Troubleshooting#python-support-isnt-working
 
-   7. You can test |g:deoplete#enable_yarp| option for neovim.
+   7. You can test |deoplete-options-yarp| option for neovim.
 
    8. Please enable debug mode from command line and upload the log file. >
 
@@ -1607,6 +1607,7 @@ COMPATIBILITY					*deoplete-compatibility*
 * Remove "g:deoplete#ignore_case" variable.
 * Remove "g:deoplete#smart_case" variable.
 * Remove "g:deoplete#camel_case" variable.
+* Remove "g:deoplete#enable_yarp" variable.
 
 2018.04.01
 * Remove "g:deoplete#file#enable_buffer_path" variable.

@@ -126,8 +126,6 @@ function! deoplete#init#_variables() abort
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_at_startup', 0)
   call deoplete#util#set_default(
-        \ 'g:deoplete#enable_yarp', 0)
-  call deoplete#util#set_default(
         \ 'g:deoplete#enable_refresh_always', 0)
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_on_insert_enter', 1)
@@ -169,6 +167,9 @@ function! deoplete#init#_variables() abort
   call s:check_custom_option(
         \ 'g:deoplete#enable_smart_case',
         \ 'smart_case')
+  call s:check_custom_option(
+        \ 'g:deoplete#enable_yarp',
+        \ 'yarp')
 
   " Source variables
   call s:check_custom_var('file',
@@ -286,5 +287,6 @@ function! deoplete#init#_option() abort
         \ 'min_pattern_length': 2,
         \ 'smart_case': &smartcase,
         \ 'sources': {},
+        \ 'yarp': v:false,
         \ }
 endfunction

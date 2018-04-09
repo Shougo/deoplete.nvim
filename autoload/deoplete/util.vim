@@ -141,7 +141,7 @@ function! deoplete#util#neovim_version() abort
 endfunction
 
 function! deoplete#util#has_yarp() abort
-  return !has('nvim') || get(g:, 'deoplete#enable_yarp', 0)
+  return !has('nvim') || deoplete#custom#_get_option('yarp')
 endfunction
 
 function! deoplete#util#get_context_filetype(input, event) abort
