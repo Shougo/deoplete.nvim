@@ -355,7 +355,7 @@ deoplete#custom#source({source-name}, {option-name}, {value})
 		call deoplete#custom#source('omni', 'mark', '')
 
 		" Enable jedi source debug messages
-		" let g:deoplete#enable_profile = 1
+		" call deoplete#custom#option('profile', v:true)
 		" call deoplete#enable_logging('DEBUG', 'deoplete.log')
 		" call deoplete#custom#source('jedi', 'is_debug_enabled', 1)
 <
@@ -452,7 +452,7 @@ EXAMPLES						*deoplete-examples*
 	" Use deoplete.
 	let g:deoplete#enable_at_startup = 1
 	" Use smartcase.
-	let g:deoplete#enable_smart_case = 1
+	call deoplete#custom#option('smart_case', v:true)
 
 	" <C-h>, <BS>: close popup and delete backword char.
 	inoremap <expr><C-h> deoplete#smart_close_popup()."\<C-h>"
@@ -1279,9 +1279,9 @@ A: 1. Please update neovim to the latest version.
 
 Q: deoplete is slow.
 
-A: Please change |g:deoplete#auto_complete_delay| value. It is a huge delay
-   value intentionally. And some sources are slow. You should check which one
-   is slow and consider disabling them.
+A: Please change |deoplete-options-auto_complete_delay| value. It is a huge
+   delay value intentionally. And some sources are slow. You should check
+   which one is slow and consider disabling them.
 
 Q: Deoplete popup is not displayed immediately.
 
@@ -1326,7 +1326,7 @@ Q: I want to debug the sources.
 
 A: Please enable logging feature like this. >
 
-       let g:deoplete#enable_profile = 1
+       call deoplete#custom#option('profile', v:true)
        call deoplete#enable_logging('DEBUG', 'deoplete.log')
        call deoplete#custom#source('jedi', 'is_debug_enabled', 1)
 
