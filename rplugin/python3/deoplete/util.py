@@ -24,12 +24,6 @@ def get_buffer_config(context, filetype, buffer_var, user_var, default_var):
     return context['vars'][user_var].get(ft, default)
 
 
-def get_simple_buffer_config(context, buffer_var, user_var):
-    return (context['bufvars'][buffer_var]
-            if buffer_var in context['bufvars']
-            else context['vars'][user_var])
-
-
 def set_pattern(variable, keys, pattern):
     for key in keys.split(','):
         variable[key] = pattern
