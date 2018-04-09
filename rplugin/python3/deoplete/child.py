@@ -350,10 +350,8 @@ class Child(logger.LoggingMixin):
         ignore_sources = set(self._ignore_sources)
         for ft in filetypes:
             ignore_sources.update(
-                get_buffer_config(context, ft,
-                                  'deoplete_ignore_sources',
-                                  'deoplete#ignore_sources',
-                                  {}))
+                self._vim.call('deoplete#custom#_get_filetype_option',
+                               'ignore_sources', ft, []))
 
         for source_name, source in self._sources.items():
             if source.filetypes is None or source_name in ignore_sources:

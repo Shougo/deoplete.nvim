@@ -150,13 +150,13 @@ function! deoplete#init#_variables() abort
   call deoplete#util#set_default(
         \ 'g:deoplete#num_processes', s:is_windows ? 1 : 4)
 
-  call deoplete#util#set_default(
-        \ 'g:deoplete#ignore_sources', {})
-
   " Options
   if get(g:, 'deoplete#disable_auto_complete', v:false)
     call deoplete#custom#option('auto_complete', v:false)
   endif
+  call s:check_custom_option(
+        \ 'g:deoplete#ignore_sources',
+        \ 'ignore_sources')
   call s:check_custom_option(
         \ 'g:deoplete#keyword_patterns',
         \ 'keyword_patterns')
@@ -271,6 +271,7 @@ function! deoplete#init#_option() abort
   return {
         \ 'auto_complete': v:true,
         \ 'complete_method': 'complete',
+        \ 'ignore_sources': {},
         \ 'keyword_patterns': {'_': '[a-zA-Z_]\k*'},
         \ 'omni_patterns': {
         \  'html': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],

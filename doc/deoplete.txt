@@ -101,6 +101,12 @@ complete_method
 
 		Default value: "complete"
 
+					*deoplete-options-ignore_sources*
+ignore_sources
+		It is a dictionary to decide ignore source names.
+		The key is filetype and the value is source names list.
+		Default value: {}
+
 					*deoplete-options-keyword_patterns*
 keyword_patterns
 		It records keyword patterns to buffer completion.
@@ -261,17 +267,6 @@ g:deoplete#auto_refresh_delay
 		Delay the refresh when asynchronous.
 
 		Default value: 50
-
-						*g:deoplete#ignore_sources*
-g:deoplete#ignore_sources
-		It is a dictionary to decide ignore source names.
-		The key is filetype and the value is source names list.
-		Default value: {}
-
-						*b:deoplete_ignore_sources*
-b:deoplete_ignore_sources
-		Buffer local variable of |g:deoplete#ignore_sources|.
-		It must be the source names list.
 
 ------------------------------------------------------------------------------
 FUNCTIONS 						*deoplete-functions*
@@ -1447,10 +1442,9 @@ A: You can achieve this by following >
 
 Q: I want to disable the buffer source.
 
-A: You can use |g:deoplete#ignore_sources|. >
+A: You can use |deoplete-options-ignore_sources|. >
 
-       let g:deoplete#ignore_sources = {}
-       let g:deoplete#ignore_sources._ = ['buffer']
+       call deoplete#custom#option('ignore_sources', {'_', ['buffer']})
 
 Q: How to prevent auto bracket completion?
    https://github.com/Shougo/deoplete.nvim/issues/150
@@ -1611,6 +1605,7 @@ COMPATIBILITY					*deoplete-compatibility*
 * Remove "g:deoplete#sources" variable.
 * Remove "g:deoplete#keyword_patterns" variable.
 * Remove "g:deoplete#omni_patterns" variable.
+* Remove "g:deoplete#ignore_sources" variable.
 
 2018.04.01
 * Remove "g:deoplete#file#enable_buffer_path" variable.
