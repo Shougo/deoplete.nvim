@@ -101,6 +101,20 @@ complete_method
 
 		Default value: "complete"
 
+					*deoplete-options-keyword_patterns*
+keyword_patterns
+		It records keyword patterns to buffer completion.
+		This is appointed in regular expression string or list every
+		file type.
+		Note: It is Python3 regexp.  But "\k" is converted to
+		'iskeyword' pattern.
+>
+		call deoplete#custom#option('keyword_patterns', {
+		\ 'tex': '\\?[a-zA-Z_]\w*',
+		\)
+<
+		Default value: {}
+
 					*deoplete-options-sources*
 sources
 		It is a dictionary to decide use source names.  The key is
@@ -231,24 +245,6 @@ g:deoplete#auto_refresh_delay
 		Delay the refresh when asynchronous.
 
 		Default value: 50
-
-
-						*g:deoplete#keyword_patterns*
-g:deoplete#keyword_patterns
-		This dictionary records keyword patterns to buffer completion.
-		This is appointed in regular expression string or list every
-		file type.
-		Note: It is Python3 regexp.  But "\k" is converted to
-		'iskeyword' pattern.
->
-		let g:deoplete#keyword_patterns = {}
-		let g:deoplete#keyword_patterns.tex = '\\?[a-zA-Z_]\w*'
-<
-		Default value: in g:deoplete#_keyword_patterns
-
-						*b:deoplete_keyword_patterns*
-b:deoplete_keyword_patterns
-		Buffer local variable of |g:deoplete#keyword_patterns|.
 
 						*g:deoplete#omni_patterns*
 g:deoplete#omni_patterns
@@ -595,9 +591,9 @@ omni							*deoplete-source-omni*
 		    \})
 <
 dictionary					*deoplete-source-dictionary*
-		This source collects |g:deoplete#keyword_patterns| keywords
-		from 'dictionary'. Note: it uses buffer-local 'dictionary'
-		set up.
+		This source collects |deoplete-options-keyword_patterns|
+		keywords from 'dictionary'. Note: it uses buffer-local
+		'dictionary' set up.
 
 		rank: 100
 >
@@ -895,7 +891,7 @@ get_complete_position
 		Here, {context} is the context information when the source is
 		called(|deoplete-notation-{context}|).
 		If you omit it, deoplete will use the position using
-		|g:deoplete#keyword_patterns|.
+		|deoplete-options-keyword_patterns|.
 
 		Note: |deoplete-source-attribute-is_bytepos| is True, it must
 		return byte position.
@@ -1617,6 +1613,7 @@ COMPATIBILITY					*deoplete-compatibility*
 * Remove "g:deoplete#disable_auto_complete" variable.
 * Remove "g:deoplete#complete_method" variable.
 * Remove "g:deoplete#sources" variable.
+* Remove "g:deoplete#keyword_patterns" variable.
 
 2018.04.01
 * Remove "g:deoplete#file#enable_buffer_path" variable.

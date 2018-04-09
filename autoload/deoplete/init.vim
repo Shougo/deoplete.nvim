@@ -151,10 +151,6 @@ function! deoplete#init#_variables() abort
         \ 'g:deoplete#num_processes', s:is_windows ? 1 : 4)
 
   call deoplete#util#set_default(
-        \ 'g:deoplete#keyword_patterns', {})
-  call deoplete#util#set_default(
-        \ 'g:deoplete#_keyword_patterns', {})
-  call deoplete#util#set_default(
         \ 'g:deoplete#omni_patterns', {})
   call deoplete#util#set_default(
         \ 'g:deoplete#_omni_patterns', {})
@@ -162,15 +158,18 @@ function! deoplete#init#_variables() abort
         \ 'g:deoplete#ignore_sources', {})
 
   " Options
-  call s:check_custom_option(
-        \ 'g:deoplete#sources',
-        \ 'sources')
-  call s:check_custom_option(
-        \ 'g:deoplete#auto_complete_start_length',
-        \ 'min_pattern_length')
   if get(g:, 'deoplete#disable_auto_complete', v:false)
     call deoplete#custom#option('auto_complete', v:false)
   endif
+  call s:check_custom_option(
+        \ 'g:deoplete#keyword_patterns',
+        \ 'keyword_patterns')
+  call s:check_custom_option(
+        \ 'g:deoplete#auto_complete_start_length',
+        \ 'min_pattern_length')
+  call s:check_custom_option(
+        \ 'g:deoplete#sources',
+        \ 'sources')
 
   " Source variables
   call s:check_custom_var('file',
@@ -182,13 +181,6 @@ function! deoplete#init#_variables() abort
   call s:check_custom_var('omni',
         \ 'g:deoplete#omni#functions',
         \ 'functions')
-
-  " Initialize default keyword pattern.
-  call deoplete#util#set_pattern(
-        \ g:deoplete#_keyword_patterns,
-        \ '_',
-        \ '[a-zA-Z_]\k*')
-
 
   " Initialize omni completion pattern.
   " Note: HTML omni func use search().
@@ -211,10 +203,8 @@ function! deoplete#init#_context(event, sources) abort
   endif
 
   let keyword_patterns = join(deoplete#util#convert2list(
-        \   deoplete#util#get_buffer_config(
-        \   filetype, 'b:deoplete_keyword_patterns',
-        \   'g:deoplete#keyword_patterns',
-        \   'g:deoplete#_keyword_patterns')), '|')
+        \   deoplete#custom#_get_filetype_option(
+        \   'keyword_patterns', filetype, '')), '|')
 
   " Convert keyword pattern.
   let pattern = deoplete#util#vimoption2python(
@@ -290,7 +280,8 @@ function! deoplete#init#_option() abort
   return {
         \ 'auto_complete': v:true,
         \ 'complete_method': 'complete',
-        \ 'sources': {},
+        \ 'keyword_patterns': {'_': '[a-zA-Z_]\k*'},
         \ 'min_pattern_length': 2,
+        \ 'sources': {},
         \ }
 endfunction
