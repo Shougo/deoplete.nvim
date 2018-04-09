@@ -12,13 +12,6 @@ function! deoplete#util#set_default(var, val, ...)  abort
           \ {alternate_var} : a:val
   endif
 endfunction
-function! deoplete#util#set_pattern(variable, keys, pattern) abort
-  for key in deoplete#util#split(a:keys)
-    if !has_key(a:variable, key)
-      let a:variable[key] = a:pattern
-    endif
-  endfor
-endfunction
 function! deoplete#util#print_error(string, ...) abort
   let name = a:0 ? a:1 : 'deoplete'
   echohl Error | echomsg printf('[%s] %s', name,

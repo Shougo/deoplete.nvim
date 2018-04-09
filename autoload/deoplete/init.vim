@@ -267,18 +267,16 @@ function! s:check_custom_option(old_var, new_var) abort
 endfunction
 
 function! deoplete#init#_option() abort
-  " Initialize omni completion pattern.
   " Note: HTML omni func use search().
-  let omni_patterns = {}
-  call deoplete#util#set_pattern(
-        \ omni_patterns,
-        \ 'html,xhtml,xml', ['<', '</', '<[^>]*\s[[:alnum:]-]*'])
-
   return {
         \ 'auto_complete': v:true,
         \ 'complete_method': 'complete',
         \ 'keyword_patterns': {'_': '[a-zA-Z_]\k*'},
-        \ 'omni_patterns': omni_patterns,
+        \ 'omni_patterns': {
+        \  'html': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],
+        \  'xhtml': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],
+        \  'xml': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],
+        \ },
         \ 'min_pattern_length': 2,
         \ 'sources': {},
         \ }
