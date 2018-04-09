@@ -325,6 +325,13 @@ deoplete#toggle()
 		Toggle deoplete auto completion.
 		Note: It changes the global state.
 
+						*deoplete#custom#option()*
+deoplete#custom#option({option-name}, {value})
+deoplete#custom#option({dict})
+		Set {option-name} option to {value}.
+		If {dict} is available, the key is {option-name} and the value
+		is {value}.
+
 						*deoplete#custom#source()*
 deoplete#custom#source({source-name}, {option-name}, {value})
 		Set {source-name} source specialized {option-name}

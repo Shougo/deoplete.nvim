@@ -13,7 +13,7 @@ function! deoplete#util#set_default(var, val, ...)  abort
   endif
 endfunction
 function! deoplete#util#set_pattern(variable, keys, pattern) abort
-  for key in split(a:keys, '\s*,\s*')
+  for key in deoplete#util#split(a:keys)
     if !has_key(a:variable, key)
       let a:variable[key] = a:pattern
     endif
@@ -258,4 +258,8 @@ function! deoplete#util#versioncmp(a, b) abort
   endfor
 
   return d
+endfunction
+
+function! deoplete#util#split(string) abort
+  return split(a:string, '\s*,\s*')
 endfunction
