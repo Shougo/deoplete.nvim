@@ -128,8 +128,6 @@ function! deoplete#init#_variables() abort
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_yarp', 0)
   call deoplete#util#set_default(
-        \ 'g:deoplete#enable_smart_case', &smartcase)
-  call deoplete#util#set_default(
         \ 'g:deoplete#enable_camel_case', 0)
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_refresh_always', 0)
@@ -153,6 +151,9 @@ function! deoplete#init#_variables() abort
     call deoplete#custom#option('auto_complete', v:false)
   endif
   call s:check_custom_option(
+        \ 'g:deoplete#ignore_case',
+        \ 'ignore_case')
+  call s:check_custom_option(
         \ 'g:deoplete#ignore_sources',
         \ 'ignore_sources')
   call s:check_custom_option(
@@ -164,6 +165,9 @@ function! deoplete#init#_variables() abort
   call s:check_custom_option(
         \ 'g:deoplete#sources',
         \ 'sources')
+  call s:check_custom_option(
+        \ 'g:deoplete#enable_smart_case',
+        \ 'smart_case')
 
   " Source variables
   call s:check_custom_var('file',
@@ -230,7 +234,7 @@ function! deoplete#init#_context(event, sources) abort
         \ 'filetypes': filetypes,
         \ 'same_filetypes': same_filetypes,
         \ 'ignorecase': deoplete#custom#_get_option('ignore_case'),
-        \ 'smartcase': g:deoplete#enable_smart_case,
+        \ 'smartcase': deoplete#custom#_get_option('smart_case'),
         \ 'camelcase': g:deoplete#enable_camel_case,
         \ 'delay': g:deoplete#auto_complete_delay,
         \ 'sources': sources,
@@ -278,6 +282,7 @@ function! deoplete#init#_option() abort
         \  'xml': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],
         \ },
         \ 'min_pattern_length': 2,
+        \ 'smart_case': &smartcase,
         \ 'sources': {},
         \ }
 endfunction

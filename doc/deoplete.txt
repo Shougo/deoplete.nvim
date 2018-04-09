@@ -143,6 +143,13 @@ omni_patterns
 <
 		Default value: in init.vim
 
+						*deoplete-options-smart_case*
+smart_case
+		When a capital letter is included in input, deoplete does
+		not ignore the upper- and lowercase.
+
+		Default value: same with your 'smartcase' value
+
 					*deoplete-options-sources*
 sources
 		It is a dictionary to decide use source names.  The key is
@@ -187,13 +194,6 @@ g:deoplete#enable_yarp
 		https://github.com/roxma/nvim-yarp
 
 		Default value: 0
-
-						*g:deoplete#enable_smart_case*
-g:deoplete#enable_smart_case
-		When a capital letter is included in input, deoplete does
-		not ignore the upper- and lowercase.
-
-		Default value: same with your 'smartcase' value
 
 						*g:deoplete#enable_camel_case*
 g:deoplete#enable_camel_case
@@ -1605,6 +1605,7 @@ COMPATIBILITY					*deoplete-compatibility*
 * Remove "g:deoplete#omni_patterns" variable.
 * Remove "g:deoplete#ignore_sources" variable.
 * Remove "g:deoplete#ignore_case" variable.
+* Remove "g:deoplete#smart_case" variable.
 
 2018.04.01
 * Remove "g:deoplete#file#enable_buffer_path" variable.
