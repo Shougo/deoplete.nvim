@@ -124,8 +124,6 @@ function! deoplete#init#_variables() abort
 
   " User variables
   call deoplete#util#set_default(
-        \ 'g:deoplete#enable_at_startup', 0)
-  call deoplete#util#set_default(
         \ 'g:deoplete#max_list', 100)
   call deoplete#util#set_default(
         \ 'g:deoplete#auto_complete_delay', 50)
