@@ -128,8 +128,6 @@ function! deoplete#init#_variables() abort
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_yarp', 0)
   call deoplete#util#set_default(
-        \ 'g:deoplete#auto_complete_start_length', 2)
-  call deoplete#util#set_default(
         \ 'g:deoplete#enable_ignore_case', &ignorecase)
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_smart_case', &smartcase)
@@ -152,8 +150,6 @@ function! deoplete#init#_variables() abort
   call deoplete#util#set_default(
         \ 'g:deoplete#auto_refresh_delay', 50)
   call deoplete#util#set_default(
-        \ 'g:deoplete#skip_chars', [])
-  call deoplete#util#set_default(
         \ 'g:deoplete#complete_method', 'complete')
   call deoplete#util#set_default(
         \ 'g:deoplete#num_processes', s:is_windows ? 1 : 4)
@@ -171,13 +167,21 @@ function! deoplete#init#_variables() abort
   call deoplete#util#set_default(
         \ 'g:deoplete#ignore_sources', {})
 
+  " Options
+  call s:check_custom_option(
+        \ 'g:deoplete#auto_complete_start_length',
+        \ 'min_pattern_length')
+
   " Source variables
   call s:check_custom_var('file',
-        \ 'g:deoplete#file#enable_buffer_path', 'enable_buffer_path')
+        \ 'g:deoplete#file#enable_buffer_path',
+        \ 'enable_buffer_path')
   call s:check_custom_var('omni',
-        \ 'g:deoplete#omni#input_patterns', 'input_patterns')
+        \ 'g:deoplete#omni#input_patterns',
+        \ 'input_patterns')
   call s:check_custom_var('omni',
-        \ 'g:deoplete#omni#functions', 'functions')
+        \ 'g:deoplete#omni#functions',
+        \ 'functions')
 
   " Initialize default keyword pattern.
   call deoplete#util#set_pattern(
@@ -278,4 +282,15 @@ function! s:check_custom_var(source_name, old_var, new_var) abort
   if exists(a:old_var)
     call deoplete#custom#var(a:source_name, a:new_var, eval(a:old_var))
   endif
+endfunction
+function! s:check_custom_option(old_var, new_var) abort
+  if exists(a:old_var)
+    call deoplete#custom#option(a:new_var, eval(a:old_var))
+  endif
+endfunction
+
+function! deoplete#init#_option() abort
+  return {
+        \ 'min_pattern_length': 2,
+        \ }
 endfunction

@@ -8,7 +8,7 @@ function! deoplete#custom#_init() abort
   let s:custom = {}
   let s:custom.source = {}
   let s:custom.source._ = {}
-  let s:custom.option = {}
+  let s:custom.option = deoplete#init#_option()
 endfunction
 
 function! deoplete#custom#_get() abort
@@ -27,6 +27,11 @@ function! deoplete#custom#_get_source_var(source_name) abort
   endif
 
   return custom[a:source_name]
+endfunction
+function! deoplete#custom#_get_option(name) abort
+  " Todo: buffer option
+  let custom = deoplete#custom#_get().option
+  return custom[a:name]
 endfunction
 
 function! deoplete#custom#set(source_name, option_name, value) abort
@@ -59,7 +64,7 @@ endfunction
 
 function! deoplete#custom#option(name_or_dict, ...) abort
   let custom = deoplete#custom#_get().option
-  call s:set_custom(custom[key], a:name_or_dict, get(a:000, 0, ''))
+  call s:set_custom(custom, a:name_or_dict, get(a:000, 0, ''))
 endfunction
 
 function! s:set_custom(dest, name_or_dict, value) abort

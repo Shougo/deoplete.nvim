@@ -9,6 +9,7 @@ CONTENTS						*deoplete-contents*
 Introduction		|deoplete-introduction|
 Install			|deoplete-install|
 Interface		|deoplete-interface|
+  Options		  |deoplete-options|
   Variables		  |deoplete-variables|
   Key mappings		  |deoplete-key-mappings|
   Functions		  |deoplete-functions|
@@ -77,6 +78,19 @@ You can check the Python3 installation by using the |:checkhealth| command.
 
 ==============================================================================
 INTERFACE						*deoplete-interface*
+
+------------------------------------------------------------------------------
+OPTIONS	 					*deoplete-options*
+
+					*deoplete-options-min_pattern_length*
+min_pattern_length
+		The default number of the input completion at the time of key
+		input automatically.
+
+		Note: You should change
+		|deoplete-source-attribute-min_pattern_length|.
+
+		Default: 2
 
 ------------------------------------------------------------------------------
 VARIABLES	 					*deoplete-variables*
@@ -150,15 +164,6 @@ g:deoplete#enable_on_insert_enter
 
 		Default value: 1
 
-				*g:deoplete#auto_complete_start_length*
-g:deoplete#auto_complete_start_length
-		This variable controls the number of the input completion
-		at the time of key input automatically.
-		Note: It is the deprecated option.  You should change
-		|deoplete-source-attribute-min_pattern_length|.
-
-		Default: 2
-
 					*g:deoplete#disable_auto_complete*
 g:deoplete#disable_auto_complete
 		It controls whether you invalidate automatic completion.  If
@@ -216,15 +221,6 @@ g:deoplete#auto_refresh_delay
 
 		Default value: 50
 
-					*g:deoplete#skip_chars*
-g:deoplete#skip_chars
-		The list of skip characters in the auto completion.
-
-		Default value: []
-
-					*b:deoplete_skip_chars*
-b:deoplete_skip_chars
-		Buffer local variable of |g:deoplete#skip_chars|.
 
 						*g:deoplete#keyword_patterns*
 g:deoplete#keyword_patterns
@@ -1621,6 +1617,10 @@ A: https://github.com/zchee/deoplete-jedi/issues/35
 
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
+
+2018.04.09
+* Remove "g:deoplete#auto_complete_start_length" variable.
+* Remove "g:deoplete#skip_chars" variable.
 
 2018.04.01
 * Remove "g:deoplete#file#enable_buffer_path" variable.

@@ -173,12 +173,7 @@ function! s:is_skip_text(event) abort
     endif
   endif
 
-  let skip_chars = deoplete#util#get_simple_buffer_config(
-        \   'b:deoplete_skip_chars', 'g:deoplete#skip_chars')
-
-  return (!pumvisible() && virtcol('.') != displaywidth)
-        \ || (a:event !=# 'Manual' && input !=# ''
-        \     && index(skip_chars, input[-1:]) >= 0)
+  return !pumvisible() && virtcol('.') != displaywidth
 endfunction
 function! s:check_omnifunc(context) abort
   let prev = g:deoplete#_prev_completion
