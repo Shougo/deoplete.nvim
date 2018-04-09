@@ -101,6 +101,12 @@ complete_method
 
 		Default value: "complete"
 
+						*deoplete-options-ignore_case*
+ignore_case
+		If it is True, deoplete ignores case.
+
+		Default value: same with your 'ignorecase' value
+
 					*deoplete-options-ignore_sources*
 ignore_sources
 		It is a dictionary to decide ignore source names.
@@ -181,14 +187,6 @@ g:deoplete#enable_yarp
 		https://github.com/roxma/nvim-yarp
 
 		Default value: 0
-
-					*g:deoplete#enable_ignore_case*
-g:deoplete#enable_ignore_case
-		When deoplete looks for candidate completion, this
-		variable controls whether deoplete ignores the upper-
-		and lowercase.  If it is 1, deoplete ignores case.
-
-		Default value: same with your 'ignorecase' value
 
 						*g:deoplete#enable_smart_case*
 g:deoplete#enable_smart_case
@@ -1606,6 +1604,7 @@ COMPATIBILITY					*deoplete-compatibility*
 * Remove "g:deoplete#keyword_patterns" variable.
 * Remove "g:deoplete#omni_patterns" variable.
 * Remove "g:deoplete#ignore_sources" variable.
+* Remove "g:deoplete#ignore_case" variable.
 
 2018.04.01
 * Remove "g:deoplete#file#enable_buffer_path" variable.

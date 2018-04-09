@@ -128,8 +128,6 @@ function! deoplete#init#_variables() abort
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_yarp', 0)
   call deoplete#util#set_default(
-        \ 'g:deoplete#enable_ignore_case', &ignorecase)
-  call deoplete#util#set_default(
         \ 'g:deoplete#enable_smart_case', &smartcase)
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_camel_case', 0)
@@ -231,7 +229,7 @@ function! deoplete#init#_context(event, sources) abort
         \ 'filetype': filetype,
         \ 'filetypes': filetypes,
         \ 'same_filetypes': same_filetypes,
-        \ 'ignorecase': g:deoplete#enable_ignore_case,
+        \ 'ignorecase': deoplete#custom#_get_option('ignore_case'),
         \ 'smartcase': g:deoplete#enable_smart_case,
         \ 'camelcase': g:deoplete#enable_camel_case,
         \ 'delay': g:deoplete#auto_complete_delay,
@@ -271,6 +269,7 @@ function! deoplete#init#_option() abort
   return {
         \ 'auto_complete': v:true,
         \ 'complete_method': 'complete',
+        \ 'ignore_case': &ignorecase,
         \ 'ignore_sources': {},
         \ 'keyword_patterns': {'_': '[a-zA-Z_]\k*'},
         \ 'omni_patterns': {
