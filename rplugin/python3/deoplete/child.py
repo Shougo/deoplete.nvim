@@ -19,9 +19,8 @@ import deoplete.filter  # noqa
 from deoplete import logger
 from deoplete.exceptions import SourceInitError
 from deoplete.util import (bytepos2charpos, charpos2bytepos, error, error_tb,
-                           import_plugin,
-                           get_buffer_config, get_custom,
-                           get_syn_names, convert2candidates, uniq_list_dict)
+                           import_plugin, get_custom, get_syn_names,
+                           convert2candidates, uniq_list_dict)
 
 
 class Child(logger.LoggingMixin):

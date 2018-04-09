@@ -14,16 +14,6 @@ import unicodedata
 from importlib.machinery import SourceFileLoader
 
 
-def get_buffer_config(context, filetype, buffer_var, user_var, default_var):
-    if buffer_var in context['bufvars']:
-        return context['bufvars'][buffer_var]
-
-    ft = filetype if (filetype in context['vars'][user_var] or
-                      filetype in default_var) else '_'
-    default = default_var.get(ft, '')
-    return context['vars'][user_var].get(ft, default)
-
-
 def set_pattern(variable, keys, pattern):
     for key in keys.split(','):
         variable[key] = pattern
