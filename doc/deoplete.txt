@@ -82,6 +82,13 @@ INTERFACE						*deoplete-interface*
 ------------------------------------------------------------------------------
 OPTIONS	 					*deoplete-options*
 
+					*deoplete-options-auto_complete*
+auto_complete
+		If it is False, automatic completion becomes invalid, but can
+		use the manual completion by |deoplete#manual_complete()|.
+
+		Default: v:true
+
 					*deoplete-options-min_pattern_length*
 min_pattern_length
 		The default number of the input completion at the time of key
@@ -163,18 +170,6 @@ g:deoplete#enable_on_insert_enter
 		if this value is 1.
 
 		Default value: 1
-
-					*g:deoplete#disable_auto_complete*
-g:deoplete#disable_auto_complete
-		It controls whether you invalidate automatic completion.  If
-		it is 1, automatic completion becomes invalid, but can use the
-		manual completion by |deoplete#manual_complete()|.
-
-		Default value: 0
-
-					*b:deoplete_disable_auto_complete*
-b:deoplete_disable_auto_complete
-		Buffer local variable of |g:deoplete#disable_auto_complete|.
 
 						*g:deoplete#enable_profile*
 g:deoplete#enable_profile
@@ -321,6 +316,11 @@ deoplete#toggle()
 		Toggle deoplete auto completion.
 		Note: It changes the global state.
 
+					*deoplete#custom#buffer_option()*
+deoplete#custom#buffer_option({option-name}, {value})
+deoplete#custom#buffer_option({dict})
+		The buffer local version of |deoplete#custom#option()|.
+
 						*deoplete#custom#option()*
 deoplete#custom#option({option-name}, {value})
 deoplete#custom#option({dict})
@@ -419,7 +419,7 @@ deoplete#manual_complete([{sources}])
 		Note: It must be in |map-<expr>|.
 
 		If you want to trigger deoplete manually, see also
-		|g:deoplete#disable_auto_complete|, which should be 1 then
+		|deoplete-options-auto_complete|, which should be 1 then
 		typically.
 >
 		inoremap <silent><expr> <TAB>
@@ -1340,10 +1340,10 @@ Q: Deoplete does not work with vim-multiple-cursors.
 A: You must disable deoplete when using vim-multiple-cursors. >
 
        function g:Multiple_cursors_before()
-         let g:deoplete#disable_auto_complete = 1
+         call deoplete#custom#buffer_option('auto_complete', v:false)
        endfunction
        function g:Multiple_cursors_after()
-         let g:deoplete#disable_auto_complete = 0
+         call deoplete#custom#buffer_option('auto_complete', v:true)
        endfunction
 
 Q: I want to debug the sources.
@@ -1529,9 +1529,10 @@ A: It is the source mark. [~] is from around source.  A is from
 
 Q: I want to disable the auto completion for certain filetypes.
 
-A: Please use |b:deoplete_disable_auto_complete|. >
+A: Please use |deoplete-options-auto_complete|. >
 
-       autocmd FileType tex let b:deoplete_disable_auto_complete = 1
+       autocmd FileType tex
+       \ call deoplete#custom#buffer_option('auto_complete', v:false)
 
 Q: I want to use C/C++ omni completion with deoplete.
 
@@ -1621,6 +1622,7 @@ COMPATIBILITY					*deoplete-compatibility*
 2018.04.09
 * Remove "g:deoplete#auto_complete_start_length" variable.
 * Remove "g:deoplete#skip_chars" variable.
+* Remove "g:deoplete#disable_auto_complete" variable.
 
 2018.04.01
 * Remove "g:deoplete#file#enable_buffer_path" variable.

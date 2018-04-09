@@ -138,8 +138,6 @@ function! deoplete#init#_variables() abort
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_on_insert_enter', 1)
   call deoplete#util#set_default(
-        \ 'g:deoplete#disable_auto_complete', 0)
-  call deoplete#util#set_default(
         \ 'g:deoplete#delimiters', ['/'])
   call deoplete#util#set_default(
         \ 'g:deoplete#max_list', 100)
@@ -171,6 +169,9 @@ function! deoplete#init#_variables() abort
   call s:check_custom_option(
         \ 'g:deoplete#auto_complete_start_length',
         \ 'min_pattern_length')
+  if get(g:, 'deoplete#disable_auto_complete', v:false)
+    call deoplete#custom#option('auto_complete', v:false)
+  endif
 
   " Source variables
   call s:check_custom_var('file',
@@ -291,6 +292,7 @@ endfunction
 
 function! deoplete#init#_option() abort
   return {
+        \ 'auto_complete': v:true,
         \ 'min_pattern_length': 2,
         \ }
 endfunction

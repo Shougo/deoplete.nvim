@@ -137,14 +137,10 @@ function! s:is_skip(event) abort
     return 1
   endif
 
-  let disable_auto_complete =
-        \ deoplete#util#get_simple_buffer_config(
-        \   'b:deoplete_disable_auto_complete',
-        \   'g:deoplete#disable_auto_complete')
+  let auto_complete = deoplete#custom#_get_option('auto_complete')
 
   if &paste
-        \ || (a:event !=# 'Manual' && a:event !=# 'Async'
-        \     && disable_auto_complete)
+        \ || (a:event !=# 'Manual' && a:event !=# 'Async' && !auto_complete)
         \ || (&l:completefunc !=# '' && &l:buftype =~# 'nofile')
         \ || (a:event !=# 'InsertEnter' && mode() !=# 'i')
     return 1

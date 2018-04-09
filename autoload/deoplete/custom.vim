@@ -18,6 +18,14 @@ function! deoplete#custom#_get() abort
 
   return s:custom
 endfunction
+function! deoplete#custom#_get_buffer() abort
+  if !exists('b:custom')
+    let b:custom = {}
+    let b:custom.option = {}
+  endif
+
+  return b:custom
+endfunction
 
 function! deoplete#custom#_get_source_var(source_name) abort
   let custom = deoplete#custom#_get().source
@@ -29,8 +37,8 @@ function! deoplete#custom#_get_source_var(source_name) abort
   return custom[a:source_name]
 endfunction
 function! deoplete#custom#_get_option(name) abort
-  " Todo: buffer option
-  let custom = deoplete#custom#_get().option
+  let custom = extend(copy(deoplete#custom#_get().option),
+        \ deoplete#custom#_get_buffer().option)
   return custom[a:name]
 endfunction
 
@@ -64,6 +72,10 @@ endfunction
 
 function! deoplete#custom#option(name_or_dict, ...) abort
   let custom = deoplete#custom#_get().option
+  call s:set_custom(custom, a:name_or_dict, get(a:000, 0, ''))
+endfunction
+function! deoplete#custom#buffer_option(name_or_dict, ...) abort
+  let custom = deoplete#custom#_get_buffer().option
   call s:set_custom(custom, a:name_or_dict, get(a:000, 0, ''))
 endfunction
 
