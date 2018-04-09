@@ -89,6 +89,17 @@ auto_complete
 
 		Default: v:true
 
+						*deoplete-options-camel_case*
+camel_case
+		When a capital letter is matched with the uppercase, but a
+		lower letter is matched with the upper- and lowercase.
+		Ex: "foB" is matched with "FooBar" not "foobar".
+		Note: This feature is only available in
+		|deoplete-filter-matcher_fuzzy| or
+		|deoplete-filter-matcher_full_fuzzy|.
+
+		Default value: v:false
+
 					*deoplete-options-complete_method*
 complete_method
 		If it is "complete", deoplete use |complete()|.
@@ -192,17 +203,6 @@ g:deoplete#enable_yarp
 		Use nvim-yarp library instead of neovim remote plugin feature.
 		Note: nvim-yarp plugin is needed.
 		https://github.com/roxma/nvim-yarp
-
-		Default value: 0
-
-						*g:deoplete#enable_camel_case*
-g:deoplete#enable_camel_case
-		When a capital letter is matched with the uppercase, but a
-		lower letter is matched with the upper- and lowercase.
-		Ex: "foB" is matched with "FooBar" not "foobar".
-		Note: This feature is only available in
-		|deoplete-filter-matcher_fuzzy| or
-		|deoplete-filter-matcher_full_fuzzy|.
 
 		Default value: 0
 
@@ -1606,6 +1606,7 @@ COMPATIBILITY					*deoplete-compatibility*
 * Remove "g:deoplete#ignore_sources" variable.
 * Remove "g:deoplete#ignore_case" variable.
 * Remove "g:deoplete#smart_case" variable.
+* Remove "g:deoplete#camel_case" variable.
 
 2018.04.01
 * Remove "g:deoplete#file#enable_buffer_path" variable.

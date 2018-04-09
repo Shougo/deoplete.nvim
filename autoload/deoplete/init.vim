@@ -128,8 +128,6 @@ function! deoplete#init#_variables() abort
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_yarp', 0)
   call deoplete#util#set_default(
-        \ 'g:deoplete#enable_camel_case', 0)
-  call deoplete#util#set_default(
         \ 'g:deoplete#enable_refresh_always', 0)
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_on_insert_enter', 1)
@@ -150,6 +148,9 @@ function! deoplete#init#_variables() abort
   if get(g:, 'deoplete#disable_auto_complete', v:false)
     call deoplete#custom#option('auto_complete', v:false)
   endif
+  call s:check_custom_option(
+        \ 'g:deoplete#camel_case',
+        \ 'camel_case')
   call s:check_custom_option(
         \ 'g:deoplete#ignore_case',
         \ 'ignore_case')
@@ -235,7 +236,7 @@ function! deoplete#init#_context(event, sources) abort
         \ 'same_filetypes': same_filetypes,
         \ 'ignorecase': deoplete#custom#_get_option('ignore_case'),
         \ 'smartcase': deoplete#custom#_get_option('smart_case'),
-        \ 'camelcase': g:deoplete#enable_camel_case,
+        \ 'camelcase': deoplete#custom#_get_option('camel_case'),
         \ 'delay': g:deoplete#auto_complete_delay,
         \ 'sources': sources,
         \ 'keyword_patterns': keyword_patterns,
@@ -272,6 +273,7 @@ function! deoplete#init#_option() abort
   " Note: HTML omni func use search().
   return {
         \ 'auto_complete': v:true,
+        \ 'camel_case': v:false,
         \ 'complete_method': 'complete',
         \ 'ignore_case': &ignorecase,
         \ 'ignore_sources': {},
