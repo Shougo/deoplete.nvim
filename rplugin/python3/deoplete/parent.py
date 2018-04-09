@@ -83,7 +83,8 @@ class Parent(logger.LoggingMixin):
         self._put('on_event', [context])
 
     def _start_process(self, context):
-        if self._vim.vars['deoplete#num_processes'] > 1:
+        if self._vim.call('deoplete#custom#_get_option',
+                          'num_processes') > 1:
             # Parallel
 
             startupinfo = None

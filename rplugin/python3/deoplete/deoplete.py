@@ -24,7 +24,8 @@ class Deoplete(logger.LoggingMixin):
         self._parents = []
         self._parent_count = 0
         self._max_parents = max(
-            [1, self._vim.vars['deoplete#num_processes']])
+            [1, self._vim.call('deoplete#custom#_get_option',
+                               'num_processes')])
 
         if self._max_parents > 1 and not hasattr(self._vim, 'loop'):
             error(self._vim, 'neovim-python 0.2.4+ is required.')

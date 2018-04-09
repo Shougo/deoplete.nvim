@@ -165,6 +165,14 @@ max_list
 
 		Default value: 100
 
+					*deoplete-options-num_processes*
+num_processes
+		The number of processes used for the deoplete parallel
+		feature.  If it is less than equal 1, this feature is
+		disabled.
+
+		Default value: 1 (Windows) or 4 (Others)
+
 					*deoplete-options-omni_patterns*
 omni_patterns
 		It is the keyword patterns to Omni completion.
@@ -256,14 +264,6 @@ g:deoplete#enable_at_startup
 
 		With the default value 0, you cannot use deoplete
 		unless you start it manually.
-
-						*g:deoplete#num_processes*
-g:deoplete#num_processes
-		The number of processes used for the deoplete parallel
-		feature.  If it is less than equal 1, this feature is
-		disabled.
-
-		Default value: 1 (Windows) or 4 (Others)
 
 ------------------------------------------------------------------------------
 FUNCTIONS 						*deoplete-functions*
@@ -1345,8 +1345,8 @@ https://github.com/Shougo/deoplete.nvim/issues/635#issuecomment-363331278
 Please test neovim-python module.
 https://github.com/neovim/python-client#usage-through-the-python-repl
 
-Note: You can disable parallel feature by |g:deoplete#num_processes|.  It is
-workaround.
+Note: You can disable parallel feature by |deoplete-options-num_processes|.
+It is workaround.
 
 Q: "[deoplete] neovim-python 0.2.4+ is required." error
 https://github.com/Shougo/deoplete.nvim/issues/694
@@ -1614,6 +1614,7 @@ COMPATIBILITY					*deoplete-compatibility*
 * Remove "g:deoplete#max_list" variable.
 * Remove "g:deoplete#auto_complete_delay" variable.
 * Remove "g:deoplete#auto_refresh_delay" variable.
+* Remove "g:deoplete#num_processes" variable.
 
 2018.04.01
 * Remove "g:deoplete#file#enable_buffer_path" variable.

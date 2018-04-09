@@ -122,10 +122,6 @@ function! deoplete#init#_variables() abort
     let g:deoplete#_serveraddr = $NVIM_LISTEN_ADDRESS
   endif
 
-  " User variables
-  call deoplete#util#set_default(
-        \ 'g:deoplete#num_processes', s:is_windows ? 1 : 4)
-
   " Options
   if get(g:, 'deoplete#disable_auto_complete', v:false)
     call deoplete#custom#option('auto_complete', v:false)
@@ -154,6 +150,9 @@ function! deoplete#init#_variables() abort
   call s:check_custom_option(
         \ 'g:deoplete#max_list',
         \ 'max_list')
+  call s:check_custom_option(
+        \ 'g:deoplete#num_processes',
+        \ 'num_processes')
   call s:check_custom_option(
         \ 'g:deoplete#auto_complete_start_length',
         \ 'min_pattern_length')
@@ -287,6 +286,7 @@ function! deoplete#init#_option() abort
         \ 'ignore_case': &ignorecase,
         \ 'ignore_sources': {},
         \ 'max_list': 100,
+        \ 'num_processes': s:is_windows ? 1 : 4,
         \ 'keyword_patterns': {'_': '[a-zA-Z_]\k*'},
         \ 'omni_patterns': {
         \  'html': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],
