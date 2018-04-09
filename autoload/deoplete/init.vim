@@ -126,10 +126,6 @@ function! deoplete#init#_variables() abort
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_at_startup', 0)
   call deoplete#util#set_default(
-        \ 'g:deoplete#enable_refresh_always', 0)
-  call deoplete#util#set_default(
-        \ 'g:deoplete#enable_on_insert_enter', 1)
-  call deoplete#util#set_default(
         \ 'g:deoplete#delimiters', ['/'])
   call deoplete#util#set_default(
         \ 'g:deoplete#max_list', 100)
@@ -161,6 +157,12 @@ function! deoplete#init#_variables() abort
   call s:check_custom_option(
         \ 'g:deoplete#auto_complete_start_length',
         \ 'min_pattern_length')
+  call s:check_custom_option(
+        \ 'g:deoplete#enable_on_insert_enter',
+        \ 'on_insert_enter')
+  call s:check_custom_option(
+        \ 'g:deoplete#enable_refresh_always',
+        \ 'refresh_always')
   call s:check_custom_option(
         \ 'g:deoplete#sources',
         \ 'sources')
@@ -284,7 +286,9 @@ function! deoplete#init#_option() abort
         \  'xhtml': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],
         \  'xml': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],
         \ },
+        \ 'on_insert_enter': v:true,
         \ 'min_pattern_length': 2,
+        \ 'refresh_always': v:false,
         \ 'smart_case': &smartcase,
         \ 'sources': {},
         \ 'yarp': v:false,

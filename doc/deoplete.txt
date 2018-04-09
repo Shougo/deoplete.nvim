@@ -154,6 +154,21 @@ omni_patterns
 <
 		Default value: in init.vim
 
+					*deoplete-options-on_insert_enter*
+on_insert_enter
+		Deoplete enables the auto completion on |InsertEnter| autocmd
+		if this value is True.
+
+		Default value: v:true
+
+					*deoplete-options-refresh_always*
+refresh_always
+		Deoplete refreshes the candidates automatically if this value
+		is True.
+		Note: It increases the screen flicker.
+
+		Default value: v:false
+
 						*deoplete-options-smart_case*
 smart_case
 		When a capital letter is included in input, deoplete does
@@ -205,21 +220,6 @@ g:deoplete#enable_at_startup
 
 		With the default value 0, you cannot use deoplete
 		unless you start it manually.
-
-					*g:deoplete#enable_refresh_always*
-g:deoplete#enable_refresh_always
-		Deoplete refreshes the candidates automatically if this value
-		is 1.
-		Note: It increases the screen flicker.
-
-		Default value: 0
-
-					*g:deoplete#enable_on_insert_enter*
-g:deoplete#enable_on_insert_enter
-		Deoplete enables the auto completion on |InsertEnter| autocmd
-		if this value is 1.
-
-		Default value: 1
 
 						*g:deoplete#enable_profile*
 g:deoplete#enable_profile
@@ -1608,6 +1608,8 @@ COMPATIBILITY					*deoplete-compatibility*
 * Remove "g:deoplete#smart_case" variable.
 * Remove "g:deoplete#camel_case" variable.
 * Remove "g:deoplete#enable_yarp" variable.
+* Remove "g:deoplete#enable_refresh_always" variable.
+* Remove "g:deoplete#enable_on_insert_enter" variable.
 
 2018.04.01
 * Remove "g:deoplete#file#enable_buffer_path" variable.

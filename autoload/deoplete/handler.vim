@@ -17,10 +17,10 @@ function! deoplete#handler#_init() abort
   endfor
 
   call s:define_completion_via_timer('TextChangedI')
-  if g:deoplete#enable_on_insert_enter
+  if deoplete#custom#_get_option('on_insert_enter')
     call s:define_completion_via_timer('InsertEnter')
   endif
-  if g:deoplete#enable_refresh_always
+  if deoplete#custom#_get_option('refresh_always')
     call s:define_completion_via_timer('InsertCharPre')
   endif
 
