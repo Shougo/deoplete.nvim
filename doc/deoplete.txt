@@ -154,7 +154,7 @@ keyword_patterns
 >
 		call deoplete#custom#option('keyword_patterns', {
 		\ 'tex': '\\?[a-zA-Z_]\w*',
-		\)
+		\})
 <
 		Default value: {}
 
@@ -185,7 +185,7 @@ omni_patterns
 >
 		call deoplete#custom#option('omni_patterns', {
 		\ 'java': '[^. *\t]\.\w*',
-		\)
+		\})
 <
 		Default value: in init.vim
 
@@ -234,7 +234,7 @@ sources
 		call deoplete#custom#option('sources', {
 		\ '_': ['buffer'],
 		\ 'cpp': ['buffer', 'tag'],
-		\)
+		\})
 
 					*deoplete-options-min_pattern_length*
 min_pattern_length
