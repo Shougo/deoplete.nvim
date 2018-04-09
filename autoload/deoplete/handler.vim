@@ -80,7 +80,7 @@ function! s:completion_timer_start(event) abort
     call s:completion_timer_stop()
   endif
 
-  let delay = max([20, g:deoplete#auto_complete_delay])
+  let delay = max([20, deoplete#custom#_get_option('auto_complete_delay')])
   let s:completion_timer = timer_start(
         \ delay, {-> s:completion_begin(a:event)})
 endfunction

@@ -89,6 +89,13 @@ auto_complete
 
 		Default: v:true
 
+					*deoplete-options-auto_complete_delay*
+auto_complete_delay
+		Delay the completion after input in milliseconds.
+		Requires |+timers|.
+
+		Default value: 50
+
 						*deoplete-options-camel_case*
 camel_case
 		When a capital letter is matched with the uppercase, but a
@@ -251,13 +258,6 @@ g:deoplete#num_processes
 		disabled.
 
 		Default value: 1 (Windows) or 4 (Others)
-
-					*g:deoplete#auto_complete_delay*
-g:deoplete#auto_complete_delay
-		Delay the completion after input in milliseconds.
-		Requires |+timers| (Neovim 0.1.5)
-
-		Default value: 50
 
 					*g:deoplete#auto_refresh_delay*
 g:deoplete#auto_refresh_delay
@@ -1612,6 +1612,7 @@ COMPATIBILITY					*deoplete-compatibility*
 * Remove "g:deoplete#enable_profile" variable.
 * Remove "g:deoplete#delimiters" variable.
 * Remove "g:deoplete#max_list" variable.
+* Remove "g:deoplete#auto_complete_delay" variable.
 
 2018.04.01
 * Remove "g:deoplete#file#enable_buffer_path" variable.

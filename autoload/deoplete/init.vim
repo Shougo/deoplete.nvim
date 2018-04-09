@@ -124,8 +124,6 @@ function! deoplete#init#_variables() abort
 
   " User variables
   call deoplete#util#set_default(
-        \ 'g:deoplete#auto_complete_delay', 50)
-  call deoplete#util#set_default(
         \ 'g:deoplete#auto_refresh_delay', 50)
   call deoplete#util#set_default(
         \ 'g:deoplete#num_processes', s:is_windows ? 1 : 4)
@@ -134,6 +132,9 @@ function! deoplete#init#_variables() abort
   if get(g:, 'deoplete#disable_auto_complete', v:false)
     call deoplete#custom#option('auto_complete', v:false)
   endif
+  call s:check_custom_option(
+        \ 'g:deoplete#auto_complete_delay',
+        \ 'auto_complete_delay')
   call s:check_custom_option(
         \ 'g:deoplete#camel_case',
         \ 'camel_case')
@@ -241,7 +242,7 @@ function! deoplete#init#_context(event, sources) abort
         \ 'ignorecase': deoplete#custom#_get_option('ignore_case'),
         \ 'smartcase': deoplete#custom#_get_option('smart_case'),
         \ 'camelcase': deoplete#custom#_get_option('camel_case'),
-        \ 'delay': g:deoplete#auto_complete_delay,
+        \ 'delay': deoplete#custom#_get_option('auto_complete_delay'),
         \ 'sources': sources,
         \ 'keyword_patterns': keyword_patterns,
         \ 'max_abbr_width': max_width,
@@ -277,6 +278,7 @@ function! deoplete#init#_option() abort
   " Note: HTML omni func use search().
   return {
         \ 'auto_complete': v:true,
+        \ 'auto_complete_delay': 50,
         \ 'camel_case': v:false,
         \ 'complete_method': 'complete',
         \ 'delimiters': ['/'],
