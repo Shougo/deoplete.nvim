@@ -29,14 +29,6 @@ def set_pattern(variable, keys, pattern):
         variable[key] = pattern
 
 
-def set_list(vim, variable, keys, list):
-    return vim.call('deoplete#util#set_pattern', variable, keys, list)
-
-
-def set_default(vim, var, val):
-    return vim.call('deoplete#util#set_default', var, val)
-
-
 def convert2list(expr):
     return (expr if isinstance(expr, list) else [expr])
 
