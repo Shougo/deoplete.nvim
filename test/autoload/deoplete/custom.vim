@@ -24,15 +24,14 @@ function! s:suite.custom_source() abort
 endfunction
 
 function! s:suite.custom_option() abort
-  call deoplete#custom#_init()
-
-  " Buffer options test
+  " Simple option test
   call deoplete#custom#_init()
   call deoplete#custom#_init_buffer()
   call deoplete#custom#option('auto_complete', v:true)
   call s:assert.equals(
         \ deoplete#custom#_get_option('auto_complete'), v:true)
 
+  " Buffer option test
   call deoplete#custom#buffer_option('auto_complete', v:false)
   call s:assert.equals(
         \ deoplete#custom#_get_option('auto_complete'), v:false)
@@ -44,4 +43,29 @@ function! s:suite.custom_option() abort
   call deoplete#init#_variables()
   call s:assert.equals(
         \ deoplete#custom#_get_option('auto_complete'), v:false)
+
+  " Filetype option test
+  call deoplete#custom#_init()
+  call deoplete#custom#_init_buffer()
+  let s:java_pattern = '[^. *\t]\.\w*'
+  call deoplete#custom#option('omni_patterns', {
+        \ 'java': s:java_pattern,
+        \})
+  call s:assert.equals(
+        \ deoplete#custom#_get_filetype_option(
+        \   'omni_patterns', 'java', ''), s:java_pattern)
+  call s:assert.equals(
+        \ deoplete#custom#_get_filetype_option(
+        \   'omni_patterns', 'foobar', ''), '')
+
+  " Compatibility test
+  call deoplete#custom#_init()
+  call deoplete#custom#_init_buffer()
+  let s:tex_pattern = '[^\w|\s][a-zA-Z_]\w*'
+  let g:deoplete#keyword_patterns = {}
+  let g:deoplete#keyword_patterns.tex = '[^\w|\s][a-zA-Z_]\w*'
+  call deoplete#init#_variables()
+  call s:assert.equals(
+        \ deoplete#custom#_get_filetype_option(
+        \   'keyword_patterns', 'tex', ''), s:tex_pattern)
 endfunction
