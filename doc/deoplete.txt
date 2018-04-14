@@ -213,6 +213,12 @@ refresh_always
 
 		Default value: v:false
 
+						*deoplete-options-skip_chars*
+skip_chars
+		The list of skip characters in the auto completion.
+
+		Default value: ['(', ')']
+
 						*deoplete-options-smart_case*
 smart_case
 		When a capital letter is included in input, deoplete does

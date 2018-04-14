@@ -167,6 +167,9 @@ function! deoplete#init#_variables() abort
         \ 'g:deoplete#enable_refresh_always',
         \ 'refresh_always')
   call s:check_custom_option(
+        \ 'g:deoplete#skip_chars',
+        \ 'skip_chars')
+  call s:check_custom_option(
         \ 'g:deoplete#sources',
         \ 'sources')
   call s:check_custom_option(
@@ -298,6 +301,7 @@ function! deoplete#init#_option() abort
         \ 'profile': v:false,
         \ 'min_pattern_length': 2,
         \ 'refresh_always': v:false,
+        \ 'skip_chars': ['(', ')'],
         \ 'smart_case': &smartcase,
         \ 'sources': {},
         \ 'yarp': v:false,
