@@ -297,7 +297,7 @@ function! deoplete#init#_option() abort
         \ 'delimiters': ['/'],
         \ 'ignore_case': &ignorecase,
         \ 'ignore_sources': {},
-        \ 'max_list': 100,
+        \ 'max_list': 500,
         \ 'num_processes': s:is_windows ? 1 : 4,
         \ 'keyword_patterns': {'_': '[a-zA-Z_]\k*'},
         \ 'omni_patterns': {

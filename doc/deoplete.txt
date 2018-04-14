@@ -163,7 +163,7 @@ max_list
 		If the list of candidates exceeds the limit, not all
 		candidates will show up.
 
-		Default value: 100
+		Default value: 500
 
 					*deoplete-options-num_processes*
 num_processes
