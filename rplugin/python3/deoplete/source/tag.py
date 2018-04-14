@@ -10,7 +10,7 @@ from .base import Base
 
 import re
 import os
-from os.path import exists, getsize
+from os.path import exists
 
 
 class Source(Base):
