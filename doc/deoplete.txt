@@ -516,12 +516,6 @@ tag							*deoplete-source-tag*
 
 		rank: 100
 
-		Source custom variables:
-		cache_limit_size
-				If a tag file is bigger than this size,
-				deoplete does not make the tag file cache.
-				(default: 500000)
-
 file							*deoplete-source-file*
 		This source collects keywords from local files. Specifically,
 		it completes file and directory names and paths, e.g.
@@ -1305,11 +1299,6 @@ A: If it is enabled, Neovim will enable and load deoplete in startup. It
 <
   And you should set |g:python3_host_prog| variable. It reduces almost 20ms
   startuptime.
-
-Q: |deoplete-source-tag| does not work.
-   https://github.com/Shougo/deoplete.nvim/issues/309
-
-A: Please increase cache_limit_size value in tag source.
 
 Q: deoplete cannot complete filename after "=".
 
