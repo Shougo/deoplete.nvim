@@ -1437,7 +1437,7 @@ Q: I want to disable the buffer source.
 
 A: You can use |deoplete-options-ignore_sources|. >
 
-       call deoplete#custom#option('ignore_sources', {'_', ['buffer']})
+       call deoplete#custom#option('ignore_sources', {'_': ['buffer']})
 
 Q: How to prevent auto bracket completion?
    https://github.com/Shougo/deoplete.nvim/issues/150
