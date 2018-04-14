@@ -14,33 +14,9 @@ import unicodedata
 from importlib.machinery import SourceFileLoader
 
 
-def get_buffer_config(context, filetype, buffer_var, user_var, default_var):
-    if buffer_var in context['bufvars']:
-        return context['bufvars'][buffer_var]
-
-    ft = filetype if (filetype in context['vars'][user_var] or
-                      filetype in default_var) else '_'
-    default = default_var.get(ft, '')
-    return context['vars'][user_var].get(ft, default)
-
-
-def get_simple_buffer_config(context, buffer_var, user_var):
-    return (context['bufvars'][buffer_var]
-            if buffer_var in context['bufvars']
-            else context['vars'][user_var])
-
-
 def set_pattern(variable, keys, pattern):
     for key in keys.split(','):
         variable[key] = pattern
-
-
-def set_list(vim, variable, keys, list):
-    return vim.call('deoplete#util#set_pattern', variable, keys, list)
-
-
-def set_default(vim, var, val):
-    return vim.call('deoplete#util#set_default', var, val)
 
 
 def convert2list(expr):

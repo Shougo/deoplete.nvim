@@ -17,10 +17,10 @@ function! deoplete#handler#_init() abort
   endfor
 
   call s:define_completion_via_timer('TextChangedI')
-  if g:deoplete#enable_on_insert_enter
+  if deoplete#custom#_get_option('on_insert_enter')
     call s:define_completion_via_timer('InsertEnter')
   endif
-  if g:deoplete#enable_refresh_always
+  if deoplete#custom#_get_option('refresh_always')
     call s:define_completion_via_timer('InsertCharPre')
   endif
 
@@ -63,12 +63,13 @@ function! deoplete#handler#_do_complete() abort
     call deoplete#mapping#_set_completeopt()
   endif
 
-  if g:deoplete#complete_method ==# 'complete'
+  let complete_method = deoplete#custom#_get_option('complete_method')
+  if complete_method ==# 'complete'
     call feedkeys("\<Plug>_", 'i')
-  elseif g:deoplete#complete_method ==# 'completefunc'
+  elseif complete_method ==# 'completefunc'
     let &l:completefunc = 'deoplete#mapping#_completefunc'
     call feedkeys("\<C-x>\<C-u>", 'in')
-  elseif g:deoplete#complete_method ==# 'omnifunc'
+  elseif complete_method ==# 'omnifunc'
     let &l:omnifunc = 'deoplete#mapping#_completefunc'
     call feedkeys("\<C-x>\<C-o>", 'in')
   endif
@@ -79,7 +80,7 @@ function! s:completion_timer_start(event) abort
     call s:completion_timer_stop()
   endif
 
-  let delay = max([20, g:deoplete#auto_complete_delay])
+  let delay = max([20, deoplete#custom#_get_option('auto_complete_delay')])
   let s:completion_timer = timer_start(
         \ delay, {-> s:completion_begin(a:event)})
 endfunction
@@ -97,9 +98,14 @@ function! deoplete#handler#_async_timer_start() abort
     call deoplete#handler#_async_timer_stop()
   endif
 
+  let delay = deoplete#custom#_get_option('auto_refresh_delay')
+  if delay <= 0
+    return
+  endif
+
   let s:async_timer = { 'event': 'Async', 'changedtick': b:changedtick }
   let s:async_timer.id = timer_start(
-        \ max([20, g:deoplete#auto_refresh_delay]),
+        \ max([20, delay]),
         \ function('s:completion_async'), {'repeat': -1})
 endfunction
 function! deoplete#handler#_async_timer_stop() abort
@@ -137,14 +143,10 @@ function! s:is_skip(event) abort
     return 1
   endif
 
-  let disable_auto_complete =
-        \ deoplete#util#get_simple_buffer_config(
-        \   'b:deoplete_disable_auto_complete',
-        \   'g:deoplete#disable_auto_complete')
+  let auto_complete = deoplete#custom#_get_option('auto_complete')
 
   if &paste
-        \ || (a:event !=# 'Manual' && a:event !=# 'Async'
-        \     && disable_auto_complete)
+        \ || (a:event !=# 'Manual' && a:event !=# 'Async' && !auto_complete)
         \ || (&l:completefunc !=# '' && &l:buftype =~# 'nofile')
         \ || (a:event !=# 'InsertEnter' && mode() !=# 'i')
     return 1
@@ -173,8 +175,7 @@ function! s:is_skip_text(event) abort
     endif
   endif
 
-  let skip_chars = deoplete#util#get_simple_buffer_config(
-        \   'b:deoplete_skip_chars', 'g:deoplete#skip_chars')
+  let skip_chars = deoplete#custom#_get_option('skip_chars')
 
   return (!pumvisible() && virtcol('.') != displaywidth)
         \ || (a:event !=# 'Manual' && input !=# ''
@@ -192,10 +193,8 @@ function! s:check_omnifunc(context) abort
 
   for filetype in a:context.filetypes
     for pattern in deoplete#util#convert2list(
-          \ deoplete#util#get_buffer_config(filetype,
-          \ 'b:deoplete_omni_patterns',
-          \ 'g:deoplete#omni_patterns',
-          \ 'g:deoplete#_omni_patterns'))
+          \ deoplete#custom#_get_filetype_option(
+          \   'omni_patterns', filetype, ''))
       if pattern !=# '' && a:context.input =~# '\%('.pattern.'\)$'
         let g:deoplete#_context.candidates = []
 

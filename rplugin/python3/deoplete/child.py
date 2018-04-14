@@ -19,9 +19,8 @@ import deoplete.filter  # noqa
 from deoplete import logger
 from deoplete.exceptions import SourceInitError
 from deoplete.util import (bytepos2charpos, charpos2bytepos, error, error_tb,
-                           import_plugin,
-                           get_buffer_config, get_custom,
-                           get_syn_names, convert2candidates, uniq_list_dict)
+                           import_plugin, get_custom, get_syn_names,
+                           convert2candidates, uniq_list_dict)
 
 
 class Child(logger.LoggingMixin):
@@ -350,10 +349,8 @@ class Child(logger.LoggingMixin):
         ignore_sources = set(self._ignore_sources)
         for ft in filetypes:
             ignore_sources.update(
-                get_buffer_config(context, ft,
-                                  'deoplete_ignore_sources',
-                                  'deoplete#ignore_sources',
-                                  {}))
+                self._vim.call('deoplete#custom#_get_filetype_option',
+                               'ignore_sources', ft, []))
 
         for source_name, source in self._sources.items():
             if source.filetypes is None or source_name in ignore_sources:
@@ -387,7 +384,8 @@ class Child(logger.LoggingMixin):
             return
 
         if not self._profile_flag:
-            self._profile_flag = context['vars']['deoplete#enable_profile']
+            self._profile_flag = self._vim.call(
+                'deoplete#custom#_get_option', 'profile')
             if self._profile_flag:
                 return self._profile_start(context, name)
         elif self._profile_flag:
@@ -433,7 +431,7 @@ class Child(logger.LoggingMixin):
             'filetypes',
             'disabled_syntaxes',
             'input_pattern',
-            ('min_pattern_length', 'deoplete#auto_complete_start_length'),
+            'min_pattern_length',
             'max_pattern_length',
             'max_abbr_width',
             'max_kind_width',
@@ -449,12 +447,7 @@ class Child(logger.LoggingMixin):
 
         for name, source in self._sources.items():
             for attr in attrs:
-                if isinstance(attr, tuple):
-                    default_val = context['vars'][attr[1]]
-                    attr = attr[0]
-                else:
-                    default_val = None
-                source_attr = getattr(source, attr, default_val)
+                source_attr = getattr(source, attr, None)
                 custom = get_custom(context['custom'],
                                     name, attr, source_attr)
                 if custom and isinstance(source_attr, dict):
@@ -462,6 +455,12 @@ class Child(logger.LoggingMixin):
                     source_attr.update(custom)
                 else:
                     setattr(source, attr, custom)
+
+            # Default min_pattern_length
+            # Todo: better initialization
+            if source.min_pattern_length is None:
+                source.min_pattern_length = self._vim.call(
+                    'deoplete#custom#_get_option', 'min_pattern_length')
 
     def _set_custom(self, custom):
         self._custom = custom

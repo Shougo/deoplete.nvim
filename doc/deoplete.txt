@@ -9,6 +9,7 @@ CONTENTS						*deoplete-contents*
 Introduction		|deoplete-introduction|
 Install			|deoplete-install|
 Interface		|deoplete-interface|
+  Options		  |deoplete-options|
   Variables		  |deoplete-variables|
   Key mappings		  |deoplete-key-mappings|
   Functions		  |deoplete-functions|
@@ -79,26 +80,42 @@ You can check the Python3 installation by using the |:checkhealth| command.
 INTERFACE						*deoplete-interface*
 
 ------------------------------------------------------------------------------
-VARIABLES	 					*deoplete-variables*
+OPTIONS	 					*deoplete-options*
 
-						*g:deoplete#enable_at_startup*
-g:deoplete#enable_at_startup
-		Deoplete gets started automatically when Neovim starts if
-		this value is 1.
+					*deoplete-options-auto_complete*
+auto_complete
+		If it is False, automatic completion becomes invalid, but can
+		use the manual completion by |deoplete#manual_complete()|.
 
-		With the default value 0, you cannot use deoplete
-		unless you start it manually.
+		Default: v:true
 
-						*g:deoplete#enable_yarp*
-g:deoplete#enable_yarp
-		Use nvim-yarp library instead of neovim remote plugin feature.
-		Note: nvim-yarp plugin is needed.
-		https://github.com/roxma/nvim-yarp
+					*deoplete-options-auto_complete_delay*
+auto_complete_delay
+		Delay the completion after input in milliseconds.
+		Requires |+timers|.
 
-		Default value: 0
+		Default value: 50
 
-						*g:deoplete#complete_method*
-g:deoplete#complete_method
+					*deoplete-options-auto_refresh_delay*
+auto_refresh_delay
+		Delay the refresh when asynchronous.
+		If it is less than equal 0, the feature is disabled.
+
+		Default value: 50
+
+						*deoplete-options-camel_case*
+camel_case
+		When a capital letter is matched with the uppercase, but a
+		lower letter is matched with the upper- and lowercase.
+		Ex: "foB" is matched with "FooBar" not "foobar".
+		Note: This feature is only available in
+		|deoplete-filter-matcher_fuzzy| or
+		|deoplete-filter-matcher_full_fuzzy|.
+
+		Default value: v:false
+
+					*deoplete-options-complete_method*
+complete_method
 		If it is "complete", deoplete use |complete()|.
 
 		If it is "completefunc", deoplete use |i_CTRL-X_CTRL-U|.
@@ -109,162 +126,109 @@ g:deoplete#complete_method
 
 		Default value: "complete"
 
-					*g:deoplete#enable_ignore_case*
-g:deoplete#enable_ignore_case
-		When deoplete looks for candidate completion, this
-		variable controls whether deoplete ignores the upper-
-		and lowercase.  If it is 1, deoplete ignores case.
-
-		Default value: same with your 'ignorecase' value
-
-						*g:deoplete#enable_smart_case*
-g:deoplete#enable_smart_case
-		When a capital letter is included in input, deoplete does
-		not ignore the upper- and lowercase.
-
-		Default value: same with your 'smartcase' value
-
-						*g:deoplete#enable_camel_case*
-g:deoplete#enable_camel_case
-		When a capital letter is matched with the uppercase, but a
-		lower letter is matched with the upper- and lowercase.
-		Ex: "foB" is matched with "FooBar" not "foobar".
-		Note: This feature is only available in
-		|deoplete-filter-matcher_fuzzy| or
-		|deoplete-filter-matcher_full_fuzzy|.
-
-		Default value: 0
-
-					*g:deoplete#enable_refresh_always*
-g:deoplete#enable_refresh_always
-		Deoplete refreshes the candidates automatically if this value
-		is 1.
-		Note: It increases the screen flicker.
-
-		Default value: 0
-
-					*g:deoplete#enable_on_insert_enter*
-g:deoplete#enable_on_insert_enter
-		Deoplete enables the auto completion on |InsertEnter| autocmd
-		if this value is 1.
-
-		Default value: 1
-
-				*g:deoplete#auto_complete_start_length*
-g:deoplete#auto_complete_start_length
-		This variable controls the number of the input completion
-		at the time of key input automatically.
-		Note: It is the deprecated option.  You should change
-		|deoplete-source-attribute-min_pattern_length|.
-
-		Default: 2
-
-					*g:deoplete#disable_auto_complete*
-g:deoplete#disable_auto_complete
-		It controls whether you invalidate automatic completion.  If
-		it is 1, automatic completion becomes invalid, but can use the
-		manual completion by |deoplete#manual_complete()|.
-
-		Default value: 0
-
-					*b:deoplete_disable_auto_complete*
-b:deoplete_disable_auto_complete
-		Buffer local variable of |g:deoplete#disable_auto_complete|.
-
-						*g:deoplete#enable_profile*
-g:deoplete#enable_profile
-		It enables deoplete profile mode.
-		If it is 1, deoplete will print the time information to
-		|deoplete#enable_logging()| logfile.
-		Must be set in init.vim before to start the Neovim.
-		Does not support command line.
-
-		Default value: 0
-
-						*g:deoplete#delimiters*
-g:deoplete#delimiters
+						*deoplete-options-delimiters*
+delimiters
 		Delimiters list.  It is used in
 		|deoplete-filter-converter_auto_delimiter|.
 
 		Default value: ['/']
 
-							*g:deoplete#max_list*
-g:deoplete#max_list
+						*deoplete-options-ignore_case*
+ignore_case
+		If it is True, deoplete ignores case.
+
+		Default value: same with your 'ignorecase' value
+
+					*deoplete-options-ignore_sources*
+ignore_sources
+		It is a dictionary to decide ignore source names.
+		The key is filetype and the value is source names list.
+		Default value: {}
+
+					*deoplete-options-keyword_patterns*
+keyword_patterns
+		It records keyword patterns to buffer completion.
+		This is appointed in regular expression string or list every
+		file type.
+		Note: It is Python3 regexp.  But "\k" is converted to
+		'iskeyword' pattern.
+>
+		call deoplete#custom#option('keyword_patterns', {
+		\ 'tex': '\\?[a-zA-Z_]\w*',
+		\})
+<
+		Default value: {}
+
+						*deoplete-options-max_list*
+max_list
 		If the list of candidates exceeds the limit, not all
 		candidates will show up.
 
-		Default value: 100
+		Default value: 500
 
-						*g:deoplete#num_processes*
-g:deoplete#num_processes
+					*deoplete-options-num_processes*
+num_processes
 		The number of processes used for the deoplete parallel
 		feature.  If it is less than equal 1, this feature is
 		disabled.
 
 		Default value: 1 (Windows) or 4 (Others)
 
-					*g:deoplete#auto_complete_delay*
-g:deoplete#auto_complete_delay
-		Delay the completion after input in milliseconds.
-		Requires |+timers| (Neovim 0.1.5)
+					*deoplete-options-omni_patterns*
+omni_patterns
+		It is the keyword patterns to Omni completion.
 
-		Default value: 50
-
-					*g:deoplete#auto_refresh_delay*
-g:deoplete#auto_refresh_delay
-		Delay the refresh when asynchronous.
-
-		Default value: 50
-
-					*g:deoplete#skip_chars*
-g:deoplete#skip_chars
-		The list of skip characters in the auto completion.
-
-		Default value: []
-
-					*b:deoplete_skip_chars*
-b:deoplete_skip_chars
-		Buffer local variable of |g:deoplete#skip_chars|.
-
-						*g:deoplete#keyword_patterns*
-g:deoplete#keyword_patterns
-		This dictionary records keyword patterns to buffer completion.
-		This is appointed in regular expression string or list every
-		file type.
-		Note: It is Python3 regexp.  But "\k" is converted to
-		'iskeyword' pattern.
->
-		let g:deoplete#keyword_patterns = {}
-		let g:deoplete#keyword_patterns.tex = '\\?[a-zA-Z_]\w*'
-<
-		Default value: in g:deoplete#_keyword_patterns
-
-						*b:deoplete_keyword_patterns*
-b:deoplete_keyword_patterns
-		Buffer local variable of |g:deoplete#keyword_patterns|.
-
-						*g:deoplete#omni_patterns*
-g:deoplete#omni_patterns
-		This dictionary records keyword patterns to Omni completion.
-		This is appointed in regular expression string or list every
-		file type.
 		If this pattern is not defined or empty pattern, deoplete
 		does not call 'omnifunc'.
 		Note: If it is a set, deoplete will call 'omnifunc'
 		directly.  So almost deoplete features are disabled.
 		Note: It is Vim regexp.
 >
-		let g:deoplete#omni_patterns = {}
-		let g:deoplete#omni_patterns.java = '[^. *\t]\.\w*'
+		call deoplete#custom#option('omni_patterns', {
+		\ 'java': '[^. *\t]\.\w*',
+		\})
 <
-		Default value: in g:deoplete#_omni_patterns
+		Default value: in init.vim
 
-						*b:deoplete_omni_patterns*
-b:deoplete_omni_patterns
-		Buffer local variable of |g:deoplete#omni_patterns|.
+					*deoplete-options-on_insert_enter*
+on_insert_enter
+		Deoplete enables the auto completion on |InsertEnter| autocmd
+		if this value is True.
 
-							*g:deoplete#sources*
-g:deoplete#sources
+		Default value: v:true
+
+						*deoplete-options-profile*
+profile
+		If it is True, deoplete will print the time information to
+		|deoplete#enable_logging()| logfile.
+		Must be set in init.vim before to start the Neovim.
+		Does not support command line.
+
+		Default value: v:false
+
+					*deoplete-options-refresh_always*
+refresh_always
+		Deoplete refreshes the candidates automatically if this value
+		is True.
+		Note: It increases the screen flicker.
+
+		Default value: v:false
+
+						*deoplete-options-skip_chars*
+skip_chars
+		The list of skip characters in the auto completion.
+
+		Default value: ['(', ')']
+
+						*deoplete-options-smart_case*
+smart_case
+		When a capital letter is included in input, deoplete does
+		not ignore the upper- and lowercase.
+
+		Default value: same with your 'smartcase' value
+
+					*deoplete-options-sources*
+sources
 		It is a dictionary to decide use source names.  The key is
 		filetype and the value is source names list.  If the key is
 		"_", the value will be used for default filetypes.  For
@@ -274,29 +238,39 @@ g:deoplete#sources
 		Default value: {}
 >
 		" Examples:
-		let g:deoplete#sources = {}
-		let g:deoplete#sources._ = ['buffer']
-		let g:deoplete#sources.cpp = ['buffer', 'tag']
+		call deoplete#custom#option('sources', {
+		\ '_': ['buffer'],
+		\ 'cpp': ['buffer', 'tag'],
+		\})
 
-<							*b:deoplete_sources*
-b:deoplete_sources
-		Buffer local variable of |g:deoplete#sources|.
-		It must be the source names list.
->
-		" Examples:
-		" In cmdwin, only use buffer source.
-		autocmd CmdwinEnter * let b:deoplete_sources = ['buffer']
+					*deoplete-options-min_pattern_length*
+min_pattern_length
+		The default number of the input completion at the time of key
+		input automatically.
 
-<						*g:deoplete#ignore_sources*
-g:deoplete#ignore_sources
-		It is a dictionary to decide ignore source names.
-		The key is filetype and the value is source names list.
-		Default value: {}
+		Note: You should change
+		|deoplete-source-attribute-min_pattern_length|.
 
-						*b:deoplete_ignore_sources*
-b:deoplete_ignore_sources
-		Buffer local variable of |g:deoplete#ignore_sources|.
-		It must be the source names list.
+		Default: 2
+
+						*deoplete-options-yarp*
+yarp
+		Use nvim-yarp library instead of neovim remote plugin feature.
+		Note: nvim-yarp plugin is needed.
+		https://github.com/roxma/nvim-yarp
+
+		Default value: v:false
+
+------------------------------------------------------------------------------
+VARIABLES	 					*deoplete-variables*
+
+						*g:deoplete#enable_at_startup*
+g:deoplete#enable_at_startup
+		Deoplete gets started automatically when Neovim starts if
+		this value is 1.
+
+		With the default value 0, you cannot use deoplete
+		unless you start it manually.
 
 ------------------------------------------------------------------------------
 FUNCTIONS 						*deoplete-functions*
@@ -324,6 +298,18 @@ deoplete#disable()
 deoplete#toggle()
 		Toggle deoplete auto completion.
 		Note: It changes the global state.
+
+					*deoplete#custom#buffer_option()*
+deoplete#custom#buffer_option({option-name}, {value})
+deoplete#custom#buffer_option({dict})
+		The buffer local version of |deoplete#custom#option()|.
+
+						*deoplete#custom#option()*
+deoplete#custom#option({option-name}, {value})
+deoplete#custom#option({dict})
+		Set {option-name} option to {value}.
+		If {dict} is available, the key is {option-name} and the value
+		is {value}.
 
 						*deoplete#custom#source()*
 deoplete#custom#source({source-name}, {option-name}, {value})
@@ -376,7 +362,7 @@ deoplete#custom#source({source-name}, {option-name}, {value})
 		call deoplete#custom#source('omni', 'mark', '')
 
 		" Enable jedi source debug messages
-		" let g:deoplete#enable_profile = 1
+		" call deoplete#custom#option('profile', v:true)
 		" call deoplete#enable_logging('DEBUG', 'deoplete.log')
 		" call deoplete#custom#source('jedi', 'is_debug_enabled', 1)
 <
@@ -416,7 +402,7 @@ deoplete#manual_complete([{sources}])
 		Note: It must be in |map-<expr>|.
 
 		If you want to trigger deoplete manually, see also
-		|g:deoplete#disable_auto_complete|, which should be 1 then
+		|deoplete-options-auto_complete|, which should be 1 then
 		typically.
 >
 		inoremap <silent><expr> <TAB>
@@ -473,7 +459,7 @@ EXAMPLES						*deoplete-examples*
 	" Use deoplete.
 	let g:deoplete#enable_at_startup = 1
 	" Use smartcase.
-	let g:deoplete#enable_smart_case = 1
+	call deoplete#custom#option('smart_case', v:true)
 
 	" <C-h>, <BS>: close popup and delete backword char.
 	inoremap <expr><C-h> deoplete#smart_close_popup()."\<C-h>"
@@ -530,12 +516,6 @@ tag							*deoplete-source-tag*
 		Note: It only supports UTF-8 encoding tag file.
 
 		rank: 100
-
-		Source custom variables:
-		cache_limit_size
-				If a tag file is bigger than this size,
-				deoplete does not make the tag file cache.
-				(default: 500000)
 
 file							*deoplete-source-file*
 		This source collects keywords from local files. Specifically,
@@ -600,9 +580,9 @@ omni							*deoplete-source-omni*
 		    \})
 <
 dictionary					*deoplete-source-dictionary*
-		This source collects |g:deoplete#keyword_patterns| keywords
-		from 'dictionary'. Note: it uses buffer-local 'dictionary'
-		set up.
+		This source collects |deoplete-options-keyword_patterns|
+		keywords from 'dictionary'. Note: it uses buffer-local
+		'dictionary' set up.
 
 		rank: 100
 >
@@ -699,8 +679,8 @@ converter_remove_overlap
 
 				*deoplete-filter-converter_auto_delimiter*
 converter_auto_delimiter
-		It adds |g:deoplete#delimiters| characters in a candidate's
-		word.
+		It adds |deoplete-options-delimiters| characters in a
+		candidate's word.
 
 				*deoplete-filter-converter_auto_paren*
 converter_auto_paren
@@ -900,7 +880,7 @@ get_complete_position
 		Here, {context} is the context information when the source is
 		called(|deoplete-notation-{context}|).
 		If you omit it, deoplete will use the position using
-		|g:deoplete#keyword_patterns|.
+		|deoplete-options-keyword_patterns|.
 
 		Note: |deoplete-source-attribute-is_bytepos| is True, it must
 		return byte position.
@@ -1288,7 +1268,7 @@ A: 1. Please update neovim to the latest version.
 
    https://github.com/neovim/neovim/wiki/Troubleshooting#python-support-isnt-working
 
-   7. You can test |g:deoplete#enable_yarp| option for neovim.
+   7. You can test |deoplete-options-yarp| option for neovim.
 
    8. Please enable debug mode from command line and upload the log file. >
 
@@ -1300,9 +1280,9 @@ A: 1. Please update neovim to the latest version.
 
 Q: deoplete is slow.
 
-A: Please change |g:deoplete#auto_complete_delay| value. It is a huge delay
-   value intentionally. And some sources are slow. You should check which one
-   is slow and consider disabling them.
+A: Please change |deoplete-options-auto_complete_delay| value. It is a huge
+   delay value intentionally. And some sources are slow. You should check
+   which one is slow and consider disabling them.
 
 Q: Deoplete popup is not displayed immediately.
 
@@ -1321,11 +1301,6 @@ A: If it is enabled, Neovim will enable and load deoplete in startup. It
   And you should set |g:python3_host_prog| variable. It reduces almost 20ms
   startuptime.
 
-Q: |deoplete-source-tag| does not work.
-   https://github.com/Shougo/deoplete.nvim/issues/309
-
-A: Please increase cache_limit_size value in tag source.
-
 Q: deoplete cannot complete filename after "=".
 
 A: 'isfname' contains "=".  You should remove it. >
@@ -1337,17 +1312,17 @@ Q: Deoplete does not work with vim-multiple-cursors.
 A: You must disable deoplete when using vim-multiple-cursors. >
 
        function g:Multiple_cursors_before()
-         let g:deoplete#disable_auto_complete = 1
+         call deoplete#custom#buffer_option('auto_complete', v:false)
        endfunction
        function g:Multiple_cursors_after()
-         let g:deoplete#disable_auto_complete = 0
+         call deoplete#custom#buffer_option('auto_complete', v:true)
        endfunction
 
 Q: I want to debug the sources.
 
 A: Please enable logging feature like this. >
 
-       let g:deoplete#enable_profile = 1
+       call deoplete#custom#option('profile', v:true)
        call deoplete#enable_logging('DEBUG', 'deoplete.log')
        call deoplete#custom#source('jedi', 'is_debug_enabled', 1)
 
@@ -1366,8 +1341,8 @@ https://github.com/Shougo/deoplete.nvim/issues/635#issuecomment-363331278
 Please test neovim-python module.
 https://github.com/neovim/python-client#usage-through-the-python-repl
 
-Note: You can disable parallel feature by |g:deoplete#num_processes|.  It is
-workaround.
+Note: You can disable parallel feature by |deoplete-options-num_processes|.
+It is workaround.
 
 Q: "[deoplete] neovim-python 0.2.4+ is required." error
 https://github.com/Shougo/deoplete.nvim/issues/694
@@ -1460,10 +1435,9 @@ A: You can achieve this by following >
 
 Q: I want to disable the buffer source.
 
-A: You can use |g:deoplete#ignore_sources|. >
+A: You can use |deoplete-options-ignore_sources|. >
 
-       let g:deoplete#ignore_sources = {}
-       let g:deoplete#ignore_sources._ = ['buffer']
+       call deoplete#custom#option('ignore_sources', {'_', ['buffer']})
 
 Q: How to prevent auto bracket completion?
    https://github.com/Shougo/deoplete.nvim/issues/150
@@ -1490,10 +1464,10 @@ A: You must install |context_filetype| plugin.
    https://github.com/Shougo/context_filetype.vim
    And you must set |g:context_filetype#same_filetypes| variable.
 
-Q: What is the difference of |g:deoplete#omni_patterns| and
+Q: What is the difference of |deoplete-options-omni_patterns| and
    "input_patterns" in omni source?
 
-A: |g:deoplete#omni_patterns| offers:
+A: |deoplete-options-omni_patterns| offers:
     - can call all omni functions
     - called by Vim
     - Vim regexp
@@ -1526,9 +1500,10 @@ A: It is the source mark. [~] is from around source.  A is from
 
 Q: I want to disable the auto completion for certain filetypes.
 
-A: Please use |b:deoplete_disable_auto_complete|. >
+A: Please use |deoplete-options-auto_complete|. >
 
-       autocmd FileType tex let b:deoplete_disable_auto_complete = 1
+       autocmd FileType tex
+       \ call deoplete#custom#buffer_option('auto_complete', v:false)
 
 Q: I want to use C/C++ omni completion with deoplete.
 
@@ -1614,6 +1589,28 @@ A: https://github.com/zchee/deoplete-jedi/issues/35
 
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
+
+2018.04.09
+* Remove "g:deoplete#auto_complete_start_length" variable.
+* Remove "g:deoplete#skip_chars" variable.
+* Remove "g:deoplete#disable_auto_complete" variable.
+* Remove "g:deoplete#complete_method" variable.
+* Remove "g:deoplete#sources" variable.
+* Remove "g:deoplete#keyword_patterns" variable.
+* Remove "g:deoplete#omni_patterns" variable.
+* Remove "g:deoplete#ignore_sources" variable.
+* Remove "g:deoplete#ignore_case" variable.
+* Remove "g:deoplete#smart_case" variable.
+* Remove "g:deoplete#camel_case" variable.
+* Remove "g:deoplete#enable_yarp" variable.
+* Remove "g:deoplete#enable_refresh_always" variable.
+* Remove "g:deoplete#enable_on_insert_enter" variable.
+* Remove "g:deoplete#enable_profile" variable.
+* Remove "g:deoplete#delimiters" variable.
+* Remove "g:deoplete#max_list" variable.
+* Remove "g:deoplete#auto_complete_delay" variable.
+* Remove "g:deoplete#auto_refresh_delay" variable.
+* Remove "g:deoplete#num_processes" variable.
 
 2018.04.01
 * Remove "g:deoplete#file#enable_buffer_path" variable.

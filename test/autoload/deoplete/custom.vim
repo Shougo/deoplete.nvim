@@ -1,8 +1,8 @@
 let s:suite = themis#suite('custom')
 let s:assert = themis#helper('assert')
 
-function! s:suite.custom() abort
-  call deoplete#custom#init()
+function! s:suite.custom_source() abort
+  call deoplete#custom#_init()
 
   call deoplete#custom#source('_',
         \ 'matchers', ['matcher_head'])
@@ -11,14 +11,72 @@ function! s:suite.custom() abort
         \ ['converter_auto_delimiter', 'remove_overlap'])
 
   call s:assert.equals(
-        \ deoplete#custom#get().source,
+        \ deoplete#custom#_get().source,
         \ {'_' : {
         \  'matchers': ['matcher_head'],
         \  'converters': ['converter_auto_delimiter', 'remove_overlap']}})
 
-  call deoplete#custom#init()
+  call deoplete#custom#_init()
 
   call deoplete#custom#source('buffer',
         \ 'min_pattern_length', 9999)
   call deoplete#custom#source('buffer', 'rank', 9999)
+endfunction
+
+function! s:suite.custom_option() abort
+  " Simple option test
+  call deoplete#custom#_init()
+  call deoplete#custom#_init_buffer()
+  call deoplete#custom#option('auto_complete', v:true)
+  call s:assert.equals(
+        \ deoplete#custom#_get_option('auto_complete'), v:true)
+
+  " Buffer option test
+  call deoplete#custom#buffer_option('auto_complete', v:false)
+  call s:assert.equals(
+        \ deoplete#custom#_get_option('auto_complete'), v:false)
+
+  " Compatibility test
+  call deoplete#custom#_init()
+  call deoplete#custom#_init_buffer()
+  let g:deoplete#disable_auto_complete = 1
+  call deoplete#init#_custom_variables()
+  call s:assert.equals(
+        \ deoplete#custom#_get_option('auto_complete'), v:false)
+
+  " Filetype option test
+  call deoplete#custom#_init()
+  call deoplete#custom#_init_buffer()
+  let s:java_pattern = '[^. *\t]\.\w*'
+  call deoplete#custom#option('omni_patterns', {
+        \ 'java': s:java_pattern,
+        \})
+  call s:assert.equals(
+        \ deoplete#custom#_get_filetype_option(
+        \   'omni_patterns', 'java', ''), s:java_pattern)
+  call s:assert.equals(
+        \ deoplete#custom#_get_filetype_option(
+        \   'omni_patterns', 'foobar', ''), '')
+
+  " Compatibility test
+  call deoplete#custom#_init()
+  call deoplete#custom#_init_buffer()
+  let s:tex_pattern = '[^\w|\s][a-zA-Z_]\w*'
+  let g:deoplete#keyword_patterns = {}
+  let g:deoplete#keyword_patterns.tex = '[^\w|\s][a-zA-Z_]\w*'
+  call deoplete#init#_custom_variables()
+  call s:assert.equals(
+        \ deoplete#custom#_get_filetype_option(
+        \   'keyword_patterns', 'tex', ''), s:tex_pattern)
+
+  " Dict type format
+  call deoplete#custom#_init()
+  call deoplete#custom#_init_buffer()
+  call deoplete#custom#option({
+        \ 'auto_complete': v:true, 'camel_case': v:true
+        \ })
+  call s:assert.equals(
+        \ deoplete#custom#_get_option('auto_complete'), v:true)
+  call s:assert.equals(
+        \ deoplete#custom#_get_option('camel_case'), v:true)
 endfunction
