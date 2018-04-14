@@ -31,7 +31,8 @@ function! deoplete#init#_initialize() abort
     autocmd!
   augroup END
 
-  call deoplete#init#_variables()
+  call s:init_internal_variables()
+  call deoplete#init#_custom_variables()
 
   if deoplete#init#_channel()
     return 1
@@ -40,6 +41,10 @@ function! deoplete#init#_initialize() abort
   call deoplete#mapping#_init()
 endfunction
 function! deoplete#init#_channel() abort
+  if !exists('g:deoplete#_serveraddr')
+    return 1
+  endif
+
   let python3 = get(g:, 'python3_host_prog', 'python3')
   if !executable(python3)
     call deoplete#util#print_error(
@@ -70,11 +75,7 @@ function! deoplete#init#_channel() abort
     endif
 
     if deoplete#util#has_yarp()
-      if !has('nvim') && !exists('*neovim_rpc#serveraddr')
-        call deoplete#util#print_error(
-              \ 'deoplete requires vim-hug-neovim-rpc plugin in Vim.')
-      endif
-
+      echomsg string(expand('<sfile>'))
       if !exists('*yarp#py3')
         call deoplete#util#print_error(
               \ 'deoplete requires nvim-yarp plugin.')
@@ -103,7 +104,7 @@ function! deoplete#init#_disable() abort
   let s:is_enabled = 0
 endfunction
 
-function! deoplete#init#_variables() abort
+function! s:init_internal_variables() abort
   let g:deoplete#_prev_completion = {
         \ 'complete_position': [],
         \ 'candidates': [],
@@ -115,15 +116,22 @@ function! deoplete#init#_variables() abort
     let g:deoplete#_logging = {}
   endif
   unlet! g:deoplete#_initialized
-  let g:deoplete#_serveraddr =
-        \ (has('nvim') || !exists('*neovim_rpc#serveraddr')) ?
-        \ v:servername : neovim_rpc#serveraddr()
-  if g:deoplete#_serveraddr ==# ''
-    " Use NVIM_LISTEN_ADDRESS
-    let g:deoplete#_serveraddr = $NVIM_LISTEN_ADDRESS
-  endif
-
-  " Options
+  try
+    let g:deoplete#_serveraddr =
+          \ deoplete#util#has_yarp() ?
+          \ neovim_rpc#serveraddr() : v:servername
+    if g:deoplete#_serveraddr ==# ''
+      " Use NVIM_LISTEN_ADDRESS
+      let g:deoplete#_serveraddr = $NVIM_LISTEN_ADDRESS
+    endif
+  catch
+    if deoplete#util#has_yarp() && !exists('*neovim_rpc#serveraddr')
+      call deoplete#util#print_error(
+            \ 'deoplete requires vim-hug-neovim-rpc plugin in Vim.')
+    endif
+  endtry
+endfunction
+function! deoplete#init#_custom_variables() abort
   if get(g:, 'deoplete#disable_auto_complete', v:false)
     call deoplete#custom#option('auto_complete', v:false)
   endif

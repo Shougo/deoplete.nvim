@@ -40,7 +40,7 @@ function! s:suite.custom_option() abort
   call deoplete#custom#_init()
   call deoplete#custom#_init_buffer()
   let g:deoplete#disable_auto_complete = 1
-  call deoplete#init#_variables()
+  call deoplete#init#_custom_variables()
   call s:assert.equals(
         \ deoplete#custom#_get_option('auto_complete'), v:false)
 
@@ -64,7 +64,7 @@ function! s:suite.custom_option() abort
   let s:tex_pattern = '[^\w|\s][a-zA-Z_]\w*'
   let g:deoplete#keyword_patterns = {}
   let g:deoplete#keyword_patterns.tex = '[^\w|\s][a-zA-Z_]\w*'
-  call deoplete#init#_variables()
+  call deoplete#init#_custom_variables()
   call s:assert.equals(
         \ deoplete#custom#_get_filetype_option(
         \   'keyword_patterns', 'tex', ''), s:tex_pattern)
