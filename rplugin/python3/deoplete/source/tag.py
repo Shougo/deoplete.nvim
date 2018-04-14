@@ -23,6 +23,8 @@ class Source(Base):
 
     def gather_candidates(self, context):
         candidates = []
+        if len(context['complete_str']) < 2:
+            return candidates
 
         case = context['smartcase'] or context['camelcase']
         ignorecase = context['ignorecase']
