@@ -912,16 +912,13 @@ on_post_filter
 					*deoplete-source-attribute-on_event*
 on_event	(Function)			(Optional)
 		Called for |InsertEnter|, |BufWritePost|, |DirChanged|
-		autocommands, through |deoplete#send_event()|, and when
-		deoplete gets initialized ("Init" event).
+		autocommands, through |deoplete#send_event()|.
 		It is useful to make cache.
 		It takes {self} and {context} as its parameter.
 
 		" Examples:
 		def on_event(self, context):
-		    if context['event'] == 'Init':
-			pass
-		    elif context['event'] == 'BufWritePost':
+		    if context['event'] == 'BufWritePost':
 			# BufWritePost
 			pass
 		    else:

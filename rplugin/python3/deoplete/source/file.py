@@ -21,7 +21,7 @@ class Source(Base):
         self.mark = '[F]'
         self.min_pattern_length = 0
         self.rank = 150
-        self.events = ['Init', 'InsertEnter']
+        self.events = ['InsertEnter']
         self.vars = {
             'enable_buffer_path': False,
         }
