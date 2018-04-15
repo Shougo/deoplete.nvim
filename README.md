@@ -139,3 +139,7 @@ Deoplete for JavaScript
 ![Html](https://user-images.githubusercontent.com/29815830/36537602-40b19848-1803-11e8-8ac8-49b3b9ba2094.png)
 
 ![My custom snippets](https://user-images.githubusercontent.com/29815830/36537646-6578262e-1803-11e8-9bff-64874a606150.png)
+
+![C++ with cquery lang server](https://user-images.githubusercontent.com/1750795/38780762-7c74e51e-40a9-11e8-92f9-dee921555865.png)
+
+![Rust using rls](https://user-images.githubusercontent.com/1750795/38780764-8524b0b8-40a9-11e8-91bc-6e4148c398a3.png)
