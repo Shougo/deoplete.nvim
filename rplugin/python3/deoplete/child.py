@@ -457,8 +457,7 @@ class Child(logger.LoggingMixin):
                     setattr(source, attr, custom)
 
             # Default min_pattern_length
-            # Todo: better initialization
-            if source.min_pattern_length is None:
+            if source.min_pattern_length < 0:
                 source.min_pattern_length = self._vim.call(
                     'deoplete#custom#_get_option', 'min_pattern_length')
 
