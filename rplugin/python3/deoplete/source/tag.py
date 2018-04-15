@@ -30,9 +30,9 @@ class Source(Base):
             ignorecase = True
         if ignorecase:
             complete_str_0 = (context['complete_str'][0].lower()
-                              if len(context['complete_str']) >= 0 else '')
+                              if len(context['complete_str']) > 0 else '')
             complete_str_1 = (context['complete_str'][1].lower()
-                              if len(context['complete_str']) >= 1 else '')
+                              if len(context['complete_str']) > 1 else '')
             prefixes = list(set([
                 complete_str_0 + complete_str_1,
                 complete_str_0 + complete_str_1.upper(),
