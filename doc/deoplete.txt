@@ -169,8 +169,10 @@ max_list
 					*deoplete-options-num_processes*
 num_processes
 		The number of processes used for the deoplete parallel
-		feature.  If it is less than equal 1, this feature is
-		disabled.
+		feature.
+		If it is 1, this feature is disabled.
+		If it is less than equal 0, the number of processes are equal
+		to sources number.
 
 		Default value: 1 (Windows) or 4 (Others)
 

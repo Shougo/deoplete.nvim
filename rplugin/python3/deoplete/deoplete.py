@@ -23,11 +23,10 @@ class Deoplete(logger.LoggingMixin):
 
         self._parents = []
         self._parent_count = 0
-        self._max_parents = max(
-            [1, self._vim.call('deoplete#custom#_get_option',
-                               'num_processes')])
+        self._max_parents = self._vim.call('deoplete#custom#_get_option',
+                                           'num_processes')
 
-        if self._max_parents > 1 and not hasattr(self._vim, 'loop'):
+        if self._max_parents != 1 and not hasattr(self._vim, 'loop'):
             error(self._vim, 'neovim-python 0.2.4+ is required.')
             return
 
@@ -40,16 +39,6 @@ class Deoplete(logger.LoggingMixin):
         # Init context
         context = self._vim.call('deoplete#init#_context', 'Init', [])
         context['rpc'] = 'deoplete_on_event'
-
-        # Init processes
-        for n in range(0, self._max_parents):
-            self._parents.append(Parent(vim, context))
-        if self._vim.vars['deoplete#_logging']:
-            for parent in self._parents:
-                parent.enable_logging()
-
-        # on_init() call
-        self.on_event(context)
 
         if hasattr(self._vim, 'channel_id'):
             self._vim.vars['deoplete#_channel_id'] = self._vim.channel_id
@@ -158,21 +147,44 @@ class Deoplete(logger.LoggingMixin):
 
         return (is_async, complete_position, all_candidates)
 
+    def add_parent(self, context):
+        parent = Parent(self._vim, context)
+        if self._vim.vars['deoplete#_logging']:
+            parent.enable_logging()
+        self._parents.append(parent)
+
+    def init_parents(self, context):
+        if self._parents or self._max_parents <= 0:
+            return
+
+        for n in range(0, self._max_parents):
+            self.add_parent(context)
+
     def load_sources(self, context):
+        self.init_parents(context)
+
         # Load sources from runtimepath
         for path in find_rplugins(context, 'source'):
             if path in self._loaded_paths:
                 continue
             self._loaded_paths.add(path)
 
+            if self._max_parents <= 0:
+                self.add_parent(context)
+
             self._parents[self._parent_count].add_source(path)
             self.debug('Process %d: %s', self._parent_count, path)
 
             self._parent_count += 1
-            self._parent_count %= self._max_parents
+            if self._max_parents > 0:
+                self._parent_count %= self._max_parents
 
         self.set_source_attributes(context)
         self.set_custom(context)
+
+        if context['event'] == 'Init':
+            # on_init() call
+            self.on_event(context)
 
     def load_filters(self, context):
         # Load filters from runtimepath
