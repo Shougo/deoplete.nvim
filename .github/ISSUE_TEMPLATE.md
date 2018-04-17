@@ -12,7 +12,7 @@
 
  * OS:
 
- * neovim/Vim version:
+ * neovim/Vim `:version` output:
 
  * `:checkhealth` or `:CheckHealth` result(neovim only):
 
@@ -22,6 +22,10 @@
 " Your minimal init.vim/vimrc
 set runtimepath+=~/path/to/deoplete.nvim/
 let g:deoplete#enable_at_startup = 1
+
+" For Vim only
+"set runtimepath+=~/path/to/nvim-yarp/
+"set runtimepath+=~/path/to/vim-hug-neovim-rpc/
 ```
 
 
