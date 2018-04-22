@@ -94,7 +94,7 @@ function! deoplete#custom#buffer_option(name_or_dict, ...) abort
 endfunction
 
 function! s:set_custom(dest, name_or_dict, value) abort
-  if type(a:name_or_dict) == type({})
+  if type(a:name_or_dict) == v:t_dict
     call extend(a:dest, a:name_or_dict)
   else
     let a:dest[a:name_or_dict] = a:value
