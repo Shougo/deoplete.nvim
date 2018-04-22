@@ -20,6 +20,7 @@ Here are some [completion sources](https://github.com/Shougo/deoplete.nvim/wiki/
   - [Requirements](#requirements)
 - [Configuration](#configuration)
 - [Screenshots](#screenshots)
+- [Configuration samples](#configuration-samples)
 
 <!-- vim-markdown-toc -->
 
@@ -147,4 +148,4 @@ Deoplete for JavaScript
 
 ## Configuration samples
 
-[https://gist.github.com/afnanenayet/8c2ee0fdabb8d1e292b788f9723673c5](afnanenayet's config)
+[afnanenayet's config](https://gist.github.com/afnanenayet/8c2ee0fdabb8d1e292b788f9723673c5)
