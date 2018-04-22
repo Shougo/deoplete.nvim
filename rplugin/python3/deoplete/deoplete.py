@@ -102,7 +102,8 @@ class Deoplete(logger.LoggingMixin):
             parent.on_event(context)
 
     def _merge_results(self, context):
-        use_prev = context['position'] == self._prev_pos
+        use_prev = (context['position'] == self._prev_pos
+                    and context['event'] != 'Manual')
         if not use_prev:
             self._prev_merged_results = {}
 
