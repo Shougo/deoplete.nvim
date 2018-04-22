@@ -7,6 +7,8 @@
 function! deoplete#mapping#_init() abort
   inoremap <silent> <Plug>_
         \ <C-r>=deoplete#mapping#_complete()<CR>
+  inoremap <expr><C-y>       deoplete#close_popup()
+  inoremap <expr><C-e>       deoplete#cancel_popup()
 endfunction
 
 function! deoplete#mapping#_completefunc(findstart, base) abort
@@ -46,7 +48,7 @@ function! deoplete#mapping#_rpcrequest_wrapper(sources) abort
         \ deoplete#init#_context('Manual', a:sources))
 endfunction
 function! deoplete#mapping#_undo_completion() abort
-  if !exists('v:completed_item') || empty(v:completed_item)
+  if empty(v:completed_item)
     return ''
   endif
 

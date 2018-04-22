@@ -53,6 +53,7 @@ function! deoplete#smart_close_popup() abort
   return pumvisible() ? "\<C-e>" : ''
 endfunction
 function! deoplete#cancel_popup() abort
+  call deoplete#handler#_skip_next_completion()
   return pumvisible() ? "\<C-e>" : ''
 endfunction
 function! deoplete#refresh() abort
