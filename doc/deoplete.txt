@@ -552,7 +552,7 @@ omni							*deoplete-source-omni*
 				Note: It is Python3 regexp.
 				(default: See in omni.py)
 >
-		call deoplete#custom#source('omni', 'input_patterns', {
+		call deoplete#custom#var('omni', 'input_patterns', {
 		    \ 'ruby': ['[^. *\t]\.\w*', '[a-zA-Z_]\w*::'],
 		    \ 'java': '[^. *\t]\.\w*',
 		    \ 'php': '\w+|[^. \t]->\w*|\w+::\w*',
