@@ -428,20 +428,21 @@ class Child(logger.LoggingMixin):
         context['vars'] under a different name, use a tuple.
         """
         attrs = (
-            'filetypes',
+            'converters',
             'disabled_syntaxes',
+            'filetypes',
             'input_pattern',
-            'min_pattern_length',
-            'max_pattern_length',
+            'is_debug_enabled',
+            'is_silent',
+            'keyword_patterns',
+            'mark',
+            'matchers',
             'max_abbr_width',
             'max_kind_width',
             'max_menu_width',
-            'matchers',
+            'max_pattern_length',
+            'min_pattern_length',
             'sorters',
-            'converters',
-            'mark',
-            'is_debug_enabled',
-            'is_silent',
             'vars',
         )
 

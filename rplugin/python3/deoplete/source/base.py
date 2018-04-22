@@ -27,6 +27,7 @@ class Base(LoggingMixin):
             'converter_truncate_kind',
             'converter_truncate_menu']
         self.filetypes = []
+        self.keyword_patterns = []
         self.debug_enabled = False
         self.is_bytepos = False
         self.is_initialized = False
@@ -41,8 +42,10 @@ class Base(LoggingMixin):
         self.max_menu_width = 40
 
     def get_complete_position(self, context):
-        m = re.search('(?:' + context['keyword_patterns'] + ')$',
-                      context['input'])
+        keyword_pattern = self.vim.call(
+            'deoplete#util#get_keyword_pattern',
+            context['filetype'], self.keyword_patterns)
+        m = re.search('(?:' + keyword_pattern + ')$', context['input'])
         return m.start() if m else -1
 
     def print(self, expr):

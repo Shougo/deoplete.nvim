@@ -147,7 +147,7 @@ ignore_sources
 
 					*deoplete-options-keyword_patterns*
 keyword_patterns
-		It records keyword patterns to buffer completion.
+		It defines the keyword patterns for completion.
 		This is appointed in regular expression string or list every
 		file type.
 		Note: It is Python3 regexp.  But "\k" is converted to
@@ -834,6 +834,14 @@ is_volatile
 is_debug_enabled
 		(Bool)				(Optional)
 		If it is True, the debug log feature is enabled in the source.
+
+				*deoplete-source-attribute-keyword_patterns*
+keyword_patterns
+		It defines the keyword patterns for completion.
+		This is appointed in regular expression string or list every
+		file type.
+
+		If you omit it, |deoplete-options-keyword_patterns| is used.
 
 					*deoplete-source-attribute-matchers*
 matchers	(List[str])			(Optional)

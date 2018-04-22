@@ -212,16 +212,6 @@ function! deoplete#init#_context(event, sources) abort
           \ 'sources', filetype, [])
   endif
 
-  let keyword_patterns = join(deoplete#util#convert2list(
-        \   deoplete#custom#_get_filetype_option(
-        \   'keyword_patterns', filetype, '')), '|')
-
-  " Convert keyword pattern.
-  let pattern = deoplete#util#vimoption2python(
-        \ &l:iskeyword . (&l:lisp ? ',-' : ''))
-  let keyword_patterns = substitute(keyword_patterns,
-        \ '\\k', '\=pattern', 'g')
-
   let event = (deoplete#util#get_prev_event() ==# 'Refresh') ?
         \ 'Manual' : a:event
 
@@ -256,7 +246,6 @@ function! deoplete#init#_context(event, sources) abort
         \ 'camelcase': deoplete#custom#_get_option('camel_case'),
         \ 'delay': deoplete#custom#_get_option('auto_complete_delay'),
         \ 'sources': sources,
-        \ 'keyword_patterns': keyword_patterns,
         \ 'max_abbr_width': max_width,
         \ 'max_kind_width': max_width,
         \ 'max_menu_width': max_width,

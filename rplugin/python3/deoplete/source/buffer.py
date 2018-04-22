@@ -50,6 +50,9 @@ class Source(Base):
         if size > self._limit:
             return
 
+        keyword_pattern = self.vim.call(
+            'deoplete#util#get_keyword_pattern',
+            context['filetype'], self.keyword_patterns)
         try:
             self._buffers[context['bufnr']] = {
                 'bufnr': context['bufnr'],
@@ -57,7 +60,7 @@ class Source(Base):
                 'candidates': [
                     {'word': x} for x in
                     sorted(parse_buffer_pattern(getlines(self.vim),
-                                                context['keyword_patterns']),
+                                                keyword_pattern),
                            key=str.lower)
                 ]
             }
