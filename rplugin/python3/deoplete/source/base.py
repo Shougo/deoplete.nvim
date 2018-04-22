@@ -40,6 +40,7 @@ class Base(LoggingMixin):
         self.max_abbr_width = 80
         self.max_kind_width = 40
         self.max_menu_width = 40
+        self.max_candidates = 500
 
     def get_complete_position(self, context):
         keyword_pattern = self.vim.call(
