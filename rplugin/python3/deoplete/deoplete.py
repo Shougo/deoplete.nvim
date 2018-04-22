@@ -23,33 +23,23 @@ class Deoplete(logger.LoggingMixin):
 
         self._parents = []
         self._parent_count = 0
-        self._max_parents = max(
-            [1, self._vim.call('deoplete#custom#_get_option',
-                               'num_processes')])
+        self._max_parents = self._vim.call('deoplete#custom#_get_option',
+                                           'num_processes')
 
-        if self._max_parents > 1 and not hasattr(self._vim, 'loop'):
+        if self._max_parents != 1 and not hasattr(self._vim, 'loop'):
             error(self._vim, 'neovim-python 0.2.4+ is required.')
             return
 
-        # Enable logging before "Init" for more information, and e.g.
+        # Enable logging for more information, and e.g.
         # deoplete-jedi picks up the log filename from deoplete's handler in
         # its on_init.
         if self._vim.vars['deoplete#_logging']:
             self.enable_logging()
 
-        # Init context
+        # Initialization
         context = self._vim.call('deoplete#init#_context', 'Init', [])
         context['rpc'] = 'deoplete_on_event'
-
-        # Init processes
-        for n in range(0, self._max_parents):
-            self._parents.append(Parent(vim, context))
-        if self._vim.vars['deoplete#_logging']:
-            for parent in self._parents:
-                parent.enable_logging()
-
-        # on_init() call
-        self.on_event(context)
+        self._check_recache(context)
 
         if hasattr(self._vim, 'channel_id'):
             self._vim.vars['deoplete#_channel_id'] = self._vim.channel_id
@@ -63,10 +53,10 @@ class Deoplete(logger.LoggingMixin):
     def completion_begin(self, context):
         self.debug('completion_begin: %s', context['input'])
 
-        self.check_recache(context)
+        self._check_recache(context)
 
         try:
-            is_async, position, candidates = self.merge_results(context)
+            is_async, position, candidates = self._merge_results(context)
         except Exception:
             error_tb(self._vim, 'Error while gathering completions')
 
@@ -104,7 +94,14 @@ class Deoplete(logger.LoggingMixin):
 
         self.debug('completion_end: %s', context['input'])
 
-    def merge_results(self, context):
+    def on_event(self, context):
+        self.debug('on_event: %s', context['event'])
+        self._check_recache(context)
+
+        for parent in self._parents:
+            parent.on_event(context)
+
+    def _merge_results(self, context):
         use_prev = context['position'] == self._prev_pos
         if not use_prev:
             self._prev_merged_results = {}
@@ -158,23 +155,43 @@ class Deoplete(logger.LoggingMixin):
 
         return (is_async, complete_position, all_candidates)
 
-    def load_sources(self, context):
+    def _add_parent(self, context):
+        parent = Parent(self._vim, context)
+        if self._vim.vars['deoplete#_logging']:
+            parent.enable_logging()
+        self._parents.append(parent)
+
+    def _init_parents(self, context):
+        if self._parents or self._max_parents <= 0:
+            return
+
+        for n in range(0, self._max_parents):
+            self._add_parent(context)
+
+    def _load_sources(self, context):
+        self._init_parents(context)
+
         # Load sources from runtimepath
         for path in find_rplugins(context, 'source'):
             if path in self._loaded_paths:
                 continue
             self._loaded_paths.add(path)
 
+            if self._max_parents <= 0:
+                # Add parent automatically
+                self._add_parent(context)
+
             self._parents[self._parent_count].add_source(path)
             self.debug('Process %d: %s', self._parent_count, path)
 
             self._parent_count += 1
-            self._parent_count %= self._max_parents
+            if self._max_parents > 0:
+                self._parent_count %= self._max_parents
 
-        self.set_source_attributes(context)
-        self.set_custom(context)
+        self._set_source_attributes(context)
+        self._set_custom(context)
 
-    def load_filters(self, context):
+    def _load_filters(self, context):
         # Load filters from runtimepath
         for path in find_rplugins(context, 'filter'):
             if path in self._loaded_paths:
@@ -184,30 +201,23 @@ class Deoplete(logger.LoggingMixin):
             for parent in self._parents:
                 parent.add_filter(path)
 
-    def set_source_attributes(self, context):
+    def _set_source_attributes(self, context):
         for parent in self._parents:
             parent.set_source_attributes(context)
 
-    def set_custom(self, context):
+    def _set_custom(self, context):
         self._custom = context['custom']
         for parent in self._parents:
             parent.set_custom(self._custom)
 
-    def check_recache(self, context):
+    def _check_recache(self, context):
         if context['runtimepath'] != self._runtimepath:
             self._runtimepath = context['runtimepath']
-            self.load_sources(context)
-            self.load_filters(context)
+            self._load_sources(context)
+            self._load_filters(context)
 
             if context['rpc'] != 'deoplete_on_event':
                 self.on_event(context)
         elif context['custom'] != self._custom:
-            self.set_source_attributes(context)
-            self.set_custom(context)
-
-    def on_event(self, context):
-        self.debug('on_event: %s', context['event'])
-        self.check_recache(context)
-
-        for parent in self._parents:
-            parent.on_event(context)
+            self._set_source_attributes(context)
+            self._set_custom(context)

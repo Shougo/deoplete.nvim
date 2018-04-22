@@ -16,7 +16,7 @@ class Source(Base):
 
         self.name = 'buffer'
         self.mark = '[B]'
-        self.events = ['Init', 'InsertEnter', 'BufWritePost']
+        self.events = ['InsertEnter', 'BufWritePost']
         self.vars = {
             'require_same_filetype': True,
         }
