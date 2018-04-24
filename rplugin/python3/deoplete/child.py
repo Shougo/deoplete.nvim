@@ -254,7 +254,7 @@ class Child(logger.LoggingMixin):
                 }
                 self._prev_results[source.name] = result
                 results.append(result)
-            except Exception:
+            except Exception as exc:
                 self._source_errors[source.name] += 1
                 if source.is_silent:
                     continue
@@ -264,7 +264,7 @@ class Child(logger.LoggingMixin):
                           'is restarted.' % source.name)
                     self._ignore_sources.append(source.name)
                     continue
-                error_tb(self._vim, 'Errors from: %s' % source.name)
+                error_tb(self._vim, 'Error from %s: %r' % (source.name, exc))
 
         return results
 
@@ -277,7 +277,7 @@ class Child(logger.LoggingMixin):
             if async_candidates is None:
                 return
             context['candidates'] += convert2candidates(async_candidates)
-        except Exception:
+        except Exception as exc:
             self._source_errors[source.name] += 1
             if source.is_silent:
                 return
@@ -287,7 +287,7 @@ class Child(logger.LoggingMixin):
                       'is restarted.' % source.name)
                 self._ignore_sources.append(source.name)
             else:
-                error_tb(self._vim, 'Errors from: %s' % source.name)
+                error_tb(self._vim, 'Error from %s: %r' % (source.name, exc))
 
     def _process_filter(self, f, context, max_candidates):
         try:
