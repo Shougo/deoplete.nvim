@@ -82,6 +82,23 @@ INTERFACE						*deoplete-interface*
 ------------------------------------------------------------------------------
 OPTIONS	 					*deoplete-options*
 
+Options can be toggled through the use of |deoplete#custom#option()|.
+
+For example:
+
+>
+    " set a single option
+    call deoplete#custom#option('auto_complete_delay', 200)
+    
+    " pass a dictionary to set multiple options
+    call deoplete#custom#option({
+    \ 'auto_complete_delay': 200,
+    \ 'smart_case': v:true,
+    \ })
+<
+
+The set of available options follows.
+
 					*deoplete-options-auto_complete*
 auto_complete
 		If it is False, automatic completion becomes invalid, but can
