@@ -23,7 +23,7 @@ function! deoplete#init#_initialize() abort
     return 1
   endif
 
-  if !deoplete#init#_check_channel()
+  if deoplete#init#_channel_initialized()
     return 1
   endif
 
@@ -90,8 +90,8 @@ function! deoplete#init#_channel() abort
     return 1
   endtry
 endfunction
-function! deoplete#init#_check_channel() abort
-  return !exists('g:deoplete#_initialized')
+function! deoplete#init#_channel_initialized() abort
+  return exists('g:deoplete#_initialized')
 endfunction
 function! deoplete#init#_enable() abort
   call deoplete#handler#_init()
