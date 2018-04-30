@@ -79,7 +79,7 @@ function! deoplete#custom#var(source_name, var_name, value) abort
   for key in deoplete#util#split(a:source_name)
     let custom_source = deoplete#custom#_get_source_var(key)
     let vars = get(custom_source, 'vars', {})
-    let vars[a:var_name] = a:value
+    call s:set_value(vars, a:var_name, a:value)
     call deoplete#custom#source(key, 'vars', vars)
   endfor
 endfunction
@@ -97,6 +97,16 @@ function! s:set_custom(dest, name_or_dict, value) abort
   if type(a:name_or_dict) == v:t_dict
     call extend(a:dest, a:name_or_dict)
   else
-    let a:dest[a:name_or_dict] = a:value
+    call s:set_value(a:dest, a:name_or_dict, a:value)
+  endif
+endfunction
+function! s:set_value(dest, name, value) abort
+  if type(a:value) == v:t_dict && !empty(a:value)
+    if !has_key(a:dest, a:name)
+      let a:dest[a:name] = {}
+    endif
+    call extend(a:dest[a:name], a:value)
+  else
+    let a:dest[a:name] = a:value
   endif
 endfunction
