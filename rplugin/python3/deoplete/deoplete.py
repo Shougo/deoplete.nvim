@@ -8,6 +8,8 @@ from deoplete import logger
 from deoplete.parent import Parent
 from deoplete.util import (error_tb, find_rplugins, error)
 
+import copy
+
 
 class Deoplete(logger.LoggingMixin):
 
@@ -112,7 +114,8 @@ class Deoplete(logger.LoggingMixin):
         for cnt, parent in enumerate(self._parents):
             if use_prev and cnt in self._prev_merged_results:
                 # Use previous result
-                merged_results += self._prev_merged_results[cnt]
+                merged_results += copy.deepcopy(
+                    self._prev_merged_results[cnt])
             else:
                 result = parent.merge_results(context)
                 is_async = is_async or result[0]
