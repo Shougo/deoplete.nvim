@@ -299,11 +299,11 @@ class Child(logger.LoggingMixin):
                 for candidates in context['candidates']['sorted_candidates']:
                     context['candidates'] = candidates
                     filtered += f.filter(context)
-                if max_candidates > 0:
-                    filtered = filtered[: max_candidates]
-                context['candidates'] = filtered
             else:
-                context['candidates'] = f.filter(context)
+                filtered = f.filter(context)
+            if max_candidates > 0:
+                filtered = filtered[: max_candidates]
+            context['candidates'] = filtered
             self._profile_end(f.name)
         except Exception:
             error_tb(self._vim, 'Errors from: %s' % f)
