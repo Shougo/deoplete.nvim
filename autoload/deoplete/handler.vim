@@ -248,6 +248,8 @@ function! s:on_complete_done() abort
   else
     let g:deoplete#_rank[word] += 1
   endif
+
+  call deoplete#handler#_skip_next_completion()
 endfunction
 
 function! deoplete#handler#_skip_next_completion() abort

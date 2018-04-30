@@ -7,8 +7,6 @@
 function! deoplete#mapping#_init() abort
   inoremap <silent> <Plug>_
         \ <C-r>=deoplete#mapping#_complete()<CR>
-  inoremap <expr><C-y>       deoplete#close_popup()
-  inoremap <expr><C-e>       deoplete#cancel_popup()
 endfunction
 
 function! deoplete#mapping#_completefunc(findstart, base) abort
