@@ -1567,7 +1567,7 @@ Q: I want to use Java script omnifunc.
 
 A: Please set "input_patterns" manually. >
 
-       call deoplete#custom#source('omni', 'input_patterns', {
+       call deoplete#custom#var('omni', 'input_patterns', {
        \ 'javascript': '[^. *\t]\.\w*',
        \ )
 
@@ -1581,7 +1581,7 @@ A: Please set the config as below.  >
        let g:lua_complete_dynamic = 0
        let g:lua_define_completion_mappings = 0
 
-       call deoplete#custom#source('omni', 'functions', {
+       call deoplete#custom#var('omni', 'functions', {
        \ 'lua': 'xolox#lua#omnifunc',
        \ })
 
