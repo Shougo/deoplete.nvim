@@ -50,8 +50,8 @@ def main(serveraddr):
     try:
         child = Child(vim)
         child.main_loop(stdout)
-    except Exception:
-        error_tb(vim, 'Error in child')
+    except Exception as exc:
+        error_tb(vim, 'Error in child: %r' % exc)
 
 
 if __name__ == '__main__':
