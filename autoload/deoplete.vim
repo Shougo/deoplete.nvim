@@ -8,7 +8,6 @@ function! deoplete#initialize() abort
   return deoplete#init#_initialize()
 endfunction
 function! deoplete#is_enabled() abort
-  call deoplete#initialize()
   return deoplete#init#_is_handler_enabled()
 endfunction
 function! deoplete#enable() abort
