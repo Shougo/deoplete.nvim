@@ -10,8 +10,8 @@ endif
 
 let s:is_windows = ((has('win32') || has('win64')) ? v:true : v:false)
 
-function! deoplete#init#_is_enabled() abort
-  return s:is_enabled
+function! deoplete#init#_is_handler_enabled() abort
+  return s:is_handler_enabled
 endfunction
 
 function! deoplete#init#_initialize() abort
@@ -23,13 +23,11 @@ function! deoplete#init#_initialize() abort
     return 1
   endif
 
-  if deoplete#init#_channel_initialized()
+  if exists('g:deoplete#_initialized')
     return 1
   endif
 
-  augroup deoplete
-    autocmd!
-  augroup END
+  let g:deoplete#_initialized = v:false
 
   call s:init_internal_variables()
   call deoplete#init#_custom_variables()
@@ -91,17 +89,17 @@ function! deoplete#init#_channel() abort
   endtry
 endfunction
 function! deoplete#init#_channel_initialized() abort
-  return exists('g:deoplete#_initialized')
+  return get(g:, 'deoplete#_initialized', v:false)
 endfunction
-function! deoplete#init#_enable() abort
+function! deoplete#init#_enable_handler() abort
   call deoplete#handler#_init()
-  let s:is_enabled = 1
+  let s:is_handler_enabled = 1
 endfunction
-function! deoplete#init#_disable() abort
+function! deoplete#init#_disable_handler() abort
   augroup deoplete
     autocmd!
   augroup END
-  let s:is_enabled = 0
+  let s:is_handler_enabled = 0
 endfunction
 
 function! s:init_internal_variables() abort

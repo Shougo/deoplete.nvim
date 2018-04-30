@@ -9,20 +9,29 @@ function! deoplete#initialize() abort
 endfunction
 function! deoplete#is_enabled() abort
   call deoplete#initialize()
-  return deoplete#init#_is_enabled()
+  return deoplete#init#_is_handler_enabled()
 endfunction
 function! deoplete#enable() abort
   if deoplete#initialize()
     return 1
   endif
-  return deoplete#init#_enable()
+  return deoplete#init#_enable_handler()
 endfunction
 function! deoplete#disable() abort
-  return deoplete#init#_disable()
+  if !deoplete#init#_channel_initialized()
+    return 1
+  endif
+
+  return deoplete#init#_disable_handler()
 endfunction
 function! deoplete#toggle() abort
+  if !deoplete#init#_channel_initialized()
+    return 1
+  endif
+
   return deoplete#is_enabled() ?
-        \ deoplete#init#_disable() : deoplete#init#_enable()
+        \ deoplete#init#_disable_handler() :
+        \ deoplete#init#_enable_handler()
 endfunction
 
 function! deoplete#enable_logging(level, logfile) abort
