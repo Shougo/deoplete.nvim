@@ -160,18 +160,10 @@ class Child(logger.LoggingMixin):
                 rank = get_custom(self._custom,
                                   result['source'].name, 'rank',
                                   result['source'].rank)
-                dup = bool(result['source'].filetypes)
                 candidates = result['candidates']
-                # Note: cannot use set() for dict
-                if dup:
-                    # Remove duplicates
-                    candidates = uniq_list_dict(candidates)
                 merged_results.append({
                     'complete_position': result['complete_position'],
-                    'mark': result['source'].mark,
-                    'dup': dup,
                     'candidates': candidates,
-                    'source_name': result['source'].name,
                     'rank': rank,
                 })
 
@@ -342,6 +334,21 @@ class Child(logger.LoggingMixin):
         # On post filter
         if hasattr(source, 'on_post_filter'):
             ctx['candidates'] = source.on_post_filter(ctx)
+
+        mark = source.mark + ' '
+        dup = bool(source.filetypes)
+        for candidate in ctx['candidates']:
+            # Set default menu and icase
+            candidate['icase'] = 1
+            if (mark != ' ' and
+                    candidate.get('menu', '').find(mark) != 0):
+                candidate['menu'] = mark + candidate.get('menu', '')
+            if dup:
+                candidate['dup'] = 1
+        # Note: cannot use set() for dict
+        if dup:
+            # Remove duplicates
+            ctx['candidates'] = uniq_list_dict(ctx['candidates'])
 
         result['candidates'] = ctx['candidates']
         return result if result['candidates'] else None

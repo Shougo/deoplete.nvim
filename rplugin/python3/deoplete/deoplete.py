@@ -137,18 +137,10 @@ class Deoplete(logger.LoggingMixin):
             prefix = context['input'][
                 complete_position:result['complete_position']]
 
-            mark = result['mark'] + ' '
-            for candidate in candidates:
-                # Add prefix
-                candidate['word'] = prefix + candidate['word']
-
-                # Set default menu and icase
-                candidate['icase'] = 1
-                if (mark != ' ' and
-                        candidate.get('menu', '').find(mark) != 0):
-                    candidate['menu'] = mark + candidate.get('menu', '')
-                if result['dup']:
-                    candidate['dup'] = 1
+            if prefix != '':
+                for candidate in candidates:
+                    # Add prefix
+                    candidate['word'] = prefix + candidate['word']
 
             all_candidates += candidates
 
