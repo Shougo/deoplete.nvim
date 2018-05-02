@@ -21,10 +21,10 @@ class Filter(Base):
         m = re.match('\S+', context['next_input'])
         if not m:
             return context['candidates']
-        next = m.group(0)
+        next_input = m.group(0)
         for [overlap, candidate] in [
                 [x, y] for x, y
-                in [[overlap_length(x['word'], next), x]
+                in [[overlap_length(x['word'], next_input), x]
                     for x in context['candidates']] if x > 0]:
             if 'abbr' not in candidate:
                 candidate['abbr'] = candidate['word']

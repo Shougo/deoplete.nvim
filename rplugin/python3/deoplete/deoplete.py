@@ -22,6 +22,7 @@ class Deoplete(logger.LoggingMixin):
         self._loaded_paths = set()
         self._prev_merged_results = {}
         self._prev_pos = []
+        self._prev_next_input = ''
 
         self._parents = []
         self._parent_count = 0
@@ -105,6 +106,7 @@ class Deoplete(logger.LoggingMixin):
 
     def _merge_results(self, context):
         use_prev = (context['position'] == self._prev_pos
+                    and context['next_input'] == self._prev_next_input
                     and context['event'] != 'Manual')
         if not use_prev:
             self._prev_merged_results = {}
@@ -123,6 +125,7 @@ class Deoplete(logger.LoggingMixin):
                     self._prev_merged_results[cnt] = result[1]
                 merged_results += result[1]
         self._prev_pos = context['position']
+        self._prev_next_input = context['next_input']
 
         if not merged_results:
             return (is_async, -1, [])
