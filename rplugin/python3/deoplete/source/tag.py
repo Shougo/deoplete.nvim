@@ -33,12 +33,12 @@ class Source(Base):
                               if len(context['complete_str']) > 0 else '')
             complete_str_1 = (context['complete_str'][1].lower()
                               if len(context['complete_str']) > 1 else '')
-            prefixes = list(set([
+            prefixes = list({
                 complete_str_0 + complete_str_1,
                 complete_str_0 + complete_str_1.upper(),
                 complete_str_0.upper() + complete_str_1,
                 complete_str_0.upper() + complete_str_1.upper(),
-            ]))
+                })
         else:
             prefixes = [context['complete_str']]
 

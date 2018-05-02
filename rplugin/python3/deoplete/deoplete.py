@@ -130,8 +130,8 @@ class Deoplete(logger.LoggingMixin):
         if not merged_results:
             return (is_async, -1, [])
 
-        complete_position = min([x['complete_position']
-                                 for x in merged_results])
+        complete_position = min(x['complete_position']
+                                for x in merged_results)
 
         all_candidates = []
         for result in sorted(merged_results,
