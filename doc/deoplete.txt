@@ -660,33 +660,6 @@ Default converters: ['converter_remove_overlap', 'converter_truncate_abbr',
 
 	You can change it by |deoplete#custom#source()|.
 
-				*deoplete-filter-converter_auto_delimiter*
-converter_auto_delimiter
-		It adds |deoplete-options-delimiters| characters in a
-		candidate's word.
-
-				*deoplete-filter-converter_auto_paren*
-converter_auto_paren
-		It adds parentheses character in a candidate's word.
-		It is useful if you use |neopairs| or |neosnippet|
-		plugins.
-
-				*deoplete-filter-converter_remove_overlap*
-converter_remove_overlap
-		It removes overlapped text in a candidate's word.
-
-				*deoplete-filter-converter_remove_paren*
-converter_remove_paren
-		It removes parentheses character in a candidate's word.
-
-				*deoplete-filter-converter_truncate_abbr*
-converter_truncate_abbr
-		It truncates a candidate's abbr by the current window width.
-
-				*deoplete-filter-converter_truncate_menu*
-converter_truncate_menu
-		It truncates a candidate's menu by the current window width.
-
 					*deoplete-filter-matcher_cpsm*
 matcher_cpsm
 		A matcher which filters the candidates using cpsm.
@@ -724,6 +697,33 @@ sorter_rank	Matched rank order sorter.  The higher the head matched word
 
 						*deoplete-filter-sorter_word*
 sorter_word	Word order sorter.
+
+				*deoplete-filter-converter_auto_delimiter*
+converter_auto_delimiter
+		It adds |deoplete-options-delimiters| characters in a
+		candidate's word.
+
+				*deoplete-filter-converter_auto_paren*
+converter_auto_paren
+		It adds parentheses character in a candidate's word.
+		It is useful if you use |neopairs| or |neosnippet|
+		plugins.
+
+				*deoplete-filter-converter_remove_overlap*
+converter_remove_overlap
+		It removes overlapped text in a candidate's word.
+
+				*deoplete-filter-converter_remove_paren*
+converter_remove_paren
+		It removes parentheses character in a candidate's word.
+
+				*deoplete-filter-converter_truncate_abbr*
+converter_truncate_abbr
+		It truncates a candidate's abbr by the current window width.
+
+				*deoplete-filter-converter_truncate_menu*
+converter_truncate_menu
+		It truncates a candidate's menu by the current window width.
 
 ==============================================================================
 CREATE SOURCE					*deoplete-create-source*
