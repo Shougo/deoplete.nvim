@@ -43,7 +43,7 @@ class Source(Base):
             with open(filename, 'r', errors='replace') as f:
                 self._cache[filename] = DictCacheItem(
                     mtime, [{'word': x} for x in sorted(
-                        [x.strip() for x in f], key=str.lower)]
+                        (x.strip() for x in f), key=str.lower)]
                 )
 
     def _get_dictionaries(self, context):
