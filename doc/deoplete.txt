@@ -1421,6 +1421,12 @@ Q: How do I select one of the responses from the pop up? I assume this is
 
 A: Please press <C-y> on the candidate.
 
+Q: I want to close the preview window after insertion is done.
+
+A: >
+	autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+<
+
 Q: I want to close the preview window after completion is done.
 
 A: >
