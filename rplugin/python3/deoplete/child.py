@@ -136,7 +136,7 @@ class Child(logger.LoggingMixin):
             f.path = path
             if f.name in self._loaded_filters:
                 # Duplicated name
-                error_tb(self._vim, 'duplicated filter: %s' % f.name)
+                error_tb(self._vim, 'Duplicated filter: %s' % f.name)
                 error_tb(self._vim, 'path: "%s" "%s"' %
                          (path, self._loaded_filters[f.name]))
                 f = None

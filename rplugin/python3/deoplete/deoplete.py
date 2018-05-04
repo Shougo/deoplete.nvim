@@ -193,10 +193,6 @@ class Deoplete(logger.LoggingMixin):
     def _load_filters(self, context):
         # Load filters from runtimepath
         for path in find_rplugins(context, 'filter'):
-            if path in self._loaded_paths:
-                continue
-            self._loaded_paths.add(path)
-
             for parent in self._parents:
                 parent.add_filter(path)
 

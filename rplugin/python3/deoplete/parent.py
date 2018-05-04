@@ -28,6 +28,7 @@ class Parent(logger.LoggingMixin):
         self._stdin = None
         self._child = None
         self._queue_id = ''
+        self._loaded_filters = set()
         self._prev_pos = []
         self._queue_in = Queue()
         self._queue_out = Queue()
@@ -48,6 +49,10 @@ class Parent(logger.LoggingMixin):
         self._put('add_source', [path])
 
     def add_filter(self, path):
+        if path in self._loaded_filters:
+            return
+        self._loaded_filters.add(path)
+
         self._put('add_filter', [path])
 
     def set_source_attributes(self, context):
