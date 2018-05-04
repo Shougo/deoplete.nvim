@@ -1426,7 +1426,12 @@ Q: I want to close the preview window after completion is done.
 A: >
         autocmd CompleteDone * silent! pclose!
 <
-   Note: It conflicts with iabbr.
+Or
+>
+	autocmd InsertLeave * silent! pclose!
+<
+
+   Note: It conflicts with delimitMate.
    https://github.com/Shougo/deoplete.nvim/issues/234
 
 Q: I want to disable the preview window feature.
