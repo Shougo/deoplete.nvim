@@ -31,7 +31,6 @@ class Child(logger.LoggingMixin):
         self._vim = vim
         self._filters = {}
         self._sources = {}
-        self._custom = []
         self._profile_flag = None
         self._profile_start_time = 0
         self._loaded_sources = {}
@@ -81,8 +80,6 @@ class Child(logger.LoggingMixin):
             self._add_filter(args[0])
         elif name == 'set_source_attributes':
             self._set_source_attributes(args[0])
-        elif name == 'set_custom':
-            self._set_custom(args[0])
         elif name == 'on_event':
             self._on_event(args[0])
         elif name == 'merge_results':
@@ -158,7 +155,7 @@ class Child(logger.LoggingMixin):
                        if not self._is_skip(x['context'], x['source'])]:
             if self._update_result(result,
                                    context['input'], context['next_input']):
-                rank = get_custom(self._custom,
+                rank = get_custom(context['custom'],
                                   result['source'].name, 'rank',
                                   result['source'].rank)
                 candidates = result['candidates']
@@ -473,9 +470,6 @@ class Child(logger.LoggingMixin):
             if source.min_pattern_length < 0:
                 source.min_pattern_length = self._vim.call(
                     'deoplete#custom#_get_option', 'min_pattern_length')
-
-    def _set_custom(self, custom):
-        self._custom = custom
 
     def _on_event(self, context):
         for source_name, source in self._itersource(context):

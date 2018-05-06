@@ -188,7 +188,6 @@ class Deoplete(logger.LoggingMixin):
                 self._parent_count %= self._max_parents
 
         self._set_source_attributes(context)
-        self._set_custom(context)
 
     def _load_filters(self, context):
         # Load filters from runtimepath
@@ -200,11 +199,6 @@ class Deoplete(logger.LoggingMixin):
         for parent in self._parents:
             parent.set_source_attributes(context)
 
-    def _set_custom(self, context):
-        self._custom = context['custom']
-        for parent in self._parents:
-            parent.set_custom(self._custom)
-
     def _check_recache(self, context):
         if context['runtimepath'] != self._runtimepath:
             self._runtimepath = context['runtimepath']
@@ -215,4 +209,3 @@ class Deoplete(logger.LoggingMixin):
                 self.on_event(context)
         elif context['custom'] != self._custom:
             self._set_source_attributes(context)
-            self._set_custom(context)
