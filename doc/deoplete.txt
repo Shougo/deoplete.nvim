@@ -198,19 +198,23 @@ num_processes
 
 					*deoplete-options-omni_patterns*
 omni_patterns
-		It is the keyword patterns to Omni completion.
+		If omni_patterns is set, deoplete will call 'omnifunc'
+		directly as soon as a pattern is matched.  Note:  This will disable
+		deoplete filtering and combination of sources for those matches.
+		Suggested use is only for legacy omnifunc plugins which do not
+		return all results when provided an empty base argument.
+		See *complete-functions*
 
-		If this pattern is not defined or empty pattern, deoplete
+		If this pattern is not defined or empty for a filetype, deoplete
 		does not call 'omnifunc'.
-		Note: If it is a set, deoplete will call 'omnifunc'
-		directly.  So almost deoplete features are disabled.
-		Note: It is Vim regexp.
+
+		Note: It is a Vim regexp.
 >
 		call deoplete#custom#option('omni_patterns', {
 		\ 'java': '[^. *\t]\.\w*',
 		\})
 <
-		Default value: in init.vim
+		Default value: in autoload/deoplete/init.vim
 
 					*deoplete-options-on_insert_enter*
 on_insert_enter
