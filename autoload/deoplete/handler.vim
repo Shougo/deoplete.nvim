@@ -184,7 +184,7 @@ endfunction
 function! s:check_omnifunc(context) abort
   let prev = g:deoplete#_prev_completion
   let blacklist = ['LanguageClient#complete']
-  if prev.event ==# 'Manual'
+  if a:context.event ==# 'Manual'
         \ || &l:omnifunc ==# ''
         \ || index(blacklist, &l:omnifunc) >= 0
         \ || prev.input ==# a:context.input
@@ -230,11 +230,7 @@ endfunction
 function! s:on_insert_leave() abort
   call deoplete#mapping#_restore_completeopt()
   let g:deoplete#_context = {}
-  let g:deoplete#_prev_completion = {
-        \ 'event': '',
-        \ 'input': '',
-        \ 'candidates': [],
-        \ }
+  call deoplete#init#_prev_completion()
 endfunction
 
 function! s:on_complete_done() abort
@@ -261,6 +257,7 @@ function! deoplete#handler#_skip_next_completion() abort
   if input[-1:] !=# '/'
     let g:deoplete#_context.input = input
   endif
+  call deoplete#init#_prev_completion()
 endfunction
 
 function! s:is_exiting() abort

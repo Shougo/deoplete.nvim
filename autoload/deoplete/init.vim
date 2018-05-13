@@ -103,11 +103,7 @@ function! deoplete#init#_disable_handler() abort
 endfunction
 
 function! s:init_internal_variables() abort
-  let g:deoplete#_prev_completion = {
-        \ 'event': '',
-        \ 'input': '',
-        \ 'candidates': [],
-        \ }
+  call deoplete#init#_prev_completion()
   let g:deoplete#_context = {}
   let g:deoplete#_rank = {}
   if !exists('g:deoplete#_logging')
@@ -300,5 +296,12 @@ function! deoplete#init#_option() abort
         \ 'smart_case': &smartcase,
         \ 'sources': {},
         \ 'yarp': v:false,
+        \ }
+endfunction
+function! deoplete#init#_prev_completion() abort
+  let g:deoplete#_prev_completion = {
+        \ 'event': '',
+        \ 'input': '',
+        \ 'candidates': [],
         \ }
 endfunction
