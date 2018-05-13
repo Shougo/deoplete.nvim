@@ -54,8 +54,8 @@ function! deoplete#handler#_do_complete() abort
 
   let prev = g:deoplete#_prev_completion
   let prev.event = context.event
+  let prev.input = context.input
   let prev.candidates = context.candidates
-  let prev.complete_position = getpos('.')
 
   if context.event ==# 'Manual'
     let context.event = ''
@@ -187,7 +187,7 @@ function! s:check_omnifunc(context) abort
   if prev.event ==# 'Manual'
         \ || &l:omnifunc ==# ''
         \ || index(blacklist, &l:omnifunc) >= 0
-        \ || prev.complete_position ==# getpos('.')
+        \ || prev.input ==# a:context.input
     return
   endif
 
@@ -199,8 +199,8 @@ function! s:check_omnifunc(context) abort
         let g:deoplete#_context.candidates = []
 
         let prev.event = a:context.event
+        let prev.input = a:context.input
         let prev.candidates = []
-        let prev.complete_position = getpos('.')
 
         call deoplete#mapping#_set_completeopt()
         call feedkeys("\<C-x>\<C-o>", 'in')
@@ -231,9 +231,9 @@ function! s:on_insert_leave() abort
   call deoplete#mapping#_restore_completeopt()
   let g:deoplete#_context = {}
   let g:deoplete#_prev_completion = {
-        \ 'complete_position': [],
-        \ 'candidates': [],
         \ 'event': '',
+        \ 'input': '',
+        \ 'candidates': [],
         \ }
 endfunction
 

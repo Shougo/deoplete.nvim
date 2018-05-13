@@ -21,7 +21,7 @@ class Deoplete(logger.LoggingMixin):
         self._custom = []
         self._loaded_paths = set()
         self._prev_merged_results = {}
-        self._prev_pos = []
+        self._prev_input = ''
         self._prev_next_input = ''
 
         self._parents = []
@@ -79,9 +79,9 @@ class Deoplete(logger.LoggingMixin):
         # Async update is skipped if same.
         prev_completion = context['vars']['deoplete#_prev_completion']
         prev_candidates = prev_completion['candidates']
-        prev_pos = prev_completion['complete_position']
+        prev_input = prev_completion['input']
         if (context['event'] == 'Async' and
-                prev_pos == self._vim.call('getpos', '.') and
+                prev_input == context['input'] and
                 prev_candidates and len(candidates) <= len(prev_candidates)):
             return
 
@@ -105,7 +105,7 @@ class Deoplete(logger.LoggingMixin):
             parent.on_event(context)
 
     def _merge_results(self, context):
-        use_prev = (context['position'] == self._prev_pos
+        use_prev = (context['input'] == self._prev_input
                     and context['next_input'] == self._prev_next_input
                     and context['event'] != 'Manual')
         if not use_prev:
@@ -124,7 +124,7 @@ class Deoplete(logger.LoggingMixin):
                 if not result[0]:
                     self._prev_merged_results[cnt] = result[1]
                 merged_results += result[1]
-        self._prev_pos = context['position']
+        self._prev_input = context['input']
         self._prev_next_input = context['next_input']
 
         if not merged_results:

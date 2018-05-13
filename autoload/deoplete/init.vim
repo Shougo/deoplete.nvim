@@ -104,9 +104,9 @@ endfunction
 
 function! s:init_internal_variables() abort
   let g:deoplete#_prev_completion = {
-        \ 'complete_position': [],
-        \ 'candidates': [],
         \ 'event': '',
+        \ 'input': '',
+        \ 'candidates': [],
         \ }
   let g:deoplete#_context = {}
   let g:deoplete#_rank = {}
