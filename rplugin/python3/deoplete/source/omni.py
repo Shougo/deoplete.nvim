@@ -81,7 +81,7 @@ class Source(Base):
             candidates = self.vim.call(self._omnifunc, 0, '')
             if isinstance(candidates, dict):
                 candidates = candidates['words']
-            elif isinstance(candidates, int):
+            elif not isinstance(candidates, list):
                 candidates = []
         except Exception as e:
             self.print_error('Error occurred calling omnifunction: ' +
