@@ -1392,8 +1392,18 @@ https://github.com/Shougo/deoplete.nvim/issues/635#issuecomment-363331278
 Please test neovim-python module.
 https://github.com/neovim/python-client#usage-through-the-python-repl
 
+Q: "Cannot add child handler, the child watcher does not have a loop attached"
+error.
+https://github.com/Shougo/deoplete.nvim/issues/761
+
+A: It is neovim-python package problem.
+https://github.com/neovim/python-client/issues/324
+https://github.com/neovim/python-client/issues/326
+
 Note: You can disable parallel feature by |deoplete-options-num_processes|.
-It is workaround.
+It is workaround. >
+
+       call deoplete#custom#option('num_processes', 1)
 
 Q: "[deoplete] neovim-python 0.2.4+ is required." error
 https://github.com/Shougo/deoplete.nvim/issues/694
