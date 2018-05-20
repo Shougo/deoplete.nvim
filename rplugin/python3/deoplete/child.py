@@ -322,10 +322,27 @@ class Child(logger.LoggingMixin):
             ctx['ignorecase'] = 0
         ignorecase = ctx['ignorecase']
 
-        # Filtering
-        for f in [self._filters[x] for x
-                  in source.matchers + source.sorters + source.converters
-                  if x in self._filters]:
+        # Match
+        matchers = [self._filters[x] for x
+                    in source.matchers if x in self._filters]
+        if source.matcher_key != '':
+            # Convert word key to matcher_key
+            for candidate in ctx['candidates']:
+                candidate['__save_word'] = candidate['word']
+                candidate['word'] = candidate[source.matcher_key]
+        for f in matchers:
+            self._process_filter(f, ctx, source.max_candidates)
+        if source.matcher_key != '':
+            # Restore word key
+            for candidate in ctx['candidates']:
+                candidate['word'] = candidate['__save_word']
+
+        # Sort and Convert
+        sorters = [self._filters[x] for x
+                   in source.sorters if x in self._filters]
+        converters = [self._filters[x] for x
+                      in source.converters if x in self._filters]
+        for f in sorters + converters:
             self._process_filter(f, ctx, source.max_candidates)
 
         ctx['ignorecase'] = ignorecase
