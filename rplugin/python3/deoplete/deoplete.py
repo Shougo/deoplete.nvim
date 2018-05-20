@@ -79,9 +79,7 @@ class Deoplete(logger.LoggingMixin):
         # Async update is skipped if same.
         prev_completion = context['vars']['deoplete#_prev_completion']
         prev_candidates = prev_completion['candidates']
-        prev_input = prev_completion['input']
         if (context['event'] == 'Async' and
-                prev_input == context['input'] and
                 prev_candidates and len(candidates) <= len(prev_candidates)):
             return
 
