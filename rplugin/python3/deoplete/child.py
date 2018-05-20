@@ -471,6 +471,9 @@ class Child(logger.LoggingMixin):
                 source.min_pattern_length = self._vim.call(
                     'deoplete#custom#_get_option', 'min_pattern_length')
 
+            if not source.is_volatile:
+                source.is_volatile = bool(source.filetypes)
+
     def _on_event(self, context):
         for source_name, source in self._itersource(context):
             if source.events is None or context['event'] in source.events:
