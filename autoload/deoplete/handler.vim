@@ -131,9 +131,7 @@ function! s:completion_begin(event) abort
   endif
 
   let context = deoplete#init#_context(a:event, [])
-  if context['input'] ==# ''
-        \ || (substitute(context['input'], '\w*$', '', '') !=#
-        \     substitute(g:deoplete#_prev_completion.input, '\w*$', '', ''))
+  if context['event'] !=# 'Async'
     call deoplete#init#_prev_completion()
   endif
 
