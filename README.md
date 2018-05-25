@@ -100,6 +100,13 @@ you should read `:help provider-python` and the Wiki.
 let g:deoplete#enable_at_startup = 1
 ```
 
+### Tab completion
+
+```vim
+" Deoplete tab-complete
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+```
+
 ## Screenshots
 
 Deoplete for JavaScript
