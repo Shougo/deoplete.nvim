@@ -895,6 +895,13 @@ matchers	(List[str])			(Optional)
 
 		Default: |deoplete-filter-matcher_default|
 
+					*deoplete-source-attribute-matcher_key*
+matcher_key	(String)			(Optional)
+		Matcher compare key instead of "word".
+		If it is empty string, the feature is disabled.
+
+		Default: ''
+
 				*deoplete-source-attribute-max_abbr_width*
 max_abbr_width
 		(Integer)			(Optional)
