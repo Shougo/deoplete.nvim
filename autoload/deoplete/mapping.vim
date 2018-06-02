@@ -4,10 +4,20 @@
 " License: MIT license
 "=============================================================================
 
+function! deoplete#mapping#launch_completion() abort
+  let l:result = ""
+
+  if pumvisible()
+    let l:result .= "\<C-e>"
+  endif
+
+  let l:result .= "\<C-r>=deoplete#mapping#_complete()\<CR>"
+
+  return l:result
+endfunction
+
 function! deoplete#mapping#_init() abort
-  inoremap <expr><silent> <Plug>_
-        \ (pumvisible() ? "\<C-e>" : "")
-        \ . "\<C-r>=deoplete#mapping#_complete()\<CR>"
+  inoremap <expr><silent> <Plug>_ deoplete#mapping#launch_completion()
 endfunction
 
 function! deoplete#mapping#_completefunc(findstart, base) abort
