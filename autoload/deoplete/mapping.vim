@@ -17,7 +17,7 @@ function! deoplete#mapping#_completefunc(findstart, base) abort
   endif
 endfunction
 function! deoplete#mapping#_dummy_complete() abort
-  return (pumvisible() ? "\<C-e>" : "")
+  return (pumvisible() ? "\<C-e>" : '')
         \ . "\<C-r>=deoplete#mapping#_complete()\<CR>"
 endfunction
 function! deoplete#mapping#_complete() abort
