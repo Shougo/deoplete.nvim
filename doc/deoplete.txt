@@ -88,10 +88,10 @@ Options can be toggled through the use of |deoplete#custom#option()|.
 For example:
 
 >
-    " set a single option
+    " Set a single option
     call deoplete#custom#option('auto_complete_delay', 200)
-    
-    " pass a dictionary to set multiple options
+
+    " Pass a dictionary to set multiple options
     call deoplete#custom#option({
     \ 'auto_complete_delay': 200,
     \ 'smart_case': v:true,
