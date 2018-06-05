@@ -377,7 +377,7 @@ class Child(logger.LoggingMixin):
                 self._vim.call('deoplete#custom#_get_filetype_option',
                                'ignore_sources', ft, []))
 
-        for source_name, source in self._sources.items():
+        for source_name, source in self._get_sources().items():
             if source.filetypes is None or source_name in ignore_sources:
                 continue
             if context['sources'] and source_name not in context['sources']:
@@ -472,7 +472,7 @@ class Child(logger.LoggingMixin):
             'vars',
         )
 
-        for name, source in self._sources.items():
+        for name, source in self._get_sources().items():
             for attr in attrs:
                 source_attr = getattr(source, attr, None)
                 custom = get_custom(context['custom'],
@@ -501,3 +501,7 @@ class Child(logger.LoggingMixin):
                     error_tb(self._vim, 'Exception during {}.on_event '
                              'for event {!r}: {}'.format(
                                  source_name, context['event'], exc))
+
+    def _get_sources(self):
+        # Note: for the size change of "self._sources" error
+        return copy.copy(self._sources)
