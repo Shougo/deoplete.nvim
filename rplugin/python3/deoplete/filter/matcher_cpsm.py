@@ -43,8 +43,12 @@ class Filter(Base):
                 self._disabled = True
                 return []
 
+        complete_str = context['complete_str']
+        if context['ignorecase']:
+            complete_str = complete_str.lower()
+
         cpsm_result = self._get_cpsm_result(
-            context['candidates'], context['complete_str'])
+            context['candidates'], complete_str)
         return [x for x in context['candidates']
                 if x['word'] in sorted(cpsm_result, key=cpsm_result.index)]
 
