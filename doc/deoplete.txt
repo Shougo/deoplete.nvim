@@ -1175,13 +1175,6 @@ https://github.com/c9s/perlomni.vim
 nvim-typescript: "typescript" source for typescript
 https://github.com/mhartington/nvim-typescript
 
-deoplete-clang: "clang" source for C/C++/ObjC
-https://github.com/zchee/deoplete-clang
-
-deoplete-clang2: "clang2" source for C/C++/ObjC
-It is faster than deoplete-clang
-https://github.com/tweekmonster/deoplete-clang2
-
 async-clj-omni: "async_clj" source for Clojure
 https://github.com/SevereOverfl0w/async-clj-omni
 
@@ -1580,21 +1573,9 @@ A: Please use |deoplete-options-auto_complete|. >
 
 Q: I want to use C/C++ omni completion with deoplete.
 
-A: You can use |clang_complete| or |deoplete-clang|.
+A: You should use |deoplete-clangx|.
 
-   https://github.com/Rip-Rip/clang_complete
-   https://github.com/zchee/deoplete-clang
-
-   For clang_complete configuration is below. >
-
-       let g:clang_complete_auto = 0
-       let g:clang_auto_select = 0
-       let g:clang_omnicppcomplete_compliance = 0
-       let g:clang_make_default_keymappings = 0
-       "let g:clang_use_library = 1
-<
-   Currently |clang_complete| supports the original deoplete source.
-   It is better than using omni source.
+   https://github.com/Shougo/deoplete-clangx
 
 Q: I want to use jedi-vim omni completion with deoplete.
 
