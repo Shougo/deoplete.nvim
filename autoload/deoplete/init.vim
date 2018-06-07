@@ -4,8 +4,8 @@
 " License: MIT license
 "=============================================================================
 
-if !exists('s:is_enabled')
-  let s:is_enabled = 0
+if !exists('s:is_handler_enabled')
+  let s:is_handler_enabled = 0
 endif
 
 let s:is_windows = ((has('win32') || has('win64')) ? v:true : v:false)
