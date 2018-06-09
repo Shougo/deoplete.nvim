@@ -22,6 +22,8 @@ class Filter(Base):
         complete_str = context['complete_str']
         if context['ignorecase']:
             complete_str = complete_str.lower()
+        if not complete_str:
+            return context['candidates']
 
         if context['is_sorted']:
             begin = binary_search_begin(

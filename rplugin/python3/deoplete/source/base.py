@@ -47,7 +47,7 @@ class Base(LoggingMixin):
         keyword_pattern = self.vim.call(
             'deoplete#util#get_keyword_pattern',
             context['filetype'], self.keyword_patterns)
-        m = re.search('(?:' + keyword_pattern + ')$', context['input'])
+        m = re.search('(?:' + keyword_pattern + ')$|$', context['input'])
         return m.start() if m else -1
 
     def print(self, expr):
