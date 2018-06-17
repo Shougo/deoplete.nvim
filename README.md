@@ -144,8 +144,3 @@ Deoplete for JavaScript
 ![C++ with cquery lang server](https://user-images.githubusercontent.com/1750795/38780762-7c74e51e-40a9-11e8-92f9-dee921555865.png)
 
 ![Rust using rls](https://user-images.githubusercontent.com/1750795/38780764-8524b0b8-40a9-11e8-91bc-6e4148c398a3.png)
-
-
-## Configuration samples
-
-[afnanenayet's config](https://gist.github.com/afnanenayet/8c2ee0fdabb8d1e292b788f9723673c5)
