@@ -24,6 +24,7 @@ class Source(Base):
         self.events = ['InsertEnter']
         self.vars = {
             'enable_buffer_path': False,
+            'force_completion_length': -1,
         }
 
         self._isfname = ''
@@ -35,13 +36,23 @@ class Source(Base):
 
     def get_complete_position(self, context):
         pos = context['input'].rfind('/')
+        if pos < 0 and self.vars['force_completion_length'] >= 0:
+            fmt = '[a-zA-Z0-9.-]{{{}}}$'.format(
+                self.vars['force_completion_length'])
+            m = re.search(fmt, context['input'])
+            if m:
+                return m.start()
         return pos if pos < 0 else pos + 1
 
     def gather_candidates(self, context):
         if not self._isfname:
             self.on_event(context)
 
-        p = self._longest_path_that_exists(context, context['input'])
+        input_str = (context['input']
+                     if context['input'].rfind('/') >= 0
+                     else './')
+
+        p = self._longest_path_that_exists(context, input_str)
         if p in (None, []) or p == '/' or re.search('//+$', p):
             return []
         complete_str = self._substitute_path(context, dirname(p) + '/')

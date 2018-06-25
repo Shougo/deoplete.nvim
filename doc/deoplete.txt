@@ -576,6 +576,12 @@ file							*deoplete-source-file*
 				directory.
 				(default: False)
 
+		force_completion_length
+				The completion length if the input does not
+				contain "/".
+				If it is less than 0, it is disabled.
+				(default: -1)
+
 member						*deoplete-source-member*
 		It collects members from current buffer.
 
