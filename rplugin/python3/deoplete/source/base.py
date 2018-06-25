@@ -65,9 +65,16 @@ class Base(LoggingMixin):
     def on_event(self, context):
         pass
 
-    def get_filetype_var(self, filetype, var_name):
-        # Todo: buffer custom vars support
+    def get_var(self, var_name):
+        custom_vars = self.vim.call(
+            'deoplete#custom#_get_source_vars', self.name)
+        if var_name in custom_vars:
+            return custom_vars[var_name]
+        if var_name in self.vars:
+            return self.vars[var_name]
+        return None
 
-        var = self.vars[var_name]
+    def get_filetype_var(self, filetype, var_name):
+        var = self.get_var(var_name)
         ft = filetype if (filetype in var) else '_'
         return var.get(ft, '')

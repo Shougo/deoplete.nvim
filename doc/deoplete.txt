@@ -351,6 +351,10 @@ deoplete#custom#buffer_option({option-name}, {value})
 deoplete#custom#buffer_option({dict})
 		The buffer local version of |deoplete#custom#option()|.
 
+					*deoplete#custom#buffer_var()*
+deoplete#custom#buffer_var({source-name}, {var-name}, {value})
+		The buffer local version of |deoplete#custom#var()|.
+
 						*deoplete#custom#option()*
 deoplete#custom#option({option-name}, {value})
 deoplete#custom#option({dict})

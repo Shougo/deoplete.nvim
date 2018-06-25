@@ -13,6 +13,7 @@ endfunction
 function! deoplete#custom#_init_buffer() abort
   let b:custom = {}
   let b:custom.option = {}
+  let b:custom.source_vars = {}
 endfunction
 
 function! deoplete#custom#_get() abort
@@ -30,7 +31,7 @@ function! deoplete#custom#_get_buffer() abort
   return b:custom
 endfunction
 
-function! deoplete#custom#_get_source_var(source_name) abort
+function! deoplete#custom#_get_source(source_name) abort
   let custom = deoplete#custom#_get().source
 
   if !has_key(custom, a:source_name)
@@ -55,6 +56,12 @@ function! deoplete#custom#_get_filetype_option(name, filetype, default) abort
   let filetype = has_key(option, a:filetype) ? a:filetype : '_'
   return get(option, filetype, a:default)
 endfunction
+function! deoplete#custom#_get_source_vars(name) abort
+  let global_vars = get(deoplete#custom#_get_source(a:name), 'vars', {})
+  let buffer_vars = get(deoplete#custom#_get_buffer().source_vars,
+        \ a:name, {})
+  return extend(copy(global_vars), buffer_vars)
+endfunction
 
 function! deoplete#custom#set(source_name, option_name, value) abort
   call deoplete#util#print_error(
@@ -70,17 +77,27 @@ function! deoplete#custom#source(source_name, option_name, value) abort
         \ ], a:option_name) < 0 ? a:value :
         \ deoplete#util#convert2list(a:value)
   for key in deoplete#util#split(a:source_name)
-    let custom_source = deoplete#custom#_get_source_var(key)
+    let custom_source = deoplete#custom#_get_source(key)
     let custom_source[a:option_name] = value
   endfor
 endfunction
 
 function! deoplete#custom#var(source_name, var_name, value) abort
   for key in deoplete#util#split(a:source_name)
-    let custom_source = deoplete#custom#_get_source_var(key)
+    let custom_source = deoplete#custom#_get_source(key)
     let vars = get(custom_source, 'vars', {})
     call s:set_value(vars, a:var_name, a:value)
     call deoplete#custom#source(key, 'vars', vars)
+  endfor
+endfunction
+function! deoplete#custom#buffer_var(source_name, var_name, value) abort
+  let custom = deoplete#custom#_get_buffer().source_vars
+  for key in deoplete#util#split(a:source_name)
+    if !has_key(custom, key)
+      let custom[key] = {}
+    endif
+    let vars = custom[key]
+    call s:set_value(vars, a:var_name, a:value)
   endfor
 endfunction
 

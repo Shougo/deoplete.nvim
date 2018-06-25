@@ -450,8 +450,7 @@ class Child(logger.LoggingMixin):
     def _set_source_attributes(self, context):
         """Set source attributes from the context.
 
-        Each item in `attrs` is the attribute name.  If the default value is in
-        context['vars'] under a different name, use a tuple.
+        Each item in `attrs` is the attribute name.
         """
         attrs = (
             'converters',
@@ -470,7 +469,6 @@ class Child(logger.LoggingMixin):
             'max_pattern_length',
             'min_pattern_length',
             'sorters',
-            'vars',
         )
 
         for name, source in self._get_sources().items():

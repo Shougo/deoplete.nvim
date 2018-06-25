@@ -36,18 +36,15 @@ class Source(Base):
 
     def get_complete_position(self, context):
         pos = context['input'].rfind('/')
-        if pos < 0 and self.vars['force_completion_length'] >= 0:
+        if pos < 0 and self.get_var('force_completion_length') >= 0:
             fmt = '[a-zA-Z0-9.-]{{{}}}$'.format(
-                self.vars['force_completion_length'])
+                self.get_var('force_completion_length'))
             m = re.search(fmt, context['input'])
             if m:
                 return m.start()
         return pos if pos < 0 else pos + 1
 
     def gather_candidates(self, context):
-        if not self._isfname:
-            self.on_event(context)
-
         input_str = (context['input']
                      if context['input'].rfind('/') >= 0
                      else './')
@@ -84,7 +81,7 @@ class Source(Base):
     def _substitute_path(self, context, path):
         m = re.match(r'(\.{1,2})/+', path)
         if m:
-            if self.vars['enable_buffer_path'] and context['bufpath']:
+            if self.get_var('enable_buffer_path') and context['bufpath']:
                 base = context['bufpath']
             else:
                 base = os.path.join(context['cwd'], 'x')

@@ -21,6 +21,15 @@ function! s:suite.custom_source() abort
   call deoplete#custom#source('buffer',
         \ 'min_pattern_length', 9999)
   call deoplete#custom#source('buffer', 'rank', 9999)
+
+  call deoplete#custom#var('file', 'force_completion_length', 2)
+  call s:assert.equals(
+        \ deoplete#custom#_get_source_vars('file'),
+        \ {'force_completion_length' : 2})
+  call deoplete#custom#buffer_var('file', 'force_completion_length', 0)
+  call s:assert.equals(
+        \ deoplete#custom#_get_source_vars('file'),
+        \ {'force_completion_length' : 0})
 endfunction
 
 function! s:suite.custom_option() abort

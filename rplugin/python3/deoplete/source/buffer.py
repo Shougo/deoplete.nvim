@@ -34,7 +34,7 @@ class Source(Base):
         self.on_event(context)
 
         tab_bufnrs = self.vim.call('tabpagebuflist')
-        same_filetype = self.vars['require_same_filetype']
+        same_filetype = self.get_var('require_same_filetype')
         return {'sorted_candidates': [
             x['candidates'] for x in self._buffers.values()
             if not same_filetype or
