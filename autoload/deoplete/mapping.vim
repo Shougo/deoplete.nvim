@@ -6,7 +6,12 @@
 
 function! deoplete#mapping#_init() abort
   " Note: The dummy function is needed for cpoptions bug in neovim
-  inoremap <expr><silent> <Plug>_ deoplete#mapping#_dummy_complete()
+  " inoremap <expr><silent> <Plug>_ deoplete#mapping#_dummy_complete(v:false)
+  inoremap <silent> <Plug>_ <C-r>=deoplete#mapping#_refresh()<CR>
+  inoremap <silent> <Plug>+ <C-r>=deoplete#mapping#_complete()<CR>
+
+  let s:prev_pos = -1
+  let s:prev_candidates = []
 endfunction
 
 function! deoplete#mapping#_completefunc(findstart, base) abort
@@ -16,14 +21,28 @@ function! deoplete#mapping#_completefunc(findstart, base) abort
     return g:deoplete#_context.candidates
   endif
 endfunction
-function! deoplete#mapping#_dummy_complete() abort
+function! deoplete#mapping#_dummy_complete(is_refresh) abort
   return (pumvisible() ? "\<C-e>" : '')
-        \ . "\<C-r>=deoplete#mapping#_complete()\<CR>"
+        \ . (a:is_refresh ? "\<C-r>=deoplete#mapping#_refresh()\<CR>"
+        \                 : "\<C-r>=deoplete#mapping#_complete()\<CR>")
 endfunction
 function! deoplete#mapping#_complete() abort
-  call complete(g:deoplete#_context.complete_position + 1,
-        \ g:deoplete#_context.candidates)
+  if s:prev_pos == g:deoplete#_context.complete_position + 1
+    call complete(s:prev_pos, s:prev_candidates)
+    call timer_start(15, {_ -> feedkeys("\<Plug>+", 'i')})
+  else
+    call deoplete#mapping#_refresh()
+  endif
 
+  return ''
+endfunction
+function! deoplete#mapping#_refresh() abort
+  let pos = g:deoplete#_context.complete_position + 1
+  let candidates = g:deoplete#_context.candidates
+  " let candidates = [strftime("%c")]
+  call complete(pos, candidates)
+  let s:prev_pos = pos
+  let s:prev_candidates = copy(candidates)
   return ''
 endfunction
 function! deoplete#mapping#_set_completeopt() abort

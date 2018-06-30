@@ -24,6 +24,8 @@ function! deoplete#handler#_init() abort
   endif
   if deoplete#custom#_get_option('refresh_always')
     call s:define_completion_via_timer('InsertCharPre')
+    " autocmd InsertCharPre * call feedkeys("\<Plug>_", 'i')
+  else
   endif
 
   " Note: Vim 8 GUI(MacVim and Win32) is broken
@@ -82,9 +84,13 @@ function! s:completion_timer_start(event) abort
     call s:completion_timer_stop()
   endif
 
-  let delay = max([20, deoplete#custom#_get_option('auto_complete_delay')])
-  let s:completion_timer = timer_start(
-        \ delay, {-> s:completion_begin(a:event)})
+  if deoplete#custom#_get_option('refresh_always')
+    call s:completion_begin(a:event)
+  else
+    let delay = max([20, deoplete#custom#_get_option('auto_complete_delay')])
+    let s:completion_timer = timer_start(
+          \ delay, {-> s:completion_begin(a:event)})
+  endif
 endfunction
 function! s:completion_timer_stop() abort
   if !exists('s:completion_timer')
