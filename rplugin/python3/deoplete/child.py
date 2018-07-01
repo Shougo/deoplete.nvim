@@ -438,10 +438,11 @@ class Child(logger.LoggingMixin):
             p = re.compile('(' + '|'.join(source.disabled_syntaxes) + ')$')
             if next(filter(p.search, context['syntax_names']), None):
                 return True
-        if (source.input_pattern != '' and
-                re.search('(' + source.input_pattern + ')$',
-                          context['input'])):
-            return False
+        for ft in context['filetypes']:
+            input_pattern = source.get_input_pattern(ft)
+            if (input_pattern != '' and
+                    re.search('(' + input_pattern + ')$', context['input'])):
+                return False
         if context['event'] == 'Manual':
             return False
         return not (source.min_pattern_length <=

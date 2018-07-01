@@ -844,6 +844,14 @@ input_pattern
 		Default: ''
 		Note: It means this feature is ignored.
 
+				*deoplete-source-attribute-input_patterns*
+input_patterns
+		(Dictionary)			(Optional)
+		The dictionary version of
+		|deoplete-source-attribute-input_pattern|.
+		The key is filetype and the value is input pattern.
+		Note: It is Python3 regexp.
+
 					*deoplete-source-attribute-is_bytepos*
 is_bytepos
 		(Bool)				(Optional)

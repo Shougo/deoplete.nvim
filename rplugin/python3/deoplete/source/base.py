@@ -19,6 +19,7 @@ class Base(LoggingMixin):
         self.max_pattern_length = 80
         self.min_pattern_length = -1
         self.input_pattern = ''
+        self.input_patterns = {}
         self.matchers = ['matcher_fuzzy']
         self.sorters = ['sorter_rank']
         self.converters = [
@@ -78,3 +79,10 @@ class Base(LoggingMixin):
         var = self.get_var(var_name)
         ft = filetype if (filetype in var) else '_'
         return var.get(ft, '')
+
+    def get_input_pattern(self, filetype):
+        if not self.input_patterns:
+            return self.input_pattern
+
+        ft = filetype if (filetype in self.input_patterns) else '_'
+        return self.input_patterns.get(ft, self.input_pattern)
