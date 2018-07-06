@@ -43,7 +43,7 @@ class Source(Base):
             prefixes = [context['complete_str']]
 
         for filename in self._get_tagfiles(context):
-            for prefix in [x for x in prefixes if prefix]:
+            for prefix in [x for x in prefixes if x]:
                 for line in binary_search_lines_by_prefix(prefix, filename):
                     candidate = self._make_candidate(line)
                     if candidate:
