@@ -16,6 +16,9 @@ class Filter(Base):
         self.description = 'rank sorter'
 
     def filter(self, context):
+        if not context['complete_str']:
+            return context['candidates']
+
         rank = context['vars']['deoplete#_rank']
         complete_str = context['complete_str'].lower()
         input_len = len(complete_str)

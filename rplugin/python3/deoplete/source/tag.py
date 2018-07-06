@@ -41,6 +41,8 @@ class Source(Base):
                 })
         else:
             prefixes = [context['complete_str']]
+        if not prefixes:
+            return []
 
         for filename in self._get_tagfiles(context):
             for prefix in prefixes:
