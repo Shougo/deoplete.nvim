@@ -41,11 +41,9 @@ class Source(Base):
                 })
         else:
             prefixes = [context['complete_str']]
-        if not prefixes:
-            return []
 
         for filename in self._get_tagfiles(context):
-            for prefix in prefixes:
+            for prefix in [x for x in prefixes if prefix]:
                 for line in binary_search_lines_by_prefix(prefix, filename):
                     candidate = self._make_candidate(line)
                     if candidate:
