@@ -8,7 +8,7 @@
 
 ## Environment Information
 
- * deoplete version(SHA1):
+ * deoplete version (SHA1):
 
  * OS:
 
@@ -29,7 +29,7 @@ let g:deoplete#enable_at_startup = 1
 ```
 
 
-## The reproduce ways from neovim/Vim starting (Required!)
+## How to reproduce the problem from neovim/Vim startup (Required!)
 
  1. foo
  2. bar
@@ -45,7 +45,7 @@ let g:deoplete#enable_at_startup = 1
  5. cat /tmp/log_{PID}
 
 
-## Screen shot (if possible)
+## Screenshot (if possible)
 
 
 ## Upload the log file
