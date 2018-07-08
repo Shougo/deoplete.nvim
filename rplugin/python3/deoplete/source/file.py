@@ -45,6 +45,9 @@ class Source(Base):
         return pos if pos < 0 else pos + 1
 
     def gather_candidates(self, context):
+        if not self._isfname:
+            self.on_event(context)
+
         input_str = (context['input']
                      if context['input'].rfind('/') >= 0
                      else './')
