@@ -224,6 +224,13 @@ on_insert_enter
 
 		Default value: v:true
 
+					*deoplete-options-on_text_changed_i*
+on_text_changed_i
+		Deoplete enables the auto completion on |TextChangedI| autocmd
+		if this value is True.
+
+		Default value: v:true
+
 						*deoplete-options-profile*
 profile
 		If it is True, deoplete will print the time information to

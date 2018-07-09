@@ -289,6 +289,7 @@ function! deoplete#init#_option() abort
         \  'xml': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],
         \ },
         \ 'on_insert_enter': v:true,
+        \ 'on_text_changed_i': v:true,
         \ 'profile': v:false,
         \ 'min_pattern_length': 2,
         \ 'refresh_always': v:false,
