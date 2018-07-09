@@ -69,7 +69,7 @@ function! deoplete#handler#_do_complete() abort
 
   let complete_method = deoplete#custom#_get_option('complete_method')
   if complete_method ==# 'complete'
-    call feedkeys("\<Plug>_", 'i')
+    call feedkeys("\<Plug>+", 'i')
   elseif complete_method ==# 'completefunc'
     let &l:completefunc = 'deoplete#mapping#_completefunc'
     call feedkeys("\<C-x>\<C-u>", 'in')
@@ -83,6 +83,8 @@ function! s:completion_timer_start(event) abort
   if exists('s:completion_timer')
     call s:completion_timer_stop()
   endif
+
+  call feedkeys("\<Plug>_", 'i')
 
   if deoplete#custom#_get_option('refresh_always')
     call s:completion_begin(a:event)
