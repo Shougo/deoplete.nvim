@@ -4,13 +4,13 @@
 # License: MIT license
 # ============================================================================
 
-from deoplete import logger
-from deoplete.parent import Parent
-from deoplete.util import error_tb, error
-
 import copy
 import glob
 import os
+
+import deoplete.parent
+from deoplete import logger
+from deoplete.util import error, error_tb
 
 
 class Deoplete(logger.LoggingMixin):
@@ -159,18 +159,21 @@ class Deoplete(logger.LoggingMixin):
 
         return (is_async, complete_position, all_candidates)
 
-    def _add_parent(self, context):
-        parent = Parent(self._vim, context)
+    def _add_parent(self, parent_cls):
+        parent = parent_cls(self._vim)
         if self._vim.vars['deoplete#_logging']:
             parent.enable_logging()
         self._parents.append(parent)
 
-    def _init_parents(self, context):
+    def _init_parents(self):
         if self._parents or self._max_parents <= 0:
             return
 
-        for n in range(0, self._max_parents):
-            self._add_parent(context)
+        if self._max_parents == 1:
+            self._add_parent(deoplete.parent.SingleParent)
+        else:
+            for n in range(0, self._max_parents):
+                self._add_parent(deoplete.parent.MultiParent)
 
     def _find_rplugins(self, source):
         """Search for base.py or *.py
@@ -192,7 +195,7 @@ class Deoplete(logger.LoggingMixin):
                 yield from glob.iglob(os.path.join(path, src))
 
     def _load_sources(self, context):
-        self._init_parents(context)
+        self._init_parents()
 
         for path in self._find_rplugins('source'):
             if path in self._loaded_paths:
@@ -200,8 +203,8 @@ class Deoplete(logger.LoggingMixin):
             self._loaded_paths.add(path)
 
             if self._max_parents <= 0:
-                # Add parent automatically
-                self._add_parent(context)
+                # Add parent automatically for num_processes=0.
+                self._add_parent(deoplete.parent.MultiParent)
 
             self._parents[self._parent_count].add_source(path)
             self.debug('Process %d: %s', self._parent_count, path)
