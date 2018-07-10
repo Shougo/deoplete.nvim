@@ -128,7 +128,7 @@ class Parent(logger.LoggingMixin):
             try:
                 while not self._queue_in.empty():
                     self._stdin.write(self._queue_in.get_nowait())
-            except BrokenPipeError as e:
+            except BrokenPipeError:
                 error_tb(self._vim, 'Crash in child process')
                 error(self._vim, 'stderr=' + str(self._proc.read_error()))
                 self._hnd = None
