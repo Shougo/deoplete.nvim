@@ -243,7 +243,6 @@ function! deoplete#init#_context(event, sources) abort
         \ 'max_abbr_width': max_width,
         \ 'max_kind_width': max_width,
         \ 'max_menu_width': max_width,
-        \ 'runtimepath': &runtimepath,
         \ 'bufnr': bufnr,
         \ 'bufname': bufname,
         \ 'bufpath': bufpath,

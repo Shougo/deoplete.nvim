@@ -6,9 +6,11 @@
 
 from deoplete import logger
 from deoplete.parent import Parent
-from deoplete.util import (error_tb, find_rplugins, error)
+from deoplete.util import error_tb, error
 
 import copy
+import glob
+import os
 
 
 class Deoplete(logger.LoggingMixin):
@@ -18,6 +20,7 @@ class Deoplete(logger.LoggingMixin):
 
         self._vim = vim
         self._runtimepath = ''
+        self._runtimepath_list = []
         self._custom = []
         self._loaded_paths = set()
         self._prev_merged_results = {}
@@ -165,11 +168,29 @@ class Deoplete(logger.LoggingMixin):
         for n in range(0, self._max_parents):
             self._add_parent(context)
 
+    def _find_rplugins(self, source):
+        """Search for base.py or *.py
+
+        Searches $VIMRUNTIME/*/rplugin/python3/deoplete/$source[s]/
+        """
+        if not self._runtimepath_list:
+            return
+
+        sources = (
+            os.path.join('rplugin/python3/deoplete', source, 'base.py'),
+            os.path.join('rplugin/python3/deoplete', source, '*.py'),
+            os.path.join('rplugin/python3/deoplete', source + 's', '*.py'),
+            os.path.join('rplugin/python3/deoplete', source, '*', '*.py'),
+        )
+
+        for src in sources:
+            for path in self._runtimepath_list:
+                yield from glob.iglob(os.path.join(path, src))
+
     def _load_sources(self, context):
         self._init_parents(context)
 
-        # Load sources from runtimepath
-        for path in find_rplugins(context, 'source'):
+        for path in self._find_rplugins('source'):
             if path in self._loaded_paths:
                 continue
             self._loaded_paths.add(path)
@@ -188,8 +209,7 @@ class Deoplete(logger.LoggingMixin):
         self._set_source_attributes(context)
 
     def _load_filters(self, context):
-        # Load filters from runtimepath
-        for path in find_rplugins(context, 'filter'):
+        for path in self._find_rplugins('filter'):
             for parent in self._parents:
                 parent.add_filter(path)
 
@@ -198,8 +218,10 @@ class Deoplete(logger.LoggingMixin):
             parent.set_source_attributes(context)
 
     def _check_recache(self, context):
-        if context['runtimepath'] != self._runtimepath:
-            self._runtimepath = context['runtimepath']
+        runtimepath = self._vim.options['runtimepath']
+        if runtimepath != self._runtimepath:
+            self._runtimepath = runtimepath
+            self._runtimepath_list = runtimepath.split(',')
             self._load_sources(context)
             self._load_filters(context)
 

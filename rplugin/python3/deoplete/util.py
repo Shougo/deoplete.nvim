@@ -35,27 +35,6 @@ def globruntime(runtimepath, path):
     return ret
 
 
-def find_rplugins(context, source):
-    """Search for base.py or *.py
-
-    Searches $VIMRUNTIME/*/rplugin/python3/deoplete/$source[s]/
-    """
-    rtp = context.get('runtimepath', '').split(',')
-    if not rtp:
-        return
-
-    sources = (
-        os.path.join('rplugin/python3/deoplete', source, 'base.py'),
-        os.path.join('rplugin/python3/deoplete', source, '*.py'),
-        os.path.join('rplugin/python3/deoplete', source + 's', '*.py'),
-        os.path.join('rplugin/python3/deoplete', source, '*', '*.py'),
-    )
-
-    for src in sources:
-        for path in rtp:
-            yield from glob.iglob(os.path.join(path, src))
-
-
 def import_plugin(path, source, classname):
     """Import Deoplete plugin source class.
 
