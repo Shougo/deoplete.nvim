@@ -30,7 +30,7 @@ def convert2candidates(l):
 
 def globruntime(runtimepath, path):
     ret = []
-    for rtp in re.split(',', runtimepath):
+    for rtp in runtimepath.split(','):
         ret += glob.glob(rtp + '/' + path)
     return ret
 
