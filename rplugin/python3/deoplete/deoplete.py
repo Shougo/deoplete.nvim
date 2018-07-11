@@ -229,3 +229,4 @@ class Deoplete(logger.LoggingMixin):
                 self.on_event(context)
         elif context['custom'] != self._custom:
             self._set_source_attributes(context)
+            self._custom = context['custom']
