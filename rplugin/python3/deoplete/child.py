@@ -56,19 +56,15 @@ class Child(logger.LoggingMixin):
                 return
 
             self._unpacker.feed(feed)
-            self.debug('_read: %d bytes', len(feed))
 
             for child_in in self._unpacker:
                 name = child_in['name']
                 args = child_in['args']
                 queue_id = child_in['queue_id']
-                self.debug('main_loop: %s begin', name)
 
                 ret = self.main(name, args, queue_id)
                 if ret:
                     self._write(stdout, ret)
-
-                self.debug('main_loop: end')
 
     def main(self, name, args, queue_id):
         ret = None
@@ -147,7 +143,6 @@ class Child(logger.LoggingMixin):
                 self.debug('Loaded Filter: %s (%s)', f.name, path)
 
     def _merge_results(self, context, queue_id):
-        self.debug('merged_results: begin')
         results = self._gather_results(context)
 
         merged_results = []
@@ -167,7 +162,6 @@ class Child(logger.LoggingMixin):
 
         is_async = len([x for x in results if x['is_async']]) > 0
 
-        self.debug('merged_results: end')
         return {
             'queue_id': queue_id,
             'is_async': is_async,
@@ -492,15 +486,15 @@ class Child(logger.LoggingMixin):
                 source.is_volatile = bool(source.filetypes)
 
     def _on_event(self, context):
+        event = context['event']
         for source_name, source in self._itersource(context):
-            if source.events is None or context['event'] in source.events:
-                self.debug('on_event: Source: %s', source_name)
+            if source.events is None or event in source.events:
                 try:
                     source.on_event(context)
                 except Exception as exc:
                     error_tb(self._vim, 'Exception during {}.on_event '
                              'for event {!r}: {}'.format(
-                                 source_name, context['event'], exc))
+                                 source_name, event, exc))
 
     def _get_sources(self):
         # Note: for the size change of "self._sources" error
