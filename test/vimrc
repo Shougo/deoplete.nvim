@@ -1,0 +1,4 @@
+" vimrc for tests, used by the nvim client fixture.
+
+let script_dir = fnamemodify(expand('<sfile>'), ':h:h')
+let &runtimepath = script_dir.','.&runtimepath.','.script_dir.'/after'
