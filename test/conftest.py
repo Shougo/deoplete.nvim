@@ -12,15 +12,20 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'rplugin/python3'))
 
 @pytest.fixture
 def neovim_logger():
-    """Get Neovim's logger."""
+    """Enable Neovim's logger."""
 
     # TODO: logger/formatter should be set in neovim.logger/neovim.formatter
     # already.
     logger = logging.getLogger('neovim')
-    handler = logging.StreamHandler()
-    handler.formatter = logging.Formatter(
-        '%(asctime)s [%(levelname)s @ '
-        '%(filename)s:%(funcName)s:%(lineno)s] %(process)s - %(message)s')
+
+    # Use NullHandler, since pytest captures the logging already.
+    # StreamHandler might be useful when it gets mixed with output to stderr
+    # itself.
+    handler = logging.NullHandler()
+    # handler = logging.StreamHandler()
+    # handler.formatter = logging.Formatter(
+    #     '%(asctime)s [%(levelname)s @ '
+    #     '%(filename)s:%(funcName)s:%(lineno)s] %(process)s - %(message)s')
 
     logging.root.addHandler(handler)
     logger.setLevel(logging.DEBUG)

@@ -6,23 +6,25 @@ import pytest
 from neovim.api.nvim import Nvim
 
 
-def wait_until(f, timeout=1):
+def wait_until(f, timeout=1, interval=0.5):
     # Hide this frame in pytest errors.
     __tracebackhide__ = True
 
-    interval = 0.01
+    tries = 0
     start = time.time()
     while not f():
+        tries = tries + 1
         duration = time.time() - start
         if duration > timeout:
-            pytest.fail('condition was not True after %.2fs' % (duration,))
+            pytest.fail('condition was not True after %.2fs (%d tries)' % (
+                duration, tries))
         time.sleep(interval)
     return True
 
 
 def test_bug(nvim: Nvim,
              request: _pytest.fixtures.FixtureRequest,
-             # , neovim_logger: logging.Logger
+             neovim_logger: logging.Logger,
              ):
     force_normal = nvim.replace_termcodes(r'<C-\><C-n>')
     nvim.feedkeys(force_normal)
