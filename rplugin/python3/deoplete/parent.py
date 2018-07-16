@@ -18,28 +18,15 @@ from deoplete.util import error_tb, error
 dp_main = os.path.join(os.path.dirname(__file__), 'dp_main.py')
 
 
-class Parent(logger.LoggingMixin):
-
-    def __init__(self, vim, context):
+class _Parent(logger.LoggingMixin):
+    def __init__(self, vim):
         self.name = 'parent'
 
         self._vim = vim
-        self._hnd = None
-        self._stdin = None
-        self._child = None
-        self._queue_id = ''
         self._loaded_filters = set()
         self._prev_pos = []
-        self._queue_in = Queue()
-        self._queue_out = Queue()
-        self._packer = msgpack.Packer(
-            use_bin_type=True,
-            encoding='utf-8',
-            unicode_errors='surrogateescape')
-        self._unpacker = msgpack.Unpacker(
-            encoding='utf-8',
-            unicode_errors='surrogateescape')
-        self._start_process(context)
+
+        self._start_process()
 
     def enable_logging(self):
         self._put('enable_logging', [])
@@ -61,64 +48,81 @@ class Parent(logger.LoggingMixin):
     def set_custom(self, custom):
         self._put('set_custom', [custom])
 
-    def merge_results(self, context):
-        if self._child:
-            results = self._put('merge_results', [context])
-        else:
-            if context['position'] == self._prev_pos and self._queue_id:
-                # Use previous id
-                queue_id = self._queue_id
-            else:
-                queue_id = self._put('merge_results', [context])
-                if not queue_id:
-                    return (False, [])
-
-            get = self._get(queue_id)
-            if not get:
-                # Skip the next merge_results
-                self._queue_id = queue_id
-                self._prev_pos = context['position']
-                return (True, [])
-            self._queue_id = ''
-            results = get[0]
-        return (results['is_async'],
-                results['merged_results']) if results else (False, [])
-
     def on_event(self, context):
         self._put('on_event', [context])
 
-    def _start_process(self, context):
-        num_processes = self._vim.call('deoplete#custom#_get_option',
-                                       'num_processes')
-        if num_processes != 1:
-            # Parallel
 
-            startupinfo = None
-            if os.name == 'nt':
-                startupinfo = subprocess.STARTUPINFO()
-                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+class SingleParent(_Parent):
+    def _start_process(self):
+        from deoplete.child import Child
+        self._child = Child(self._vim)
 
-            self._hnd = self._vim.loop.create_task(
-                self._vim.loop.subprocess_exec(
-                    partial(Process, self),
-                    self._vim.vars.get('python3_host_prog', 'python3'),
-                    dp_main,
-                    self._vim.vars['deoplete#_serveraddr'],
-                    stderr=None, cwd=context['cwd'], startupinfo=startupinfo))
-        else:
-            # Serial
-            from deoplete.child import Child
-            self._child = Child(self._vim)
+    def merge_results(self, context):
+        results = self._child._merge_results(context, queue_id=None)
+        return (results['is_async'],
+                results['merged_results']) if results else (False, [])
 
     def _put(self, name, args):
-        queue_id = str(time.time())
+        self._child.main(name, args, queue_id=None)
 
-        if self._child:
-            return self._child.main(name, args, queue_id)
 
+class MultiParent(_Parent):
+    def _start_process(self):
+        self._stdin = None
+        self._queue_id = ''
+        self._queue_in = Queue()
+        self._queue_out = Queue()
+        self._packer = msgpack.Packer(
+            use_bin_type=True,
+            encoding='utf-8',
+            unicode_errors='surrogateescape')
+        self._unpacker = msgpack.Unpacker(
+            encoding='utf-8',
+            unicode_errors='surrogateescape')
+
+        startupinfo = None
+        if os.name == 'nt':
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+
+        self._hnd = self._vim.loop.create_task(
+            self._vim.loop.subprocess_exec(
+                partial(Process, self),
+                self._vim.vars.get('python3_host_prog', 'python3'),
+                dp_main,
+                self._vim.vars['deoplete#_serveraddr'],
+                stderr=None,
+                startupinfo=startupinfo))
+
+    def _connect_stdin(self, stdin):
+        self._stdin = stdin
+        return self._unpacker
+
+    def merge_results(self, context):
+        if context['position'] == self._prev_pos and self._queue_id:
+            # Use previous id
+            queue_id = self._queue_id
+        else:
+            queue_id = self._put('merge_results', [context])
+            if not queue_id:
+                return (False, [])
+
+        get = self._get(queue_id)
+        if not get:
+            # Skip the next merge_results
+            self._queue_id = queue_id
+            self._prev_pos = context['position']
+            return (True, [])
+        self._queue_id = ''
+        results = get[0]
+        return (results['is_async'],
+                results['merged_results']) if results else (False, [])
+
+    def _put(self, name, args):
         if not self._hnd:
             return None
 
+        queue_id = str(time.time())
         msg = self._packer.pack({
             'name': name, 'args': args, 'queue_id': queue_id
         })
@@ -128,7 +132,7 @@ class Parent(logger.LoggingMixin):
             try:
                 while not self._queue_in.empty():
                     self._stdin.write(self._queue_in.get_nowait())
-            except BrokenPipeError as e:
+            except BrokenPipeError:
                 error_tb(self._vim, 'Crash in child process')
                 error(self._vim, 'stderr=' + str(self._proc.read_error()))
                 self._hnd = None

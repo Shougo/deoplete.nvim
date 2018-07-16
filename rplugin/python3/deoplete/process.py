@@ -14,10 +14,11 @@ class Process(asyncio.SubprocessProtocol):
         self._vim = plugin._vim
 
     def connection_made(self, transport):
-        self._plugin._stdin = transport.get_pipe_transport(0)
+        self._unpacker = self._plugin._connect_stdin(
+            transport.get_pipe_transport(0))
 
     def pipe_data_received(self, fd, data):
-        unpacker = self._plugin._unpacker
+        unpacker = self._unpacker
         unpacker.feed(data)
         for child_out in unpacker:
             self._plugin._queue_out.put(child_out)
