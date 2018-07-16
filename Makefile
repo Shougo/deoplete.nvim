@@ -10,6 +10,7 @@ install: vim-themis
 	pip install flake8 --upgrade
 	pip install mypy --upgrade
 	pip install vim-vint --upgrade
+	pip install pytest-cov --upgrade
 
 lint:
 	vint --version

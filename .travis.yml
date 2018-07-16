@@ -13,6 +13,13 @@ install:
     - curl -sL https://gist.githubusercontent.com/lambdalisue/0f461f6a91743895394e63a9a1c65232/raw/install_nvim_for_ci.sh | bash
     - make install
 
+env:
+  global:
+    - PATH=$HOME/neovim/bin:$PATH
+    - PYTEST_ADDOPTS=--cov -rplugin/python3/deoplete
+
 script:
-    - PATH="$HOME/neovim/bin:$PATH" make test
-    - make lint
+    - make --keep-going test lint
+    - coverage report -m --skip-covered
+    - coverage xml
+    - bash <(curl -s https://codecov.io/bash) -X gcov -X coveragepy -X fix -X search -X xcode -f coverage.xml
