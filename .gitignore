@@ -4,3 +4,6 @@ vim-themis
 .cache
 .mypy_cache
 tags
+.coverage
+.coverage.*
+coverage.xml

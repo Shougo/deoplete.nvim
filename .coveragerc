@@ -1,0 +1,6 @@
+[run]
+source = .
+branch = true
+
+[report]
+include = rplugin/python3/deoplete/*,test/*
