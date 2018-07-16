@@ -342,9 +342,9 @@ deoplete#initialize()
 		initialization of deoplete.
 
 						*deoplete#send_event()*
-deoplete#send_event({event})
+deoplete#send_event({event}, [{sources}])
 		Call |deoplete-source-attribute-on_event| manually.
-		{event} is event name.
+		{event} is event name.  {sources} are sources list.
 
 							*deoplete#toggle()*
 deoplete#toggle()
