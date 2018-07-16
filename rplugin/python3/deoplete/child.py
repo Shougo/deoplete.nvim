@@ -148,12 +148,12 @@ class Child(logger.LoggingMixin):
         merged_results = []
         for result in [x for x in results
                        if not self._is_skip(x['context'], x['source'])]:
-            if self._update_result(result,
-                                   context['input'], context['next_input']):
+            candidates = self._get_candidates(
+                result, context['input'], context['next_input'])
+            if candidates:
                 rank = get_custom(context['custom'],
                                   result['source'].name, 'rank',
                                   result['source'].rank)
-                candidates = result['candidates']
                 merged_results.append({
                     'complete_position': result['complete_position'],
                     'candidates': candidates,
@@ -293,7 +293,7 @@ class Child(logger.LoggingMixin):
         except Exception:
             error_tb(self._vim, 'Errors from: %s' % f)
 
-    def _update_result(self, result, context_input, next_input):
+    def _get_candidates(self, result, context_input, next_input):
         source = result['source']
 
         # Gather async results
@@ -361,8 +361,7 @@ class Child(logger.LoggingMixin):
             # Remove duplicates
             ctx['candidates'] = uniq_list_dict(ctx['candidates'])
 
-        result['candidates'] = ctx['candidates']
-        return result if result['candidates'] else None
+        return ctx['candidates']
 
     def _itersource(self, context):
         filetypes = context['filetypes']
