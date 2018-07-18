@@ -4,14 +4,12 @@ dist: trusty
 language: python
 
 python:
-    - 3.5
-    - 3.6
+  - 3.5
+  - 3.6
 
 install:
-    # Install Neovim via Gist
-    # https://gist.github.com/lambdalisue/0f461f6a91743895394e63a9a1c65232
-    - curl -sL https://gist.githubusercontent.com/lambdalisue/0f461f6a91743895394e63a9a1c65232/raw/install_nvim_for_ci.sh | bash
-    - make install
+  - eval "$(curl -Ss https://raw.githubusercontent.com/neovim/bot-ci/master/scripts/travis-setup.sh) nightly-x64"
+  - make install
 
 env:
   global:
@@ -19,7 +17,7 @@ env:
     - PYTEST_ADDOPTS=--cov -rplugin/python3/deoplete
 
 script:
-    - make --keep-going test lint
-    - coverage report -m --skip-covered
-    - coverage xml
-    - bash <(curl -s https://codecov.io/bash) -X gcov -X coveragepy -X fix -X search -X xcode -f coverage.xml
+  - make --keep-going test lint
+  - coverage report -m --skip-covered
+  - coverage xml
+  - bash <(curl -s https://codecov.io/bash) -X gcov -X coveragepy -X fix -X search -X xcode -f coverage.xml
