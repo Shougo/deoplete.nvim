@@ -5,9 +5,13 @@
 "=============================================================================
 
 function! deoplete#mapping#_init() abort
-  inoremap <expr><silent> <Plug>_ "\<C-r>=deoplete#mapping#_complete()\<CR>"
+  " Note: The dummy function is needed for cpoptions bug in neovim
+  inoremap <expr><silent> <Plug>_ deoplete#mapping#_dummy_complete()
 endfunction
 
+function! deoplete#mapping#_dummy_complete() abort
+  return "\<C-r>=deoplete#mapping#_complete()\<CR>"
+endfunction
 function! deoplete#mapping#_completefunc(findstart, base) abort
   if a:findstart
     return g:deoplete#_context.complete_position
