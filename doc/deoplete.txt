@@ -246,7 +246,7 @@ refresh_always
 		is True.
 		Note: It increases the screen flicker.
 
-		Default value: v:false
+		Default value: v:true
 
 						*deoplete-options-skip_chars*
 skip_chars

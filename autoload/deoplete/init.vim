@@ -291,10 +291,11 @@ function! deoplete#init#_option() abort
         \ 'on_text_changed_i': v:true,
         \ 'profile': v:false,
         \ 'min_pattern_length': 2,
-        \ 'refresh_always': v:false,
+        \ 'refresh_always': v:true,
         \ 'skip_chars': ['(', ')'],
         \ 'smart_case': &smartcase,
         \ 'sources': {},
+        \ 'trigger_key': v:char,
         \ 'yarp': v:false,
         \ }
 endfunction
