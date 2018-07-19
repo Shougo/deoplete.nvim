@@ -20,7 +20,6 @@ Here are some [completion sources](https://github.com/Shougo/deoplete.nvim/wiki/
   - [Requirements](#requirements)
 - [Configuration](#configuration)
 - [Screenshots](#screenshots)
-- [Configuration samples](#configuration-samples)
 
 <!-- vim-markdown-toc -->
 
