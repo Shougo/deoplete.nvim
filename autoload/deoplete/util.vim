@@ -56,10 +56,10 @@ function! deoplete#util#get_prev_event() abort
 endfunction
 
 function! deoplete#util#vimoption2python(option) abort
-  return '[a-zA-Z' . s:vimoption2python(a:option) . ']'
+  return '[\w' . s:vimoption2python(a:option) . ']'
 endfunction
 function! deoplete#util#vimoption2python_not(option) abort
-  return '[^a-zA-Z' . s:vimoption2python(a:option) . ']'
+  return '[^\w' . s:vimoption2python(a:option) . ']'
 endfunction
 function! s:vimoption2python(option) abort
   let has_dash = 0
