@@ -26,6 +26,7 @@ class Source(Base):
         self._max_lines = 5000
 
     def on_event(self, context):
+        self._clean_cache()
         self._make_cache(context)
 
     def gather_candidates(self, context):
@@ -38,6 +39,12 @@ class Source(Base):
             x['filetype'] in context['same_filetypes'] or
             x['bufnr'] in tab_bufnrs
         ]}
+
+    def _clean_cache(self):
+        self._buffers = {
+            k: v for k, v in self._buffers.items()
+            if self.vim.call('bufloaded', self.vim.buffers[v['bufnr']])
+        }
 
     def _make_cache(self, context):
         # Bufsize check
