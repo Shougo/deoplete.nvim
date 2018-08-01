@@ -222,7 +222,8 @@ function! s:define_on_event(event) abort
   endif
 
   execute 'autocmd deoplete' a:event
-        \ '* call deoplete#send_event('.string(a:event).')'
+        \ '* if !&l:previewwindow | call deoplete#send_event('
+        \ .string(a:event).') | endif'
 endfunction
 function! s:define_completion_via_timer(event) abort
   if !exists('##' . a:event)
