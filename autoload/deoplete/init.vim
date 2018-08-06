@@ -212,11 +212,7 @@ function! deoplete#init#_context(event, sources) abort
   let width = winwidth(0) - col('.') + len(matchstr(input, '\w*$'))
   let max_width = (width * 2 / 3)
 
-  if a:event ==# 'BufNew'
-    let bufnr = expand('<abuf>')
-  else
-    let bufnr = bufnr('%')
-  endif
+  let bufnr = expand('<abuf>') !=# '' ? expand('<abuf>') : bufnr('%')
   let bufname = bufname(bufnr)
   let bufpath = fnamemodify(bufname, ':p')
   if !filereadable(bufpath) || getbufvar(bufnr, '&buftype') =~# 'nofile'

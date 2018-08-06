@@ -16,7 +16,7 @@ class Source(Base):
 
         self.name = 'buffer'
         self.mark = '[B]'
-        self.events = ['BufReadPost', 'BufWritePost']
+        self.events = ['Init', 'BufReadPost', 'BufWritePost', 'BufDelete']
         self.vars = {
             'require_same_filetype': True,
         }
@@ -26,7 +26,12 @@ class Source(Base):
         self._max_lines = 5000
 
     def on_event(self, context):
-        self._make_cache(context)
+        if context['event'] == 'BufDelete':
+            # Remove deleted buffer cache
+            if context['bufnr'] in self._buffers:
+                self._buffers.pop(context['bufnr'])
+        else:
+            self._make_cache(context)
 
     def gather_candidates(self, context):
         tab_bufnrs = self.vim.call('tabpagebuflist')
