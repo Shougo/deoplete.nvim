@@ -15,14 +15,6 @@ function! deoplete#init#_is_handler_enabled() abort
 endfunction
 
 function! deoplete#init#_initialize() abort
-  if has('vim_starting')
-    augroup deoplete
-      autocmd!
-      autocmd VimEnter * call deoplete#enable()
-    augroup END
-    return 1
-  endif
-
   if exists('g:deoplete#_initialized')
     return 1
   endif
