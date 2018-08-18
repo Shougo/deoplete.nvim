@@ -199,13 +199,10 @@ function! deoplete#util#get_keyword_pattern(filetype, keyword_patterns) abort
 endfunction
 
 function! deoplete#util#rpcnotify(event, context) abort
-  if deoplete#init#_channel_initialized()
-    call s:notify(a:event, a:context)
+  if !deoplete#init#_channel_initialized()
+    return ''
   endif
-  return ''
-endfunction
 
-function! s:notify(event, context) abort
   let a:context['rpc'] = a:event
 
   if deoplete#util#has_yarp()
