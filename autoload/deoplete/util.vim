@@ -207,12 +207,14 @@ function! deoplete#util#rpcnotify(event, context) abort
 
   if deoplete#util#has_yarp()
     if g:deoplete#_yarp.job_is_dead
-      return
+      return ''
     endif
     call g:deoplete#_yarp.notify(a:event, a:context)
   else
     call rpcnotify(g:deoplete#_channel_id, a:event, a:context)
   endif
+
+  return ''
 endfunction
 
 " Compare versions.  Return values is the distance between versions.  Each
