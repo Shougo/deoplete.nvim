@@ -65,6 +65,11 @@ function! s:vimoption2python(option) abort
   let has_dash = 0
   let patterns = []
   for pattern in split(a:option, ',')
+    if pattern =~# '\d\+'
+      let pattern = substitute(pattern, '\d\+',
+            \ '\=nr2char(submatch(0))', 'g')
+    endif
+
     if pattern ==# ''
       " ,
       call add(patterns, ',')
@@ -72,9 +77,6 @@ function! s:vimoption2python(option) abort
       call add(patterns, '\\')
     elseif pattern ==# '-'
       let has_dash = 1
-    elseif pattern =~# '\d\+'
-      call add(patterns, substitute(pattern, '\d\+',
-            \ '\=nr2char(submatch(0))', 'g'))
     else
       call add(patterns, pattern)
     endif

@@ -24,4 +24,7 @@ function! s:suite.vimoption2python() abort
         \ deoplete#util#versioncmp('2.0.1', '1.3.5'), 9696)
   call s:assert.equals(
         \ deoplete#util#versioncmp('3.2.1', '0.0.0'), 30201)
+  call s:assert.equals(
+        \ deoplete#util#vimoption2python('45,48-57,65-90,95,97-122'),
+        \ '[\w0-9A-Z_a-z-]')
 endfunction
