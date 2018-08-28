@@ -24,8 +24,16 @@ def convert2list(expr):
 
 
 def convert2candidates(l):
-    return ([{'word': x} for x in l]
-            if l and isinstance(l, list) and isinstance(l[0], str) else l)
+    ret = []
+    if l and isinstance(l, list):
+        for x in l:
+            if isinstance(x, str):
+                ret.append({'word': x})
+            else:
+                ret.append(x)
+    else:
+        ret = l
+    return ret
 
 
 def globruntime(runtimepath, path):
