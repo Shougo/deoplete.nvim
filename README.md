@@ -145,3 +145,5 @@ Deoplete for JavaScript
 ![C++ with cquery lang server](https://user-images.githubusercontent.com/1750795/38780762-7c74e51e-40a9-11e8-92f9-dee921555865.png)
 
 ![Rust using rls](https://user-images.githubusercontent.com/1750795/38780764-8524b0b8-40a9-11e8-91bc-6e4148c398a3.png)
+
+![Ruby dictionary completion](https://user-images.githubusercontent.com/1314340/44786516-5bb57a00-abcf-11e8-8687-492fa5f9f905.gif)
