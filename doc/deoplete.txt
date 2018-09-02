@@ -584,7 +584,7 @@ file							*deoplete-source-file*
 				If it is True, file source completes the files
 				from the buffer path instead of the current
 				directory.
-				(default: False)
+				(default: True)
 
 		force_completion_length
 				The completion length if the input does not

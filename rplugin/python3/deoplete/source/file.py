@@ -23,7 +23,7 @@ class Source(Base):
         self.rank = 150
         self.events = ['InsertEnter']
         self.vars = {
-            'enable_buffer_path': False,
+            'enable_buffer_path': True,
             'force_completion_length': -1,
         }
 
