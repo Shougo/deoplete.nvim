@@ -23,7 +23,7 @@ class Deoplete(logger.LoggingMixin):
         self._runtimepath_list = []
         self._custom = []
         self._loaded_paths = set()
-        self._prev_merged_results = {}
+        self._prev_results = {}
         self._prev_input = ''
         self._prev_next_input = ''
 
@@ -109,38 +109,40 @@ class Deoplete(logger.LoggingMixin):
         for parent in self._parents:
             parent.on_event(context)
 
+    def _get_results(self, context, use_prev):
+        is_async = False
+        results = []
+        for cnt, parent in enumerate(self._parents):
+            if use_prev and cnt in self._prev_results:
+                # Use previous result
+                results += copy.deepcopy(self._prev_results[cnt])
+            else:
+                result = parent.merge_results(context)
+                is_async = is_async or result[0]
+                if not result[0]:
+                    self._prev_results[cnt] = result[1]
+                results += result[1]
+        return [is_async, results]
+
     def _merge_results(self, context):
         use_prev = (context['input'] == self._prev_input
                     and context['next_input'] == self._prev_next_input
                     and context['event'] != 'Manual')
         if not use_prev:
-            self._prev_merged_results = {}
+            self._prev_results = {}
 
-        is_async = False
-        merged_results = []
-        for cnt, parent in enumerate(self._parents):
-            if use_prev and cnt in self._prev_merged_results:
-                # Use previous result
-                merged_results += copy.deepcopy(
-                    self._prev_merged_results[cnt])
-            else:
-                result = parent.merge_results(context)
-                is_async = is_async or result[0]
-                if not result[0]:
-                    self._prev_merged_results[cnt] = result[1]
-                merged_results += result[1]
         self._prev_input = context['input']
         self._prev_next_input = context['next_input']
 
-        if not merged_results:
+        [is_async, results] = self._get_results(context, use_prev)
+
+        if not results:
             return (is_async, -1, [])
 
-        complete_position = min(x['complete_position']
-                                for x in merged_results)
+        complete_position = min(x['complete_position'] for x in results)
 
         all_candidates = []
-        for result in sorted(merged_results,
-                             key=lambda x: x['rank'], reverse=True):
+        for result in sorted(results, key=lambda x: x['rank'], reverse=True):
             candidates = result['candidates']
             prefix = context['input'][
                 complete_position:result['complete_position']]
