@@ -100,6 +100,12 @@ For example:
 
 The set of available options follows.
 
+					*deoplete-options-async_timeout*
+async_timeout
+		The timeout of asynchronous completion.
+
+		Default: 100
+
 					*deoplete-options-auto_complete*
 auto_complete
 		If it is False, automatic completion becomes invalid, but can

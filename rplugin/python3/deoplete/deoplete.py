@@ -7,6 +7,7 @@
 import copy
 import glob
 import os
+import time
 
 import deoplete.parent
 from deoplete import logger
@@ -134,7 +135,14 @@ class Deoplete(logger.LoggingMixin):
         self._prev_input = context['input']
         self._prev_next_input = context['next_input']
 
-        [is_async, results] = self._get_results(context, use_prev)
+        start = time.time()
+        timeout = int(self._vim.call('deoplete#custom#_get_option',
+                                     'async_timeout')) / 1000.0
+        while 1:
+            [is_async, results] = self._get_results(context, use_prev)
+            if not is_async or (time.time() - start > timeout):
+                break
+            time.sleep(0.01)
 
         if not results:
             return (is_async, -1, [])
