@@ -110,11 +110,11 @@ class Deoplete(logger.LoggingMixin):
         for parent in self._parents:
             parent.on_event(context)
 
-    def _get_results(self, context, use_prev):
+    def _get_results(self, context):
         is_async = False
         results = []
         for cnt, parent in enumerate(self._parents):
-            if use_prev and cnt in self._prev_results:
+            if cnt in self._prev_results:
                 # Use previous result
                 results += copy.deepcopy(self._prev_results[cnt])
             else:
@@ -139,7 +139,7 @@ class Deoplete(logger.LoggingMixin):
         timeout = int(self._vim.call('deoplete#custom#_get_option',
                                      'async_timeout')) / 1000.0
         while 1:
-            [is_async, results] = self._get_results(context, use_prev)
+            [is_async, results] = self._get_results(context)
             if not is_async or (time.time() - start > timeout):
                 break
             time.sleep(0.01)
