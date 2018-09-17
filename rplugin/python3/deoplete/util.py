@@ -102,12 +102,12 @@ def escape(expr):
     return expr.replace("'", "''")
 
 
-def charpos2bytepos(encoding, input, pos):
-    return len(bytes(input[: pos], encoding, errors='replace'))
+def charpos2bytepos(encoding, text, pos):
+    return len(bytes(text[: pos], encoding, errors='replace'))
 
 
-def bytepos2charpos(encoding, input, pos):
-    return len(bytes(input, encoding, errors='replace')[: pos].decode(
+def bytepos2charpos(encoding, text, pos):
+    return len(bytes(text, encoding, errors='replace')[: pos].decode(
         encoding, errors='replace'))
 
 
