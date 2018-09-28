@@ -99,7 +99,7 @@ you should read `:help provider-python` and the Wiki.
 let g:deoplete#enable_at_startup = 1
 ```
 
-See `:help deoplete-options` for a complete list of options.
+See `:help deoplete-variables` for a complete list of options.
 
 ## Screenshots
 
