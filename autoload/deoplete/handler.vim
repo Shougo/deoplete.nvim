@@ -272,6 +272,10 @@ function! s:is_exiting() abort
 endfunction
 
 function! s:kill_yarp() abort
+  if !exists('g:deoplete#_yarp')
+    return
+  endif
+
   if g:deoplete#_yarp.job_is_dead
     return
   endif
