@@ -313,8 +313,11 @@ class Child(logger.LoggingMixin):
 
         # Set ignorecase
         case = ctx['smartcase'] or ctx['camelcase']
-        if case and re.search(r'[A-Z]', ctx['complete_str']):
-            ctx['ignorecase'] = False
+        if case:
+            if re.search(r'[A-Z]', ctx['complete_str']):
+                ctx['ignorecase'] = False
+            else:
+                ctx['ignorecase'] = True
         ignorecase = ctx['ignorecase']
 
         # Match
