@@ -104,7 +104,7 @@ The set of available options follows.
 async_timeout
 		The timeout of asynchronous completion.
 
-		Default: 100
+		Default: 150
 
 					*deoplete-options-auto_complete*
 auto_complete

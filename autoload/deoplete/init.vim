@@ -259,7 +259,7 @@ endfunction
 function! deoplete#init#_option() abort
   " Note: HTML omni func use search().
   return {
-        \ 'async_timeout': 100,
+        \ 'async_timeout': 150,
         \ 'auto_complete': v:true,
         \ 'auto_complete_delay': 50,
         \ 'auto_refresh_delay': 50,
