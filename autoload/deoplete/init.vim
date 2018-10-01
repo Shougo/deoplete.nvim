@@ -261,7 +261,7 @@ function! deoplete#init#_option() abort
   return {
         \ 'async_timeout': 150,
         \ 'auto_complete': v:true,
-        \ 'auto_complete_delay': 50,
+        \ 'auto_complete_delay': 20,
         \ 'auto_refresh_delay': 50,
         \ 'camel_case': v:false,
         \ 'complete_method': 'complete',

@@ -116,9 +116,8 @@ auto_complete
 					*deoplete-options-auto_complete_delay*
 auto_complete_delay
 		Delay the completion after input in milliseconds.
-		Requires |+timers|.
 
-		Default value: 50
+		Default value: 20
 
 					*deoplete-options-auto_refresh_delay*
 auto_refresh_delay
