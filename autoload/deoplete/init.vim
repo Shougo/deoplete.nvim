@@ -226,7 +226,6 @@ function! deoplete#init#_context(event, sources) abort
         \ 'ignorecase': deoplete#custom#_get_option('ignore_case'),
         \ 'smartcase': deoplete#custom#_get_option('smart_case'),
         \ 'camelcase': deoplete#custom#_get_option('camel_case'),
-        \ 'delay': deoplete#custom#_get_option('auto_complete_delay'),
         \ 'sources': sources,
         \ 'max_abbr_width': max_width,
         \ 'max_kind_width': max_width,
