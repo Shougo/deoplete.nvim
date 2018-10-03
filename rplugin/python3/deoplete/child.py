@@ -169,79 +169,87 @@ class Child(logger.LoggingMixin):
         }
 
     def _gather_results(self, context):
+        if (context['changedtick'] !=
+                self._vim.current.buffer.vars['changedtick']):
+            return []
         results = []
 
         for source in [x[1] for x in self._itersource(context)]:
             try:
-                if source.disabled_syntaxes and 'syntax_names' not in context:
-                    context['syntax_names'] = get_syn_names(self._vim)
-                ctx = copy.deepcopy(context)
-
-                charpos = source.get_complete_position(ctx)
-                if charpos >= 0 and source.is_bytepos:
-                    charpos = bytepos2charpos(
-                        ctx['encoding'], ctx['input'], charpos)
-
-                ctx['char_position'] = charpos
-                ctx['complete_position'] = charpos2bytepos(
-                    ctx['encoding'], ctx['input'], charpos)
-                ctx['complete_str'] = ctx['input'][ctx['char_position']:]
-
-                if charpos < 0 or self._is_skip(ctx, source):
-                    if source.name in self._prev_results:
-                        self._prev_results.pop(source.name)
-                    # Skip
+                result = self._get_result(context, source)
+                if not result:
                     continue
-
-                if (source.name in self._prev_results and
-                        self._use_previous_result(
-                            context, self._prev_results[source.name],
-                            source.is_volatile)):
-                    results.append(self._prev_results[source.name])
-                    continue
-
-                ctx['is_async'] = False
-                ctx['is_refresh'] = True
-                ctx['max_abbr_width'] = min(source.max_abbr_width,
-                                            ctx['max_abbr_width'])
-                ctx['max_kind_width'] = min(source.max_kind_width,
-                                            ctx['max_kind_width'])
-                ctx['max_menu_width'] = min(source.max_menu_width,
-                                            ctx['max_menu_width'])
-                if ctx['max_abbr_width'] > 0:
-                    ctx['max_abbr_width'] = max(20, ctx['max_abbr_width'])
-                if ctx['max_kind_width'] > 0:
-                    ctx['max_kind_width'] = max(10, ctx['max_kind_width'])
-                if ctx['max_menu_width'] > 0:
-                    ctx['max_menu_width'] = max(10, ctx['max_menu_width'])
-
-                # Gathering
-                self._profile_start(ctx, source.name)
-                ctx['candidates'] = source.gather_candidates(ctx)
-                self._profile_end(source.name)
-
-                if ctx['candidates'] is None:
-                    continue
-
-                ctx['candidates'] = convert2candidates(ctx['candidates'])
-
-                result = {
-                    'name': source.name,
-                    'source': source,
-                    'context': ctx,
-                    'is_async': ctx['is_async'],
-                    'prev_linenr': ctx['position'][1],
-                    'prev_input': ctx['input'],
-                    'input': ctx['input'],
-                    'complete_position': ctx['complete_position'],
-                    'candidates': ctx['candidates'],
-                }
                 self._prev_results[source.name] = result
                 results.append(result)
             except Exception as exc:
                 self._handle_source_exception(source, exc)
 
         return results
+
+    def _get_result(self, context, source):
+        if source.disabled_syntaxes and 'syntax_names' not in context:
+            context['syntax_names'] = get_syn_names(self._vim)
+
+        ctx = copy.deepcopy(context)
+
+        charpos = source.get_complete_position(ctx)
+        if charpos >= 0 and source.is_bytepos:
+            charpos = bytepos2charpos(
+                ctx['encoding'], ctx['input'], charpos)
+
+        ctx['char_position'] = charpos
+        ctx['complete_position'] = charpos2bytepos(
+            ctx['encoding'], ctx['input'], charpos)
+        ctx['complete_str'] = ctx['input'][ctx['char_position']:]
+
+        if charpos < 0 or self._is_skip(ctx, source):
+            if source.name in self._prev_results:
+                self._prev_results.pop(source.name)
+            # Skip
+            return {}
+
+        if (source.name in self._prev_results and
+                self._use_previous_result(
+                    context, self._prev_results[source.name],
+                    source.is_volatile)):
+            return self._prev_results[source.name]
+
+        ctx['is_async'] = False
+        ctx['is_refresh'] = True
+        ctx['max_abbr_width'] = min(source.max_abbr_width,
+                                    ctx['max_abbr_width'])
+        ctx['max_kind_width'] = min(source.max_kind_width,
+                                    ctx['max_kind_width'])
+        ctx['max_menu_width'] = min(source.max_menu_width,
+                                    ctx['max_menu_width'])
+        if ctx['max_abbr_width'] > 0:
+            ctx['max_abbr_width'] = max(20, ctx['max_abbr_width'])
+        if ctx['max_kind_width'] > 0:
+            ctx['max_kind_width'] = max(10, ctx['max_kind_width'])
+        if ctx['max_menu_width'] > 0:
+            ctx['max_menu_width'] = max(10, ctx['max_menu_width'])
+
+        # Gathering
+        self._profile_start(ctx, source.name)
+        ctx['candidates'] = source.gather_candidates(ctx)
+        self._profile_end(source.name)
+
+        if ctx['candidates'] is None:
+            return {}
+
+        ctx['candidates'] = convert2candidates(ctx['candidates'])
+
+        return {
+            'name': source.name,
+            'source': source,
+            'context': ctx,
+            'is_async': ctx['is_async'],
+            'prev_linenr': ctx['position'][1],
+            'prev_input': ctx['input'],
+            'input': ctx['input'],
+            'complete_position': ctx['complete_position'],
+            'candidates': ctx['candidates'],
+        }
 
     def _gather_async_results(self, result, source):
         try:
