@@ -23,7 +23,7 @@ class Source(Base):
 
         input_patterns = {}
         set_pattern(input_patterns, 'css,less,scss,sass',
-                    [r'\w{2}', r'\w+[):;]?\s*\w*', r'[@!]'])
+                    [r'\w{2}', r'\w+:?\s*\w*', r'[@!]'])
         set_pattern(input_patterns, 'lua',
                     [r'\w+[.:]\w*', r'require\s*\(?["'']\w*'])
         self.vars = {
