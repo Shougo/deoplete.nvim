@@ -41,6 +41,7 @@ function! deoplete#enable_logging(level, logfile) abort
 endfunction
 
 function! deoplete#send_event(event, ...) abort
+  let g:deoplete#_cached_context = deoplete#init#_cached_context()
   let sources = get(a:000, 0, [])
   call deoplete#util#rpcnotify('deoplete_on_event',
         \ deoplete#init#_context(a:event, sources))

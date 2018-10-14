@@ -96,6 +96,7 @@ endfunction
 
 function! s:init_internal_variables() abort
   call deoplete#init#_prev_completion()
+  let g:deoplete#_cached_context = deoplete#init#_cached_context()
   let g:deoplete#_context = {}
   let g:deoplete#_rank = {}
   if !exists('g:deoplete#_logging')
@@ -185,6 +186,32 @@ function! deoplete#init#_custom_variables() abort
         \ 'functions')
 endfunction
 
+function! deoplete#init#_cached_context() abort
+  let bufnr = expand('<abuf>') !=# '' ? expand('<abuf>') : bufnr('%')
+  let bufname = bufname(bufnr)
+  let bufpath = fnamemodify(bufname, ':p')
+  if !filereadable(bufpath) || getbufvar(bufnr, '&buftype') =~# 'nofile'
+    let bufpath = ''
+  endif
+
+  return {
+        \ 'is_windows': s:is_windows,
+        \ 'encoding': &encoding,
+        \ 'ignorecase': deoplete#custom#_get_option('ignore_case'),
+        \ 'smartcase': deoplete#custom#_get_option('smart_case'),
+        \ 'camelcase': deoplete#custom#_get_option('camel_case'),
+        \ 'bufnr': bufnr,
+        \ 'bufname': bufname,
+        \ 'bufpath': bufpath,
+        \ 'complete_str': '',
+        \ 'cwd': getcwd(),
+        \ 'vars': filter(copy(g:),
+        \       "stridx(v:key, 'deoplete#') == 0
+        \        && v:key !=# 'deoplete#_yarp'"),
+        \ 'custom': deoplete#custom#_get(),
+        \ 'omni__omnifunc': &l:omnifunc,
+        \ }
+endfunction
 function! deoplete#init#_context(event, sources) abort
   let input = deoplete#util#get_input(a:event)
 
@@ -204,42 +231,20 @@ function! deoplete#init#_context(event, sources) abort
   let width = winwidth(0) - col('.') + len(matchstr(input, '\w*$'))
   let max_width = (width * 2 / 3)
 
-  let bufnr = expand('<abuf>') !=# '' ? expand('<abuf>') : bufnr('%')
-  let bufname = bufname(bufnr)
-  let bufpath = fnamemodify(bufname, ':p')
-  if !filereadable(bufpath) || getbufvar(bufnr, '&buftype') =~# 'nofile'
-    let bufpath = ''
-  endif
-
-  return {
+  return extend({
         \ 'changedtick': b:changedtick,
         \ 'event': event,
         \ 'input': input,
-        \ 'is_windows': s:is_windows,
         \ 'next_input': deoplete#util#get_next_input(a:event),
-        \ 'complete_str': '',
-        \ 'encoding': &encoding,
         \ 'position': getpos('.'),
         \ 'filetype': filetype,
         \ 'filetypes': filetypes,
         \ 'same_filetypes': same_filetypes,
-        \ 'ignorecase': deoplete#custom#_get_option('ignore_case'),
-        \ 'smartcase': deoplete#custom#_get_option('smart_case'),
-        \ 'camelcase': deoplete#custom#_get_option('camel_case'),
         \ 'sources': sources,
         \ 'max_abbr_width': max_width,
         \ 'max_kind_width': max_width,
         \ 'max_menu_width': max_width,
-        \ 'bufnr': bufnr,
-        \ 'bufname': bufname,
-        \ 'bufpath': bufpath,
-        \ 'cwd': getcwd(),
-        \ 'vars': filter(copy(g:),
-        \       "stridx(v:key, 'deoplete#') == 0
-        \        && v:key !=# 'deoplete#_yarp'"),
-        \ 'custom': deoplete#custom#_get(),
-        \ 'omni__omnifunc': &l:omnifunc,
-        \ }
+        \ }, g:deoplete#_cached_context)
 endfunction
 
 function! s:check_custom_var(source_name, old_var, new_var) abort

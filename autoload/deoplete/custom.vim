@@ -41,9 +41,10 @@ function! deoplete#custom#_get_source(source_name) abort
   return custom[a:source_name]
 endfunction
 function! deoplete#custom#_get_option(name) abort
-  let custom = extend(copy(deoplete#custom#_get().option),
-        \ deoplete#custom#_get_buffer().option)
-  return custom[a:name]
+  if has_key(deoplete#custom#_get_buffer().option, a:name)
+    return deoplete#custom#_get_buffer().option[a:name]
+  endif
+  return deoplete#custom#_get().option[a:name]
 endfunction
 function! deoplete#custom#_get_filetype_option(name, filetype, default) abort
   let buffer_option = deoplete#custom#_get_buffer().option

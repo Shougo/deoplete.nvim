@@ -35,18 +35,11 @@ function! deoplete#util#get_input(event) abort
         \         '^.*\%' . (mode ==# 'i' ? col('.') : col('.') - 1)
         \         . 'c' . (mode ==# 'i' ? '' : '.'))
 
-  if input =~# '^.\{-}\ze\S\+$'
-    let complete_str = matchstr(input, '\S\+$')
-    let input = matchstr(input, '^.\{-}\ze\S\+$')
-  else
-    let complete_str = ''
-  endif
-
   if a:event ==# 'InsertCharPre'
-    let complete_str .= v:char
+    let input .= v:char
   endif
 
-  return input . complete_str
+  return input
 endfunction
 function! deoplete#util#get_next_input(event) abort
   return getline('.')[len(deoplete#util#get_input(a:event)) :]
