@@ -109,7 +109,7 @@ class Deoplete(logger.LoggingMixin):
                    len(candidates), position, is_async)
         self._vim.call('deoplete#handler#_do_complete')
 
-    def on_event(self, context):
+    def on_event(self, user_context):
         context = self._vim.call('deoplete#init#_context', '', [])
         context.update(user_context)
 
