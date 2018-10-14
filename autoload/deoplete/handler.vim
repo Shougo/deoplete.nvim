@@ -23,7 +23,12 @@ function! deoplete#handler#_init() abort
     call s:define_completion_via_timer('InsertEnter')
   endif
   if deoplete#custom#_get_option('refresh_always')
-    call s:define_completion_via_timer('InsertCharPre')
+    if exists('##TextChangedP')
+      autocmd deoplete InsertCharPre * let s:check_insert_charpre = v:true
+      call s:define_completion_via_timer('TextChangedP')
+    else
+      call s:define_completion_via_timer('InsertCharPre')
+    endif
   endif
 
   " Note: Vim 8 GUI(MacVim and Win32) is broken
@@ -38,6 +43,8 @@ function! deoplete#handler#_init() abort
     " Note: Workaround
     autocmd deoplete VimLeavePre * call s:kill_yarp()
   endif
+
+  let s:check_insert_charpre = v:false
 endfunction
 
 function! deoplete#handler#_do_complete() abort
@@ -173,6 +180,12 @@ function! s:completion_begin(event) abort
         \ 'deoplete_auto_completion_begin', {'event': a:event})
 endfunction
 function! s:is_skip(event) abort
+  if a:event ==# 'TextChangedP' && !s:check_insert_charpre
+    return 1
+  endif
+
+  let s:check_insert_charpre = v:false
+
   if s:is_skip_text(a:event)
     return 1
   endif
