@@ -42,9 +42,9 @@ endfunction
 
 function! deoplete#send_event(event, ...) abort
   let g:deoplete#_cached_context = deoplete#init#_cached_context()
-  let sources = get(a:000, 0, [])
+  let sources = deoplete#util#convert2list(get(a:000, 0, []))
   call deoplete#util#rpcnotify('deoplete_on_event',
-        \ deoplete#init#_context(a:event, sources))
+        \ {'event': a:event, 'sources': sources})
 endfunction
 
 function! deoplete#manual_complete(...) abort

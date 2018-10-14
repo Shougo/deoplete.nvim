@@ -46,7 +46,10 @@ endfunction
 function! deoplete#mapping#_rpcrequest_wrapper(sources) abort
   return deoplete#util#rpcnotify(
         \ 'deoplete_manual_completion_begin',
-        \ deoplete#init#_context('Manual', a:sources))
+        \ {
+        \  'event': 'Manual',
+        \  'sources': deoplete#util#convert2list(a:sources)
+        \ })
 endfunction
 function! deoplete#mapping#_undo_completion() abort
   if empty(v:completed_item)

@@ -59,9 +59,15 @@ class Deoplete(logger.LoggingMixin):
         logger.setup(self._vim, logging['level'], logging['logfile'])
         self.is_debug_enabled = True
 
-    def completion_begin(self, context):
+    def completion_begin(self, user_context):
+        context = self._vim.call('deoplete#init#_context', '', [])
+        context.update(user_context)
+
         self.debug('completion_begin (%s): %r',
                    context['event'], context['input'])
+
+        if self._vim.call('deoplete#handler#_check_omnifunc', context):
+            return
 
         self._check_recache(context)
 

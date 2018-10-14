@@ -218,13 +218,6 @@ function! deoplete#init#_context(event, sources) abort
   let [filetype, filetypes, same_filetypes] =
         \ deoplete#util#get_context_filetype(input, a:event)
 
-  let sources = deoplete#util#convert2list(a:sources)
-  if a:event !=# 'Manual' && empty(sources)
-    " Use default sources
-    let sources = deoplete#custom#_get_filetype_option(
-          \ 'sources', filetype, [])
-  endif
-
   let event = (deoplete#util#get_prev_event() ==# 'Refresh') ?
         \ 'Manual' : a:event
 
@@ -240,7 +233,8 @@ function! deoplete#init#_context(event, sources) abort
         \ 'filetype': filetype,
         \ 'filetypes': filetypes,
         \ 'same_filetypes': same_filetypes,
-        \ 'sources': sources,
+        \ 'sources': deoplete#custom#_get_filetype_option(
+        \            'sources', filetype, []),
         \ 'max_abbr_width': max_width,
         \ 'max_kind_width': max_width,
         \ 'max_menu_width': max_width,

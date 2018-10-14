@@ -77,6 +77,35 @@ function! deoplete#handler#_do_complete() abort
   endif
 endfunction
 
+function! deoplete#handler#_check_omnifunc(context) abort
+  let prev = g:deoplete#_prev_completion
+  let blacklist = ['LanguageClient#complete']
+  if a:context.event ==# 'Manual'
+        \ || &l:omnifunc ==# ''
+        \ || index(blacklist, &l:omnifunc) >= 0
+        \ || prev.input ==# a:context.input
+    return
+  endif
+
+  for filetype in a:context.filetypes
+    for pattern in deoplete#util#convert2list(
+          \ deoplete#custom#_get_filetype_option(
+          \   'omni_patterns', filetype, ''))
+      if pattern !=# '' && a:context.input =~# '\%('.pattern.'\)$'
+        let g:deoplete#_context.candidates = []
+
+        let prev.event = a:context.event
+        let prev.input = a:context.input
+        let prev.candidates = []
+
+        call deoplete#mapping#_set_completeopt()
+        call feedkeys("\<C-x>\<C-o>", 'in')
+        return 1
+      endif
+    endfor
+  endfor
+endfunction
+
 function! s:completion_timer_start(event) abort
   if exists('s:completion_timer')
     call s:completion_timer_stop()
@@ -136,17 +165,12 @@ function! s:completion_begin(event) abort
     return
   endif
 
-  let context = deoplete#init#_context(a:event, [])
-  if context['event'] !=# 'Async'
+  if a:event !=# 'Async'
     call deoplete#init#_prev_completion()
   endif
 
-  if s:check_omnifunc(context)
-    return
-  endif
-
   call deoplete#util#rpcnotify(
-        \ 'deoplete_auto_completion_begin', context)
+        \ 'deoplete_auto_completion_begin', {'event': a:event})
 endfunction
 function! s:is_skip(event) abort
   if s:is_skip_text(a:event)
@@ -190,34 +214,6 @@ function! s:is_skip_text(event) abort
   return (!pumvisible() && virtcol('.') != displaywidth)
         \ || (a:event !=# 'Manual' && input !=# ''
         \     && index(skip_chars, input[-1:]) >= 0)
-endfunction
-function! s:check_omnifunc(context) abort
-  let prev = g:deoplete#_prev_completion
-  let blacklist = ['LanguageClient#complete']
-  if a:context.event ==# 'Manual'
-        \ || &l:omnifunc ==# ''
-        \ || index(blacklist, &l:omnifunc) >= 0
-        \ || prev.input ==# a:context.input
-    return
-  endif
-
-  for filetype in a:context.filetypes
-    for pattern in deoplete#util#convert2list(
-          \ deoplete#custom#_get_filetype_option(
-          \   'omni_patterns', filetype, ''))
-      if pattern !=# '' && a:context.input =~# '\%('.pattern.'\)$'
-        let g:deoplete#_context.candidates = []
-
-        let prev.event = a:context.event
-        let prev.input = a:context.input
-        let prev.candidates = []
-
-        call deoplete#mapping#_set_completeopt()
-        call feedkeys("\<C-x>\<C-o>", 'in')
-        return 1
-      endif
-    endfor
-  endfor
 endfunction
 
 function! s:define_on_event(event) abort
