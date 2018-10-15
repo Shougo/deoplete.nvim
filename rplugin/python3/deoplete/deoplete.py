@@ -46,7 +46,7 @@ class Deoplete(logger.LoggingMixin):
             self.enable_logging()
 
         # Initialization
-        context = self._vim.call('deoplete#init#_context', 'Init', [])
+        context = self._vim.call('deoplete#init#_context', 'Init')
         context['rpc'] = 'deoplete_on_event'
         self.on_event(context)
 
@@ -60,7 +60,7 @@ class Deoplete(logger.LoggingMixin):
         self.is_debug_enabled = True
 
     def completion_begin(self, user_context):
-        context = self._vim.call('deoplete#init#_context', '', [])
+        context = self._vim.call('deoplete#init#_context', '')
         context.update(user_context)
 
         self.debug('completion_begin (%s): %r',
@@ -110,7 +110,7 @@ class Deoplete(logger.LoggingMixin):
         self._vim.call('deoplete#handler#_do_complete')
 
     def on_event(self, user_context):
-        context = self._vim.call('deoplete#init#_context', '', [])
+        context = self._vim.call('deoplete#init#_context', '')
         context.update(user_context)
 
         self.debug('on_event: %s', context['event'])

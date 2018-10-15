@@ -212,7 +212,7 @@ function! deoplete#init#_cached_context() abort
         \ 'omni__omnifunc': &l:omnifunc,
         \ }
 endfunction
-function! deoplete#init#_context(event, sources) abort
+function! deoplete#init#_context(event) abort
   let input = deoplete#util#get_input(a:event)
 
   let [filetype, filetypes, same_filetypes] =
