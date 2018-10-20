@@ -8,10 +8,9 @@ import os
 import re
 import sys
 import glob
+import importlib.util
 import traceback
 import unicodedata
-
-from importlib.machinery import SourceFileLoader
 
 
 def set_pattern(variable, keys, pattern):
@@ -51,7 +50,9 @@ def import_plugin(path, source, classname):
     name = os.path.splitext(os.path.basename(path))[0]
     module_name = 'deoplete.%s.%s' % (source, name)
 
-    module = SourceFileLoader(module_name, path).load_module()
+    spec = importlib.util.spec_from_file_location(module_name, path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
     cls = getattr(module, classname, None)
     if not cls:
         return None
