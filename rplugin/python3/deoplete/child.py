@@ -477,6 +477,8 @@ class Child(logger.LoggingMixin):
         )
 
         for name, source in self._get_sources().items():
+            self.debug('Set Source attributes: %s', name)
+
             for attr in attrs:
                 source_attr = getattr(source, attr, None)
                 custom = get_custom(context['custom'],
@@ -486,6 +488,8 @@ class Child(logger.LoggingMixin):
                     source_attr.update(custom)
                 else:
                     setattr(source, attr, custom)
+
+                self.debug('Attribute: %s (%s)', attr, getattr(source, attr))
 
             # Default min_pattern_length
             if source.min_pattern_length < 0:
