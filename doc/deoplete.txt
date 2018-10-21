@@ -1679,6 +1679,9 @@ A: https://github.com/zchee/deoplete-jedi/issues/35
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
 
+2018.10.20
+* Python 3.5+ is required.
+
 2018.04.09
 * Remove "g:deoplete#auto_complete_start_length" variable.
 * Remove "g:deoplete#skip_chars" variable.
