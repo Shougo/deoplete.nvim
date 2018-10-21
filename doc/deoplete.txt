@@ -46,7 +46,7 @@ Improvements in deoplete in comparison to |neocomplete|:
 INSTALL							*deoplete-install*
 
 Note: deoplete requires Neovim (0.2.0+) or Vim8 (latest is recommended) with
-Python3.4+ and |+timers| enabled.
+Python3.5+ and |+timers| enabled.
 
 Please install nvim-yarp plugin for Vim8.
 https://github.com/roxma/nvim-yarp

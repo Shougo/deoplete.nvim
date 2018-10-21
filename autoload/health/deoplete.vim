@@ -35,6 +35,14 @@ function! s:check_required_python_for_deoplete() abort
           \ ]
           \ )
   endif
+
+  if !deoplete#init#_python_version_check()
+    call health#report_ok('Python3.5+ was successful')
+  else
+    call health#report_error(
+          \ 'Python3.5+ was not successful',
+          \ 'Please use Python3.5+.')
+  endif
 endfunction
 
 function! s:still_have_issues() abort

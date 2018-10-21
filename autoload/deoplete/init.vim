@@ -293,3 +293,15 @@ function! deoplete#init#_prev_completion() abort
         \ 'candidates': [],
         \ }
 endfunction
+
+function! deoplete#init#_python_version_check() abort
+  python3 << EOF
+import vim
+import sys
+vim.vars['deoplete#_python_version_check'] = (
+    sys.version_info.major,
+    sys.version_info.minor,
+    sys.version_info.micro) < (3, 5, 0)
+EOF
+  return g:deoplete#_python_version_check
+endfunction
