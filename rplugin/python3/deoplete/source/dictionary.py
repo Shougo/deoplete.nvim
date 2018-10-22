@@ -7,6 +7,7 @@
 from os.path import getmtime, exists
 from collections import namedtuple
 from .base import Base
+from deoplete.util import expand
 
 DictCacheItem = namedtuple('DictCacheItem', 'mtime candidates')
 
@@ -47,5 +48,5 @@ class Source(Base):
                 )
 
     def _get_dictionaries(self, context):
-        return [x for x in context['dict__dictionary'].split(',')
+        return [expand(x) for x in context['dict__dictionary'].split(',')
                 if exists(x)]
