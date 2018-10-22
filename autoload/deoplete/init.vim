@@ -239,7 +239,6 @@ function! deoplete#init#_context(event, sources) abort
         \        && v:key !=# 'deoplete#_yarp'"),
         \ 'custom': deoplete#custom#_get(),
         \ 'omni__omnifunc': &l:omnifunc,
-        \ 'dict__dictionary': &l:dictionary,
         \ }
 endfunction
 

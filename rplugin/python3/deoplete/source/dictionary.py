@@ -4,7 +4,8 @@
 # License: MIT license
 # ============================================================================
 
-from os.path import getmtime, exists
+from os import scandir
+from os.path import getmtime, exists, isdir
 from collections import namedtuple
 from .base import Base
 from deoplete.util import expand
@@ -27,7 +28,8 @@ class Source(Base):
         self._make_cache(context)
 
     def gather_candidates(self, context):
-        self._make_cache(context)
+        if not self._cache:
+            self._make_cache(context)
 
         candidates = []
         for filename in [x for x in self._get_dictionaries(context)
@@ -48,5 +50,14 @@ class Source(Base):
                 )
 
     def _get_dictionaries(self, context):
-        return [expand(x) for x in context['dict__dictionary'].split(',')
-                if exists(x)]
+        dicts = []
+        dict_opt = self.vim.options['dictionary']
+        if 'dictionary' in self.vim.current.buffer.options:
+            dict_opt = self.vim.current.buffer.options['dictionary']
+        for d in [expand(x) for x in dict_opt.split(',') if exists(x)]:
+            if isdir(d):
+                with scandir(d) as it:
+                    dicts += [x.path for x in it if x.is_file()]
+            else:
+                dicts.append(d)
+        return dicts
