@@ -50,10 +50,13 @@ class Source(Base):
                 )
 
     def _get_dictionaries(self, context):
-        dicts = []
         dict_opt = self.vim.options['dictionary']
         if 'dictionary' in self.vim.current.buffer.options:
             dict_opt = self.vim.current.buffer.options['dictionary']
+        if not dict_opt:
+            return []
+
+        dicts = []
         for d in [expand(x) for x in dict_opt.split(',') if exists(x)]:
             if isdir(d):
                 with scandir(d) as it:
