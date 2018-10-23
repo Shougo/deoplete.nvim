@@ -150,8 +150,8 @@ def fuzzy_escape(string, camelcase):
     return p
 
 
-def load_external_module(file, module):
-    current = os.path.dirname(os.path.abspath(file))
+def load_external_module(base, module):
+    current = os.path.dirname(os.path.abspath(base))
     module_dir = os.path.join(os.path.dirname(current), module)
     if module_dir not in sys.path:
         sys.path.insert(0, module_dir)
