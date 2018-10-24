@@ -16,8 +16,8 @@ class Filter(Base):
         self.description = 'auto add parentheses converter'
 
     def filter(self, context):
-        p1 = re.compile('\(\)?$')
-        p2 = re.compile('\(.*\)')
+        p1 = re.compile(r'\(\)?$')
+        p2 = re.compile(r'\(.*\)')
         for candidate in [
                 x for x in context['candidates']
                 if not p1.search(x['word']) and

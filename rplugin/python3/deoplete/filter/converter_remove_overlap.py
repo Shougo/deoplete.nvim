@@ -18,7 +18,7 @@ class Filter(Base):
     def filter(self, context):
         if not context['next_input']:
             return context['candidates']
-        m = re.match('\S+', context['next_input'])
+        m = re.match(r'\S+', context['next_input'])
         if not m:
             return context['candidates']
         next_input = m.group(0)

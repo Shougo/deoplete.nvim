@@ -16,8 +16,8 @@ class Filter(Base):
         self.description = 'remove parentheses converter'
 
     def filter(self, context):
-        p = re.compile('\(\)?$')
+        p = re.compile(r'\(\)?$')
         for candidate in [x for x in context['candidates']
                           if p.search(x['word'])]:
-            candidate['word'] = re.sub('\(\)?$', '', candidate['word'])
+            candidate['word'] = re.sub(r'\(\)?$', '', candidate['word'])
         return context['candidates']

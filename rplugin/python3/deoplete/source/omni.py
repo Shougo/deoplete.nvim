@@ -25,7 +25,7 @@ class Source(Base):
         set_pattern(input_patterns, 'css,less,scss,sass',
                     [r'\w{2}', r'\w+:?\s*\w*', r'[@!]'])
         set_pattern(input_patterns, 'lua',
-                    [r'\w+[.:]\w*', r'require\s*\(?["'']\w*'])
+                    [r'\w+[.:]\w*'])
         self.vars = {
             'input_patterns': input_patterns,
             'functions': {},
@@ -69,7 +69,7 @@ class Source(Base):
                     return -1
                 try:
                     complete_pos = self.vim.call(self._omnifunc, 1, '')
-                except Exception as e:
+                except Exception:
                     self.print_error('Error occurred calling omnifunction: ' +
                                      self._omnifunc)
                     return -1
@@ -83,7 +83,7 @@ class Source(Base):
                 candidates = candidates['words']
             elif not isinstance(candidates, list):
                 candidates = []
-        except Exception as e:
+        except Exception:
             self.print_error('Error occurred calling omnifunction: ' +
                              self._omnifunc)
             candidates = []
