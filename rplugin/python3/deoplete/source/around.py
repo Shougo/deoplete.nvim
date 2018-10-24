@@ -36,10 +36,10 @@ class Source(Base):
         # grab ':changes' command output
         p = re.compile(r'[\s\d]+')
         lines = set()
-        for change_line in [x[p.search(x).span()[1]:] for x
-                            in self.vim.call(
-                                'execute', 'changes').split('\n')[2:]
-                            if p.search(x)]:
+        for change_line in [
+                x[p.search(x).span()[1]:] for x
+                in self.vim.call('execute', 'changes').split('\n')[2:]
+                if p.search(x)]:
             if change_line and change_line != '-invalid-':
                 lines.add(change_line)
 
