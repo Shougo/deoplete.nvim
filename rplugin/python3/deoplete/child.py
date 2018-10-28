@@ -464,7 +464,6 @@ class Child(logger.LoggingMixin):
             'input_pattern',
             'is_debug_enabled',
             'is_silent',
-            'keyword_patterns',
             'mark',
             'matchers',
             'max_abbr_width',

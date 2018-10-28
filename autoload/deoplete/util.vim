@@ -177,13 +177,14 @@ function! deoplete#util#get_context_filetype(input, event) abort
         \  s:context_filetype.filetypes, s:context_filetype.same_filetypes]
 endfunction
 
-function! deoplete#util#get_keyword_pattern(filetype, keyword_patterns) abort
-  if empty(a:keyword_patterns)
+function! deoplete#util#get_keyword_pattern(filetype) abort
+  let keyword_patterns = deoplete#custom#_get_option('keyword_patterns')
+  if empty(keyword_patterns)
     let patterns = deoplete#custom#_get_filetype_option(
         \   'keyword_patterns', a:filetype, '')
   else
-    let filetype = has_key(a:keyword_patterns, a:filetype) ? a:filetype : '_'
-    let patterns = get(a:keyword_patterns, filetype, '')
+    let filetype = has_key(keyword_patterns, a:filetype) ? a:filetype : '_'
+    let patterns = get(keyword_patterns, filetype, '')
   endif
   let pattern = join(deoplete#util#convert2list(patterns), '|')
 

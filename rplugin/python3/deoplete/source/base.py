@@ -45,10 +45,8 @@ class Base(LoggingMixin):
         self.matcher_key = ''
 
     def get_complete_position(self, context):
-        keyword_pattern = self.vim.call(
-            'deoplete#util#get_keyword_pattern',
-            context['filetype'], self.keyword_patterns)
-        m = re.search('(?:' + keyword_pattern + ')$|$', context['input'])
+        m = re.search('(?:' + context['keyword_pattern'] + ')$|$',
+                      context['input'])
         return m.start() if m else -1
 
     def print(self, expr):

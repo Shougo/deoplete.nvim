@@ -232,6 +232,7 @@ function! deoplete#init#_context(event) abort
         \ 'position': getpos('.'),
         \ 'filetype': filetype,
         \ 'filetypes': filetypes,
+        \ 'keyword_pattern': deoplete#util#get_keyword_pattern(filetype),
         \ 'same_filetypes': same_filetypes,
         \ 'sources': deoplete#custom#_get_filetype_option(
         \            'sources', filetype, []),

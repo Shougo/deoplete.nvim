@@ -898,14 +898,6 @@ is_volatile
 
 		Default: False
 
-				*deoplete-source-attribute-keyword_patterns*
-keyword_patterns
-		It defines the keyword patterns for completion.
-		This is appointed in regular expression string or list every
-		file type.
-
-		Default: |deoplete-options-keyword_patterns|
-
 					*deoplete-source-attribute-mark*
 mark		(String)			(Optional)
 		The mark of a source.
@@ -1679,6 +1671,9 @@ A: https://github.com/zchee/deoplete-jedi/issues/35
 
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
+
+2018.10.28
+* Remove "deoplete-source-attribute-keyword_patterns".
 
 2018.10.20
 * Python 3.5+ is required.
