@@ -23,12 +23,13 @@ function! deoplete#handler#_init() abort
     call s:define_completion_via_timer('InsertEnter')
   endif
   if deoplete#custom#_get_option('refresh_always')
-    if exists('##TextChangedP')
-      autocmd deoplete InsertCharPre * let s:check_insert_charpre = v:true
-      call s:define_completion_via_timer('TextChangedP')
-    else
-      call s:define_completion_via_timer('InsertCharPre')
-    endif
+    " if exists('##TextChangedP')
+    "   autocmd deoplete InsertCharPre * let s:check_insert_charpre = v:true
+    "   call s:define_completion_via_timer('TextChangedP')
+    " else
+    "   call s:define_completion_via_timer('InsertCharPre')
+    " endif
+    call s:define_completion_via_timer('InsertCharPre')
   endif
 
   " Note: Vim 8 GUI(MacVim and Win32) is broken

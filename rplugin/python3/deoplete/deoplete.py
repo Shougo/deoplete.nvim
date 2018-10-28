@@ -66,8 +66,8 @@ class Deoplete(logger.LoggingMixin):
         self.debug('completion_begin (%s): %r',
                    context['event'], context['input'])
 
-        if self._vim.call('deoplete#handler#_check_omnifunc', context):
-            return
+        # if self._vim.call('deoplete#handler#_check_omnifunc', context):
+        #     return
 
         self._check_recache(context)
 
@@ -109,10 +109,7 @@ class Deoplete(logger.LoggingMixin):
                    len(candidates), position, is_async)
         self._vim.call('deoplete#handler#_do_complete')
 
-    def on_event(self, user_context):
-        context = self._vim.call('deoplete#init#_context', '')
-        context.update(user_context)
-
+    def on_event(self, context):
         self.debug('on_event: %s', context['event'])
         self._check_recache(context)
 
