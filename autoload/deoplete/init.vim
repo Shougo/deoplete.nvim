@@ -209,7 +209,6 @@ function! deoplete#init#_cached_context() abort
         \       "stridx(v:key, 'deoplete#') == 0
         \        && v:key !=# 'deoplete#_yarp'"),
         \ 'custom': deoplete#custom#_get(),
-        \ 'omni__omnifunc': &l:omnifunc,
         \ }
 endfunction
 function! deoplete#init#_context(event) abort
