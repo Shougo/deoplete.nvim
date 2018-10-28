@@ -96,8 +96,13 @@ endfunction
 
 function! s:init_internal_variables() abort
   call deoplete#init#_prev_completion()
-  let g:deoplete#_cached_context = deoplete#init#_cached_context()
+
   let g:deoplete#_context = {}
+  let g:deoplete#_cached_context = deoplete#init#_cached_context()
+  let g:deoplete#_filetype = &l:filetype
+  let g:deoplete#_filetype_context =
+        \ deoplete#init#_filetype_context(&l:filetype)
+
   let g:deoplete#_rank = {}
   if !exists('g:deoplete#_logging')
     let g:deoplete#_logging = {}
@@ -211,6 +216,13 @@ function! deoplete#init#_cached_context() abort
         \ 'custom': deoplete#custom#_get(),
         \ }
 endfunction
+function! deoplete#init#_filetype_context(filetype) abort
+  return {
+        \ 'keyword_pattern': deoplete#util#get_keyword_pattern(a:filetype),
+        \ 'sources': deoplete#custom#_get_filetype_option(
+        \            'sources', a:filetype, []),
+        \ }
+endfunction
 function! deoplete#init#_context(event) abort
   let input = deoplete#util#get_input(a:event)
 
@@ -223,7 +235,7 @@ function! deoplete#init#_context(event) abort
   let width = winwidth(0) - col('.') + len(matchstr(input, '\w*$'))
   let max_width = (width * 2 / 3)
 
-  return extend({
+  let context = {
         \ 'changedtick': b:changedtick,
         \ 'event': event,
         \ 'input': input,
@@ -231,14 +243,22 @@ function! deoplete#init#_context(event) abort
         \ 'position': getpos('.'),
         \ 'filetype': filetype,
         \ 'filetypes': filetypes,
-        \ 'keyword_pattern': deoplete#util#get_keyword_pattern(filetype),
         \ 'same_filetypes': same_filetypes,
-        \ 'sources': deoplete#custom#_get_filetype_option(
-        \            'sources', filetype, []),
         \ 'max_abbr_width': max_width,
         \ 'max_kind_width': max_width,
         \ 'max_menu_width': max_width,
-        \ }, g:deoplete#_cached_context)
+        \}
+
+  call extend(context, g:deoplete#_cached_context)
+
+  if filetype !=# g:deoplete#_filetype
+    let g:deoplete#_filetype = filetype
+    let g:deoplete#_filetype_context =
+          \ deoplete#init#_filetype_context(filetype)
+  endif
+  call extend(context, g:deoplete#_filetype_context)
+
+  return context
 endfunction
 
 function! s:check_custom_var(source_name, old_var, new_var) abort
