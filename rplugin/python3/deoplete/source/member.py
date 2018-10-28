@@ -4,9 +4,9 @@
 # License: MIT license
 # ============================================================================
 
-from .base import Base
-
 import re
+
+from deoplete.source.base import Base
 from deoplete.util import (
     convert2list, parse_buffer_pattern, set_pattern, getlines)
 

@@ -8,7 +8,8 @@
 import os
 import re
 from os.path import exists, dirname
-from .base import Base
+
+from deoplete.source.base import Base
 from deoplete.util import expand
 
 

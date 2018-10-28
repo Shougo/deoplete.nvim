@@ -5,7 +5,8 @@
 # ============================================================================
 
 import re
-from .base import Base
+
+from deoplete.source.base import Base
 from deoplete.util import (
     convert2list, set_pattern, convert2candidates)
 

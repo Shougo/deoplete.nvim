@@ -5,7 +5,7 @@
 # ============================================================================
 
 import re
-from .base import Base
+from deoplete.filter.base import Base
 from deoplete.util import fuzzy_escape
 
 

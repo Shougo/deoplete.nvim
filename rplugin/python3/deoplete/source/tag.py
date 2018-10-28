@@ -6,11 +6,11 @@
 # License: MIT license
 # ============================================================================
 
-from .base import Base
-
 import re
 import os
 from os.path import exists
+
+from deoplete.source.base import Base
 
 
 class Source(Base):
