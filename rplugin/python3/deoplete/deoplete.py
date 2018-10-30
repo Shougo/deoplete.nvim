@@ -108,7 +108,7 @@ class Deoplete(logger.LoggingMixin):
                    + '%d candidates, input=%s, complete_position=%d, '
                    + 'is_async=%d',
                    context['event'],
-                   len(candidates), position, context['input'],
+                   len(candidates), context['input'], position,
                    is_async)
         self._vim.call('deoplete#handler#_do_complete')
 
