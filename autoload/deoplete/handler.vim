@@ -258,14 +258,6 @@ function! s:on_complete_done() abort
   if get(v:completed_item, 'word', '') ==# ''
     return
   endif
-
-  let word = v:completed_item.word
-  if !has_key(g:deoplete#_rank, word)
-    let g:deoplete#_rank[word] = 1
-  else
-    let g:deoplete#_rank[word] += 1
-  endif
-
   call deoplete#handler#_skip_next_completion()
 endfunction
 

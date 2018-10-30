@@ -103,7 +103,6 @@ function! s:init_internal_variables() abort
   let g:deoplete#_filetype_context =
         \ deoplete#init#_filetype_context(&l:filetype)
 
-  let g:deoplete#_rank = {}
   if !exists('g:deoplete#_logging')
     let g:deoplete#_logging = {}
   endif

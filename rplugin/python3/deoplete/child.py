@@ -507,7 +507,10 @@ class Child(logger.LoggingMixin):
                 except Exception as exc:
                     error_tb(self._vim, 'Exception during {}.on_event '
                              'for event {!r}: {}'.format(
-                                 source_name, event, exc))
+                                 source.name, event, exc))
+
+        for f in self._filters.values():
+            f.on_event(context)
 
     def _get_sources(self):
         # Note: for the size change of "self._sources" error
