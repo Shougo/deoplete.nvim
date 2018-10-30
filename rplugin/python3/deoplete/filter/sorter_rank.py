@@ -27,20 +27,22 @@ class Filter(Base):
         line = context['position'][1]
         lines = getlines(self.vim,
                          max([1, line - LINES_ABOVE]), line + LINES_BELOW)
-        self._cache = set(re.findall(context['keyword_pattern'],
-                                     '\n'.join(lines)))
+
+        # self._cache = set(re.findall(context['keyword_pattern'],
+        #                              '\n'.join(lines)))
+        self._cache = {}
+        for m in re.finditer(context['keyword_pattern'], '\n'.join(lines)):
+            k = m.group(0)
+            if k in self._cache:
+                self._cache[k] += 1
+            else:
+                self._cache[k] = 1
 
     def filter(self, context):
-        if not context['complete_str']:
-            return context['candidates']
-
         complete_str = context['complete_str'].lower()
-        input_len = len(complete_str)
 
         def compare(x):
-            if x['word'] in self._cache:
-                return -1
-            else:
-                return abs(x['word'].lower().find(
-                    complete_str, 0, input_len))
+            matched = int(complete_str in x['word'].lower())
+            mru = self._cache.get(x['word'], 0)
+            return -(matched * 40 + mru * 20)
         return sorted(context['candidates'], key=compare)

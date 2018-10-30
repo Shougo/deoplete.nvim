@@ -720,7 +720,7 @@ matcher_length
 
 						*deoplete-filter-sorter_rank*
 sorter_rank	Matched rank order sorter.  The higher the head matched word
-		or already selected.
+		or already typed word.
 
 						*deoplete-filter-sorter_word*
 sorter_word	Word order sorter.
