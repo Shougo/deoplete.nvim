@@ -111,7 +111,7 @@ auto_complete
 		If it is False, automatic completion becomes invalid, but can
 		use the manual completion by |deoplete#manual_complete()|.
 
-		Default value: true
+		Default value: v:true
 
 					*deoplete-options-auto_complete_delay*
 auto_complete_delay
@@ -135,7 +135,7 @@ camel_case
 		|deoplete-filter-matcher_fuzzy| or
 		|deoplete-filter-matcher_full_fuzzy|.
 
-		Default value: false
+		Default value: v:false
 
 					*deoplete-options-complete_method*
 complete_method
@@ -226,14 +226,14 @@ on_insert_enter
 		Deoplete enables the auto completion on |InsertEnter| autocmd
 		if this value is True.
 
-		Default value: true
+		Default value: v:true
 
 					*deoplete-options-on_text_changed_i*
 on_text_changed_i
 		Deoplete enables the auto completion on |TextChangedI| autocmd
 		if this value is True.
 
-		Default value: true
+		Default value: v:true
 
 						*deoplete-options-profile*
 profile
@@ -242,7 +242,7 @@ profile
 		Must be set in init.vim/vimrc before starting Neovim/Vim.
 		Does not support command line.
 
-		Default value: false
+		Default value: v:false
 
 					*deoplete-options-refresh_always*
 refresh_always
@@ -250,7 +250,7 @@ refresh_always
 		is True.
 		Note: It increases the screen flicker.
 
-		Default value: true
+		Default value: v:true
 
 						*deoplete-options-skip_chars*
 skip_chars
@@ -297,7 +297,7 @@ yarp
 		Note: nvim-yarp plugin is needed.
 		https://github.com/roxma/nvim-yarp
 
-		Default value: false
+		Default value: v:false
 
 ------------------------------------------------------------------------------
 VARIABLES	 					*deoplete-variables*
@@ -553,7 +553,7 @@ buffer						*deoplete-source-buffer*
 		require_same_filetype
 				If it is False, deoplete collects keywords from
 				buffers of any filetype
-				(default: True)
+				(default: v:true)
 
 dictionary					*deoplete-source-dictionary*
 		This source collects |deoplete-options-keyword_patterns|
@@ -590,7 +590,7 @@ file							*deoplete-source-file*
 				If it is True, file source completes the files
 				from the buffer path instead of the current
 				directory.
-				(default: True)
+				(default: v:true)
 
 		force_completion_length
 				The completion length if the input does not
