@@ -7,6 +7,7 @@
 import copy
 import glob
 import os
+import re
 import time
 
 import deoplete.parent
@@ -118,6 +119,35 @@ class Deoplete(logger.LoggingMixin):
 
         for parent in self._parents:
             parent.on_event(context)
+
+    def _init_context(self, event):
+        inpt = self._vim.call('deoplete#util#get_input', event)
+        [filetype, filetypes, same_filetypes] = self._vim.call(
+            'deoplete#util#get_context_filetype', event)
+
+        if self._vim.call('deoplete#util#get_prev_event') == 'Refresh':
+            event = 'Manual'
+
+        window = self._vim.current.window
+        width = window.width - window.cursor[1] + len(re.search(r'\w$', inpt))
+        max_width = (width * 2 / 3)
+
+        context = {
+            'changedtick': self._vim.current.buffer.vars['changedtick'],
+            'event': event,
+            'input': inpt,
+            'next_input': self._vim.call(
+                'deoplete#util#get_next_input', event),
+            'position': self._vim.call('getpos', '.'),
+            'filetype': filetype,
+            'filetypes': filetypes,
+            'same_filetypes': same_filetypes,
+            'max_abbr_width': max_width,
+            'max_kind_width': max_width,
+            'max_menu_width': max_width,
+        }
+
+        return context
 
     def _get_results(self, context):
         is_async = False
