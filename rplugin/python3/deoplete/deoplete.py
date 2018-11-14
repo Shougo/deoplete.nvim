@@ -139,16 +139,16 @@ class Deoplete(logger.LoggingMixin):
         context = {
             'changedtick': self._vim.current.buffer.vars['changedtick'],
             'event': event,
-            'input': inpt,
-            'next_input': self._vim.call(
-                'deoplete#util#get_next_input', event),
-            'position': self._vim.call('getpos', '.'),
             'filetype': filetype,
             'filetypes': filetypes,
-            'same_filetypes': same_filetypes,
+            'input': inpt,
             'max_abbr_width': max_width,
             'max_kind_width': max_width,
             'max_menu_width': max_width,
+            'next_input': self._vim.call(
+                'deoplete#util#get_next_input', event),
+            'position': self._vim.call('getpos', '.'),
+            'same_filetypes': same_filetypes,
         }
         context.update(self._cached_context)
 
@@ -170,10 +170,24 @@ class Deoplete(logger.LoggingMixin):
         }
 
     def _init_cached_context(self):
+        bufnr = self._vim.call('expand', '<abuf>')
+        if not bufnr:
+            bufnr = self._vim.current.buffer.name
+        if not bufnr:
+            bufnr = -1
+            bufname = ''
+        else:
+            bufnr = int(bufnr)
+            bufname = self._vim.call('bufname', bufnr)
+        buftype = self._vim.current.buffer.options['buftype']
+        bufpath = self._vim.call('fnamemodify', bufname, ':p')
+        if not self._vim.call('filereadable', bufpath) or 'nofile' in buftype:
+            bufpath = ''
+
         return {
-            'bufnr': '',
-            'bufname': '',
-            'bufpath': '',
+            'bufnr': bufnr,
+            'bufname': bufname,
+            'bufpath': bufpath,
             'camelcase': self._vim.call(
                 'deoplete#custom#_get_option', 'camel_case'),
             'complete_str': '',
@@ -186,7 +200,8 @@ class Deoplete(logger.LoggingMixin):
                            or self._vim.call('has', 'win64')),
             'smartcase': self._vim.call(
                 'deoplete#custom#_get_option', 'smart_case'),
-            # 'vars': [x for x in self._vim.options if ],
+            'vars': {x: y for x, y in self._vim.eval('g:').items()
+                     if 'deoplete#' in x and x != 'deoplete#_yarp'},
         }
 
     def _get_results(self, context):
