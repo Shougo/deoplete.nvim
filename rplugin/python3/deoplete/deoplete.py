@@ -29,6 +29,10 @@ class Deoplete(logger.LoggingMixin):
         self._prev_input = ''
         self._prev_next_input = ''
 
+        self._filetype = self._vim.eval('&l:filetype')
+        self._filetype_context = self._init_filetype_context(self._filetype)
+        self._cached_context = self._init_cached_context()
+
         self._parents = []
         self._parent_count = 0
         self._max_parents = self._vim.call('deoplete#custom#_get_option',
@@ -146,8 +150,44 @@ class Deoplete(logger.LoggingMixin):
             'max_kind_width': max_width,
             'max_menu_width': max_width,
         }
+        context.update(self._cached_context)
+
+        if filetype != self._filetype:
+            self._filetype = filetype
+            self._filetype_context = self._init_filetype_context(filetype)
+
+        context.update(self._filetype_context)
 
         return context
+
+    def _init_filetype_context(self, filetype):
+        return {
+            'keyword_pattern': self._vim.call(
+                'deoplete#util#get_keyword_pattern', filetype),
+            'sources': self._vim.call(
+                'deoplete#custom#_get_filetype_option',
+                'sources', filetype, []),
+        }
+
+    def _init_cached_context(self):
+        return {
+            'bufnr': '',
+            'bufname': '',
+            'bufpath': '',
+            'camelcase': self._vim.call(
+                'deoplete#custom#_get_option', 'camel_case'),
+            'complete_str': '',
+            'custom': self._vim.call('deoplete#custom#_get'),
+            'cwd': self._vim.call('getcwd'),
+            'encoding': self._vim.options['encoding'],
+            'ignorecase': self._vim.call(
+                'deoplete#custom#_get_option', 'ignore_case'),
+            'is_windows': (self._vim.call('has', 'win32')
+                           or self._vim.call('has', 'win64')),
+            'smartcase': self._vim.call(
+                'deoplete#custom#_get_option', 'smart_case'),
+            # 'vars': [x for x in self._vim.options if ],
+        }
 
     def _get_results(self, context):
         is_async = False
