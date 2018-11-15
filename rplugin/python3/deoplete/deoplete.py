@@ -51,7 +51,7 @@ class Deoplete(logger.LoggingMixin):
             self.enable_logging()
 
         # Initialization
-        context = self._vim.call('deoplete#init#_context', 'Init')
+        context = self._init_context('Init')
         context['rpc'] = 'deoplete_on_event'
         self.on_event(context)
 
@@ -65,7 +65,7 @@ class Deoplete(logger.LoggingMixin):
         self.is_debug_enabled = True
 
     def completion_begin(self, user_context):
-        context = self._vim.call('deoplete#init#_context', '')
+        context = self._init_context(user_context['event'])
         context.update(user_context)
 
         self.debug('completion_begin (%s): %r',
@@ -117,7 +117,10 @@ class Deoplete(logger.LoggingMixin):
                    is_async)
         self._vim.call('deoplete#handler#_do_complete')
 
-    def on_event(self, context):
+    def on_event(self, user_context):
+        context = self._init_context(user_context['event'])
+        context.update(user_context)
+
         self.debug('on_event: %s', context['event'])
         self._check_recache(context)
 
@@ -125,15 +128,17 @@ class Deoplete(logger.LoggingMixin):
             parent.on_event(context)
 
     def _init_context(self, event):
-        inpt = self._vim.call('deoplete#util#get_input', event)
+        text = self._vim.call('deoplete#util#get_input', event)
         [filetype, filetypes, same_filetypes] = self._vim.call(
-            'deoplete#util#get_context_filetype', event)
+            'deoplete#util#get_context_filetype', text, event)
 
         if self._vim.call('deoplete#util#get_prev_event') == 'Refresh':
             event = 'Manual'
 
         window = self._vim.current.window
-        width = window.width - window.cursor[1] + len(re.search(r'\w$', inpt))
+        m = re.search(r'\w$', text)
+        word_len = len(m.group(0)) if m else 0
+        width = window.width - window.cursor[1] + word_len
         max_width = (width * 2 / 3)
 
         context = {
@@ -141,7 +146,7 @@ class Deoplete(logger.LoggingMixin):
             'event': event,
             'filetype': filetype,
             'filetypes': filetypes,
-            'input': inpt,
+            'input': text,
             'max_abbr_width': max_width,
             'max_kind_width': max_width,
             'max_menu_width': max_width,

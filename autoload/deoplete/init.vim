@@ -98,10 +98,6 @@ function! s:init_internal_variables() abort
   call deoplete#init#_prev_completion()
 
   let g:deoplete#_context = {}
-  let g:deoplete#_cached_context = deoplete#init#_cached_context()
-  let g:deoplete#_filetype = &l:filetype
-  let g:deoplete#_filetype_context =
-        \ deoplete#init#_filetype_context(&l:filetype)
 
   if !exists('g:deoplete#_logging')
     let g:deoplete#_logging = {}
@@ -188,76 +184,6 @@ function! deoplete#init#_custom_variables() abort
   call s:check_custom_var('omni',
         \ 'g:deoplete#omni#functions',
         \ 'functions')
-endfunction
-
-function! deoplete#init#_cached_context() abort
-  let bufnr = expand('<abuf>') !=# '' ? expand('<abuf>') : bufnr('%')
-  let bufname = bufname(bufnr)
-  let bufpath = fnamemodify(bufname, ':p')
-  if !filereadable(bufpath) || getbufvar(bufnr, '&buftype') =~# 'nofile'
-    let bufpath = ''
-  endif
-
-  return {
-        \ 'is_windows': s:is_windows,
-        \ 'encoding': &encoding,
-        \ 'ignorecase': deoplete#custom#_get_option('ignore_case'),
-        \ 'smartcase': deoplete#custom#_get_option('smart_case'),
-        \ 'camelcase': deoplete#custom#_get_option('camel_case'),
-        \ 'bufnr': bufnr,
-        \ 'bufname': bufname,
-        \ 'bufpath': bufpath,
-        \ 'complete_str': '',
-        \ 'cwd': getcwd(),
-        \ 'vars': filter(copy(g:),
-        \       "stridx(v:key, 'deoplete#') == 0
-        \        && v:key !=# 'deoplete#_yarp'"),
-        \ 'custom': deoplete#custom#_get(),
-        \ }
-endfunction
-function! deoplete#init#_filetype_context(filetype) abort
-  return {
-        \ 'keyword_pattern': deoplete#util#get_keyword_pattern(a:filetype),
-        \ 'sources': deoplete#custom#_get_filetype_option(
-        \            'sources', a:filetype, []),
-        \ }
-endfunction
-function! deoplete#init#_context(event) abort
-  let input = deoplete#util#get_input(a:event)
-
-  let [filetype, filetypes, same_filetypes] =
-        \ deoplete#util#get_context_filetype(input, a:event)
-
-  let event = (deoplete#util#get_prev_event() ==# 'Refresh') ?
-        \ 'Manual' : a:event
-
-  let width = winwidth(0) - col('.') + len(matchstr(input, '\w*$'))
-  let max_width = (width * 2 / 3)
-
-  let context = {
-        \ 'changedtick': b:changedtick,
-        \ 'event': event,
-        \ 'input': input,
-        \ 'next_input': deoplete#util#get_next_input(a:event),
-        \ 'position': getpos('.'),
-        \ 'filetype': filetype,
-        \ 'filetypes': filetypes,
-        \ 'same_filetypes': same_filetypes,
-        \ 'max_abbr_width': max_width,
-        \ 'max_kind_width': max_width,
-        \ 'max_menu_width': max_width,
-        \}
-
-  call extend(context, g:deoplete#_cached_context)
-
-  if filetype !=# g:deoplete#_filetype
-    let g:deoplete#_filetype = filetype
-    let g:deoplete#_filetype_context =
-          \ deoplete#init#_filetype_context(filetype)
-  endif
-  call extend(context, g:deoplete#_filetype_context)
-
-  return context
 endfunction
 
 function! s:check_custom_var(source_name, old_var, new_var) abort
