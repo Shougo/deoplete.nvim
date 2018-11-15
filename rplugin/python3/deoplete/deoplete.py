@@ -177,7 +177,7 @@ class Deoplete(logger.LoggingMixin):
     def _init_cached_context(self):
         bufnr = self._vim.call('expand', '<abuf>')
         if not bufnr:
-            bufnr = self._vim.current.buffer.name
+            bufnr = self._vim.current.buffer.number
         if not bufnr:
             bufnr = -1
             bufname = ''
