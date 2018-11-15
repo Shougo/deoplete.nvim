@@ -91,11 +91,11 @@ class Deoplete(logger.LoggingMixin):
             self._vim.call('deoplete#handler#_async_timer_stop')
 
         if not candidates and ('deoplete#_saved_completeopt'
-                               in context['vars']):
+                               in self._vim.vars):
             self._vim.call('deoplete#mapping#_restore_completeopt')
 
         # Async update is skipped if same.
-        prev_completion = context['vars']['deoplete#_prev_completion']
+        prev_completion = self._vim.vars['deoplete#_prev_completion']
         prev_candidates = prev_completion['candidates']
         if (context['event'] == 'Async' and
                 prev_candidates and len(candidates) <= len(prev_candidates)):
