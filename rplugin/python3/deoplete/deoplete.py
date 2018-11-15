@@ -206,7 +206,8 @@ class Deoplete(logger.LoggingMixin):
             'smartcase': self._vim.call(
                 'deoplete#custom#_get_option', 'smart_case'),
             'vars': {x: y for x, y in self._vim.eval('g:').items()
-                     if 'deoplete#' in x and x != 'deoplete#_yarp'},
+                     if x.startswith('deoplete#') and
+                     not x.startswith('deoplete#_')},
         }
 
     def _get_results(self, context):
