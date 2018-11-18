@@ -42,6 +42,10 @@ function! deoplete#init#_channel() abort
     call deoplete#util#print_error(
           \ 'You need to set g:python3_host_prog.')
   endif
+  if has('nvim') && !has('nvim-0.3.0')
+    call deoplete#util#print_error('deoplete requires nvim 0.3.0+.')
+    return 1
+  endif
 
   try
     if deoplete#util#has_yarp()

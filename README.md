@@ -25,7 +25,7 @@ Here are some [completion sources](https://github.com/Shougo/deoplete.nvim/wiki/
 
 ## Install
 
-**Note:** deoplete requires Neovim (0.2.0+ and of course, **latest** is
+**Note:** deoplete requires Neovim (0.3.0+ and of course, **latest** is
 recommended) or Vim8 with Python3.5+ and timers enabled.  See
 [requirements](#requirements) if you aren't sure whether you have this.
 
