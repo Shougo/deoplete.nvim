@@ -23,7 +23,12 @@ function! deoplete#handler#_init() abort
     call s:define_completion_via_timer('InsertEnter')
   endif
   if deoplete#custom#_get_option('refresh_always')
-    call s:define_completion_via_timer('InsertCharPre')
+    if exists('##TextChangedP')
+      autocmd deoplete InsertCharPre * let s:check_insert_charpre = v:true
+      call s:define_completion_via_timer('TextChangedP')
+    else
+      call s:define_completion_via_timer('InsertCharPre')
+    endif
   endif
 
   " Note: Vim 8 GUI(MacVim and Win32) is broken
@@ -38,6 +43,8 @@ function! deoplete#handler#_init() abort
     " Note: Workaround
     autocmd deoplete VimLeavePre * call s:kill_yarp()
   endif
+
+  let s:check_insert_charpre = v:false
 endfunction
 
 function! deoplete#handler#_do_complete() abort
@@ -75,6 +82,35 @@ function! deoplete#handler#_do_complete() abort
     let &l:omnifunc = 'deoplete#mapping#_completefunc'
     call feedkeys("\<C-x>\<C-o>", 'in')
   endif
+endfunction
+
+function! deoplete#handler#_check_omnifunc(context) abort
+  let prev = g:deoplete#_prev_completion
+  let blacklist = ['LanguageClient#complete']
+  if a:context.event ==# 'Manual'
+        \ || &l:omnifunc ==# ''
+        \ || index(blacklist, &l:omnifunc) >= 0
+        \ || prev.input ==# a:context.input
+    return
+  endif
+
+  for filetype in a:context.filetypes
+    for pattern in deoplete#util#convert2list(
+          \ deoplete#custom#_get_filetype_option(
+          \   'omni_patterns', filetype, ''))
+      if pattern !=# '' && a:context.input =~# '\%('.pattern.'\)$'
+        let g:deoplete#_context.candidates = []
+
+        let prev.event = a:context.event
+        let prev.input = a:context.input
+        let prev.candidates = []
+
+        call deoplete#mapping#_set_completeopt()
+        call feedkeys("\<C-x>\<C-o>", 'in')
+        return 1
+      endif
+    endfor
+  endfor
 endfunction
 
 function! s:completion_timer_start(event) abort
@@ -136,19 +172,20 @@ function! s:completion_begin(event) abort
     return
   endif
 
-  let context = deoplete#init#_context(a:event, [])
-  if context['event'] !=# 'Async'
+  if a:event !=# 'Async'
     call deoplete#init#_prev_completion()
   endif
 
-  if s:check_omnifunc(context)
-    return
-  endif
-
   call deoplete#util#rpcnotify(
-        \ 'deoplete_auto_completion_begin', context)
+        \ 'deoplete_auto_completion_begin', {'event': a:event})
 endfunction
 function! s:is_skip(event) abort
+  if a:event ==# 'TextChangedP' && !s:check_insert_charpre
+    return 1
+  endif
+
+  let s:check_insert_charpre = v:false
+
   if s:is_skip_text(a:event)
     return 1
   endif
@@ -191,34 +228,6 @@ function! s:is_skip_text(event) abort
         \ || (a:event !=# 'Manual' && input !=# ''
         \     && index(skip_chars, input[-1:]) >= 0)
 endfunction
-function! s:check_omnifunc(context) abort
-  let prev = g:deoplete#_prev_completion
-  let blacklist = ['LanguageClient#complete']
-  if a:context.event ==# 'Manual'
-        \ || &l:omnifunc ==# ''
-        \ || index(blacklist, &l:omnifunc) >= 0
-        \ || prev.input ==# a:context.input
-    return
-  endif
-
-  for filetype in a:context.filetypes
-    for pattern in deoplete#util#convert2list(
-          \ deoplete#custom#_get_filetype_option(
-          \   'omni_patterns', filetype, ''))
-      if pattern !=# '' && a:context.input =~# '\%('.pattern.'\)$'
-        let g:deoplete#_context.candidates = []
-
-        let prev.event = a:context.event
-        let prev.input = a:context.input
-        let prev.candidates = []
-
-        call deoplete#mapping#_set_completeopt()
-        call feedkeys("\<C-x>\<C-o>", 'in')
-        return 1
-      endif
-    endfor
-  endfor
-endfunction
 
 function! s:define_on_event(event) abort
   if !exists('##' . a:event)
@@ -248,14 +257,6 @@ function! s:on_complete_done() abort
   if get(v:completed_item, 'word', '') ==# ''
     return
   endif
-
-  let word = v:completed_item.word
-  if !has_key(g:deoplete#_rank, word)
-    let g:deoplete#_rank[word] = 1
-  else
-    let g:deoplete#_rank[word] += 1
-  endif
-
   call deoplete#handler#_skip_next_completion()
 endfunction
 

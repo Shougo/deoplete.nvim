@@ -11,6 +11,7 @@ import time
 
 import deoplete.parent
 from deoplete import logger
+from deoplete.context import Context
 from deoplete.util import error, error_tb
 
 
@@ -27,6 +28,8 @@ class Deoplete(logger.LoggingMixin):
         self._prev_results = {}
         self._prev_input = ''
         self._prev_next_input = ''
+
+        self._context = Context(self._vim)
 
         self._parents = []
         self._parent_count = 0
@@ -46,7 +49,7 @@ class Deoplete(logger.LoggingMixin):
             self.enable_logging()
 
         # Initialization
-        context = self._vim.call('deoplete#init#_context', 'Init', [])
+        context = self._context.get('Init')
         context['rpc'] = 'deoplete_on_event'
         self.on_event(context)
 
@@ -59,9 +62,15 @@ class Deoplete(logger.LoggingMixin):
         logger.setup(self._vim, logging['level'], logging['logfile'])
         self.is_debug_enabled = True
 
-    def completion_begin(self, context):
+    def completion_begin(self, user_context):
+        context = self._context.get(user_context['event'])
+        context.update(user_context)
+
         self.debug('completion_begin (%s): %r',
                    context['event'], context['input'])
+
+        if self._vim.call('deoplete#handler#_check_omnifunc', context):
+            return
 
         self._check_recache(context)
 
@@ -80,11 +89,11 @@ class Deoplete(logger.LoggingMixin):
             self._vim.call('deoplete#handler#_async_timer_stop')
 
         if not candidates and ('deoplete#_saved_completeopt'
-                               in context['vars']):
+                               in self._vim.vars):
             self._vim.call('deoplete#mapping#_restore_completeopt')
 
         # Async update is skipped if same.
-        prev_completion = context['vars']['deoplete#_prev_completion']
+        prev_completion = self._vim.vars['deoplete#_prev_completion']
         prev_candidates = prev_completion['candidates']
         if (context['event'] == 'Async' and
                 prev_candidates and len(candidates) <= len(prev_candidates)):
@@ -98,12 +107,18 @@ class Deoplete(logger.LoggingMixin):
             'input': context['input'],
             'is_async': is_async,
         }
-        self.debug('calling deoplete#handler#_do_complete:'
-                   + ' %d candidates, complete_position=%d, is_async=%d',
-                   len(candidates), position, is_async)
+        self.debug('do_complete (%s): '
+                   + '%d candidates, input=%s, complete_position=%d, '
+                   + 'is_async=%d',
+                   context['event'],
+                   len(candidates), context['input'], position,
+                   is_async)
         self._vim.call('deoplete#handler#_do_complete')
 
-    def on_event(self, context):
+    def on_event(self, user_context):
+        context = self._context.get(user_context['event'])
+        context.update(user_context)
+
         self.debug('on_event: %s', context['event'])
         self._check_recache(context)
 
@@ -180,10 +195,10 @@ class Deoplete(logger.LoggingMixin):
             return
 
         if self._max_parents == 1:
-            self._add_parent(deoplete.parent.SingleParent)
+            self._add_parent(deoplete.parent.SyncParent)
         else:
             for n in range(0, self._max_parents):
-                self._add_parent(deoplete.parent.MultiParent)
+                self._add_parent(deoplete.parent.AsyncParent)
 
     def _find_rplugins(self, source):
         """Search for base.py or *.py
@@ -218,7 +233,7 @@ class Deoplete(logger.LoggingMixin):
 
             if self._max_parents <= 0:
                 # Add parent automatically for num_processes=0.
-                self._add_parent(deoplete.parent.MultiParent)
+                self._add_parent(deoplete.parent.AsyncParent)
 
             self._parents[self._parent_count].add_source(path)
             self.debug('Process %d: %s', self._parent_count, path)

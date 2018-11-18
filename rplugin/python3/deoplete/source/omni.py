@@ -47,7 +47,7 @@ class Source(Base):
                 self.get_filetype_var(filetype, 'functions')):
             if omnifunc == '' and (filetype == current_ft or
                                    filetype in ['css', 'javascript']):
-                omnifunc = context['omni__omnifunc']
+                omnifunc = self.vim.eval('&l:omnifunc')
             if omnifunc == '':
                 continue
             self._omnifunc = omnifunc

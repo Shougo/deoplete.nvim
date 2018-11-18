@@ -170,7 +170,7 @@ class Child(logger.LoggingMixin):
 
     def _gather_results(self, context):
         if (context['changedtick'] !=
-                self._vim.current.buffer.vars['changedtick']):
+                self._vim.current.buffer.vars.get('changedtick', 0)):
             return []
         results = []
 
@@ -464,7 +464,6 @@ class Child(logger.LoggingMixin):
             'input_pattern',
             'is_debug_enabled',
             'is_silent',
-            'keyword_patterns',
             'mark',
             'matchers',
             'max_abbr_width',
@@ -508,7 +507,10 @@ class Child(logger.LoggingMixin):
                 except Exception as exc:
                     error_tb(self._vim, 'Exception during {}.on_event '
                              'for event {!r}: {}'.format(
-                                 source_name, event, exc))
+                                 source.name, event, exc))
+
+        for f in self._filters.values():
+            f.on_event(context)
 
     def _get_sources(self):
         # Note: for the size change of "self._sources" error

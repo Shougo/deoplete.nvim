@@ -52,7 +52,7 @@ class _Parent(logger.LoggingMixin):
         self._put('on_event', [context])
 
 
-class SingleParent(_Parent):
+class SyncParent(_Parent):
     def _start_process(self):
         from deoplete.child import Child
         self._child = Child(self._vim)
@@ -66,7 +66,7 @@ class SingleParent(_Parent):
         self._child.main(name, args, queue_id=None)
 
 
-class MultiParent(_Parent):
+class AsyncParent(_Parent):
     def _start_process(self):
         self._stdin = None
         self._queue_id = ''

@@ -41,9 +41,9 @@ function! deoplete#enable_logging(level, logfile) abort
 endfunction
 
 function! deoplete#send_event(event, ...) abort
-  let sources = get(a:000, 0, [])
+  let sources = deoplete#util#convert2list(get(a:000, 0, []))
   call deoplete#util#rpcnotify('deoplete_on_event',
-        \ deoplete#init#_context(a:event, sources))
+        \ {'event': a:event, 'sources': sources})
 endfunction
 
 function! deoplete#manual_complete(...) abort

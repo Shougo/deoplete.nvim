@@ -10,7 +10,7 @@ function! s:check_t_list() abort
     call health#report_ok('exists("v:t_list") was successful')
   else
     call health#report_error('exists("v:t_list") was not successful',
-          \ 'Deoplete requires neovim 0.2.0+!')
+          \ 'Deoplete requires neovim 0.3.0+!')
   endif
 endfunction
 

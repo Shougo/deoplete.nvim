@@ -45,7 +45,7 @@ Improvements in deoplete in comparison to |neocomplete|:
 ==============================================================================
 INSTALL							*deoplete-install*
 
-Note: deoplete requires Neovim (0.2.0+) or Vim8 (latest is recommended) with
+Note: deoplete requires Neovim (0.3.0+) or Vim8 (latest is recommended) with
 Python3.5+ and |+timers| enabled.
 
 Please install nvim-yarp plugin for Vim8.
@@ -64,12 +64,12 @@ If ":echo has('python3')" returns `1`, then you're done; otherwise, see below.
 
 You can enable Python3 interface with pip: >
 
-    pip3 install neovim
+    pip3 install --user pynvim
 
 Note: deoplete needs neovim-python ver.0.2.4+.
 You need update neovim-python module.
 >
-    pip3 install --upgrade neovim
+    pip3 install --user --upgrade pynvim
 <
 If you want to read for Neovim-python/python3 interface install documentation,
 you should read |provider-python| and the Wiki.
@@ -720,7 +720,7 @@ matcher_length
 
 						*deoplete-filter-sorter_rank*
 sorter_rank	Matched rank order sorter.  The higher the head matched word
-		or already selected.
+		or already typed word.
 
 						*deoplete-filter-sorter_word*
 sorter_word	Word order sorter.
@@ -897,14 +897,6 @@ is_volatile
 		called on each input change (if implemented).
 
 		Default: False
-
-				*deoplete-source-attribute-keyword_patterns*
-keyword_patterns
-		It defines the keyword patterns for completion.
-		This is appointed in regular expression string or list every
-		file type.
-
-		Default: |deoplete-options-keyword_patterns|
 
 					*deoplete-source-attribute-mark*
 mark		(String)			(Optional)
@@ -1340,7 +1332,7 @@ A: 1. Please update neovim to the latest version.
 
    2. Please update neovim python3 module to the latest version. >
 
-       $ sudo pip3 install neovim --upgrade
+       $ pip3 install --user pynvim --upgrade
 <
    3. Please execute ":UpdateRemotePlugins" command manually if Neovim.
 
@@ -1446,7 +1438,7 @@ https://github.com/Shougo/deoplete.nvim/issues/694
 
 A: You must upgrade neovim-python client. >
 
-       $ pip3 install neovim --upgrade
+       $ pip3 install --user pynvim --upgrade
 
 							*deoplete-faq-config*
 2. Configuration~
@@ -1679,6 +1671,9 @@ A: https://github.com/zchee/deoplete-jedi/issues/35
 
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
+
+2018.10.28
+* Remove "deoplete-source-attribute-keyword_patterns".
 
 2018.10.20
 * Python 3.5+ is required.

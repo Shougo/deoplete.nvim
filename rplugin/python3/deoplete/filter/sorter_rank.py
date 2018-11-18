@@ -4,7 +4,14 @@
 # License: MIT license
 # ============================================================================
 
+import re
+
 from deoplete.filter.base import Base
+from deoplete.util import getlines
+
+
+LINES_ABOVE = 100
+LINES_BELOW = 100
 
 
 class Filter(Base):
@@ -14,16 +21,28 @@ class Filter(Base):
 
         self.name = 'sorter_rank'
         self.description = 'rank sorter'
+        self._cache = set()
+
+    def on_event(self, context):
+        line = context['position'][1]
+        lines = getlines(self.vim,
+                         max([1, line - LINES_ABOVE]), line + LINES_BELOW)
+
+        # self._cache = set(re.findall(context['keyword_pattern'],
+        #                              '\n'.join(lines)))
+        self._cache = {}
+        for m in re.finditer(context['keyword_pattern'], '\n'.join(lines)):
+            k = m.group(0)
+            if k in self._cache:
+                self._cache[k] += 1
+            else:
+                self._cache[k] = 1
 
     def filter(self, context):
-        if not context['complete_str']:
-            return context['candidates']
-
-        rank = context['vars']['deoplete#_rank']
         complete_str = context['complete_str'].lower()
-        input_len = len(complete_str)
-        return sorted(context['candidates'],
-                      key=lambda x: -1 * rank[x['word']]
-                      if x['word'] in rank
-                      else abs(x['word'].lower().find(
-                          complete_str, 0, input_len)))
+
+        def compare(x):
+            matched = int(complete_str in x['word'].lower())
+            mru = self._cache.get(x['word'], 0)
+            return -(matched * 40 + mru * 20)
+        return sorted(context['candidates'], key=compare)

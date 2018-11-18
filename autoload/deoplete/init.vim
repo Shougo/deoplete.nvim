@@ -42,6 +42,10 @@ function! deoplete#init#_channel() abort
     call deoplete#util#print_error(
           \ 'You need to set g:python3_host_prog.')
   endif
+  if has('nvim') && !has('nvim-0.3.0')
+    call deoplete#util#print_error('deoplete requires nvim 0.3.0+.')
+    return 1
+  endif
 
   try
     if deoplete#util#has_yarp()
@@ -96,8 +100,9 @@ endfunction
 
 function! s:init_internal_variables() abort
   call deoplete#init#_prev_completion()
+
   let g:deoplete#_context = {}
-  let g:deoplete#_rank = {}
+
   if !exists('g:deoplete#_logging')
     let g:deoplete#_logging = {}
   endif
@@ -183,63 +188,6 @@ function! deoplete#init#_custom_variables() abort
   call s:check_custom_var('omni',
         \ 'g:deoplete#omni#functions',
         \ 'functions')
-endfunction
-
-function! deoplete#init#_context(event, sources) abort
-  let input = deoplete#util#get_input(a:event)
-
-  let [filetype, filetypes, same_filetypes] =
-        \ deoplete#util#get_context_filetype(input, a:event)
-
-  let sources = deoplete#util#convert2list(a:sources)
-  if a:event !=# 'Manual' && empty(sources)
-    " Use default sources
-    let sources = deoplete#custom#_get_filetype_option(
-          \ 'sources', filetype, [])
-  endif
-
-  let event = (deoplete#util#get_prev_event() ==# 'Refresh') ?
-        \ 'Manual' : a:event
-
-  let width = winwidth(0) - col('.') + len(matchstr(input, '\w*$'))
-  let max_width = (width * 2 / 3)
-
-  let bufnr = expand('<abuf>') !=# '' ? expand('<abuf>') : bufnr('%')
-  let bufname = bufname(bufnr)
-  let bufpath = fnamemodify(bufname, ':p')
-  if !filereadable(bufpath) || getbufvar(bufnr, '&buftype') =~# 'nofile'
-    let bufpath = ''
-  endif
-
-  return {
-        \ 'changedtick': b:changedtick,
-        \ 'event': event,
-        \ 'input': input,
-        \ 'is_windows': s:is_windows,
-        \ 'next_input': deoplete#util#get_next_input(a:event),
-        \ 'complete_str': '',
-        \ 'encoding': &encoding,
-        \ 'position': getpos('.'),
-        \ 'filetype': filetype,
-        \ 'filetypes': filetypes,
-        \ 'same_filetypes': same_filetypes,
-        \ 'ignorecase': deoplete#custom#_get_option('ignore_case'),
-        \ 'smartcase': deoplete#custom#_get_option('smart_case'),
-        \ 'camelcase': deoplete#custom#_get_option('camel_case'),
-        \ 'sources': sources,
-        \ 'max_abbr_width': max_width,
-        \ 'max_kind_width': max_width,
-        \ 'max_menu_width': max_width,
-        \ 'bufnr': bufnr,
-        \ 'bufname': bufname,
-        \ 'bufpath': bufpath,
-        \ 'cwd': getcwd(),
-        \ 'vars': filter(copy(g:),
-        \       "stridx(v:key, 'deoplete#') == 0
-        \        && v:key !=# 'deoplete#_yarp'"),
-        \ 'custom': deoplete#custom#_get(),
-        \ 'omni__omnifunc': &l:omnifunc,
-        \ }
 endfunction
 
 function! s:check_custom_var(source_name, old_var, new_var) abort

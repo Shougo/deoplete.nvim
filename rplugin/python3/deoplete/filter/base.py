@@ -15,6 +15,9 @@ class Base(LoggingMixin):
         self.name = 'base'
         self.description = ''
 
+    def on_event(self, context):
+        pass
+
     @abstractmethod
     def filter(self, context):
         pass
