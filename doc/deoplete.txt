@@ -64,12 +64,12 @@ If ":echo has('python3')" returns `1`, then you're done; otherwise, see below.
 
 You can enable Python3 interface with pip: >
 
-    pip3 install neovim
+    pip3 install --user pynvim
 
 Note: deoplete needs neovim-python ver.0.2.4+.
 You need update neovim-python module.
 >
-    pip3 install --upgrade neovim
+    pip3 install --user --upgrade pynvim
 <
 If you want to read for Neovim-python/python3 interface install documentation,
 you should read |provider-python| and the Wiki.
@@ -1332,7 +1332,7 @@ A: 1. Please update neovim to the latest version.
 
    2. Please update neovim python3 module to the latest version. >
 
-       $ sudo pip3 install neovim --upgrade
+       $ pip3 install --user pynvim --upgrade
 <
    3. Please execute ":UpdateRemotePlugins" command manually if Neovim.
 
@@ -1438,7 +1438,7 @@ https://github.com/Shougo/deoplete.nvim/issues/694
 
 A: You must upgrade neovim-python client. >
 
-       $ pip3 install neovim --upgrade
+       $ pip3 install --user pynvim --upgrade
 
 							*deoplete-faq-config*
 2. Configuration~

@@ -69,7 +69,7 @@ If `:echo has("python3")` returns `1`, then you have python 3 support; otherwise
 
 You can enable Python3 interface with pip:
 
-    pip3 install neovim
+    pip3 install --user pynvim
 
 Please install nvim-yarp and vim-hug-neovim-rpc for Vim8.
 
@@ -86,7 +86,7 @@ auto-completion.
 
 You need update neovim-python module.
 
-    pip3 install --upgrade neovim
+    pip3 install --user --upgrade pynvim
 
 If you want to read the Neovim-python/python3 interface install documentation,
 you should read `:help provider-python` and the Wiki.
