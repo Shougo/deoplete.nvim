@@ -280,10 +280,10 @@ class Deoplete(logger.LoggingMixin):
             return
 
         if self._max_parents == 1:
-            self._add_parent(deoplete.parent.SingleParent)
+            self._add_parent(deoplete.parent.SyncParent)
         else:
             for n in range(0, self._max_parents):
-                self._add_parent(deoplete.parent.MultiParent)
+                self._add_parent(deoplete.parent.AsyncParent)
 
     def _find_rplugins(self, source):
         """Search for base.py or *.py
@@ -318,7 +318,7 @@ class Deoplete(logger.LoggingMixin):
 
             if self._max_parents <= 0:
                 # Add parent automatically for num_processes=0.
-                self._add_parent(deoplete.parent.MultiParent)
+                self._add_parent(deoplete.parent.AsyncParent)
 
             self._parents[self._parent_count].add_source(path)
             self.debug('Process %d: %s', self._parent_count, path)
