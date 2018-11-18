@@ -17,32 +17,32 @@ else:
     import neovim
     vim = neovim
 
-if 'neovim' in locals() and hasattr(neovim, 'plugin'):
+if hasattr(vim, 'plugin'):
     # Neovim only
 
-    @neovim.plugin
+    @vim.plugin
     class DeopleteHandlers(object):
 
         def __init__(self, vim):
             self._vim = vim
 
-        @neovim.function('_deoplete_init', sync=False)
+        @vim.function('_deoplete_init', sync=False)
         def init_channel(self, args):
             self._deoplete = Deoplete(self._vim)
 
-        @neovim.rpc_export('deoplete_enable_logging')
+        @vim.rpc_export('deoplete_enable_logging')
         def enable_logging(self, context):
             self._deoplete.enable_logging()
 
-        @neovim.rpc_export('deoplete_auto_completion_begin')
+        @vim.rpc_export('deoplete_auto_completion_begin')
         def auto_completion_begin(self, context):
             self._deoplete.completion_begin(context)
 
-        @neovim.rpc_export('deoplete_manual_completion_begin')
+        @vim.rpc_export('deoplete_manual_completion_begin')
         def manual_completion_begin(self, context):
             self._deoplete.completion_begin(context)
 
-        @neovim.rpc_export('deoplete_on_event')
+        @vim.rpc_export('deoplete_on_event')
         def on_event(self, context):
             self._deoplete.on_event(context)
 

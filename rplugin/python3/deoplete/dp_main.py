@@ -7,7 +7,11 @@
 import sys
 import io
 
-from neovim import attach
+from importlib import find_loader
+if find_loader('pynvim'):
+    from pynvim import attach
+else:
+    from neovim import attach
 
 
 def attach_vim(serveraddr):
