@@ -10,6 +10,9 @@ from deoplete.deoplete import Deoplete
 
 if find_loader('yarp'):
     import vim
+elif find_loader('pynvim'):
+    import pynvim
+    vim = pynvim
 else:
     import neovim
     vim = neovim
