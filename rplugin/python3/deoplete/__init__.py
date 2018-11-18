@@ -17,6 +17,35 @@ else:
     import neovim
     vim = neovim
 
+if 'pynvim' in locals() and hasattr(pynvim, 'plugin'):
+    # pynvim only
+
+    @pynvim.plugin
+    class DeopleteHandlers(object):
+
+        def __init__(self, vim):
+            self._vim = vim
+
+        @pynvim.function('_deoplete_init', sync=False)
+        def init_channel(self, args):
+            self._deoplete = Deoplete(self._vim)
+
+        @pynvim.rpc_export('deoplete_enable_logging')
+        def enable_logging(self, context):
+            self._deoplete.enable_logging()
+
+        @pynvim.rpc_export('deoplete_auto_completion_begin')
+        def auto_completion_begin(self, context):
+            self._deoplete.completion_begin(context)
+
+        @pynvim.rpc_export('deoplete_manual_completion_begin')
+        def manual_completion_begin(self, context):
+            self._deoplete.completion_begin(context)
+
+        @pynvim.rpc_export('deoplete_on_event')
+        def on_event(self, context):
+            self._deoplete.on_event(context)
+
 if 'neovim' in locals() and hasattr(neovim, 'plugin'):
     # Neovim only
 
