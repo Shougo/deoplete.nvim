@@ -142,7 +142,8 @@ class Deoplete(logger.LoggingMixin):
         max_width = (width * 2 / 3)
 
         context = {
-            'changedtick': self._vim.current.buffer.vars['changedtick'],
+            'changedtick': self._vim.current.buffer.vars.get(
+                'changedtick', 0),
             'event': event,
             'filetype': filetype,
             'filetypes': filetypes,

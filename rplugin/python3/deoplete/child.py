@@ -170,7 +170,7 @@ class Child(logger.LoggingMixin):
 
     def _gather_results(self, context):
         if (context['changedtick'] !=
-                self._vim.current.buffer.vars['changedtick']):
+                self._vim.current.buffer.vars.get('changedtick', 0)):
             return []
         results = []
 
