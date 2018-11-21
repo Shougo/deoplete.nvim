@@ -4,13 +4,13 @@
 # License: MIT license
 # ============================================================================
 
-from importlib import find_loader
+from importlib.util import find_spec
 from deoplete.deoplete import Deoplete
 
 
-if find_loader('yarp'):
+if find_spec('yarp'):
     import vim
-elif find_loader('pynvim'):
+elif find_spec('pynvim'):
     import pynvim
     vim = pynvim
 else:
@@ -47,7 +47,7 @@ if hasattr(vim, 'plugin'):
             self._deoplete.on_event(context)
 
 
-if find_loader('yarp'):
+if find_spec('yarp'):
 
     global_deoplete = Deoplete(vim)
 

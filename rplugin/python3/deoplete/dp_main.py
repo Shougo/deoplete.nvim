@@ -7,8 +7,8 @@
 import sys
 import io
 
-from importlib import find_loader
-if find_loader('pynvim'):
+from importlib.util import find_spec
+if find_spec('pynvim'):
     from pynvim import attach
 else:
     from neovim import attach
