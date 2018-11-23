@@ -48,16 +48,18 @@ def setup(vim, level, output_file=None):
         try:
             import pkg_resources
 
-            neovim_version = pkg_resources.get_distribution('neovim').version
+            pynvim_version = pkg_resources.get_distribution('pynvim').version
         except ImportError:
-            neovim_version = 'unknown'
+            pynvim_version = 'unknown'
+        except pkg_resources.DistributionNotFound:
+            pynvim_version = 'unknown'
 
         log = getLogger('logging')
         log.info('--- Deoplete Log Start ---')
-        log.info('%s, Python %s, neovim client %s',
+        log.info('%s, Python %s, pynvim %s',
                  vim.call('deoplete#util#neovim_version'),
                  '.'.join(map(str, sys.version_info[:3])),
-                 neovim_version)
+                 pynvim_version)
 
         if not vim.vars.get('deoplete#_logging_notified'):
             vim.vars['deoplete#_logging_notified'] = 1
