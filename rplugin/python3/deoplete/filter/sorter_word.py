@@ -17,4 +17,4 @@ class Filter(Base):
 
     def filter(self, context):
         return sorted(context['candidates'],
-                      key=lambda x: x['word'])
+                      key=lambda x: x['word'].swapcase())
