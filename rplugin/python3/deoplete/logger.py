@@ -49,9 +49,7 @@ def setup(vim, level, output_file=None):
             import pkg_resources
 
             pynvim_version = pkg_resources.get_distribution('pynvim').version
-        except ImportError:
-            pynvim_version = 'unknown'
-        except pkg_resources.DistributionNotFound:
+        except Exception:
             pynvim_version = 'unknown'
 
         log = getLogger('logging')
