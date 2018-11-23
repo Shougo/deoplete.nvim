@@ -44,9 +44,6 @@ endfunction
 function! deoplete#util#get_next_input(event) abort
   return getline('.')[len(deoplete#util#get_input(a:event)) :]
 endfunction
-function! deoplete#util#get_prev_event() abort
-  return get(g:deoplete#_context, 'event', '')
-endfunction
 
 function! deoplete#util#vimoption2python(option) abort
   return '[\w' . s:vimoption2python(a:option) . ']'

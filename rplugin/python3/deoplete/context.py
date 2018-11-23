@@ -6,6 +6,8 @@
 
 import re
 
+from os.path import exists
+
 
 class Context(object):
 
@@ -20,9 +22,6 @@ class Context(object):
         text = self._vim.call('deoplete#util#get_input', event)
         [filetype, filetypes, same_filetypes] = self._vim.call(
             'deoplete#util#get_context_filetype', text, event)
-
-        if self._vim.call('deoplete#util#get_prev_event') == 'Refresh':
-            event = 'Manual'
 
         window = self._vim.current.window
         m = re.search(r'\w$', text)
@@ -72,11 +71,10 @@ class Context(object):
             bufnr = -1
             bufname = ''
         else:
-            bufnr = int(bufnr)
-            bufname = self._vim.call('bufname', bufnr)
+            bufname = self._vim.buffers[int(bufnr)].name
         buftype = self._vim.current.buffer.options['buftype']
         bufpath = self._vim.call('fnamemodify', bufname, ':p')
-        if not self._vim.call('filereadable', bufpath) or 'nofile' in buftype:
+        if not exists(bufpath) or 'nofile' in buftype:
             bufpath = ''
 
         return {
@@ -91,8 +89,7 @@ class Context(object):
             'encoding': self._vim.options['encoding'],
             'ignorecase': self._vim.call(
                 'deoplete#custom#_get_option', 'ignore_case'),
-            'is_windows': (self._vim.call('has', 'win32')
-                           or self._vim.call('has', 'win64')),
+            'is_windows': self._vim.call('has', 'win32'),
             'smartcase': self._vim.call(
                 'deoplete#custom#_get_option', 'smart_case'),
             'vars': {x: y for x, y in self._vim.eval('g:').items()

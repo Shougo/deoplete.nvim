@@ -8,8 +8,6 @@ if !exists('s:is_handler_enabled')
   let s:is_handler_enabled = 0
 endif
 
-let s:is_windows = ((has('win32') || has('win64')) ? v:true : v:false)
-
 function! deoplete#init#_is_handler_enabled() abort
   return s:is_handler_enabled
 endfunction
@@ -214,7 +212,7 @@ function! deoplete#init#_option() abort
         \ 'ignore_case': &ignorecase,
         \ 'ignore_sources': {},
         \ 'max_list': 500,
-        \ 'num_processes': s:is_windows ? 1 : 4,
+        \ 'num_processes': has('win32') ? 1 : 4,
         \ 'keyword_patterns': {'_': '[a-zA-Z_]\k*'},
         \ 'omni_patterns': {
         \  'html': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],

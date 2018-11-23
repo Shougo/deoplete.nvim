@@ -28,9 +28,7 @@ class Deoplete(logger.LoggingMixin):
         self._prev_results = {}
         self._prev_input = ''
         self._prev_next_input = ''
-
-        self._context = Context(self._vim)
-
+        self._context = None
         self._parents = []
         self._parent_count = 0
         self._max_parents = self._vim.call('deoplete#custom#_get_option',
@@ -48,11 +46,6 @@ class Deoplete(logger.LoggingMixin):
         if self._vim.vars['deoplete#_logging']:
             self.enable_logging()
 
-        # Initialization
-        context = self._context.get('Init')
-        context['rpc'] = 'deoplete_on_event'
-        self.on_event(context)
-
         if hasattr(self._vim, 'channel_id'):
             self._vim.vars['deoplete#_channel_id'] = self._vim.channel_id
         self._vim.vars['deoplete#_initialized'] = True
@@ -62,7 +55,18 @@ class Deoplete(logger.LoggingMixin):
         logger.setup(self._vim, logging['level'], logging['logfile'])
         self.is_debug_enabled = True
 
+    def init_context(self):
+        self._context = Context(self._vim)
+
+        # Initialization
+        context = self._context.get('Init')
+        context['rpc'] = 'deoplete_on_event'
+        self.on_event(context)
+
     def completion_begin(self, user_context):
+        if not self._context:
+            self.init_context()
+
         context = self._context.get(user_context['event'])
         context.update(user_context)
 
@@ -116,6 +120,9 @@ class Deoplete(logger.LoggingMixin):
         self._vim.call('deoplete#handler#_do_complete')
 
     def on_event(self, user_context):
+        if not self._context:
+            self.init_context()
+
         context = self._context.get(user_context['event'])
         context.update(user_context)
 
