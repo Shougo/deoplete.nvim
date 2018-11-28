@@ -80,7 +80,10 @@ def error(vim, expr):
 
 
 def error_tb(vim, msg):
-    lines = traceback.format_exc().splitlines()
+    lines = []
+    t, v, tb = sys.exc_info()
+    if t and v and tb:
+        lines += traceback.format_exc().splitlines()
     lines += ['%s.  Use :messages / see above for error details.' % msg]
     if hasattr(vim, 'err_write'):
         vim.err_write('[deoplete] %s\n' % '\n'.join(lines))
