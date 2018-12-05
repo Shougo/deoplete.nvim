@@ -122,6 +122,8 @@ class Deoplete(logger.LoggingMixin):
     def on_event(self, user_context):
         if not self._context:
             self.init_context()
+        else:
+            self._context._init_cached()
 
         context = self._context.get(user_context['event'])
         context.update(user_context)
