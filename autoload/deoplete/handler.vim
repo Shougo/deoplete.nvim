@@ -24,11 +24,9 @@ function! deoplete#handler#_init() abort
   endif
   if deoplete#custom#_get_option('refresh_always')
     if exists('##TextChangedP')
-      autocmd deoplete InsertCharPre * let s:check_insert_charpre = v:true
       call s:define_completion_via_timer('TextChangedP')
-    else
-      call s:define_completion_via_timer('InsertCharPre')
     endif
+    call s:define_completion_via_timer('InsertCharPre')
   endif
 
   " Note: Vim 8 GUI(MacVim and Win32) is broken
@@ -166,6 +164,8 @@ function! s:completion_async(timer) abort
 endfunction
 
 function! s:completion_begin(event) abort
+  let s:check_insert_charpre = (a:event == 'InsertCharPre')
+
   if s:is_skip(a:event)
     call deoplete#mapping#_restore_completeopt()
     let g:deoplete#_context.candidates = []
@@ -183,8 +183,6 @@ function! s:is_skip(event) abort
   if a:event ==# 'TextChangedP' && !s:check_insert_charpre
     return 1
   endif
-
-  let s:check_insert_charpre = v:false
 
   if s:is_skip_text(a:event)
     return 1
@@ -208,6 +206,7 @@ function! s:is_skip_text(event) abort
   if has_key(context, 'input')
         \ && a:event !=# 'Manual'
         \ && a:event !=# 'Async'
+        \ && a:event !=# 'TextChangedP'
         \ && input ==# context.input
     return 1
   endif
@@ -224,8 +223,7 @@ function! s:is_skip_text(event) abort
 
   let skip_chars = deoplete#custom#_get_option('skip_chars')
 
-  return (!pumvisible() && virtcol('.') != displaywidth)
-        \ || (a:event !=# 'Manual' && input !=# ''
+  return (a:event !=# 'Manual' && input !=# ''
         \     && index(skip_chars, input[-1:]) >= 0)
 endfunction
 
