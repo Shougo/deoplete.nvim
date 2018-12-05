@@ -217,9 +217,12 @@ omni_patterns
 >
 		call deoplete#custom#option('omni_patterns', {
 		\ 'java': '[^. *\t]\.\w*',
+		\  'html': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],
+		\  'xhtml': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],
+		\  'xml': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],
 		\})
 <
-		Default value: in autoload/deoplete/init.vim
+		Default value: {}
 
 					*deoplete-options-on_insert_enter*
 on_insert_enter
@@ -1671,6 +1674,9 @@ A: https://github.com/zchee/deoplete-jedi/issues/35
 
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
+
+2018.12.05
+* Remove the default value of "deoplete-options-omni_patterns".
 
 2018.10.28
 * Remove "deoplete-source-attribute-keyword_patterns".

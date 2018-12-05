@@ -214,11 +214,7 @@ function! deoplete#init#_option() abort
         \ 'max_list': 500,
         \ 'num_processes': has('win32') ? 1 : 4,
         \ 'keyword_patterns': {'_': '[a-zA-Z_]\k*'},
-        \ 'omni_patterns': {
-        \  'html': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],
-        \  'xhtml': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],
-        \  'xml': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],
-        \ },
+        \ 'omni_patterns': {},
         \ 'on_insert_enter': v:true,
         \ 'on_text_changed_i': v:true,
         \ 'profile': v:false,
