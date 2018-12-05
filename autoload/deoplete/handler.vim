@@ -164,7 +164,7 @@ function! s:completion_async(timer) abort
 endfunction
 
 function! s:completion_begin(event) abort
-  let s:check_insert_charpre = (a:event == 'InsertCharPre')
+  let s:check_insert_charpre = (a:event ==# 'InsertCharPre')
 
   if s:is_skip(a:event)
     call deoplete#mapping#_restore_completeopt()
