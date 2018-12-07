@@ -202,10 +202,10 @@ endfunction
 function! deoplete#init#_option() abort
   " Note: HTML omni func use search().
   return {
-        \ 'async_timeout': 150,
+        \ 'async_timeout': 0,
         \ 'auto_complete': v:true,
-        \ 'auto_complete_delay': 20,
-        \ 'auto_refresh_delay': 50,
+        \ 'auto_complete_delay': 0,
+        \ 'auto_refresh_delay': 20,
         \ 'camel_case': v:false,
         \ 'complete_method': 'complete',
         \ 'delimiters': ['/'],
