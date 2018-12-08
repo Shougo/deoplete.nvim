@@ -85,8 +85,9 @@ class Source(Base):
     def _substitute_path(self, context, path):
         m = re.match(r'(\.{1,2})/+', path)
         if m:
-            if self.get_var('enable_buffer_path') and context['bufpath']:
-                base = context['bufpath']
+            if self.get_var('enable_buffer_path'):  # and context['bufpath']:
+                base = self.vim.current.buffer.name
+                # print(base)
             else:
                 base = os.path.join(context['cwd'], 'x')
 
