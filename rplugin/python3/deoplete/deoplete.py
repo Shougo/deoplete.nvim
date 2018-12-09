@@ -7,7 +7,6 @@
 import copy
 import glob
 import os
-import time
 
 import deoplete.parent
 from deoplete import logger
