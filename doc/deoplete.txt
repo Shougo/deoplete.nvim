@@ -100,12 +100,6 @@ For example:
 
 The set of available options follows.
 
-					*deoplete-options-async_timeout*
-async_timeout
-		The timeout of asynchronous completion.
-
-		Default value: 0 (miliseconds)
-
 					*deoplete-options-auto_complete*
 auto_complete
 		If it is False, automatic completion becomes invalid, but can
@@ -1674,6 +1668,9 @@ A: https://github.com/zchee/deoplete-jedi/issues/35
 
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
+
+2018.12.10
+* Remove async_timeout option.
 
 2018.12.05
 * Remove the default value of "deoplete-options-omni_patterns".
