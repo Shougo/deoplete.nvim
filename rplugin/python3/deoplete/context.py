@@ -48,7 +48,7 @@ class Context(object):
 
         if filetype != self._prev_filetype:
             self._prev_filetype = filetype
-            self._filetype_context = self._init_cached_filetype(filetype)
+            self._cached_filetype = self._init_cached_filetype(filetype)
 
         context.update(self._cached_filetype)
 
