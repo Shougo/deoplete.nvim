@@ -194,6 +194,7 @@ function! s:is_skip(event) abort
         \ || (a:event !=# 'Manual' && a:event !=# 'Async' && !auto_complete)
         \ || (&l:completefunc !=# '' && &l:buftype =~# 'nofile')
         \ || (a:event !=# 'InsertEnter' && mode() !=# 'i')
+        \ || (exists('b:eskk') && !empty(b:eskk))
     return 1
   endif
 
