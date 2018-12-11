@@ -1342,7 +1342,7 @@ A: 1. Please update neovim to the latest version.
    6. Please check if Python3 interface works. You can check it by the command
        `:echo has('python3')` .
 
-   https://github.com/neovim/neovim/wiki/Troubleshooting#python-support-isnt-working
+   https://github.com/neovim/neovim/wiki/FAQ#python-support-isnt-working
 
    7. You can test |deoplete-options-yarp| option for neovim.
 
