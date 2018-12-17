@@ -796,6 +796,15 @@ disabled_syntaxes
 		Default: []
 		Note: It means this feature is ignored.
 
+					*deoplete-source-attribute-dup*
+dup
+		(Bool)			(Optional)
+		The candidates will be added even when the same word is
+		already present.
+
+		Default: v:true if |deoplete-source-attribute-filetypes| is
+		set.
+
 					*deoplete-source-attribute-events*
 events		(List[str])			(Optional)
 		List of events for which |deoplete-source-attribute-on_event|

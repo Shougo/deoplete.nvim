@@ -66,8 +66,8 @@ endfunction
 
 function! deoplete#custom#source(source_name, option_name, value) abort
   let value = index([
-        \ 'filetypes', 'disabled_syntaxes',
-        \ 'matchers', 'sorters', 'converters'
+        \ 'converters', 'disabled_syntaxes',
+        \ 'filetypes', 'matchers', 'sorters',
         \ ], a:option_name) < 0 ? a:value :
         \ deoplete#util#convert2list(a:value)
   for key in deoplete#util#split(a:source_name)

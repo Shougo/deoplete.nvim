@@ -43,6 +43,7 @@ class Base(LoggingMixin):
         self.max_menu_width = 40
         self.max_candidates = 500
         self.matcher_key = ''
+        self.dup = False
 
     def get_complete_position(self, context):
         m = re.search('(?:' + context['keyword_pattern'] + ')$|$',
