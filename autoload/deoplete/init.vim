@@ -206,7 +206,6 @@ function! deoplete#init#_option() abort
         \ 'auto_complete_delay': 0,
         \ 'auto_refresh_delay': 20,
         \ 'camel_case': v:false,
-        \ 'complete_method': 'complete',
         \ 'delimiters': ['/'],
         \ 'ignore_case': &ignorecase,
         \ 'ignore_sources': {},

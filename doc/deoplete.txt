@@ -131,18 +131,6 @@ camel_case
 
 		Default value: v:false
 
-					*deoplete-options-complete_method*
-complete_method
-		If it is "complete", deoplete use |complete()|.
-
-		If it is "completefunc", deoplete use |i_CTRL-X_CTRL-U|.
-		Note: It changes current 'completefunc' value.
-
-		If it is "omnifunc", deoplete use |i_CTRL-X_CTRL-O|.
-		Note: It changes current 'omnifunc' value.
-
-		Default value: "complete"
-
 						*deoplete-options-delimiters*
 delimiters
 		Delimiters list.  It is used in
@@ -1688,6 +1676,7 @@ COMPATIBILITY					*deoplete-compatibility*
 2018.12.24
 * neovim-python 0.3.0+ is needed for asyncio feature.
 * Change deoplete-options-num_processes default value in Windows.
+* Remove "complete_method" option.
 
 2018.12.10
 * Remove async_timeout option.
