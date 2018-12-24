@@ -76,6 +76,8 @@ class Base(LoggingMixin):
 
     def get_filetype_var(self, filetype, var_name):
         var = self.get_var(var_name)
+        if var is None:
+            return None
         ft = filetype if (filetype in var) else '_'
         return var.get(ft, '')
 
