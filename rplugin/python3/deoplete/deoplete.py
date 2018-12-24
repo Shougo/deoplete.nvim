@@ -34,7 +34,7 @@ class Deoplete(logger.LoggingMixin):
                                            'num_processes')
 
         if self._max_parents != 1 and not hasattr(self._vim, 'loop'):
-            msg = ('pynvim 0.2.4+ is required for %d parents. '
+            msg = ('pynvim 0.3.0+ is required for %d parents. '
                    'Using single process.' % self._max_parents)
             error(self._vim, msg)
             self._max_parents = 1

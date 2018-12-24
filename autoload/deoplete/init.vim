@@ -211,7 +211,7 @@ function! deoplete#init#_option() abort
         \ 'ignore_case': &ignorecase,
         \ 'ignore_sources': {},
         \ 'max_list': 500,
-        \ 'num_processes': has('win32') ? 1 : 4,
+        \ 'num_processes': 4,
         \ 'keyword_patterns': {'_': '[a-zA-Z_]\k*'},
         \ 'omni_patterns': {},
         \ 'on_insert_enter': v:true,

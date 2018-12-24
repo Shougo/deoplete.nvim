@@ -66,7 +66,7 @@ You can enable Python3 interface with pip: >
 
     pip3 install --user pynvim
 
-Note: deoplete needs neovim-python ver.0.2.4+.
+Note: deoplete needs neovim-python ver.0.3.0+.
 You need update neovim-python module.
 >
     pip3 install --user --upgrade pynvim
@@ -192,7 +192,7 @@ num_processes
 		If it is less than or equal to 0, the number of processes is
 		equal to that of sources.
 
-		Default value: 1 (Windows) or 4 (Others)
+		Default value: 4
 
 					*deoplete-options-omni_patterns*
 omni_patterns
@@ -1439,7 +1439,7 @@ It is workaround. >
 
        call deoplete#custom#option('num_processes', 1)
 
-Q: "[deoplete] neovim-python 0.2.4+ is required." error
+Q: "[deoplete] neovim-python 0.3.0+ is required." error
 https://github.com/Shougo/deoplete.nvim/issues/694
 
 A: You must upgrade neovim-python client. >
@@ -1677,6 +1677,10 @@ A: https://github.com/zchee/deoplete-jedi/issues/35
 
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
+
+2018.12.24
+* neovim-python 0.3.0+ is needed for asyncio feature.
+* Change deoplete-options-num_processes default value in Windows.
 
 2018.12.10
 * Remove async_timeout option.
