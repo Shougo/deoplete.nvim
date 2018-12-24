@@ -63,6 +63,7 @@ function! deoplete#handler#_do_complete() abort
   let prev.event = context.event
   let prev.input = context.input
   let prev.candidates = context.candidates
+  let prev.complete_position = context.complete_position
 
   if context.event ==# 'Manual'
     let context.event = ''

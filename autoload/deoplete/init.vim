@@ -209,6 +209,7 @@ function! deoplete#init#_option() abort
         \ 'delimiters': ['/'],
         \ 'ignore_case': &ignorecase,
         \ 'ignore_sources': {},
+        \ 'candidate_marks': [],
         \ 'max_list': 500,
         \ 'num_processes': 4,
         \ 'keyword_patterns': {'_': '[a-zA-Z_]\k*'},
@@ -230,6 +231,7 @@ function! deoplete#init#_prev_completion() abort
         \ 'event': '',
         \ 'input': '',
         \ 'candidates': [],
+        \ 'complete_position': -1,
         \ }
 endfunction
 

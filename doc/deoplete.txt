@@ -131,6 +131,12 @@ camel_case
 
 		Default value: v:false
 
+					*deoplete-options-candidate_marks*
+candidate_marks
+		The candidate additional marks.
+
+		Default value: []
+
 						*deoplete-options-delimiters*
 delimiters
 		Delimiters list.  It is used in
@@ -329,7 +335,6 @@ deoplete#initialize()
 		Note: You should call it in |VimEnter| autocmd.
 		User customization for deoplete must be set before
 		initialization of deoplete.
-
 						*deoplete#send_event()*
 deoplete#send_event({event}, [{sources}])
 		Call |deoplete-source-attribute-on_event| manually.
@@ -438,6 +443,11 @@ deoplete#close_popup()
 deoplete#complete_common_string()
 		complete common string in candidates.  It will be convenient
 		when candidates have long common string.
+		Note: It must be in |map-<expr>|.
+
+						*deoplete#insert_candidate()*
+deoplete#insert_candidate({number})
+		Insert {number}th candidate.
 		Note: It must be in |map-<expr>|.
 
 					*deoplete#manual_complete()*

@@ -179,9 +179,19 @@ class Deoplete(logger.LoggingMixin):
             all_candidates += candidates
 
         # self.debug(candidates)
-        max_list = self._vim.call('deoplete#custom#_get_option', 'max_list')
+        max_list = self._vim.call(
+            'deoplete#custom#_get_option', 'max_list')
         if max_list > 0:
             all_candidates = all_candidates[: max_list]
+
+        candidate_marks = self._vim.call(
+            'deoplete#custom#_get_option', 'candidate_marks')
+        if candidate_marks:
+            all_candidates = copy.deepcopy(all_candidates)
+            for i, candidate in enumerate(all_candidates):
+                mark = (candidate_marks[i] if i < len(candidate_marks) and
+                        candidate_marks[i] else ' ')
+                candidate['menu'] = mark + ' ' + candidate.get('menu', '')
 
         return (is_async, complete_position, all_candidates)
 

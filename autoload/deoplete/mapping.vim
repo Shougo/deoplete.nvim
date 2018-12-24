@@ -98,3 +98,16 @@ function! deoplete#mapping#_complete_common_string() abort
   return (pumvisible() ? "\<C-e>" : '')
         \ . repeat("\<BS>", strchars(complete_str)) . common_str
 endfunction
+function! deoplete#mapping#_insert_candidate(number) abort
+  let prev = g:deoplete#_prev_completion
+  let candidates = get(prev, 'candidates', [])
+  let word = get(candidates, a:number, {'word': ''}).word
+  if word ==# ''
+    return ''
+  endif
+
+  " Get cursor word.
+  let complete_str = prev.input[prev.complete_position :]
+  return (pumvisible() ? "\<C-e>" : '')
+        \ . repeat("\<BS>", strchars(complete_str)) . word
+endfunction

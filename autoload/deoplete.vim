@@ -75,6 +75,9 @@ function! deoplete#refresh() abort
   endif
   return pumvisible() ? "\<C-e>" : ''
 endfunction
+function! deoplete#insert_candidate(number) abort
+  return deoplete#mapping#_insert_candidate(a:number)
+endfunction
 function! deoplete#undo_completion() abort
   return deoplete#mapping#_undo_completion()
 endfunction
