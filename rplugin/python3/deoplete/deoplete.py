@@ -236,6 +236,11 @@ class Deoplete(logger.LoggingMixin):
                 # Add parent automatically for num_processes=0.
                 self._add_parent(deoplete.parent.AsyncParent)
 
+            if len(self._parents) <= self._parent_count:
+                # Bug check.
+                error(self._vim,
+                      'self._parents = %d, self._parent_count = %d'.format(
+                          len(self._parents), self._parent_count))
             self._parents[self._parent_count].add_source(path)
             self.debug('Process %d: %s', self._parent_count, path)
 
