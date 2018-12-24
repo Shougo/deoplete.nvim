@@ -361,6 +361,7 @@ deoplete#custom#buffer_option({dict})
 
 					*deoplete#custom#buffer_var()*
 deoplete#custom#buffer_var({source-name}, {var-name}, {value})
+deoplete#custom#buffer_var({source-name}, {dict})
 		The buffer local version of |deoplete#custom#var()|.
 
 						*deoplete#custom#option()*
@@ -372,11 +373,14 @@ deoplete#custom#option({dict})
 
 						*deoplete#custom#source()*
 deoplete#custom#source({source-name}, {option-name}, {value})
+deoplete#custom#source({source-name}, {dict})
 		Set {source-name} source specialized {option-name}
 		to {value}. You may specify multiple sources with
 		separating "," in {source-name}.
 		If {source-name} is "_", sources default option will be
 		change.
+		If {dict} is available, the key is {option-name} and the value
+		is {value}.
 		Note: You must call it before using deoplete.
 >
 		" Examples:
@@ -427,9 +431,12 @@ deoplete#custom#source({source-name}, {option-name}, {value})
 <
 							*deoplete#custom#var()*
 deoplete#custom#var({source-name}, {var-name}, {value})
+deoplete#custom#var({source-name}, {dict})
 		Set {source-name} source specialized variable {variable-name}
 		to {value}.  You may specify multiple sources with the
 		separator "," in {source-name}.
+		If {dict} is available, the key is {option-name} and the value
+		is {value}.
 
 ------------------------------------------------------------------------------
 KEY MAPPINGS 					*deoplete-key-mappings*
