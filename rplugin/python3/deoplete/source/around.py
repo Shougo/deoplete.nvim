@@ -22,7 +22,9 @@ class Source(Base):
             'range_above': 20,
             'range_below': 20,
         }
-        custom_vars = self.vim.call('deoplete#custom#_get_source_vars', self.name)
+        custom_vars = self.vim.call(
+            'deoplete#custom#_get_source_vars', self.name
+        )
         if custom_vars:
             self.vars.update(custom_vars)
 
@@ -33,11 +35,15 @@ class Source(Base):
         # lines above
         words = parse_buffer_pattern(
             reversed(
-                getlines(self.vim, max([1, line - self.vars['range_above']]), line)
+                getlines(
+                    self.vim, max([1, line - self.vars['range_above']]), line
+                )
             ),
             context['keyword_pattern'],
         )
-        candidates += [{'word': x, 'menu': self.vars['mark_above']} for x in words]
+        candidates += [
+            {'word': x, 'menu': self.vars['mark_above']} for x in words
+        ]
 
         # grab ':changes' command output
         p = re.compile(r'[\s\d]+')
@@ -51,13 +57,17 @@ class Source(Base):
                 lines.add(change_line)
 
         words = parse_buffer_pattern(lines, context['keyword_pattern'])
-        candidates += [{'word': x, 'menu': self.vars['mark_changes']} for x in words]
+        candidates += [
+            {'word': x, 'menu': self.vars['mark_changes']} for x in words
+        ]
 
         # lines below
         words = parse_buffer_pattern(
             getlines(self.vim, line, line + self.vars['range_below']),
             context['keyword_pattern'],
         )
-        candidates += [{'word': x, 'menu': self.vars['mark_below']} for x in words]
+        candidates += [
+            {'word': x, 'menu': self.vars['mark_below']} for x in words
+        ]
 
         return candidates
