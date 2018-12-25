@@ -220,6 +220,7 @@ function! deoplete#init#_option() abort
         \ 'min_pattern_length': 2,
         \ 'refresh_always': v:true,
         \ 'skip_chars': ['(', ')'],
+        \ 'skip_multibyte': v:false,
         \ 'smart_case': &smartcase,
         \ 'sources': {},
         \ 'trigger_key': v:char,

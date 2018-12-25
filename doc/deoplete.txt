@@ -243,6 +243,13 @@ refresh_always
 
 		Default value: v:true
 
+					*deoplete-options-skip_multibyte*
+skip_multibyte
+		Deoplete skip multibyte text completion automatically if this
+		value is True.
+
+		Default value: v:false
+
 						*deoplete-options-skip_chars*
 skip_chars
 		The list of skip characters in the auto completion.

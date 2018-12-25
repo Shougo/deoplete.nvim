@@ -193,9 +193,15 @@ function! s:is_skip(event) abort
   return 0
 endfunction
 function! s:is_skip_text(event) abort
-  let context = g:deoplete#_context
   let input = deoplete#util#get_input(a:event)
 
+  let lastchar = matchstr(input, '.$')
+  let skip_multibyte = deoplete#custom#_get_option('skip_multibyte')
+  if skip_multibyte && len(lastchar) != strwidth(lastchar)
+    return 1
+  endif
+
+  let context = g:deoplete#_context
   if has_key(context, 'input')
         \ && a:event !=# 'Manual'
         \ && a:event !=# 'Async'
