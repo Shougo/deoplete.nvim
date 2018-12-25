@@ -265,7 +265,7 @@ function! deoplete#handler#_skip_next_completion() abort
   endif
 
   let input = deoplete#util#get_input('CompleteDone')
-  if input[-1:] !=# '/'
+  if input !~# '[/.]$'
     let g:deoplete#_context.input = input
   endif
   call deoplete#init#_prev_completion()

@@ -64,34 +64,29 @@ function! deoplete#custom#_get_source_vars(name) abort
   return extend(copy(global_vars), buffer_vars)
 endfunction
 
-function! deoplete#custom#source(source_name, option_name, value) abort
-  let value = index([
-        \ 'filetypes', 'disabled_syntaxes',
-        \ 'matchers', 'sorters', 'converters'
-        \ ], a:option_name) < 0 ? a:value :
-        \ deoplete#util#convert2list(a:value)
+function! deoplete#custom#source(source_name, name_or_dict, ...) abort
   for key in deoplete#util#split(a:source_name)
     let custom_source = deoplete#custom#_get_source(key)
-    let custom_source[a:option_name] = value
+    call s:set_custom(custom_source, a:name_or_dict, get(a:000, 0, ''))
   endfor
 endfunction
 
-function! deoplete#custom#var(source_name, var_name, value) abort
+function! deoplete#custom#var(source_name, name_or_dict, ...) abort
   for key in deoplete#util#split(a:source_name)
     let custom_source = deoplete#custom#_get_source(key)
     let vars = get(custom_source, 'vars', {})
-    call s:set_value(vars, a:var_name, a:value)
+    call s:set_custom(vars, a:name_or_dict, get(a:000, 0, ''))
     call deoplete#custom#source(key, 'vars', vars)
   endfor
 endfunction
-function! deoplete#custom#buffer_var(source_name, var_name, value) abort
+function! deoplete#custom#buffer_var(source_name, name_or_dict, ...) abort
   let custom = deoplete#custom#_get_buffer().source_vars
   for key in deoplete#util#split(a:source_name)
     if !has_key(custom, key)
       let custom[key] = {}
     endif
     let vars = custom[key]
-    call s:set_value(vars, a:var_name, a:value)
+    call s:set_custom(vars, a:name_or_dict, get(a:000, 0, ''))
   endfor
 endfunction
 

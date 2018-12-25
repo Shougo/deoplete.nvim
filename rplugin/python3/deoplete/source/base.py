@@ -43,6 +43,7 @@ class Base(LoggingMixin):
         self.max_menu_width = 40
         self.max_candidates = 500
         self.matcher_key = ''
+        self.dup = False
 
     def get_complete_position(self, context):
         m = re.search('(?:' + context['keyword_pattern'] + ')$|$',
@@ -75,6 +76,8 @@ class Base(LoggingMixin):
 
     def get_filetype_var(self, filetype, var_name):
         var = self.get_var(var_name)
+        if var is None:
+            return None
         ft = filetype if (filetype in var) else '_'
         return var.get(ft, '')
 

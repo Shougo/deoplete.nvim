@@ -66,7 +66,7 @@ You can enable Python3 interface with pip: >
 
     pip3 install --user pynvim
 
-Note: deoplete needs neovim-python ver.0.2.4+.
+Note: deoplete needs neovim-python ver.0.3.0+.
 You need update neovim-python module.
 >
     pip3 install --user --upgrade pynvim
@@ -192,7 +192,7 @@ num_processes
 		If it is less than or equal to 0, the number of processes is
 		equal to that of sources.
 
-		Default value: 1 (Windows) or 4 (Others)
+		Default value: 4
 
 					*deoplete-options-omni_patterns*
 omni_patterns
@@ -361,6 +361,7 @@ deoplete#custom#buffer_option({dict})
 
 					*deoplete#custom#buffer_var()*
 deoplete#custom#buffer_var({source-name}, {var-name}, {value})
+deoplete#custom#buffer_var({source-name}, {dict})
 		The buffer local version of |deoplete#custom#var()|.
 
 						*deoplete#custom#option()*
@@ -372,11 +373,14 @@ deoplete#custom#option({dict})
 
 						*deoplete#custom#source()*
 deoplete#custom#source({source-name}, {option-name}, {value})
+deoplete#custom#source({source-name}, {dict})
 		Set {source-name} source specialized {option-name}
 		to {value}. You may specify multiple sources with
 		separating "," in {source-name}.
 		If {source-name} is "_", sources default option will be
 		change.
+		If {dict} is available, the key is {option-name} and the value
+		is {value}.
 		Note: You must call it before using deoplete.
 >
 		" Examples:
@@ -427,9 +431,12 @@ deoplete#custom#source({source-name}, {option-name}, {value})
 <
 							*deoplete#custom#var()*
 deoplete#custom#var({source-name}, {var-name}, {value})
+deoplete#custom#var({source-name}, {dict})
 		Set {source-name} source specialized variable {variable-name}
 		to {value}.  You may specify multiple sources with the
 		separator "," in {source-name}.
+		If {dict} is available, the key is {option-name} and the value
+		is {value}.
 
 ------------------------------------------------------------------------------
 KEY MAPPINGS 					*deoplete-key-mappings*
@@ -795,6 +802,15 @@ disabled_syntaxes
 
 		Default: []
 		Note: It means this feature is ignored.
+
+					*deoplete-source-attribute-dup*
+dup
+		(Bool)			(Optional)
+		The candidates will be added even when the same word is
+		already present.
+
+		Default: v:true if |deoplete-source-attribute-filetypes| is
+		set.
 
 					*deoplete-source-attribute-events*
 events		(List[str])			(Optional)
@@ -1430,7 +1446,7 @@ It is workaround. >
 
        call deoplete#custom#option('num_processes', 1)
 
-Q: "[deoplete] neovim-python 0.2.4+ is required." error
+Q: "[deoplete] neovim-python 0.3.0+ is required." error
 https://github.com/Shougo/deoplete.nvim/issues/694
 
 A: You must upgrade neovim-python client. >
@@ -1668,6 +1684,10 @@ A: https://github.com/zchee/deoplete-jedi/issues/35
 
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
+
+2018.12.24
+* neovim-python 0.3.0+ is needed for asyncio feature.
+* Change deoplete-options-num_processes default value in Windows.
 
 2018.12.10
 * Remove async_timeout option.
