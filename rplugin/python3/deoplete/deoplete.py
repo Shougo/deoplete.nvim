@@ -249,7 +249,7 @@ class Deoplete(logger.LoggingMixin):
             if len(self._parents) <= self._parent_count:
                 # Bug check.
                 error(self._vim,
-                      'self._parents = %d, self._parent_count = %d'.format(
+                      'self._parents = {}, self._parent_count = {}'.format(
                           len(self._parents), self._parent_count))
             self._parents[self._parent_count].add_source(path)
             self.debug('Process %d: %s', self._parent_count, path)
