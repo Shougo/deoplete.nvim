@@ -186,11 +186,17 @@ function! s:is_skip(event) abort
         \ || (a:event !=# 'Manual' && a:event !=# 'Async' && !auto_complete)
         \ || (&l:completefunc !=# '' && &l:buftype =~# 'nofile')
         \ || (a:event !=# 'InsertEnter' && mode() !=# 'i')
-        \ || (exists('b:eskk') && !empty(b:eskk))
+        \ || (exists('b:eskk') && !empty(b:eskk)
+        \     && !s:check_eskk_phase_henkan())
     return 1
   endif
 
   return 0
+endfunction
+function! s:check_eskk_phase_henkan() abort
+  let preedit = eskk#get_preedit()
+  let phase = preedit.get_henkan_phase()
+  return phase is g:eskk#preedit#PHASE_HENKAN
 endfunction
 function! s:is_skip_text(event) abort
   let input = deoplete#util#get_input(a:event)
