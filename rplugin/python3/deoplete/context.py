@@ -71,7 +71,7 @@ class Context(object):
             bufnr = -1
             bufname = ''
         else:
-            bufname = self._vim.buffers[int(bufnr)].name
+            bufname = self._vim.call('bufname', bufnr)
         cwd = self._vim.call('getcwd')
         buftype = self._vim.current.buffer.options['buftype']
         bufpath = (bufname if os.path.isabs(bufname)
