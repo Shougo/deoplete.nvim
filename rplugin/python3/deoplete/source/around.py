@@ -9,16 +9,24 @@ import re
 from deoplete.source.base import Base
 from deoplete.util import parse_buffer_pattern, getlines
 
-LINES_ABOVE = 20
-LINES_BELOW = 20
-
 
 class Source(Base):
     def __init__(self, vim):
         super().__init__(vim)
         self.name = 'around'
-        self.mark = '[~]'
         self.rank = 300
+        self.vars = {
+            'mark_above': '[A]',
+            'mark_below': '[B]',
+            'mark_changes': '[C]',
+            'range_above': 20,
+            'range_below': 20,
+        }
+        custom_vars = self.vim.call(
+            'deoplete#custom#_get_source_vars', self.name
+        )
+        if custom_vars:
+            self.vars.update(custom_vars)
 
     def gather_candidates(self, context):
         line = context['position'][1]
@@ -26,27 +34,40 @@ class Source(Base):
 
         # lines above
         words = parse_buffer_pattern(
-            reversed(getlines(self.vim, max([1, line - LINES_ABOVE]), line)),
-            context['keyword_pattern'])
-        candidates += [{'word': x, 'menu': 'A'} for x in words]
+            reversed(
+                getlines(
+                    self.vim, max([1, line - self.vars['range_above']]), line
+                )
+            ),
+            context['keyword_pattern'],
+        )
+        candidates += [
+            {'word': x, 'menu': self.vars['mark_above']} for x in words
+        ]
 
         # grab ':changes' command output
         p = re.compile(r'[\s\d]+')
         lines = set()
         for change_line in [
-                x[p.search(x).span()[1]:] for x
-                in self.vim.call('execute', 'changes').split('\n')[2:]
-                if p.search(x)]:
+            x[p.search(x).span()[1]:]
+            for x in self.vim.call('execute', 'changes').split('\n')[2:]
+            if p.search(x)
+        ]:
             if change_line and change_line != '-invalid-':
                 lines.add(change_line)
 
         words = parse_buffer_pattern(lines, context['keyword_pattern'])
-        candidates += [{'word': x, 'menu': 'C'} for x in words]
+        candidates += [
+            {'word': x, 'menu': self.vars['mark_changes']} for x in words
+        ]
 
         # lines below
         words = parse_buffer_pattern(
-            getlines(self.vim, line, line + LINES_BELOW),
-            context['keyword_pattern'])
-        candidates += [{'word': x, 'menu': 'B'} for x in words]
+            getlines(self.vim, line, line + self.vars['range_below']),
+            context['keyword_pattern'],
+        )
+        candidates += [
+            {'word': x, 'menu': self.vars['mark_below']} for x in words
+        ]
 
         return candidates
