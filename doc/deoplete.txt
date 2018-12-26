@@ -532,9 +532,30 @@ around						    *deoplete-source-around*
 
 		Legend: You can see where the words came from. Next to the
 		source mark [~] these suffixes are used:
-		    A - above the cursor
-		    B - below the cursor
-		    C - in changes
+		    A - above the cursor 
+		    B - below the cursor 
+		    C - in changes       
+
+		By default, around has a fixed range of looking for words
+		20 lines above and below your cursor position. You are able
+		to customize its settings through custom source variables.
+		Note: There are no events for changing this. Configuration
+		should be done before the source initializes.
+>
+		" Using custom variables to configure values
+		" - range_above = Search for words N lines above.
+		" - range_below = Search for words N lines below.
+		" - mark_above = Mark shown for words N lines above.
+		" - mark_below = Mark shown for words N lines below.
+		" - mark_changes = Mark shown for words in the changelist.
+		call deoplete#custom#var('around', {
+		\   'range_above': 15,
+		\   'range_below': 15
+		\   'mark_above': '[↑]',
+		\   'mark_below': '[↓]',
+		\   'mark_changes': '[*]',
+		\})
+<
 
 		rank: 300
 
