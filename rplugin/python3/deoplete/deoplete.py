@@ -201,16 +201,6 @@ class Deoplete(logger.LoggingMixin):
             parent.enable_logging()
         self._parents.append(parent)
 
-    def _init_parents(self):
-        if self._parents or self._max_parents <= 0:
-            return
-
-        if self._max_parents == 1:
-            self._add_parent(deoplete.parent.SyncParent)
-        else:
-            for n in range(0, self._max_parents):
-                self._add_parent(deoplete.parent.AsyncParent)
-
     def _find_rplugins(self, source):
         """Search for base.py or *.py
 
@@ -235,22 +225,18 @@ class Deoplete(logger.LoggingMixin):
                 yield from glob.iglob(os.path.join(path, src))
 
     def _load_sources(self, context):
-        self._init_parents()
+        if not self._parents and self._max_parents == 1:
+            self._add_parent(deoplete.parent.SyncParent)
 
         for path in self._find_rplugins('source'):
             if path in self._loaded_paths:
                 continue
             self._loaded_paths.add(path)
 
-            if self._max_parents <= 0:
-                # Add parent automatically for num_processes=0.
+            if len(self._parents) <= self._parent_count:
+                # Add parent automatically
                 self._add_parent(deoplete.parent.AsyncParent)
 
-            if len(self._parents) <= self._parent_count:
-                # Bug check.
-                error(self._vim,
-                      'self._parents = {}, self._parent_count = {}'.format(
-                          len(self._parents), self._parent_count))
             self._parents[self._parent_count].add_source(path)
             self.debug('Process %d: %s', self._parent_count, path)
 
