@@ -204,6 +204,7 @@ function! s:is_skip_text(event) abort
   let lastchar = matchstr(input, '.$')
   let skip_multibyte = deoplete#custom#_get_option('skip_multibyte')
   if skip_multibyte && len(lastchar) != strwidth(lastchar)
+        \ && empty(get(b:, 'eskk', []))
     return 1
   endif
 
