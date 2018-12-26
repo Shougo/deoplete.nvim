@@ -351,6 +351,13 @@ class Child(logger.LoggingMixin):
         for f in sorters + converters:
             self._process_filter(f, ctx, source.max_candidates)
 
+        if (isinstance(ctx['candidates'], dict) and
+                'sorted_candidates' in ctx['candidates']):
+            sorted_candidates = ctx['candidates']['sorted_candidates']
+            ctx['candidates'] = []
+            for candidates in sorted_candidates:
+                ctx['candidates'] += candidates
+
         ctx['ignorecase'] = ignorecase
 
         # On post filter
@@ -358,6 +365,8 @@ class Child(logger.LoggingMixin):
             ctx['candidates'] = source.on_post_filter(ctx)
 
         mark = source.mark + ' '
+        print(source.name)
+        print(ctx['candidates'])
         for candidate in ctx['candidates']:
             # Set default menu and icase
             candidate['icase'] = 1
