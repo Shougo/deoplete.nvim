@@ -365,8 +365,6 @@ class Child(logger.LoggingMixin):
             ctx['candidates'] = source.on_post_filter(ctx)
 
         mark = source.mark + ' '
-        print(source.name)
-        print(ctx['candidates'])
         for candidate in ctx['candidates']:
             # Set default menu and icase
             candidate['icase'] = 1
