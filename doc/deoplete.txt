@@ -1645,7 +1645,7 @@ Q: I want to use jedi-vim omni completion with deoplete.
 A: You should install deoplete-jedi instead of jedi-vim.
    https://github.com/zchee/deoplete-jedi
 
-Q: I want to use Java script omnifunc.
+Q: I want to use JavaScript omnifunc.
 
 A: Please set "input_patterns" manually. >
 
