@@ -70,16 +70,16 @@ function! deoplete#mapping#_complete_common_string() abort
   endif
 
   " Get cursor word.
-  let complete_str = matchstr(deoplete#util#get_input(''), '\w*$')
-
-  if complete_str ==# '' || !has_key(g:deoplete#_context, 'candidates')
+  let prev = g:deoplete#_prev_completion
+  if empty(prev)
     return ''
   endif
 
-  let candidates = filter(copy(g:deoplete#_context.candidates),
+  let complete_str = prev.input[prev.complete_position :]
+  let candidates = filter(copy(prev.candidates),
         \ 'stridx(tolower(v:val.word), tolower(complete_str)) == 0')
 
-  if empty(candidates)
+  if empty(candidates) || complete_str ==# ''
     return ''
   endif
 
