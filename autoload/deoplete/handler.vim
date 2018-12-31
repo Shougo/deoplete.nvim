@@ -64,6 +64,7 @@ function! deoplete#handler#_do_complete() abort
   let prev.input = context.input
   let prev.candidates = context.candidates
   let prev.complete_position = context.complete_position
+  let prev.linenr = line('.')
 
   if context.event ==# 'Manual'
     let context.event = ''
@@ -109,12 +110,15 @@ function! s:completion_timer_start(event) abort
   endif
 
   let delay = deoplete#custom#_get_option('auto_complete_delay')
+  " let delay = 1000
   if delay > 0
     let s:completion_timer = timer_start(
           \ delay, {-> s:completion_begin(a:event)})
   else
     call s:completion_begin(a:event)
   endif
+
+  call s:check_prev_completion(a:event)
 endfunction
 function! s:completion_timer_stop() abort
   if !exists('s:completion_timer')
@@ -123,6 +127,34 @@ function! s:completion_timer_stop() abort
 
   call timer_stop(s:completion_timer)
   unlet s:completion_timer
+endfunction
+
+function! s:check_prev_completion(event) abort
+  let prev = g:deoplete#_prev_completion
+  if empty(get(prev, 'candidates', []))
+    return
+  endif
+
+  let input = deoplete#util#get_input(a:event)
+  if prev.linenr != line('.')
+        \ || (substitute(input, '\w\+$', '', '') !=#
+        \     substitute(prev.input, '\w\+$', '', ''))
+        \ || stridx(input, prev.input) != 0
+    return
+  endif
+
+  call deoplete#mapping#_set_completeopt()
+  let pattern = substitute(input[prev.complete_position :],
+        \ '\w', '\\w*\0', 'g')
+  let candidates = filter(copy(prev.candidates), 'v:val.word =~? pattern')
+  if empty(candidates)
+    return
+  endif
+  let g:deoplete#_filtered_prev = {
+        \ 'complete_position': prev.complete_position,
+        \ 'candidates': candidates,
+        \ }
+  call feedkeys("\<Plug>+", 'i')
 endfunction
 
 function! deoplete#handler#_async_timer_start() abort

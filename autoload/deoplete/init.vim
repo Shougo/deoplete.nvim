@@ -231,6 +231,7 @@ function! deoplete#init#_prev_completion() abort
   let g:deoplete#_prev_completion = {
         \ 'event': '',
         \ 'input': '',
+        \ 'linenr': -1,
         \ 'candidates': [],
         \ 'complete_position': -1,
         \ }

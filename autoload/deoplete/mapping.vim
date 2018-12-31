@@ -6,22 +6,21 @@
 
 function! deoplete#mapping#_init() abort
   " Note: The dummy function is needed for cpoptions bug in neovim
-  inoremap <expr><silent> <Plug>_ deoplete#mapping#_dummy_complete()
+  inoremap <expr><silent> <Plug>_
+        \ "\<C-r>=deoplete#mapping#_complete()\<CR>"
+  inoremap <expr><silent> <Plug>+
+        \ "\<C-r>=deoplete#mapping#_prev_complete()\<CR>"
 endfunction
 
-function! deoplete#mapping#_dummy_complete() abort
-  return "\<C-r>=deoplete#mapping#_complete()\<CR>"
-endfunction
-function! deoplete#mapping#_completefunc(findstart, base) abort
-  if a:findstart
-    return g:deoplete#_context.complete_position
-  else
-    return g:deoplete#_context.candidates
-  endif
-endfunction
 function! deoplete#mapping#_complete() abort
   call complete(g:deoplete#_context.complete_position + 1,
         \ g:deoplete#_context.candidates)
+
+  return ''
+endfunction
+function! deoplete#mapping#_prev_complete() abort
+  call complete(g:deoplete#_filtered_prev.complete_position + 1,
+        \ g:deoplete#_filtered_prev.candidates)
 
   return ''
 endfunction
