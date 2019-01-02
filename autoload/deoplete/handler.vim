@@ -131,7 +131,7 @@ endfunction
 
 function! s:check_prev_completion(event) abort
   let prev = g:deoplete#_prev_completion
-  if empty(get(prev, 'candidates', []))
+  if mode() !=# 'i' || empty(get(prev, 'candidates', []))
     return
   endif
 
