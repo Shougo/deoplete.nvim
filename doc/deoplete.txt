@@ -1007,7 +1007,7 @@ name		(String)			(Required)
 					*deoplete-source-attribute-on_event*
 on_event	(Function)			(Optional)
 		Called for |InsertEnter|, |BufWritePost|, |BufReadPost| and
-		|BufDelete| autocommands, through |deoplete#send_event()|.
+		|BufDelete|, |VimLeavePre| autocommands, through |deoplete#send_event()|.
 		It is useful to make cache.
 		It takes {self} and {context} as its parameter.
 >
