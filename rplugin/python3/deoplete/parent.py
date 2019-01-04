@@ -145,4 +145,10 @@ class AsyncParent(_Parent):
         outs = []
         while not self._queue_out.empty():
             outs.append(self._queue_out.get_nowait())
-        return [x for x in outs if x['queue_id'] == queue_id]
+        try:
+            return [x for x in outs if x['queue_id'] == queue_id]
+        except TypeError:
+            error_tb(self._vim,
+                     '"stdout" seems contaminated by sources. '
+                     '"stdout" is used for RPC; Please pipe or discard')
+            return []
