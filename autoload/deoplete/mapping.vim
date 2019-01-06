@@ -9,7 +9,6 @@ function! deoplete#mapping#_init() abort
   inoremap <expr><silent> <Plug>_
         \ "\<C-r>=deoplete#mapping#_complete()\<CR>"
   inoremap <expr><silent> <Plug>+
-        \ pumvisible() ? "" :
         \ "\<C-r>=deoplete#mapping#_prev_complete()\<CR>"
 endfunction
 
