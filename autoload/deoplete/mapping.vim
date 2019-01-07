@@ -19,8 +19,10 @@ function! deoplete#mapping#_complete() abort
   return ''
 endfunction
 function! deoplete#mapping#_prev_complete() abort
-  call complete(g:deoplete#_filtered_prev.complete_position + 1,
-        \ g:deoplete#_filtered_prev.candidates)
+  if !pumvisible()
+    call complete(g:deoplete#_filtered_prev.complete_position + 1,
+          \ g:deoplete#_filtered_prev.candidates)
+  endif
 
   return ''
 endfunction
