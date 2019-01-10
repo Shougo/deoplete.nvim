@@ -113,15 +113,12 @@ function! s:completion_timer_start(event) abort
   endif
 
   let delay = deoplete#custom#_get_option('auto_complete_delay')
-  " let delay = 1000
   if delay > 0
     let s:completion_timer = timer_start(
           \ delay, {-> s:completion_begin(a:event)})
   else
     call s:completion_begin(a:event)
   endif
-
-  call s:check_prev_completion(a:event)
 endfunction
 function! s:completion_timer_stop() abort
   if !exists('s:completion_timer')
@@ -198,6 +195,8 @@ function! s:completion_begin(event) abort
     let g:deoplete#_context.candidates = []
     return
   endif
+
+  call s:check_prev_completion(a:event)
 
   if a:event !=# 'Async'
     call deoplete#init#_prev_completion()
