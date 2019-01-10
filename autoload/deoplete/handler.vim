@@ -146,7 +146,8 @@ function! s:check_prev_completion(event) abort
   call deoplete#mapping#_set_completeopt()
   let escaped_input = escape(input[prev.complete_position :], '~\.^$[]*')
   let pattern = substitute(escaped_input, '\w', '\\w*\0', 'g')
-  let candidates = filter(copy(prev.candidates), 'v:val.word =~? pattern')
+  let candidates = filter(copy(prev.candidates),
+        \ 'v:val.word =~? pattern && len(v:val.word) > len(pattern)')
   if empty(candidates)
     return
   endif
