@@ -61,11 +61,13 @@ class Source(Base):
                                            'Manual' and m is None):
                     continue
 
-                if filetype == current_ft and self._omnifunc in [
+                if ((filetype == current_ft or
+                        filetype in ['css', 'javascript'])
+                        and self._omnifunc in [
                         'ccomplete#Complete',
                         'htmlcomplete#CompleteTags',
                         'LanguageClient#complete',
-                        'phpcomplete#CompletePHP']:
+                        'phpcomplete#CompletePHP']):
                     # In the blacklist
                     return -1
                 try:
