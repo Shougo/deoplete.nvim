@@ -61,7 +61,7 @@ class Source(Base):
                                            'Manual' and m is None):
                     continue
 
-                if filetype == current_ft and self._omnifunc in [
+                if self._omnifunc in [
                         'ccomplete#Complete',
                         'htmlcomplete#CompleteTags',
                         'LanguageClient#complete',
