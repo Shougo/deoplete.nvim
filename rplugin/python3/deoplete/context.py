@@ -23,10 +23,10 @@ class Context(object):
         [filetype, filetypes, same_filetypes] = self._vim.call(
             'deoplete#util#get_context_filetype', text, event)
 
-        window = self._vim.current.window
         m = re.search(r'\w$', text)
         word_len = len(m.group(0)) if m else 0
-        width = window.width - window.cursor[1] + word_len
+        width = self._vim.call('winwidth', 0) - self._vim.call('col', '.')
+        width += word_len
         max_width = (width * 2 / 3)
 
         context = {
