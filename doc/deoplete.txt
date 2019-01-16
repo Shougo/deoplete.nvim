@@ -235,6 +235,17 @@ profile
 
 		Default value: v:false
 
+					*deoplete-options-prev_completion_mode*
+prev_completion_mode
+		It changes previous completion behavior.
+		It reduces popup flicker.
+
+		"filter": Filter previous completion
+		"mirror": Displays previous completion
+		otherwise: Disable previous completion feature.
+
+		Default value: "filter"
+
 					*deoplete-options-refresh_always*
 refresh_always
 		Deoplete refreshes the candidates automatically if this value

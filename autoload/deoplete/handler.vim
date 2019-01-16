@@ -144,14 +144,22 @@ function! s:check_prev_completion(event) abort
   endif
 
   call deoplete#mapping#_set_completeopt()
-  let input = input[prev.complete_position :]
-  let escaped_input = escape(input, '~\.^$[]*')
-  let pattern = substitute(escaped_input, '\w', '\\w*\0', 'g')
-  let candidates = filter(copy(prev.candidates),
-        \ 'v:val.word =~? pattern && len(v:val.word) > len(input)')
-  if empty(candidates)
+
+  let mode = deoplete#custom#_get_option('prev_completion_mode')
+  let candidates = copy(prev.candidates)
+
+  if mode ==# 'filter'
+    let input = input[prev.complete_position :]
+    let escaped_input = escape(input, '~\.^$[]*')
+    let pattern = substitute(escaped_input, '\w', '\\w*\0', 'g')
+    call filter(candidates,
+          \ 'v:val.word =~? pattern && len(v:val.word) > len(input)')
+  elseif mode ==# 'mirror'
+    " pass
+  else
     return
   endif
+
   let g:deoplete#_filtered_prev = {
         \ 'complete_position': prev.complete_position,
         \ 'candidates': candidates,

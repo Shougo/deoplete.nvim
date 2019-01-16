@@ -217,6 +217,7 @@ function! deoplete#init#_option() abort
         \ 'on_insert_enter': v:true,
         \ 'on_text_changed_i': v:true,
         \ 'profile': v:false,
+        \ 'prev_completion_mode': 'filter',
         \ 'min_pattern_length': 2,
         \ 'refresh_always': v:true,
         \ 'skip_chars': ['(', ')'],
