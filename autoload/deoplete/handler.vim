@@ -193,7 +193,6 @@ function! s:completion_begin(event) abort
   let s:check_insert_charpre = (a:event ==# 'InsertCharPre')
 
   if s:is_skip(a:event)
-    call deoplete#mapping#_restore_completeopt()
     let g:deoplete#_context.candidates = []
     return
   endif
@@ -312,6 +311,7 @@ function! deoplete#handler#_skip_next_completion() abort
   if input !~# '[/.]$'
     let g:deoplete#_context.input = input
   endif
+  call deoplete#mapping#_restore_completeopt()
   call deoplete#init#_prev_completion()
 endfunction
 
