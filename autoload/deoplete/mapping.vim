@@ -15,8 +15,9 @@ function! deoplete#mapping#_dummy(func) abort
   return "\<C-r>=".a:func."()\<CR>"
 endfunction
 function! deoplete#mapping#_complete() abort
-  if exists('*complete_update') && pumvisible()
-    call complete_update(g:deoplete#_context.candidates)
+  if exists('*complete_update')
+    call complete_update(g:deoplete#_context.complete_position + 1,
+          \ g:deoplete#_context.candidates)
   else
     call complete(g:deoplete#_context.complete_position + 1,
           \ g:deoplete#_context.candidates)
