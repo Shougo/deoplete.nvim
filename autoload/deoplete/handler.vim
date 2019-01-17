@@ -131,7 +131,8 @@ endfunction
 
 function! s:check_prev_completion(event) abort
   let prev = g:deoplete#_prev_completion
-  if mode() !=# 'i' || empty(get(prev, 'candidates', []))
+  if a:event ==# 'Async' || mode() !=# 'i'
+        \ || empty(get(prev, 'candidates', []))
     return
   endif
 
@@ -248,12 +249,14 @@ function! s:is_skip_text(event) abort
     return 1
   endif
 
-  let context = g:deoplete#_context
-  if has_key(context, 'input')
+  let prev_input = g:deoplete#_prev_completion.input
+  if input ==# prev_input
         \ && a:event !=# 'Manual'
         \ && a:event !=# 'Async'
         \ && a:event !=# 'TextChangedP'
-        \ && input ==# context.input
+    return 1
+  endif
+  if a:event ==# 'Async' && prev_input !=# '' && input !=# prev_input
     return 1
   endif
 

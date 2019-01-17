@@ -86,6 +86,7 @@ class Deoplete(logger.LoggingMixin):
             position = -1
             candidates = []
 
+        # is_async = True
         if is_async:
             self._vim.call('deoplete#handler#_async_timer_start')
         else:
