@@ -241,7 +241,8 @@ prev_completion_mode
 		It reduces popup flicker.
 
 		"filter": Filter previous completion
-		"mirror": Displays previous completion
+		"mirror": Displays previous completion.  It is useful for
+		deoplete-tabnine.
 		otherwise: Disable previous completion feature.
 
 		Default value: "filter"
