@@ -21,15 +21,13 @@ class Filter(Base):
 
         self.name = 'sorter_rank'
         self.description = 'rank sorter'
-        self._cache = set()
+        self._cache = {}
 
     def on_event(self, context):
         line = context['position'][1]
         lines = getlines(self.vim,
                          max([1, line - LINES_ABOVE]), line + LINES_BELOW)
 
-        # self._cache = set(re.findall(context['keyword_pattern'],
-        #                              '\n'.join(lines)))
         self._cache = {}
         for m in re.finditer(context['keyword_pattern'], '\n'.join(lines)):
             k = m.group(0)
