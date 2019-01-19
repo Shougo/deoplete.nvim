@@ -137,10 +137,9 @@ function! s:check_prev_completion(event) abort
   endif
 
   let input = deoplete#util#get_input(a:event)
-  if prev.linenr != line('.')
-        \ || (substitute(input, '\w\+$', '', '') !=#
-        \     substitute(prev.input, '\w\+$', '', ''))
-        \ || stridx(input, prev.input) != 0
+  let complete_str = matchstr(input, '\w\+$')
+  let min_pattern_length = deoplete#custom#_get_option('min_pattern_length')
+  if prev.linenr != line('.') || len(complete_str) < min_pattern_length
     return
   endif
 
