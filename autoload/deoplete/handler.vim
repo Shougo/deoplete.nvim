@@ -148,12 +148,14 @@ function! s:check_prev_completion(event) abort
   let mode = deoplete#custom#_get_option('prev_completion_mode')
   let candidates = copy(prev.candidates)
 
-  if mode ==# 'filter'
+  if mode ==# 'filter' || mode ==# 'length'
     let input = input[prev.complete_position :]
     let escaped_input = escape(input, '~\.^$[]*')
     let pattern = substitute(escaped_input, '\w', '\\w*\0', 'g')
-    call filter(candidates,
-          \ 'v:val.word =~? pattern && len(v:val.word) > len(input)')
+    call filter(candidates, 'v:val.word =~? pattern')
+    if mode ==# 'length'
+      call filter(candidates, 'len(v:val.word) > len(input)')
+    endif
   elseif mode ==# 'mirror'
     " pass
   else
