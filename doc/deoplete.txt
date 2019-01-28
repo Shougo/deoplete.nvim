@@ -1331,8 +1331,12 @@ https://github.com/fszymanski/deoplete-abook
 deoplete-emoji: "emoji" source for emoji codes
 https://github.com/fszymanski/deoplete-emoji
 
-LanguageClient-neovim: use Language Server Protocol(LSP) for sources
+LanguageClient-neovim: "LanguageClient" source for Language Server
+Protocol(LSP)
 https://github.com/autozimu/LanguageClient-neovim
+
+deoplete-vim-lsp: "lsp" source for vim-lsp
+https://github.com/lighttiger2505/deoplete-vim-lsp
 
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*
