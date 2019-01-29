@@ -212,8 +212,6 @@ class Deoplete(logger.LoggingMixin):
 
         sources = (
             os.path.join('rplugin', 'python3', 'deoplete',
-                         source, 'base.py'),
-            os.path.join('rplugin', 'python3', 'deoplete',
                          source, '*.py'),
             os.path.join('rplugin', 'python3', 'deoplete',
                          source + 's', '*.py'),
@@ -230,7 +228,8 @@ class Deoplete(logger.LoggingMixin):
             self._add_parent(deoplete.parent.SyncParent)
 
         for path in self._find_rplugins('source'):
-            if path in self._loaded_paths:
+            if (path in self._loaded_paths
+                    or os.path.basename(path) == 'base.py'):
                 continue
             self._loaded_paths.add(path)
 
