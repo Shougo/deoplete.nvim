@@ -547,9 +547,9 @@ around						    *deoplete-source-around*
 
 		Legend: You can see where the words came from. Next to the
 		source mark [~] these suffixes are used:
-		    A - above the cursor 
-		    B - below the cursor 
-		    C - in changes       
+		    A - above the cursor
+		    B - below the cursor
+		    C - in changes
 
 		By default, around has a fixed range of looking for words
 		20 lines above and below your cursor position. You are able
@@ -565,7 +565,7 @@ around						    *deoplete-source-around*
 		" - mark_changes = Mark shown for words in the changelist.
 		call deoplete#custom#var('around', {
 		\   'range_above': 15,
-		\   'range_below': 15
+		\   'range_below': 15,
 		\   'mark_above': '[↑]',
 		\   'mark_below': '[↓]',
 		\   'mark_changes': '[*]',
