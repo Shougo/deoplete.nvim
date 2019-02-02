@@ -416,7 +416,7 @@ class Child(logger.LoggingMixin):
             yield source_name, source
 
     def _profile_start(self, context, name):
-        if self._profile_flag is 0 or not self.is_debug_enabled:
+        if self._profile_flag == 0 or not self.is_debug_enabled:
             return
 
         if not self._profile_flag:
