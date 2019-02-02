@@ -9,11 +9,28 @@ function! deoplete#custom#_init() abort
   let s:custom.source = {}
   let s:custom.source._ = {}
   let s:custom.option = deoplete#init#_option()
+
+  let s:cached = {}
+  let s:cached.option = {}
+  let s:cached.buffer_option = {}
+  let s:cached.source_vars = {}
 endfunction
 function! deoplete#custom#_init_buffer() abort
   let b:custom = {}
   let b:custom.option = {}
   let b:custom.source_vars = {}
+endfunction
+
+function! deoplete#custom#_update_cache() abort
+  let s:cached.option = s:custom.option
+  let s:cached.buffer_option = deoplete#custom#_get_buffer().option
+  call extend(s:cached.option, s:cached.buffer_option)
+
+  let s:cached.source_vars = {}
+  for [name, source] in items(s:custom.source)
+    let s:cached.source_vars[name] = source
+  endfor
+  call extend(s:cached.option, deoplete#custom#_get_buffer().source_vars)
 endfunction
 
 function! deoplete#custom#_get() abort
@@ -41,27 +58,21 @@ function! deoplete#custom#_get_source(source_name) abort
   return custom[a:source_name]
 endfunction
 function! deoplete#custom#_get_option(name) abort
-  if has_key(deoplete#custom#_get_buffer().option, a:name)
-    return deoplete#custom#_get_buffer().option[a:name]
-  endif
-  return deoplete#custom#_get().option[a:name]
+  return s:cached.option[a:name]
 endfunction
 function! deoplete#custom#_get_filetype_option(name, filetype, default) abort
-  let buffer_option = deoplete#custom#_get_buffer().option
+  let buffer_option = s:cached.buffer_option
   if has_key(buffer_option, a:name)
     " Use buffer_option instead
     return buffer_option[a:name]
   endif
 
-  let option = deoplete#custom#_get_option(a:name)
+  let option = s:cached.option[a:name]
   let filetype = has_key(option, a:filetype) ? a:filetype : '_'
   return get(option, filetype, a:default)
 endfunction
 function! deoplete#custom#_get_source_vars(name) abort
-  let global_vars = get(deoplete#custom#_get_source(a:name), 'vars', {})
-  let buffer_vars = get(deoplete#custom#_get_buffer().source_vars,
-        \ a:name, {})
-  return extend(copy(global_vars), buffer_vars)
+  return get(s:cached.source_vars, a:name, {})
 endfunction
 
 function! deoplete#custom#source(source_name, name_or_dict, ...) abort

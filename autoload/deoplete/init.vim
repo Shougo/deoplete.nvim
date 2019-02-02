@@ -19,8 +19,10 @@ function! deoplete#init#_initialize() abort
 
   let g:deoplete#_initialized = v:false
 
-  call s:init_internal_variables()
   call deoplete#init#_custom_variables()
+  call deoplete#custom#_update_cache()
+
+  call s:init_internal_variables()
 
   if deoplete#init#_channel()
     return 1

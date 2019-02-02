@@ -120,6 +120,8 @@ class Deoplete(logger.LoggingMixin):
         self._vim.call('deoplete#handler#_do_complete')
 
     def on_event(self, user_context):
+        self._vim.call('deoplete#custom#_update_cache')
+
         if not self._context:
             self.init_context()
         else:
