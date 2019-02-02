@@ -22,6 +22,10 @@ function! deoplete#custom#_init_buffer() abort
 endfunction
 
 function! deoplete#custom#_update_cache() abort
+  if !exists('s:custom')
+    call deoplete#custom#_init()
+  endif
+
   let s:cached.option = s:custom.option
   let s:cached.buffer_option = deoplete#custom#_get_buffer().option
   call extend(s:cached.option, s:cached.buffer_option)
