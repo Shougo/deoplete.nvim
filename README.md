@@ -29,6 +29,11 @@ Here are some [completion sources](https://github.com/Shougo/deoplete.nvim/wiki/
 recommended) or Vim8 with Python3.5+ and timers enabled.  See
 [requirements](#requirements) if you aren't sure whether you have this.
 
+Note: If you really need to use older Neovim, please use deoplete ver.4.1
+instead.
+
+https://github.com/Shougo/deoplete.nvim/releases/tag/4.1
+
 For vim-plug
 
 ```viml

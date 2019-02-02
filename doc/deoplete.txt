@@ -1736,6 +1736,9 @@ COMPATIBILITY					*deoplete-compatibility*
 2018.12.05
 * Remove the default value of "deoplete-options-omni_patterns".
 
+2018.11.18
+* neovim 0.3.0+ is required.
+
 2018.10.28
 * Remove "deoplete-source-attribute-keyword_patterns".
 
