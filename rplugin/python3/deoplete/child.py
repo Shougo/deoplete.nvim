@@ -366,11 +366,14 @@ class Child(logger.LoggingMixin):
 
         mark = source.mark + ' '
         for candidate in ctx['candidates']:
-            # Set default menu and icase
             candidate['icase'] = 1
+            candidate['equal'] = 1
+
+            # Set default menu
             if (mark != ' ' and
                     candidate.get('menu', '').find(mark) != 0):
                 candidate['menu'] = mark + candidate.get('menu', '')
+
             if source.dup:
                 candidate['dup'] = 1
         # Note: cannot use set() for dict
