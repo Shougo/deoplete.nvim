@@ -44,8 +44,6 @@ function! deoplete#handler#_init() abort
     " Note: Workaround
     autocmd deoplete VimLeavePre * call s:kill_yarp()
   endif
-
-  let s:check_insert_charpre = v:false
 endfunction
 
 function! deoplete#handler#_do_complete() abort
@@ -199,8 +197,6 @@ function! s:completion_async(timer) abort
 endfunction
 
 function! s:completion_begin(event) abort
-  let s:check_insert_charpre = (a:event ==# 'InsertCharPre')
-
   if s:is_skip(a:event)
     let g:deoplete#_context.candidates = []
     return
@@ -216,7 +212,7 @@ function! s:completion_begin(event) abort
         \ 'deoplete_auto_completion_begin', {'event': a:event})
 endfunction
 function! s:is_skip(event) abort
-  if a:event ==# 'TextChangedP' && !s:check_insert_charpre
+  if a:event ==# 'TextChangedP' && !empty(v:completed_item)
     return 1
   endif
 
