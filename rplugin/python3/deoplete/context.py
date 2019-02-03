@@ -12,7 +12,7 @@ class Context(object):
 
     def __init__(self, vim):
         self._vim = vim
-        self._prev_filetype = self._vim.eval('&filetype')
+        self._prev_filetype = self._vim.current.buffer.options['filetype']
         self._cached = None
         self._cached_filetype = self._init_cached_filetype(
             self._prev_filetype)
@@ -106,7 +106,7 @@ class Context(object):
             # Force context_filetype call
             self._vim.call('context_filetype#get_filetype')
 
-        filetype = self._vim.eval('&filetype')
+        filetype = self._vim.current.buffer.options['filetype']
         linenr = self._vim.call('line', '.')
         bufnr = self._vim.call('bufnr', '%')
 
