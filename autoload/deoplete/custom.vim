@@ -26,15 +26,19 @@ function! deoplete#custom#_update_cache() abort
     call deoplete#custom#_init()
   endif
 
+  let custom_buffer = deoplete#custom#_get_buffer()
+
   let s:cached.option = s:custom.option
-  let s:cached.buffer_option = deoplete#custom#_get_buffer().option
+  let s:cached.buffer_option = custom_buffer.option
   call extend(s:cached.option, s:cached.buffer_option)
 
   let s:cached.source_vars = {}
   for [name, source] in items(s:custom.source)
-    let s:cached.source_vars[name] = source
+    let s:cached.source_vars[name] = get(source, 'vars', {})
   endfor
-  call extend(s:cached.option, deoplete#custom#_get_buffer().source_vars)
+  for [name, vars] in items(custom_buffer.source_vars)
+    call extend(s:cached.source_vars[name], vars)
+  endfor
 endfunction
 
 function! deoplete#custom#_get() abort
