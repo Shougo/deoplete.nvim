@@ -12,7 +12,7 @@ class Context(object):
 
     def __init__(self, vim):
         self._vim = vim
-        self._prev_filetype = self._vim.options['filetype']
+        self._prev_filetype = self._vim.options['&filetype']
         self._cached = None
         self._cached_filetype = self._init_cached_filetype(
             self._prev_filetype)
