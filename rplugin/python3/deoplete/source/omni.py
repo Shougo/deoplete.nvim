@@ -33,7 +33,7 @@ class Source(Base):
         }
 
     def get_complete_position(self, context):
-        current_ft = self.vim.eval('&filetype')
+        current_ft = self.vim.current.buffer.options['filetype']
 
         for filetype in list(set([context['filetype']] +
                                  context['filetype'].split('.'))):
@@ -47,7 +47,7 @@ class Source(Base):
                 self.get_filetype_var(filetype, 'functions')):
             if omnifunc == '' and (filetype == current_ft or
                                    filetype in ['css', 'javascript']):
-                omnifunc = self.vim.eval('&l:omnifunc')
+                omnifunc = self.vim.current.buffer.options['omnifunc']
             if omnifunc == '':
                 continue
             self._omnifunc = omnifunc

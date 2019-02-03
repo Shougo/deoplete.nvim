@@ -12,7 +12,7 @@ class Context(object):
 
     def __init__(self, vim):
         self._vim = vim
-        self._prev_filetype = self._vim.eval('&l:filetype')
+        self._prev_filetype = ''
         self._cached = None
         self._cached_filetype = self._init_cached_filetype(
             self._prev_filetype)
@@ -20,9 +20,10 @@ class Context(object):
         self._context_filetype = {}
 
     def get(self, event):
+        buffer = self._vim.current.buffer
         text = self._vim.call('deoplete#util#get_input', event)
         [filetype, filetypes, same_filetypes] = self._get_context_filetype(
-            text, event)
+            text, event, buffer.options['filetype'])
 
         m = re.search(r'\w$', text)
         word_len = len(m.group(0)) if m else 0
@@ -31,8 +32,7 @@ class Context(object):
         max_width = (width * 2 / 3)
 
         context = {
-            'changedtick': self._vim.current.buffer.vars.get(
-                'changedtick', 0),
+            'changedtick': buffer.vars.get('changedtick', 0),
             'event': event,
             'filetype': filetype,
             'filetypes': filetypes,
@@ -65,16 +65,17 @@ class Context(object):
         }
 
     def _init_cached(self):
+        buffer = self._vim.current.buffer
         bufnr = self._vim.call('expand', '<abuf>')
         if not bufnr:
-            bufnr = self._vim.current.buffer.number
+            bufnr = buffer.number
         if not bufnr:
             bufnr = -1
             bufname = ''
         else:
             bufname = self._vim.call('bufname', bufnr)
         cwd = self._vim.call('getcwd')
-        buftype = self._vim.current.buffer.options['buftype']
+        buftype = buffer.options['buftype']
         bufpath = (bufname if os.path.isabs(bufname)
                    else os.path.join(cwd, bufname))
         if not os.path.exists(bufpath) or 'nofile' in buftype:
@@ -100,13 +101,12 @@ class Context(object):
                      not x.startswith('deoplete#_')},
         }
 
-    def _get_context_filetype(self, text, event):
+    def _get_context_filetype(self, text, event, filetype):
         if not self._context_filetype and self._vim.call(
                 'exists', '*context_filetype#get_filetype'):
             # Force context_filetype call
             self._vim.call('context_filetype#get_filetype')
 
-        filetype = self._vim.eval('&l:filetype')
         linenr = self._vim.call('line', '.')
         bufnr = self._vim.call('bufnr', '%')
 
