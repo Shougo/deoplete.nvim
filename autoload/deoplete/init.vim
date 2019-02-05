@@ -213,7 +213,7 @@ function! deoplete#init#_option() abort
         \ 'ignore_sources': {},
         \ 'candidate_marks': [],
         \ 'max_list': 500,
-        \ 'kind_order_preference': {},
+        \ 'kinds_order': {},
         \ 'num_processes': 4,
         \ 'keyword_patterns': {'_': '[a-zA-Z_]\k*'},
         \ 'omni_patterns': {},
