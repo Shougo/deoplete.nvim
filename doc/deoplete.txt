@@ -156,6 +156,93 @@ ignore_sources
 		The key is filetype and the value is source names list.
 		Default value: {}
 
+						*deoplete-options-attrs_order*
+attrs_order
+		Note: This value is currently used by the
+		'converter_reorder_attr' filter and has no effect if you don't
+		use enable it for your sources.
+
+		Reorder candidates by their attributes in the order specified.
+		See `:help complete-items` for the structure of candidate objects.
+
+		For instance, you can choose which types of candidates appear
+		first in the suggestion according to their attributes.
+
+>
+		call deoplete#custom#option('attrs_order', {
+		\ 'javascript': {
+		\    		'kind': [
+		\			'Function',
+		\			'Property'
+		\			]
+		\ },
+		\})
+<
+
+		This says: For Javascript files, I want to reorder candidates:
+
+		1. Candidates which have a "kind" attribute containing
+		'Function' should appear first.
+		2. Candidates which have a "kind" attribute containing
+		'Property' should appear second.
+		3. Any other candidates appear at the bottom, if there is
+		space.
+
+		Complete menu - before:
+
+			__constructor__     [Constructor]
+			length 		    [Property]
+			from 		    [Function]
+			toString 	    [Function]
+
+
+		Complete menu - after:
+
+			from 		    [Function]
+			toString 	    [Function]
+			length 		    [Property]
+			__constructor__     [Constructor]
+
+
+		Note: Attribute values are compiled to python regex
+		expressions, so you can match 'Function' with "Func" or
+		'static void* callback(unsigned *int number)' with "call".
+
+		You can specify multiple attributes and they will be processed
+		in order.
+
+		Additionaly, you can filter out unwanted candidates by
+		prefixing an attribute value with '!'. This character is only
+		a flag and will be stripped out before compiling the
+		expression.
+
+>
+		call deoplete#custom#option('attrs_order', {
+		\ 'ruby': {
+		\    		'kind': [
+		\			'!Class',
+		\			],
+		\
+		\		'abbr': [
+		\			'ExtensionClass'
+		\			]
+		\ },
+		\})
+<
+
+		The example above says: For Ruby files, I want to reorder the
+		attributes.
+		1. Candidates which have a 'kind' attribute containing 'Class'
+		will be filtered out of the list.
+		After they have been removed, proceed to the next attribute.
+		2. Candidates which have a 'abbr' attribute containing
+		'ExtensionClass' will be moved to the top of the list.
+		3. Any other candidates appear at the bottom, if there is
+		space.
+
+
+		Default value: {}
+
 					*deoplete-options-keyword_patterns*
 keyword_patterns
 		It defines the keyword patterns for completion.
