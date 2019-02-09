@@ -1,6 +1,6 @@
 *deoplete.txt*	Dark powered asynchronous completion framework for Neovim/Vim8.
 
-Version: 5.0
+Version: 5.1
 Author: Shougo <Shougo.Matsu at gmail.com>
 License: MIT license
 
@@ -136,13 +136,6 @@ candidate_marks
 		The candidate additional marks.
 
 		Default value: []
-
-						*deoplete-options-delimiters*
-delimiters
-		Delimiters list.  It is used in
-		|deoplete-filter-converter_auto_delimiter|.
-
-		Default value: ['/']
 
 						*deoplete-options-ignore_case*
 ignore_case
@@ -368,6 +361,12 @@ deoplete#toggle()
 
 
 CUSTOM FUNCTIONS 				*deoplete-custom-functions*
+
+					*deoplete#custom#buffer_filter()*
+deoplete#custom#buffer_filter({option-name}, {value})
+deoplete#custom#buffer_filter({dict})
+		The buffer local version of |deoplete#custom#filter()|.
+
 					*deoplete#custom#buffer_option()*
 deoplete#custom#buffer_option({option-name}, {value})
 deoplete#custom#buffer_option({dict})
@@ -377,6 +376,15 @@ deoplete#custom#buffer_option({dict})
 deoplete#custom#buffer_var({source-name}, {var-name}, {value})
 deoplete#custom#buffer_var({source-name}, {dict})
 		The buffer local version of |deoplete#custom#var()|.
+
+						*deoplete#custom#filter()*
+deoplete#custom#filter({filter-name}, {var-name}, {value})
+deoplete#custom#filter({filter-name}, {dict})
+		Set {filter-name} source specialized variable {variable-name}
+		to {value}.  You may specify multiple sources with the
+		separator "," in {filter-name}.
+		If {dict} is available, the key is {option-name} and the value
+		is {value}.
 
 						*deoplete#custom#option()*
 deoplete#custom#option({option-name}, {value})
@@ -767,8 +775,13 @@ sorter_word	Word order sorter.
 
 				*deoplete-filter-converter_auto_delimiter*
 converter_auto_delimiter
-		It adds |deoplete-options-delimiters| characters in a
-		candidate's word.
+		It adds "delimiters" variable characters in a candidate's
+		word.
+
+		Filter custom variables:
+		delimiters
+				Delimiters list.
+				(default: ['/'])
 
 				*deoplete-filter-converter_auto_paren*
 converter_auto_paren
@@ -1724,6 +1737,10 @@ A: https://github.com/deoplete-plugins/deoplete-jedi/issues/35
 
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
+
+2019.02.09
+* deoplete-options-delimiters is removed.  Please use "delimiters" var in
+  converter_auto_delimiter.
 
 2018.12.24
 * neovim-python 0.3.0+ is needed for asyncio feature.
