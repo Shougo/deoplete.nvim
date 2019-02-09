@@ -15,20 +15,15 @@ class Filter(Base):
         self.name = 'converter_reorder_attr'
         self.description = 'Reorder candidates based on their attributes'
 
-    def filter(self, context):
-        preferred_order_attrs = self.vim.call(
-            'deoplete#custom#_get_option', 'attrs_order'
-        ).get(context['filetype'])
-        if not context['candidates'] or not preferred_order_attrs:
-            return context['candidates']
-
-        max_list = self.vim.call('deoplete#custom#_get_option', 'max_list')
-
-        context_candidates = context['candidates'][:]
+    @staticmethod
+    def filter_attrs(
+        context_candidates, preferred_order_attrs, max_list_size=500
+    ):
+        candidates = context_candidates[:]
         new_candidates = []
         new_candidates_len = 0
 
-        for attr in keys(preferred_order_attrs):
+        for attr in preferred_order_attrs.keys():
             for expr in preferred_order_attrs[attr]:
                 disabled = expr[0] == '!'
                 if disabled:
@@ -40,22 +35,35 @@ class Filter(Base):
                 while i < size:
                     if expr.search(context_candidates[i][attr]):
                         candidate = context_candidates.pop(i)
-                        # Popping will make 'i' effectively go forward 2 pos;
-                        # because of that, decrease for now and wait for the
-                        # +1 at the bottom to balance that out.
+                        # Popping will make 'i' effectively go forward an extra
+                        # time; because of that, decrease for now and wait for
+                        # the +1 at the bottom to balance that out.
                         i -= 1
                         size -= 1
                         if not disabled:
                             new_candidates.append(candidate)
                             new_candidates_len += 1
                             # stop filtering if the maximum has been achieved
-                            if new_candidates_len == max_list:
+                            if new_candidates_len == max_list_size:
                                 return new_candidates
                     i += 1
 
-            # add remaining which were not filtered
+            # add remaining at the bottom
             new_candidates.extend(context_candidates)
-            # do the same again until all attrs have been sorted
+            # go to the next attribute with the new list order
             context_candidates = new_candidates
 
         return new_candidates
+
+    def filter(self, context):
+        preferred_order_attrs = self.vim.call(
+            'deoplete#custom#_get_option', 'attrs_order'
+        ).get(context['filetype'])
+        if not context['candidates'] or not preferred_order_attrs:
+            return context['candidates']
+
+        max_list_size = self.vim.call('deoplete#custom#_get_option', 'max_list')
+
+        return self.filter_attrs(
+            context['candidates'], preferred_order_attrs, max_list_size
+        )
