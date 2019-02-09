@@ -1,6 +1,6 @@
 *deoplete.txt*	Dark powered asynchronous completion framework for Neovim/Vim8.
 
-Version: 4.1
+Version: 5.0
 Author: Shougo <Shougo.Matsu at gmail.com>
 License: MIT license
 
@@ -73,7 +73,7 @@ You need update neovim-python module.
 <
 If you want to read for Neovim-python/python3 interface install documentation,
 you should read |provider-python| and the Wiki.
-https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
+https://github.com/deoplete-plugins/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
 
 You can check the Python3 installation by using the |:checkhealth| command.
 
@@ -1325,13 +1325,13 @@ clang-complete: "clang_complete" source for C/C++/Objective-C
 https://github.com/Rip-Rip/clang_complete
 
 deoplete-go: "go" source for Go
-https://github.com/zchee/deoplete-go
+https://github.com/deoplete-plugins/deoplete-go
 
 elixir.nvim: "elixir" source for Elixir
 https://github.com/awetzel/elixir.nvim
 
 deoplete-jedi: "jedi" source for Python
-https://github.com/zchee/deoplete-jedi
+https://github.com/deoplete-plugins/deoplete-jedi
 
 perlomni.vim: "PerlOmni" source for Perl
 https://github.com/c9s/perlomni.vim
@@ -1398,7 +1398,7 @@ filetypes
 https://github.com/rafaelndev/deoplete-laravel-plugin
 
 deoplete-zsh: "zsh" source for Zsh
-https://github.com/zchee/deoplete-zsh
+https://github.com/deoplete-plugins/deoplete-zsh
 
 deoplete-fish: "fish" source for fish shell
 https://github.com/ponko2/deoplete-fish
@@ -1410,7 +1410,7 @@ autocomplete-flow: "flow" source for JavaScript
 https://github.com/wokalski/autocomplete-flow
 
 deoplete-asm: "asm" source for Assembly Language
-https://github.com/zchee/deoplete-asm
+https://github.com/deoplete-plugins/deoplete-asm
 
 deoplete-abook: "abook" source for abook contacts
 https://github.com/fszymanski/deoplete-abook
@@ -1748,7 +1748,7 @@ A: You should use |deoplete-clangx|.
 Q: I want to use jedi-vim omni completion with deoplete.
 
 A: You should install deoplete-jedi instead of jedi-vim.
-   https://github.com/zchee/deoplete-jedi
+   https://github.com/deoplete-plugins/deoplete-jedi
 
 Q: I want to use JavaScript omnifunc.
 
@@ -1807,7 +1807,7 @@ A: Please see
 
 Q: Are there any plans to support GotoDefinition feature like YouCompleteMe?
 
-A: https://github.com/zchee/deoplete-jedi/issues/35
+A: https://github.com/deoplete-plugins/deoplete-jedi/issues/35
 
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*

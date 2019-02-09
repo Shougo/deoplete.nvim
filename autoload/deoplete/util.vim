@@ -145,20 +145,20 @@ function! deoplete#util#get_keyword_pattern(filetype) abort
   return substitute(pattern, '\\k', '\=k_pattern', 'g')
 endfunction
 
-function! deoplete#util#rpcnotify(event, context) abort
+function! deoplete#util#rpcnotify(method, context) abort
   if !deoplete#init#_channel_initialized()
     return ''
   endif
 
-  let a:context['rpc'] = a:event
+  let a:context['rpc'] = a:method
 
   if deoplete#util#has_yarp()
     if g:deoplete#_yarp.job_is_dead
       return ''
     endif
-    call g:deoplete#_yarp.notify(a:event, a:context)
+    call g:deoplete#_yarp.notify(a:method, a:context)
   else
-    call rpcnotify(g:deoplete#_channel_id, a:event, a:context)
+    call rpcnotify(g:deoplete#_channel_id, a:method, a:context)
   endif
 
   return ''
