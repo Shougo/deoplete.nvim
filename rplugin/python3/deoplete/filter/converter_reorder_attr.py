@@ -16,10 +16,8 @@ class Filter(Base):
         self.description = 'Reorder candidates based on their attributes'
 
     @staticmethod
-    def filter_attrs(
-        context_candidates, preferred_order_attrs, max_list_size=500
-    ):
-        candidates = context_candidates[:]
+    def filter_attrs(candidates, preferred_order_attrs, max_list_size=500):
+        context_candidates = candidates[:]
         new_candidates = []
         new_candidates_len = 0
 
@@ -62,7 +60,9 @@ class Filter(Base):
         if not context['candidates'] or not preferred_order_attrs:
             return context['candidates']
 
-        max_list_size = self.vim.call('deoplete#custom#_get_option', 'max_list')
+        max_list_size = self.vim.call(
+            'deoplete#custom#_get_option', 'max_list'
+        )
 
         return self.filter_attrs(
             context['candidates'], preferred_order_attrs, max_list_size
