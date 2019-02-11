@@ -147,92 +147,6 @@ ignore_case
 ignore_sources
 		It is a dictionary to decide ignore source names.
 		The key is filetype and the value is source names list.
-		Default value: {}
-
-						*deoplete-options-attrs_order*
-attrs_order
-		Note: This value is currently used by the
-		'converter_reorder_attr' filter and has no effect if you don't
-		use enable it for your sources.
-
-		Reorder candidates by their attributes in the order specified.
-		See `:help complete-items` for the structure of candidate objects.
-
-		For instance, you can choose which types of candidates appear
-		first in the suggestion according to their attributes.
-
->
-		call deoplete#custom#option('attrs_order', {
-		\ 'javascript': {
-		\    		'kind': [
-		\			'Function',
-		\			'Property'
-		\			]
-		\ },
-		\})
-<
-
-		This says: For Javascript files, I want to reorder candidates:
-
-		1. Candidates which have a "kind" attribute containing
-		'Function' should appear first.
-		2. Candidates which have a "kind" attribute containing
-		'Property' should appear second.
-		3. Any other candidates appear at the bottom, if there is
-		space.
-
-		Complete menu - before:
-
-			__constructor__     [Constructor]
-			length 		    [Property]
-			from 		    [Function]
-			toString 	    [Function]
-
-
-		Complete menu - after:
-
-			from 		    [Function]
-			toString 	    [Function]
-			length 		    [Property]
-			__constructor__     [Constructor]
-
-
-		Note: Attribute values are compiled to python regex
-		expressions, so you can match 'Function' with "Func" or
-		'static void* callback(unsigned *int number)' with "call".
-
-		You can specify multiple attributes and they will be processed
-		in order.
-
-		Additionaly, you can filter out unwanted candidates by
-		prefixing an attribute value with '!'. This character is only
-		a flag and will be stripped out before compiling the
-		expression.
-
->
-		call deoplete#custom#option('attrs_order', {
-		\ 'ruby': {
-		\    		'kind': [
-		\			'!Class',
-		\			],
-		\
-		\		'abbr': [
-		\			'ExtensionClass'
-		\			]
-		\ },
-		\})
-<
-
-		The example above says: For Ruby files, I want to reorder the
-		attributes.
-		1. Candidates which have a 'kind' attribute containing 'Class'
-		will be filtered out of the list.
-		After they have been removed, proceed to the next attribute.
-		2. Candidates which have a 'abbr' attribute containing
-		'ExtensionClass' will be moved to the top of the list.
-		3. Any other candidates appear at the bottom, if there is
-		space.
-
 
 		Default value: {}
 
@@ -845,7 +759,7 @@ matcher_full_fuzzy
 					*deoplete-filter-matcher_fuzzy*
 matcher_fuzzy	Fuzzy matching matcher.
 
-						*deoplete-filter-matcher_head*
+				    	*deoplete-filter-matcher_head*
 matcher_head	Head matching matcher.
 
 					*deoplete-filter-matcher_length*
@@ -853,14 +767,14 @@ matcher_length
 		Length matching matcher.
 		It removes candidates shorter than or equal to the user input.
 
-						*deoplete-filter-sorter_rank*
+			      		*deoplete-filter-sorter_rank*
 sorter_rank	Matched rank order sorter.  The higher the head matched word
 		or already typed word.
 
-						*deoplete-filter-sorter_word*
+		      			*deoplete-filter-sorter_word*
 sorter_word	Word order sorter.
 
-				*deoplete-filter-converter_auto_delimiter*
+			  		*deoplete-filter-converter_auto_delimiter*
 converter_auto_delimiter
 		It adds "delimiters" variable characters in a candidate's
 		word.
@@ -869,6 +783,93 @@ converter_auto_delimiter
 		delimiters
 				Delimiters list.
 				(default: ['/'])
+
+					*deoplete-filter-converter_reorder_attr*
+converter_reorder_attr
+
+		Reorder candidates by their attributes in the order specified.
+		See `:help complete-items` for the structure of candidate
+		objects.
+
+		For instance, you can choose which types of candidates appear
+		first in the suggestion according to their attributes.
+
+>
+		call deoplete#custom#filter('attrs_order', {
+		\ 'javascript': {
+		\    		'kind': [
+		\			'Function',
+		\			'Property'
+		\			]
+		\ },
+		\})
+<
+
+		This says: For Javascript files, I want to reorder candidates:
+
+		1. Candidates which have a "kind" attribute containing
+		'Function' should appear first.
+		2. Candidates which have a "kind" attribute containing
+		'Property' should appear second.
+		3. Any other candidates appear at the bottom, if there is
+		space.
+
+		Complete menu - before:
+
+		__constructor__     [Constructor]
+		length 		    [Property]
+		from 		    [Function]
+		toString 	    [Function]
+
+
+		Complete menu - after:
+
+		from 		    [Function]
+		toString 	    [Function]
+		length 		    [Property]
+		__constructor__     [Constructor]
+
+
+		Note: Attribute values are compiled to python regex
+		expressions, so you can match 'Function' with "Func" or
+		'static void* callback(unsigned *int number)' with "call".
+
+		You can specify multiple attributes and they will be processed
+		in order.
+
+		Additionaly, you can filter out unwanted candidates by
+		prefixing an attribute value with '!'. This character is only
+		a flag and will be stripped out before compiling the
+		expression.
+
+>
+		call deoplete#custom#filter('attrs_order', {
+		\ 'ruby': {
+		\    		'kind': [
+		\			'!Class',
+		\			],
+		\
+		\		'abbr': [
+		\			'ExtensionClass'
+		\			]
+		\ },
+		\})
+<
+
+		The example above says: For Ruby files, I want to reorder the
+		candidates:
+		1. Candidates which have a 'kind' attribute containing 'Class'
+		will be filtered out of the list.
+		After they have been removed, proceed to the next attribute.
+		2. Candidates which have a 'abbr' attribute containing
+		'ExtensionClass' will be moved to the top of the list.
+		3. Any other candidates appear at the bottom, if there is
+		space.
+
+		Default value: {}
+		It should received a dictionary with mappings from filetypes
+		to attributes, following the attribute expression syntax
+		explained above.
 
 				*deoplete-filter-converter_auto_paren*
 converter_auto_paren

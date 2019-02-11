@@ -55,7 +55,7 @@ class Filter(Base):
 
     def filter(self, context):
         preferred_order_attrs = self.vim.call(
-            'deoplete#custom#filter', 'converter_reorder_attr'
+            'deoplete#custom#_get_filter', 'converter_reorder_attr'
         ).get(context['filetype'], [])
         if not context['candidates'] or not preferred_order_attrs:
             return context['candidates']
