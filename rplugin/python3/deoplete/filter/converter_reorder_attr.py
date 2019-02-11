@@ -41,22 +41,22 @@ class Filter(Base):
                         if not disabled:
                             new_candidates.append(candidate)
                             new_candidates_len += 1
-                            # stop filtering if the maximum has been achieved
+                            # Stop filtering if the maximum has been achieved
                             if new_candidates_len == max_list_size:
                                 return new_candidates
                     i += 1
 
-            # add remaining at the bottom
+            # Add remaining at the bottom
             new_candidates.extend(context_candidates)
-            # go to the next attribute with the new list order
+            # Go to the next attribute with the new list order
             context_candidates = new_candidates
 
         return new_candidates
 
     def filter(self, context):
         preferred_order_attrs = self.vim.call(
-            'deoplete#custom#_get_option', 'attrs_order'
-        ).get(context['filetype'])
+            'deoplete#custom#filter', 'converter_reorder_attr'
+        ).get(context['filetype'], [])
         if not context['candidates'] or not preferred_order_attrs:
             return context['candidates']
 
