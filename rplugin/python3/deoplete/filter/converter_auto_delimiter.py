@@ -13,10 +13,12 @@ class Filter(Base):
 
         self.name = 'converter_auto_delimiter'
         self.description = 'auto delimiter converter'
+        self.vars = {
+            'delimiters': ['/'],
+        }
 
     def filter(self, context):
-        delimiters = self.vim.call(
-            'deoplete#custom#_get_option', 'delimiters')
+        delimiters = self.get_var('delimiters')
         for candidate, delimiter in [
                 [x, last_find(x['abbr'], delimiters)]
                 for x in context['candidates']

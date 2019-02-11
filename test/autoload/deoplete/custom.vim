@@ -103,3 +103,21 @@ function! s:suite.custom_option() abort
   call s:assert.equals(
         \ deoplete#custom#_get_option('camel_case'), v:true)
 endfunction
+
+function! s:suite.custom_filter() abort
+  call deoplete#custom#_init()
+  call deoplete#custom#filter('converter_auto_delimiter', {
+        \ 'delimiters': ['foo', 'bar'],
+        \ })
+  call deoplete#custom#_update_cache()
+  call s:assert.equals(
+        \ deoplete#custom#_get_filter('converter_auto_delimiter'),
+        \ {'delimiters': ['foo', 'bar']})
+  call deoplete#custom#buffer_filter('converter_auto_delimiter', {
+        \ 'delimiters': ['foo'],
+        \ })
+  call deoplete#custom#_update_cache()
+  call s:assert.equals(
+        \ deoplete#custom#_get_filter('converter_auto_delimiter'),
+        \ {'delimiters': ['foo']})
+endfunction

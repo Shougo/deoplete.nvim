@@ -18,6 +18,15 @@ class Base(LoggingMixin):
     def on_event(self, context):
         pass
 
+    def get_var(self, var_name):
+        custom_vars = self.vim.call(
+            'deoplete#custom#_get_filter', self.name)
+        if var_name in custom_vars:
+            return custom_vars[var_name]
+        if var_name in self.vars:
+            return self.vars[var_name]
+        return None
+
     @abstractmethod
     def filter(self, context):
         pass

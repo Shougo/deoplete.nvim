@@ -9,9 +9,11 @@ function! deoplete#custom#_init() abort
   let s:custom.source = {}
   let s:custom.source._ = {}
   let s:custom.option = deoplete#init#_option()
+  let s:custom.filter = {}
 
   let s:cached = {}
   let s:cached.option = {}
+  let s:cached.filter = {}
   let s:cached.buffer_option = {}
   let s:cached.source_vars = {}
 endfunction
@@ -19,6 +21,7 @@ function! deoplete#custom#_init_buffer() abort
   let b:custom = {}
   let b:custom.option = {}
   let b:custom.source_vars = {}
+  let b:custom.filter = {}
 endfunction
 
 function! deoplete#custom#_update_cache() abort
@@ -38,6 +41,13 @@ function! deoplete#custom#_update_cache() abort
   endfor
   for [name, vars] in items(custom_buffer.source_vars)
     call extend(s:cached.source_vars[name], vars)
+  endfor
+  let s:cached.filter = {}
+  for [name, vars] in items(s:custom.filter)
+    let s:cached.filter[name] = vars
+  endfor
+  for [name, vars] in items(custom_buffer.filter)
+    call extend(s:cached.filter[name], vars)
   endfor
 endfunction
 
@@ -82,6 +92,9 @@ endfunction
 function! deoplete#custom#_get_source_vars(name) abort
   return get(s:cached.source_vars, a:name, {})
 endfunction
+function! deoplete#custom#_get_filter(name) abort
+  return get(s:cached.filter, a:name, {})
+endfunction
 
 function! deoplete#custom#source(source_name, name_or_dict, ...) abort
   for key in deoplete#util#split(a:source_name)
@@ -101,6 +114,27 @@ endfunction
 function! deoplete#custom#buffer_var(source_name, name_or_dict, ...) abort
   let custom = deoplete#custom#_get_buffer().source_vars
   for key in deoplete#util#split(a:source_name)
+    if !has_key(custom, key)
+      let custom[key] = {}
+    endif
+    let vars = custom[key]
+    call s:set_custom(vars, a:name_or_dict, get(a:000, 0, ''))
+  endfor
+endfunction
+
+function! deoplete#custom#filter(filter_name, name_or_dict, ...) abort
+  let custom = deoplete#custom#_get().filter
+  for key in deoplete#util#split(a:filter_name)
+    if !has_key(custom, key)
+      let custom[key] = {}
+    endif
+    let vars = custom[key]
+    call s:set_custom(vars, a:name_or_dict, get(a:000, 0, ''))
+  endfor
+endfunction
+function! deoplete#custom#buffer_filter(filter_name, name_or_dict, ...) abort
+  let custom = deoplete#custom#_get_buffer().filter
+  for key in deoplete#util#split(a:filter_name)
     if !has_key(custom, key)
       let custom[key] = {}
     endif
