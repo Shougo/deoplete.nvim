@@ -866,10 +866,12 @@ converter_reorder_attr
 		3. Any other candidates appear at the bottom, if there is
 		space.
 
-		Default value: {}
-		It should received a dictionary with mappings from filetypes
-		to attributes, following the attribute expression syntax
-		explained above.
+		Filter custom variables:
+		attrs_order
+				It should received a dictionary with mappings
+				from filetypes to attributes, following the
+				attribute expression syntax explained above.
+				(default: {})
 
 				*deoplete-filter-converter_auto_paren*
 converter_auto_paren
