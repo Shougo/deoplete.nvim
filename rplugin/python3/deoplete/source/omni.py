@@ -25,8 +25,6 @@ class Source(Base):
         input_patterns = {}
         set_pattern(input_patterns, 'css,less,scss,sass',
                     [r'\w{2}', r'\w+:?\s*\w*', r'[@!]'])
-        set_pattern(input_patterns, 'lua',
-                    [r'\w+[.:]\w*'])
         self.vars = {
             'input_patterns': input_patterns,
             'functions': {},

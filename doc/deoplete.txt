@@ -1787,6 +1787,9 @@ A: Please set the config as below.  >
        call deoplete#custom#var('omni', 'functions', {
        \ 'lua': 'xolox#lua#omnifunc',
        \ })
+       call deoplete#custom#var('omni', 'input_patterns', {
+       \ 'lua': '\w+|\w+[.:]\w*',
+       \ )
 
 Q: I want to complete AAA using deoplete.
 
