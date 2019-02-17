@@ -27,4 +27,9 @@ function! s:suite.vimoption2python() abort
   call s:assert.equals(
         \ deoplete#util#vimoption2python('45,48-57,65-90,95,97-122'),
         \ '[\w0-9A-Z_a-z-]')
+  call s:assert.equals(
+        \ deoplete#util#vimoption2python('33,35-39,42-43,45-58,60-90,94,95,97-122,126'),
+        \ '[\w!#-''*-+\--:<-Z^_a-z~]')
+  call s:assert.equals(
+        \ deoplete#util#vimoption2python('33-45'), '[\w!-\-]')
 endfunction

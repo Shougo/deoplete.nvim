@@ -68,6 +68,13 @@ function! s:vimoption2python(option) abort
     elseif pattern ==# '-'
       let has_dash = 1
     else
+      " Avoid ambiguous Python 3 RE syntax for nested sets
+      if pattern =~# '^--'
+        let pattern = '\' . pattern
+      elseif pattern =~# '--$'
+        let pattern = split(pattern, '-')[0] . '-\-'
+      endif
+
       call add(patterns, pattern)
     endif
   endfor
