@@ -27,6 +27,13 @@ class Source(Base):
     def on_event(self, context):
         self._make_cache(context)
 
+        tab_bufnrs = self.vim.call('tabpagebuflist')
+        self._buffers = {
+            x['bufnr']: x for x in self._buffers.values()
+            if x['bufnr'] in tab_bufnrs or
+            self.vim.call('buflisted', x['bufnr'])
+        }
+
     def gather_candidates(self, context):
         tab_bufnrs = self.vim.call('tabpagebuflist')
         same_filetype = self.get_var('require_same_filetype')
