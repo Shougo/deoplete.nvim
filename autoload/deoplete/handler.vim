@@ -13,8 +13,7 @@ function! deoplete#handler#_init() abort
   augroup END
 
   for event in [
-        \ 'InsertEnter', 'BufReadPost',
-        \ 'BufWritePost', 'BufDelete', 'VimLeavePre'
+        \ 'InsertEnter', 'BufReadPost', 'BufWritePost', 'VimLeavePre',
         \ ]
     call s:define_on_event(event)
   endfor
