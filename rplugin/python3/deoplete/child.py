@@ -495,6 +495,10 @@ class Child(logger.LoggingMixin):
                 if custom and isinstance(source_attr, dict):
                     # Update values if it is dict
                     source_attr.update(custom)
+                elif type(getattr(source, attr)) != type(custom):
+                    error(self._vim,
+                        'source {}: custom attr "{}" is wrong type.'
+                        .format(source.name, attr))
                 else:
                     setattr(source, attr, custom)
 
