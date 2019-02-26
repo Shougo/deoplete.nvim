@@ -87,3 +87,6 @@ class Base(LoggingMixin):
 
         ft = filetype if (filetype in self.input_patterns) else '_'
         return self.input_patterns.get(ft, self.input_pattern)
+
+    def get_buf_option(self, option):
+        return self.vim.call('getbufvar', '%', '&' + option)

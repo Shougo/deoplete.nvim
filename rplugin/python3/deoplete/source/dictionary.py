@@ -51,9 +51,7 @@ class Source(Base):
                 )
 
     def _get_dictionaries(self, context):
-        dict_opt = self.vim.options['dictionary']
-        if 'dictionary' in self.vim.current.buffer.options:
-            dict_opt = self.vim.current.buffer.options['dictionary']
+        dict_opt = self.get_buf_option('dictionary')
         if not dict_opt:
             return []
 
