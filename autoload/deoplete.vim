@@ -46,6 +46,9 @@ function! deoplete#send_event(event, ...) abort
         \ {'event': a:event, 'sources': sources})
 endfunction
 
+function! deoplete#auto_complete(...) abort
+  return deoplete#handler#_completion_begin(get(a:000, 0, 'Async'))
+endfunction
 function! deoplete#manual_complete(...) abort
   if !deoplete#is_enabled()
     return ''

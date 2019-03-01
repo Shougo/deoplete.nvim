@@ -464,7 +464,14 @@ deoplete#custom#var({source-name}, {dict})
 ------------------------------------------------------------------------------
 KEY MAPPINGS 					*deoplete-key-mappings*
 
-					*deoplete#close_popup()*
+						*deoplete#auto_complete()*
+deoplete#auto_complete([{event}])
+		It calls the auto completion of deoplete.  You can use it to
+		call auto completion again.
+		{event} is autocmd event name.  If it is omit, "Async" is
+		used.
+
+						*deoplete#close_popup()*
 deoplete#close_popup()
 		Insert candidate and close popup menu for deoplete.
 		Note: It must be in |map-<expr>|.
@@ -480,7 +487,7 @@ deoplete#insert_candidate({number})
 		Insert {number}th candidate.
 		Note: It must be in |map-<expr>|.
 
-					*deoplete#manual_complete()*
+						*deoplete#manual_complete()*
 deoplete#manual_complete([{sources}])
 		It calls the completion of deoplete.  You can use it with
 		custom completion setups.

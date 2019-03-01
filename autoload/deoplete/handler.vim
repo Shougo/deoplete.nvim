@@ -112,9 +112,9 @@ function! s:completion_timer_start(event) abort
   let delay = deoplete#custom#_get_option('auto_complete_delay')
   if delay > 0
     let s:completion_timer = timer_start(
-          \ delay, {-> s:completion_begin(a:event)})
+          \ delay, {-> deoplete#handler#_completion_begin(a:event)})
   else
-    call s:completion_begin(a:event)
+    call deoplete#handler#_completion_begin(a:event)
   endif
 endfunction
 function! s:completion_timer_stop() abort
@@ -192,10 +192,10 @@ function! s:completion_async(timer) abort
     return
   endif
 
-  call s:completion_begin(s:async_timer.event)
+  call deoplete#handler#_completion_begin(s:async_timer.event)
 endfunction
 
-function! s:completion_begin(event) abort
+function! deoplete#handler#_completion_begin(event) abort
   if s:is_skip(a:event)
     let g:deoplete#_context.candidates = []
     return
