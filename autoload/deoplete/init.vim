@@ -243,7 +243,7 @@ import sys
 vim.vars['deoplete#_python_version_check'] = (
     sys.version_info.major,
     sys.version_info.minor,
-    sys.version_info.micro) < (3, 5, 0)
+    sys.version_info.micro) < (3, 6, 1)
 EOF
   return g:deoplete#_python_version_check
 endfunction
