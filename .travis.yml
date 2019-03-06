@@ -4,8 +4,8 @@ dist: trusty
 language: python
 
 python:
-  - 3.5
   - 3.6
+  # - 3.7
 
 install:
   - eval "$(curl -Ss https://raw.githubusercontent.com/neovim/bot-ci/master/scripts/travis-setup.sh) nightly-x64"

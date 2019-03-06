@@ -266,8 +266,8 @@ class Child(logger.LoggingMixin):
     def _handle_source_exception(self, source, exc):
         if isinstance(exc, SourceInitError):
             error(self._vim,
-                  'Error when loading source {}: {}. '
-                  'Ignoring.'.format(source.name, exc))
+                  f'Error when loading source {source.name}: {exc}. '
+                  'Ignoring.')
             self._ignore_sources.append(source.name)
             return
 
@@ -402,13 +402,11 @@ class Child(logger.LoggingMixin):
                     source.on_init(context)
                 except Exception as exc:
                     if isinstance(exc, SourceInitError):
-                        error(self._vim,
-                              'Error when loading source {}: {}. '
-                              'Ignoring.'.format(source_name, exc))
+                        error(self._vim, 'Error when loading source '
+                              f'{source_name}: {exc}. Ignoring.')
                     else:
-                        error_tb(self._vim,
-                                 'Error when loading source {}: {}. '
-                                 'Ignoring.'.format(source_name, exc))
+                        error_tb(self._vim, 'Error when loading source '
+                                 f'{source_name}: {exc}. Ignoring.')
                     self._ignore_sources.append(source_name)
                     continue
                 else:
@@ -425,7 +423,7 @@ class Child(logger.LoggingMixin):
             if self._profile_flag:
                 return self._profile_start(context, name)
         elif self._profile_flag:
-            self.debug('Profile Start: {0}'.format(name))
+            self.debug(f'Profile Start: {name}')
             self._profile_start_time = time.clock()
 
     def _profile_end(self, name):
@@ -494,9 +492,8 @@ class Child(logger.LoggingMixin):
                                     name, attr, source_attr)
                 if type(getattr(source, attr)) != type(custom):
                     # Type check
-                    error(self._vim,
-                          'source {}: custom attr "{}" is wrong type.'
-                          .format(source.name, attr))
+                    error(self._vim, f'source {source.name}: '
+                          f'custom attr "{attr}" is wrong type.')
                 elif custom and isinstance(source_attr, dict):
                     # Update values if it is dict
                     source_attr.update(custom)
@@ -520,9 +517,9 @@ class Child(logger.LoggingMixin):
                 try:
                     source.on_event(context)
                 except Exception as exc:
-                    error_tb(self._vim, 'Exception during {}.on_event '
-                             'for event {!r}: {}'.format(
-                                 source.name, event, exc))
+                    error_tb(self._vim,
+                             f'Exception during {source.name}.on_event '
+                             'for event {!r}: {}'.format(event, exc))
 
         for f in self._filters.values():
             f.on_event(context)
