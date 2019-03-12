@@ -844,7 +844,7 @@ converter_reorder_attr
 		You can specify multiple attributes and they will be processed
 		in order.
 
-		Additionaly, you can filter out unwanted candidates by
+		Additionally, you can filter out unwanted candidates by
 		prefixing an attribute value with '!'. This character is only
 		a flag and will be stripped out before compiling the
 		expression.
@@ -1410,7 +1410,7 @@ https://github.com/Robzz/deoplete-omnisharp/
 deoplete-omnisharp: Improved version of deoplete-omnisharp
 https://github.com/dimixar/deoplete-omnisharp/
 
-deoplete-omnisharp: Embeded omnisharp server version of deoplete-omnisharp
+deoplete-omnisharp: Embedded omnisharp server version of deoplete-omnisharp
 https://github.com/cyansprite/deoplete-omnisharp
 
 deoplete-hack: "hack" source for Hack and PHP
