@@ -8,7 +8,7 @@ from os import scandir
 from os.path import getmtime, exists, isdir
 from collections import namedtuple
 
-from deoplete.source.base import Base
+from deoplete.base.source import Base
 from deoplete.util import expand
 
 DictCacheItem = namedtuple('DictCacheItem', 'mtime candidates')

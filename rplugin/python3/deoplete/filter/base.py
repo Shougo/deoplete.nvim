@@ -4,29 +4,10 @@
 # License: MIT license
 # ============================================================================
 
-from abc import abstractmethod
-from deoplete.logger import LoggingMixin
+# For backward compatibility
+from deoplete.base.filter import Base as _Base
 
 
-class Base(LoggingMixin):
-
+class Base(_Base):
     def __init__(self, vim):
-        self.vim = vim
-        self.name = 'base'
-        self.description = ''
-
-    def on_event(self, context):
-        pass
-
-    def get_var(self, var_name):
-        custom_vars = self.vim.call(
-            'deoplete#custom#_get_filter', self.name)
-        if var_name in custom_vars:
-            return custom_vars[var_name]
-        if var_name in self.vars:
-            return self.vars[var_name]
-        return None
-
-    @abstractmethod
-    def filter(self, context):
-        pass
+        super().__init__(vim)

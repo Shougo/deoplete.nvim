@@ -5,7 +5,7 @@
 # ============================================================================
 
 import re
-from deoplete.filter.base import Base
+from deoplete.base.filter import Base
 
 
 class Filter(Base):

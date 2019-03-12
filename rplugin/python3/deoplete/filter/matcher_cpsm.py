@@ -7,7 +7,7 @@
 import sys
 import os
 
-from deoplete.filter.base import Base
+from deoplete.base.filter import Base
 from deoplete.util import error, globruntime
 
 

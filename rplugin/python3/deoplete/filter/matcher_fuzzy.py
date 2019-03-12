@@ -6,7 +6,7 @@
 
 import re
 
-from deoplete.filter.base import Base
+from deoplete.base.filter import Base
 from deoplete.util import (
     fuzzy_escape, binary_search_begin, binary_search_end)
 

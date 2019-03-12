@@ -4,7 +4,7 @@
 # License: MIT license
 # ============================================================================
 
-from deoplete.filter.base import Base
+from deoplete.base.filter import Base
 from deoplete.util import truncate_skipping
 
 

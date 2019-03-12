@@ -10,7 +10,7 @@ import re
 import os
 from os.path import exists
 
-from deoplete.source.base import Base
+from deoplete.base.source import Base
 
 
 class Source(Base):

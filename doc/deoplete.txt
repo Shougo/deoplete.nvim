@@ -1228,7 +1228,7 @@ vars		(Dictionary)			(Optional)
 	If "context['is_async']" is True, the gather_candidates is called
 	repeatedly.
 >
-	from deoplete.source.base import Base
+	from deoplete.base.source import Base
 
 	class Source(Base):
 	    def __init__(self, vim):

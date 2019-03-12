@@ -4,7 +4,7 @@
 # License: MIT license
 # ============================================================================
 
-from deoplete.source.base import Base
+from deoplete.base.source import Base
 from deoplete.util import parse_buffer_pattern, getlines
 
 
