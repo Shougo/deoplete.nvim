@@ -83,8 +83,6 @@ class Source(Base):
             elif not isinstance(candidates, list):
                 candidates = []
         except Exception:
-            self.print_error('Error occurred calling omnifunction: ' +
-                             self._omnifunc)
             candidates = []
 
         candidates = convert2candidates(candidates)
