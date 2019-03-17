@@ -212,6 +212,7 @@ function! deoplete#init#_option() abort
         \ 'num_processes': 4,
         \ 'keyword_patterns': {'_': '[a-zA-Z_]\k*'},
         \ 'omni_patterns': {},
+        \ 'on_cmdline_changed': v:false,
         \ 'on_insert_enter': v:true,
         \ 'on_text_changed_i': v:true,
         \ 'profile': v:false,

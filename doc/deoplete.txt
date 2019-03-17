@@ -206,6 +206,13 @@ omni_patterns
 <
 		Default value: {}
 
+					*deoplete-options-on_cmdline_changed*
+on_cmdline_changed
+		Deoplete enables the auto completion on |CmdlineChanged|
+		autocmd if this value is True.
+
+		Default value: v:false
+
 					*deoplete-options-on_insert_enter*
 on_insert_enter
 		Deoplete enables the auto completion on |InsertEnter| autocmd

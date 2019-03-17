@@ -30,6 +30,10 @@ function! deoplete#handler#_init() abort
     endif
     call s:define_completion_via_timer('InsertCharPre')
   endif
+  if deoplete#custom#_get_option('on_cmdline_changed')
+        \ && stridx(&wildoptions, 'pum') >= 0
+    call s:define_completion_via_timer('CmdlineChanged')
+  endif
 
   " Note: Vim 8 GUI(MacVim and Win32) is broken
   " dummy timer call is needed before complete()
@@ -126,6 +130,20 @@ function! s:completion_timer_stop() abort
   unlet s:completion_timer
 endfunction
 
+function! s:on_cmdline(event) abort
+  if getcmdtype() !=# ':'
+    return
+  endif
+
+  let input = getcmdline()[:getcmdpos()]
+  let complete_str = matchstr(input, '\w\+$')
+  let min_pattern_length = deoplete#custom#_get_option('min_pattern_length')
+  if len(complete_str) < min_pattern_length
+    return
+  endif
+
+  call feedkeys("\<Tab>", 'n')
+endfunction
 function! s:check_prev_completion(event) abort
   let prev = g:deoplete#_prev_completion
   if a:event ==# 'Async' || mode() !=# 'i'
@@ -196,6 +214,10 @@ function! s:completion_async(timer) abort
 endfunction
 
 function! deoplete#handler#_completion_begin(event) abort
+  if a:event ==# 'CmdlineChanged'
+    return s:on_cmdline(a:event)
+  endif
+
   if s:is_skip(a:event)
     let g:deoplete#_context.candidates = []
     return
