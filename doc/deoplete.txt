@@ -1779,7 +1779,7 @@ A: Please set "input_patterns" manually. >
 
        call deoplete#custom#var('omni', 'input_patterns', {
        \ 'javascript': '[^. *\t]\.\w*',
-       \ )
+       \ })
 
 Q: I want to use "vim-lua-ftplugin".
    https://github.com/xolox/vim-lua-ftplugin
