@@ -898,6 +898,14 @@ converter_remove_paren
 converter_truncate_abbr
 		It truncates a candidate's abbr by the current window width.
 
+				*deoplete-filter-converter_truncate_kind*
+converter_truncate_kind
+		It truncates a candidate's kind by the current window width.
+
+				*deoplete-filter-converter_truncate_info*
+converter_truncate_info
+		It truncates a candidate's info by the current window width.
+
 				*deoplete-filter-converter_truncate_menu*
 converter_truncate_menu
 		It truncates a candidate's menu by the current window width.
@@ -1099,6 +1107,15 @@ max_kind_width
 		If it is less than or equal to 0, it will be disabled.
 
 		Default: 40
+
+				*deoplete-source-attribute-max_info_width*
+max_info_width
+		(Integer)			(Optional)
+		If the candidate info length exceeds the length it will be cut
+		down.
+		If it is less than or equal to 0, it will be disabled.
+
+		Default: 200
 
 				*deoplete-source-attribute-max_menu_width*
 max_menu_width

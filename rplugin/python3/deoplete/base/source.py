@@ -26,6 +26,7 @@ class Base(LoggingMixin):
             'converter_remove_overlap',
             'converter_truncate_abbr',
             'converter_truncate_kind',
+            'converter_truncate_info',
             'converter_truncate_menu']
         self.filetypes = []
         self.keyword_patterns = []
@@ -40,6 +41,7 @@ class Base(LoggingMixin):
         self.vars = {}
         self.max_abbr_width = 80
         self.max_kind_width = 40
+        self.max_info_width = 200
         self.max_menu_width = 40
         self.max_candidates = 500
         self.matcher_key = ''

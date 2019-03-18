@@ -39,6 +39,7 @@ class Context(object):
             'input': text,
             'max_abbr_width': max_width,
             'max_kind_width': max_width,
+            'max_info_width': max_width,
             'max_menu_width': max_width,
             'next_input': self._vim.call(
                 'deoplete#util#get_next_input', event),
