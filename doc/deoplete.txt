@@ -1752,6 +1752,11 @@ Q: What does each part of a line on the pop up mean?  For example I see:
 A: It is the source mark. [~] is from around source.  A is from
    |deoplete-source-around|.
 
+Q: I want to use floating preview window feature with deoplete.
+
+A: Please install float-preview.nvim plugin.
+https://github.com/ncm2/float-preview.nvim
+
 						    *deoplete-faq-ft-specific*
 3. Filetype Specific Questions~
 
