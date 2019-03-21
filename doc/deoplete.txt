@@ -1594,7 +1594,7 @@ Please update them to the latest version.
 Q: "Broken pipe" error.
 https://github.com/Shougo/deoplete.nvim/issues/653
 
-A: Please test dp_main.py.
+A: Please test _main.py.
 https://github.com/Shougo/deoplete.nvim/issues/635#issuecomment-363331278
 
 Please test neovim-python module.
