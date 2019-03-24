@@ -10,7 +10,6 @@ import msgpack
 import subprocess
 from functools import partial
 from queue import Queue
-from sys import executable
 
 from deoplete import logger
 from deoplete.process import Process
@@ -89,7 +88,7 @@ class AsyncParent(_Parent):
         self._hnd = self._vim.loop.create_task(
             self._vim.loop.subprocess_exec(
                 partial(Process, self),
-                executable,
+                self._vim.vars.get('python3_host_prog', 'python3'),
                 main,
                 self._vim.vars['deoplete#_serveraddr'],
                 stderr=None,
