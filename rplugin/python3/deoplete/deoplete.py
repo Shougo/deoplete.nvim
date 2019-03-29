@@ -130,7 +130,10 @@ class Deoplete(logger.LoggingMixin):
         context = self._context.get(user_context['event'])
         context.update(user_context)
 
+        self.debug('initialized context: %s', context)
+
         self.debug('on_event: %s', context['event'])
+
         self._check_recache(context)
 
         for parent in self._parents:
