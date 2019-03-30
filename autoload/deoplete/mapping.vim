@@ -15,8 +15,8 @@ function! deoplete#mapping#_dummy(func) abort
   return "\<C-r>=".a:func."()\<CR>"
 endfunction
 function! s:check_completion_mode() abort
-  return exists('*complete_mode') &&
-        \ (pumvisible() && complete_mode() !=# 'eval')
+  return exists('*complete_info') &&
+        \ (pumvisible() && get(complete_info(), 'mode', '') !=# 'eval')
 endfunction
 function! deoplete#mapping#_complete() abort
   if s:check_completion_mode()
