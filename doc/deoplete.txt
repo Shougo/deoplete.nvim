@@ -792,7 +792,7 @@ sorter_word	Word order sorter.
 			  		*deoplete-filter-converter_auto_delimiter*
 converter_auto_delimiter
 		It adds "delimiters" variable characters in a candidate's
-		word.
+		word if the candidate's abbr contains the delimiters.
 
 		Filter custom variables:
 		delimiters
