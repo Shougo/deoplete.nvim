@@ -9,6 +9,7 @@ import os
 import msgpack
 import subprocess
 from functools import partial
+from pathlib import Path
 from queue import Queue
 
 from deoplete import logger
@@ -82,7 +83,8 @@ class AsyncParent(_Parent):
             startupinfo = subprocess.STARTUPINFO()
             startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
-        main = os.path.join(os.path.dirname(__file__), '_main.py')
+        main = str(Path(__file__).parent.parent.parent.parent.joinpath(
+            'autoload', 'deoplete', '_main.py'))
 
         self._hnd = self._vim.loop.create_task(
             self._vim.loop.subprocess_exec(
