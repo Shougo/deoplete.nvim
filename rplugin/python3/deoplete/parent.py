@@ -16,6 +16,7 @@ from deoplete import logger
 from deoplete.process import Process
 from deoplete.util import error_tb, error
 
+
 class _Parent(logger.LoggingMixin):
     def __init__(self, vim):
         self.name = 'parent'
