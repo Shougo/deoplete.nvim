@@ -14,13 +14,25 @@ endfunction
 function! deoplete#mapping#_dummy(func) abort
   return "\<C-r>=".a:func."()\<CR>"
 endfunction
+function! s:check_completion_mode() abort
+  return exists('*complete_info') &&
+        \ (pumvisible() && get(complete_info(), 'mode', '') !=# 'eval')
+endfunction
 function! deoplete#mapping#_complete() abort
+  if s:check_completion_mode()
+    return ''
+  endif
+
   call complete(g:deoplete#_context.complete_position + 1,
         \ g:deoplete#_context.candidates)
 
   return ''
 endfunction
 function! deoplete#mapping#_prev_complete() abort
+  if s:check_completion_mode()
+    return ''
+  endif
+
   call complete(g:deoplete#_filtered_prev.complete_position + 1,
         \ g:deoplete#_filtered_prev.candidates)
 
