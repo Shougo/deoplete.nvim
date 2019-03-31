@@ -15,9 +15,6 @@ from deoplete import logger
 from deoplete.process import Process
 from deoplete.util import error_tb, error
 
-main = os.path.join(os.path.dirname(__file__), '_main.py')
-
-
 class _Parent(logger.LoggingMixin):
     def __init__(self, vim):
         self.name = 'parent'
@@ -84,6 +81,8 @@ class AsyncParent(_Parent):
         if os.name == 'nt':
             startupinfo = subprocess.STARTUPINFO()
             startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+
+        main = os.path.join(os.path.dirname(__file__), '_main.py')
 
         self._hnd = self._vim.loop.create_task(
             self._vim.loop.subprocess_exec(
