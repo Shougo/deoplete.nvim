@@ -9,7 +9,6 @@ function! deoplete#handler#_init() abort
     autocmd!
     autocmd InsertLeave * call s:on_insert_leave()
     autocmd CompleteDone * call s:on_complete_done()
-    autocmd InsertLeave * call s:completion_timer_stop()
   augroup END
 
   for event in [
@@ -27,8 +26,9 @@ function! deoplete#handler#_init() abort
   if deoplete#custom#_get_option('refresh_always')
     if exists('##TextChangedP')
       call s:define_completion_via_timer('TextChangedP')
+    else
+      call s:define_completion_via_timer('InsertCharPre')
     endif
-    call s:define_completion_via_timer('InsertCharPre')
   endif
 
   " Note: Vim 8 GUI(MacVim and Win32) is broken
@@ -50,7 +50,6 @@ function! deoplete#handler#_do_complete() abort
   let event = get(context, 'event', '')
   let modes = (event ==# 'InsertEnter') ? ['n', 'i'] : ['i']
   if s:is_exiting() || index(modes, mode()) < 0
-    call s:completion_timer_stop()
     return
   endif
 
@@ -167,32 +166,13 @@ function! s:check_prev_completion(event) abort
 endfunction
 
 function! deoplete#handler#_async_timer_start() abort
-  if exists('s:async_timer')
-    call deoplete#handler#_async_timer_stop()
-  endif
-
   let delay = deoplete#custom#_get_option('auto_refresh_delay')
   if delay <= 0
     return
   endif
 
-  let s:async_timer = { 'event': 'Async', 'changedtick': b:changedtick }
-  let s:async_timer.id = timer_start(
-        \ max([20, delay]), function('s:completion_async'))
-endfunction
-function! deoplete#handler#_async_timer_stop() abort
-  if exists('s:async_timer')
-    call timer_stop(s:async_timer.id)
-    unlet s:async_timer
-  endif
-endfunction
-function! s:completion_async(timer) abort
-  if mode() !=# 'i' || s:is_exiting()
-    call deoplete#handler#_async_timer_stop()
-    return
-  endif
-
-  call deoplete#handler#_completion_begin(s:async_timer.event)
+  call timer_start(max([20, delay]),
+        \ {-> deoplete#handler#_completion_begin('Async')})
 endfunction
 
 function! deoplete#handler#_completion_begin(event) abort
