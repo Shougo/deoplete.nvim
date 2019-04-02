@@ -23,7 +23,6 @@ class _Parent(logger.LoggingMixin):
 
         self._vim = vim
         self._loaded_filters = set()
-        self._prev_pos = []
 
         self._start_process()
 
@@ -78,6 +77,7 @@ class AsyncParent(_Parent):
         self._unpacker = msgpack.Unpacker(
             encoding='utf-8',
             unicode_errors='surrogateescape')
+        self._prev_pos = []
 
         startupinfo = None
         if os.name == 'nt':
