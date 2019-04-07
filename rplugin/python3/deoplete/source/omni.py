@@ -89,5 +89,6 @@ class Source(Base):
 
         for candidate in candidates:
             candidate['dup'] = 1
+            candidate['equal'] = 1
 
         return candidates
