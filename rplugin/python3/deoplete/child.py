@@ -65,6 +65,7 @@ class Child(logger.LoggingMixin):
                 ret = self.main(name, args, queue_id)
                 if ret:
                     self._write(stdout, ret)
+                    self._vim.call('deoplete#auto_complete')
 
     def main(self, name, args, queue_id):
         ret = None
@@ -79,7 +80,9 @@ class Child(logger.LoggingMixin):
         elif name == 'on_event':
             self._on_event(args[0])
         elif name == 'merge_results':
-            ret = self._merge_results(args[0], queue_id)
+            results = self._merge_results(args[0], queue_id)
+            if results['is_async'] or results['merged_results']:
+                ret = results
         return ret
 
     def _write(self, stdout, expr):

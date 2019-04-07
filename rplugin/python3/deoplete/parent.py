@@ -23,7 +23,6 @@ class _Parent(logger.LoggingMixin):
 
         self._vim = vim
         self._loaded_filters = set()
-        self._prev_pos = []
 
         self._start_process()
 
@@ -58,7 +57,7 @@ class SyncParent(_Parent):
 
     def merge_results(self, context):
         results = self._child._merge_results(context, queue_id=None)
-        return (results['is_async'],
+        return (results['is_async'], results['is_async'],
                 results['merged_results']) if results else (False, [])
 
     def _put(self, name, args):
@@ -78,6 +77,7 @@ class AsyncParent(_Parent):
         self._unpacker = msgpack.Unpacker(
             encoding='utf-8',
             unicode_errors='surrogateescape')
+        self._prev_pos = []
 
         startupinfo = None
         if os.name == 'nt':
@@ -107,17 +107,17 @@ class AsyncParent(_Parent):
         else:
             queue_id = self._put('merge_results', [context])
             if not queue_id:
-                return (False, [])
+                return (False, False, [])
 
         get = self._get(queue_id)
         if not get:
             # Skip the next merge_results
             self._queue_id = queue_id
             self._prev_pos = context['position']
-            return (True, [])
+            return (True, False, [])
         self._queue_id = ''
         results = get[0]
-        return (results['is_async'],
+        return (results['is_async'], results['is_async'],
                 results['merged_results']) if results else (False, [])
 
     def _put(self, name, args):
