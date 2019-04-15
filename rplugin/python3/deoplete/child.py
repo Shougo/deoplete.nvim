@@ -484,6 +484,7 @@ class Child(logger.LoggingMixin):
             'matchers',
             'max_abbr_width',
             'max_candidates',
+            'max_info_width',
             'max_kind_width',
             'max_menu_width',
             'max_pattern_length',
