@@ -619,29 +619,6 @@ buffer						*deoplete-source-buffer*
 				buffers of any filetype
 				(default: v:true)
 
-dictionary					*deoplete-source-dictionary*
-		This source collects |deoplete-options-keyword_patterns|
-		keywords from 'dictionary'.
-		Note: It uses buffer-local 'dictionary' set up.
-		Note: It also supports directory.
-
-		rank: 100
->
-		" Examples:
-		" Sample configuration for dictionary source with multiple
-		" dictionary files.
-		setlocal dictionary+=/usr/share/dict/words
-		setlocal dictionary+=/usr/share/dict/american-english
-		" Remove this if you'd like to use fuzzy search
-		call deoplete#custom#source(
-		\ 'dictionary', 'matchers', ['matcher_head'])
-		" If dictionary is already sorted, no need to sort it again.
-		call deoplete#custom#source(
-		\ 'dictionary', 'sorters', [])
-		" Do not complete too short words
-		call deoplete#custom#source(
-		\ 'dictionary', 'min_pattern_length', 4)
-<
 file							*deoplete-source-file*
 		This source collects keywords from local files. Specifically,
 		it completes file and directory names and paths, e.g.
@@ -726,12 +703,6 @@ omni							*deoplete-source-omni*
 		    \ 'php': '\w+|[^. \t]->\w*|\w+::\w*',
 		    \})
 <
-tag							*deoplete-source-tag*
-		It collects keywords from |ctags| files.
-		Note: It only supports UTF-8 encoded tag file.
-
-		rank: 100
-
 ==============================================================================
 FILTERS							*deoplete-filters*
 
@@ -1473,6 +1444,12 @@ https://github.com/autozimu/LanguageClient-neovim
 deoplete-vim-lsp: "lsp" source for vim-lsp
 https://github.com/lighttiger2505/deoplete-vim-lsp
 
+deoplete-tags: "tag" source for tag files
+https://github.com/deoplete-plugins/deoplete-tag
+
+deoplete-dictionary: "dictionary" source for dictionary files
+https://github.com/deoplete-plugins/deoplete-dictionary
+
 ==============================================================================
 EXTERNAL PLUGINS				*deoplete-external-plugins*
 
@@ -1782,6 +1759,16 @@ Q: I want to use floating preview window feature with deoplete.
 A: Please install float-preview.nvim plugin.
 https://github.com/ncm2/float-preview.nvim
 
+Q: I want to complete from 'tags'.
+
+A:
+https://github.com/deoplete-plugins/deoplete-tag
+
+Q: I want to complete from 'dictionary'.
+
+A:
+https://github.com/deoplete-plugins/deoplete-dictionary
+
 						    *deoplete-faq-ft-specific*
 3. Filetype Specific Questions~
 
@@ -1867,6 +1854,11 @@ A: https://github.com/deoplete-plugins/deoplete-jedi/issues/35
 
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
+
+2019.04.16
+* Split tag source to https://github.com/deoplete-plugins/deoplete-tag.
+* Split dictionary source to
+  https://github.com/deoplete-plugins/deoplete-dictionary.
 
 2019.03.02
 * Python 3.6.1+ is required.
