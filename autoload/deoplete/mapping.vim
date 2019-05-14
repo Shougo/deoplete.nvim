@@ -38,7 +38,7 @@ function! deoplete#mapping#_complete() abort
   return ''
 endfunction
 function! deoplete#mapping#_prev_complete() abort
-  if s:check_completion_mode()
+  if s:check_completion_info(g:deoplete#_context.candidates)
     return ''
   endif
 
