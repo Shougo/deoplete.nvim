@@ -24,8 +24,8 @@ function! s:check_completion_info(candidates) abort
     return 1
   endif
 
-  let old_candidates = map(copy(info.items), 'v:val.word')
-  return map(copy(a:candidates), 'v:val.word') ==# old_candidates
+  let old_candidates = sort(map(copy(info.items), 'v:val.word'))
+  return sort(map(copy(a:candidates), 'v:val.word')) ==# old_candidates
 endfunction
 function! deoplete#mapping#_complete() abort
   if s:check_completion_info(g:deoplete#_context.candidates)
