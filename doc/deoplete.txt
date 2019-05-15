@@ -142,13 +142,13 @@ candidate_marks
 		inoremap <expr>A       pumvisible() ?
 		\ deoplete#insert_candidate(0) : 'A'
 		inoremap <expr>S       pumvisible() ?
-		\ deoplete#insert_candidate(1) : 'B'
+		\ deoplete#insert_candidate(1) : 'S'
 		inoremap <expr>D       pumvisible() ?
-		\ deoplete#insert_candidate(2) : 'S'
+		\ deoplete#insert_candidate(2) : 'D'
 		inoremap <expr>F       pumvisible() ?
-		\ deoplete#insert_candidate(3) : 'D'
+		\ deoplete#insert_candidate(3) : 'F'
 		inoremap <expr>G       pumvisible() ?
-		\ deoplete#insert_candidate(4) : 'F'
+		\ deoplete#insert_candidate(4) : 'G'
 <
 						*deoplete-options-ignore_case*
 ignore_case
