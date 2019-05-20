@@ -31,8 +31,8 @@ function! deoplete#custom#_update_cache() abort
 
   let custom_buffer = deoplete#custom#_get_buffer()
 
-  let s:cached.option = s:custom.option
-  let s:cached.buffer_option = custom_buffer.option
+  let s:cached.option = copy(s:custom.option)
+  let s:cached.buffer_option = copy(custom_buffer.option)
   call extend(s:cached.option, s:cached.buffer_option)
 
   let s:cached.source_vars = {}
