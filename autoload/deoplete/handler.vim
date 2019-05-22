@@ -176,6 +176,8 @@ function! deoplete#handler#_async_timer_start() abort
 endfunction
 
 function! deoplete#handler#_completion_begin(event) abort
+  call deoplete#custom#_update_cache()
+
   if s:is_skip(a:event)
     let g:deoplete#_context.candidates = []
     return
