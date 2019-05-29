@@ -5,12 +5,7 @@ export THEMIS_HOME := ./vim-themis
 
 
 install: vim-themis
-	pip install pynvim --upgrade
-	pip install pytest --upgrade
-	pip install flake8 --upgrade
-	pip install mypy --upgrade
-	pip install vim-vint --upgrade
-	pip install pytest-cov --upgrade
+	pip install --upgrade -r test/requirements.txt
 
 lint:
 	vint --version
