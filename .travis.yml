@@ -14,7 +14,7 @@ install:
 env:
   global:
     - PATH=$HOME/neovim/bin:$PATH
-    - PYTEST_ADDOPTS=--cov -rplugin/python3/deoplete
+    - PYTEST_ADDOPTS=--cov rplugin/python3/deoplete
 
 script:
   - make --keep-going test lint
