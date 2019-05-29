@@ -95,6 +95,7 @@ class AsyncParent(_Parent):
         self._queue_id = ''
         self._queue_in = Queue()
         self._queue_out = Queue()
+        self._queue_err = Queue()
         self._packer = msgpack.Packer(
             use_bin_type=True,
             encoding='utf-8',
@@ -118,8 +119,10 @@ class AsyncParent(_Parent):
                 self._get_python_executable(),
                 main,
                 self._vim.vars['deoplete#_serveraddr'],
-                stderr=None,
                 startupinfo=startupinfo))
+
+    def _print_error(self, message):
+        error(self._vim, message)
 
     def _connect_stdin(self, stdin):
         self._stdin = stdin
@@ -168,6 +171,9 @@ class AsyncParent(_Parent):
     def _get(self, queue_id):
         if not self._hnd:
             return []
+
+        while not self._queue_err.empty():
+            self._print_error(self._queue_err.get_nowait())
 
         outs = []
         while not self._queue_out.empty():

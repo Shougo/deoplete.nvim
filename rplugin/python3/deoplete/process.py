@@ -18,10 +18,15 @@ class Process(asyncio.SubprocessProtocol):
             transport.get_pipe_transport(0))
 
     def pipe_data_received(self, fd, data):
+        if fd == 2:
+            # stderr
+            self._plugin._queue_err.put(f'stderr from child process:{data}')
+            return
+
         unpacker = self._unpacker
         unpacker.feed(data)
         for child_out in unpacker:
             self._plugin._queue_out.put(child_out)
 
     def process_exited(self):
-        pass
+        self._plugin._queue_err.put('The child process is exited!')
