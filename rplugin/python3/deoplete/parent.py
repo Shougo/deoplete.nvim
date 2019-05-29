@@ -8,6 +8,7 @@ import time
 import os
 import msgpack
 import subprocess
+import sys
 from functools import partial
 from pathlib import Path
 from queue import Queue
@@ -65,6 +66,30 @@ class SyncParent(_Parent):
 
 
 class AsyncParent(_Parent):
+    def _get_python_executable(self):
+        """Get Python executable.
+
+        This handles Python being embedded in Vim on Windows or OSX.
+
+        Taken from jedia.api.environment._try_get_same_env.
+        """
+        exe = sys.executable
+        if not os.path.basename(exe).lower().startswith('python'):
+            if os.name == 'nt':
+                checks = (r'Scripts\python.exe', 'python.exe')
+            else:
+                checks = (
+                    'bin/python%s.%s' % (sys.version_info[0], sys.version[1]),
+                    'bin/python%s' % (sys.version_info[0]),
+                    'bin/python',
+                )
+            for check in checks:
+                guess = os.path.join(sys.exec_prefix, check)
+                if os.path.isfile(guess):
+                    return guess
+            return self._vim.vars.get('python3_host_prog', 'python3')
+        return exe
+
     def _start_process(self):
         self._stdin = None
         self._queue_id = ''
@@ -90,7 +115,7 @@ class AsyncParent(_Parent):
         self._hnd = self._vim.loop.create_task(
             self._vim.loop.subprocess_exec(
                 partial(Process, self),
-                self._vim.vars.get('python3_host_prog', 'python3'),
+                self._get_python_executable(),
                 main,
                 self._vim.vars['deoplete#_serveraddr'],
                 stderr=None,
