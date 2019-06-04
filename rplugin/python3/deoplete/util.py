@@ -10,7 +10,14 @@ import sys
 import glob
 import importlib.util
 import traceback
+import typing
 import unicodedata
+
+from importlib import find_loader
+if find_loader('pynvim'):
+    from pynvim import Nvim
+else:
+    from neovim import Nvim
 
 
 def set_pattern(variable, keys, pattern):
@@ -63,7 +70,7 @@ def import_plugin(path, source, classname):
     return cls
 
 
-def debug(vim, expr):
+def debug(vim: Nvim, expr):
     if hasattr(vim, 'out_write'):
         string = (expr if isinstance(expr, str) else str(expr))
         return vim.out_write('[deoplete] ' + string + '\n')
@@ -71,7 +78,7 @@ def debug(vim, expr):
         vim.call('deoplete#util#print_debug', expr)
 
 
-def error(vim, expr):
+def error(vim: Nvim, expr):
     if hasattr(vim, 'err_write'):
         string = (expr if isinstance(expr, str) else str(expr))
         return vim.err_write('[deoplete] ' + string + '\n')
@@ -79,8 +86,8 @@ def error(vim, expr):
         vim.call('deoplete#util#print_error', expr)
 
 
-def error_tb(vim, msg):
-    lines = []
+def error_tb(vim: Nvim, msg):
+    lines: typing.List[str] = []
     t, v, tb = sys.exc_info()
     if t and v and tb:
         lines += traceback.format_exc().splitlines()
@@ -92,7 +99,7 @@ def error_tb(vim, msg):
             vim.call('deoplete#util#print_error', line)
 
 
-def error_vim(vim, msg):
+def error_vim(vim: Nvim, msg):
     throwpoint = vim.eval('v:throwpoint')
     if throwpoint != '':
         error(vim, 'v:throwpoint = ' + throwpoint)
@@ -127,7 +134,7 @@ def get_custom(custom, source_name, key, default):
         return default
 
 
-def get_syn_names(vim):
+def get_syn_names(vim: Nvim):
     return vim.call('deoplete#util#get_syn_names')
 
 
@@ -206,11 +213,11 @@ def expand(path):
     return os.path.expanduser(os.path.expandvars(path))
 
 
-def getlines(vim, start=1, end='$'):
+def getlines(vim: Nvim, start=1, end='$'):
     if end == '$':
         end = len(vim.current.buffer)
     max_len = min([end - start, 5000])
-    lines = []
+    lines: typing.List[str] = []
     current = start
     while current <= end:
         lines += vim.call('getline', current, current + max_len)
