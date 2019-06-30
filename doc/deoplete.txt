@@ -786,13 +786,14 @@ converter_reorder_attr
 		first in the suggestion according to their attributes.
 
 >
-		call deoplete#custom#filter('attrs_order', {
-		\ 'javascript': {
-		\    		'kind': [
-		\			'Function',
-		\			'Property'
-		\			]
-		\ },
+		call deoplete#custom#filter('converter_reorder_attr',
+		\  'attrs_order', {
+		\    'javascript': {
+		\      'kind': [
+		\        'Function',
+		\        'Property'
+		\      ]
+		\   },
 		\})
 <
 
@@ -834,15 +835,15 @@ converter_reorder_attr
 		expression.
 
 >
-		call deoplete#custom#filter('attrs_order', {
-		\ 'ruby': {
-		\    		'kind': [
-		\			'!Class',
-		\			],
-		\
-		\		'abbr': [
-		\			'ExtensionClass'
-		\			]
+		call deoplete#custom#filter('converter_reorder_attr',
+		\ 'attrs_order', {
+		\   'ruby': {
+		\     'kind': [
+		\       '!Class',
+		\     ],
+		\     'abbr': [
+		\       'ExtensionClass'
+		\     ]
 		\ },
 		\})
 <
