@@ -14,6 +14,9 @@ class Filter(Base):
 
         self.name = 'converter_reorder_attr'
         self.description = 'Reorder candidates based on their attributes'
+        self.vars = {
+            'attrs_order': {},
+        }
 
     @staticmethod
     def filter_attrs(candidates, preferred_order_attrs, max_list_size=500):
@@ -54,9 +57,8 @@ class Filter(Base):
         return new_candidates
 
     def filter(self, context):
-        preferred_order_attrs = self.vim.call(
-            'deoplete#custom#_get_filter', 'converter_reorder_attr'
-        ).get(context['filetype'], [])
+        preferred_order_attrs = self.get_var('attrs_order').get(
+            context['filetype'], [])
         if not context['candidates'] or not preferred_order_attrs:
             return context['candidates']
 
