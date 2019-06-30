@@ -77,8 +77,9 @@ def logmethod(func: FUNC) -> typing.Callable[[FUNC], FUNC]:
     root 'deoplete' logger.
     """
     @wraps(func)
-    def wrapper(self, *args: typing.Any, **kwargs: typing.Any
-                ) -> None:  # type: ignore
+    def wrapper(self,  # type: ignore
+                *args: typing.Any,
+                **kwargs: typing.Any) -> None:
         if not init or not self.is_debug_enabled:
             return
         if self._logger is None:

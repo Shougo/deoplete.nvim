@@ -11,12 +11,12 @@ import os
 import deoplete.parent
 from deoplete import logger
 from deoplete.context import Context
-from deoplete.util import error, error_tb
+from deoplete.util import error, error_tb, Nvim
 
 
 class Deoplete(logger.LoggingMixin):
 
-    def __init__(self, vim):
+    def __init__(self, vim: Nvim):
         self.name = 'core'
 
         self._vim = vim
