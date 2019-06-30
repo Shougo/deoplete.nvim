@@ -29,7 +29,7 @@ class Deoplete(logger.LoggingMixin):
         self._runtimepath_list: typing.List[str] = []
         self._custom: typing.Dict[str, typing.Dict[str, typing.Any]] = {}
         self._loaded_paths: typing.Set[str] = set()
-        self._prev_results: typng.Iterable[typing.Dict[int, Candidates]] = {}
+        self._prev_results: typing.Dict[int, Candidates] = {}
         self._prev_input = ''
         self._prev_next_input = ''
         self._context = None
@@ -150,7 +150,8 @@ class Deoplete(logger.LoggingMixin):
         for cnt, parent in enumerate(self._parents):
             if cnt in self._prev_results:
                 # Use previous result
-                results += copy.deepcopy(self._prev_results[cnt])
+                results += copy.deepcopy(  # type: ignore
+                    self._prev_results[cnt])
             else:
                 result = parent.merge_results(context)
                 is_async = is_async or result[0]

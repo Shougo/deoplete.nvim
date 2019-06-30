@@ -68,7 +68,7 @@ def setup(vim: Nvim, level: str, output_file: str='') -> None:
                 output_file))
 
 
-FUNC = typing.Callable[..., None]
+FUNC = typing.Callable[..., typing.Any]
 def logmethod(func: FUNC) -> typing.Callable[[FUNC], FUNC]:
     """Decorator for setting up the logger in LoggingMixin subclasses.
 
@@ -79,7 +79,7 @@ def logmethod(func: FUNC) -> typing.Callable[[FUNC], FUNC]:
     @wraps(func)
     def wrapper(self,  # type: ignore
                 *args: typing.Any,
-                **kwargs: typing.Any) -> None:
+                **kwargs: typing.Any) -> typing.Any:
         if not init or not self.is_debug_enabled:
             return
         if self._logger is None:
