@@ -372,9 +372,11 @@ class Child(logger.LoggingMixin):
             ctx['candidates'] = source.on_post_filter(ctx)
 
         mark = source.mark + ' '
+        refresh = self._vim.call(
+            'deoplete#custom#_get_option', 'refresh_always')
         for candidate in ctx['candidates']:
             candidate['icase'] = 1
-            candidate['equal'] = 1
+            candidate['equal'] = refresh
 
             # Set default menu
             if (mark != ' ' and
