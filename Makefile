@@ -14,7 +14,7 @@ lint:
 	flake8 --version
 	flake8 rplugin
 	mypy --version
-	mypy --ignore-missing-imports --follow-imports=skip rplugin/python3/deoplete
+	mypy --ignore-missing-imports --follow-imports=skip --strict rplugin/python3/deoplete
 
 test:
 	themis --version
