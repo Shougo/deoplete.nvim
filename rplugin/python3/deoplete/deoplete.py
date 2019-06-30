@@ -7,11 +7,14 @@
 import copy
 import glob
 import os
+import typing
 
 import deoplete.parent
 from deoplete import logger
 from deoplete.context import Context
 from deoplete.util import error, error_tb, Nvim
+
+UserContext = typing.Dict[str, typing.Any]
 
 
 class Deoplete(logger.LoggingMixin):
@@ -49,12 +52,12 @@ class Deoplete(logger.LoggingMixin):
             self._vim.vars['deoplete#_channel_id'] = self._vim.channel_id
         self._vim.vars['deoplete#_initialized'] = True
 
-    def enable_logging(self):
+    def enable_logging(self) -> None:
         logging = self._vim.vars['deoplete#_logging']
         logger.setup(self._vim, logging['level'], logging['logfile'])
         self.is_debug_enabled = True
 
-    def init_context(self):
+    def init_context(self) -> None:
         self._context = Context(self._vim)
 
         # Initialization
@@ -62,7 +65,7 @@ class Deoplete(logger.LoggingMixin):
         context['rpc'] = 'deoplete_on_event'
         self.on_event(context)
 
-    def completion_begin(self, user_context):
+    def completion_begin(self, user_context: UserContext) -> None:
         if not self._context:
             self.init_context()
 
@@ -118,7 +121,7 @@ class Deoplete(logger.LoggingMixin):
                    is_async)
         self._vim.call('deoplete#handler#_do_complete')
 
-    def on_event(self, user_context):
+    def on_event(self, user_context: UserContext) -> None:
         self._vim.call('deoplete#custom#_update_cache')
 
         if not self._context:
@@ -138,7 +141,7 @@ class Deoplete(logger.LoggingMixin):
         for parent in self._parents:
             parent.on_event(context)
 
-    def _get_results(self, context):
+    def _get_results(self, context: UserContext) -> typing.List[typing.Any]:
         is_async = False
         needs_poll = False
         results = []
@@ -155,7 +158,8 @@ class Deoplete(logger.LoggingMixin):
                 results += result[2]
         return [is_async, needs_poll, results]
 
-    def _merge_results(self, context):
+    def _merge_results(self, context: UserContext) -> typing.Tuple[
+            bool, bool, int, typing.List[typing.Any]]:
         use_prev = (context['input'] == self._prev_input
                     and context['next_input'] == self._prev_next_input
                     and context['event'] != 'Manual')
@@ -202,13 +206,15 @@ class Deoplete(logger.LoggingMixin):
 
         return (is_async, needs_poll, complete_position, all_candidates)
 
-    def _add_parent(self, parent_cls):
+    def _add_parent(self, parent_cls: typing.Callable[[Nvim], typing.Union[
+            deoplete.parent.SyncParent,
+            deoplete.parent.AsyncParent]]) -> None:
         parent = parent_cls(self._vim)
         if self._vim.vars['deoplete#_logging']:
             parent.enable_logging()
         self._parents.append(parent)
 
-    def _find_rplugins(self, source):
+    def _find_rplugins(self, source: str) -> None:
         """Search for base.py or *.py
 
         Searches $VIMRUNTIME/*/rplugin/python3/deoplete/$source[s]/
@@ -229,7 +235,7 @@ class Deoplete(logger.LoggingMixin):
             for path in self._runtimepath_list:
                 yield from glob.iglob(os.path.join(path, src))
 
-    def _load_sources(self, context):
+    def _load_sources(self, context: UserContext) -> None:
         if not self._parents and self._max_parents == 1:
             self._add_parent(deoplete.parent.SyncParent)
 
@@ -252,16 +258,16 @@ class Deoplete(logger.LoggingMixin):
 
         self._set_source_attributes(context)
 
-    def _load_filters(self, context):
+    def _load_filters(self, context: UserContext) -> None:
         for path in self._find_rplugins('filter'):
             for parent in self._parents:
                 parent.add_filter(path)
 
-    def _set_source_attributes(self, context):
+    def _set_source_attributes(self, context: UserContext) -> None:
         for parent in self._parents:
             parent.set_source_attributes(context)
 
-    def _check_recache(self, context):
+    def _check_recache(self, context: UserContext) -> None:
         runtimepath = self._vim.options['runtimepath']
         if runtimepath != self._runtimepath:
             self._runtimepath = runtimepath
