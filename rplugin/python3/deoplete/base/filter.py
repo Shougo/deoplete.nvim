@@ -6,6 +6,7 @@
 
 from abc import abstractmethod
 from deoplete.logger import LoggingMixin
+from deoplete.util import error_vim
 
 
 class Base(LoggingMixin):
@@ -30,3 +31,6 @@ class Base(LoggingMixin):
     @abstractmethod
     def filter(self, context):
         pass
+
+    def print_error(self, expr):
+        error_vim(self.vim, expr)

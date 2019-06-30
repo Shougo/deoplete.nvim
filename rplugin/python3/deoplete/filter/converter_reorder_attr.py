@@ -34,7 +34,8 @@ class Filter(Base):
                 size = len(context_candidates)
                 i = 0
                 while i < size:
-                    if expr.search(context_candidates[i][attr]):
+                    candidate = context_candidates[i]
+                    if attr in candidate and expr.search(candidate[attr]):
                         candidate = context_candidates.pop(i)
                         # Popping will make 'i' effectively go forward an extra
                         # time; because of that, decrease for now and wait for
