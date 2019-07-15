@@ -10,6 +10,7 @@ import re
 import sys
 import time
 import msgpack
+import typing
 
 from collections import defaultdict
 
@@ -20,12 +21,16 @@ from deoplete import logger
 from deoplete.exceptions import SourceInitError
 from deoplete.util import (bytepos2charpos, charpos2bytepos, error, error_tb,
                            import_plugin, get_custom, get_syn_names,
-                           convert2candidates, uniq_list_dict)
+                           convert2candidates, uniq_list_dict, Nvim)
+
+UserContext = typing.Dict[str, typing.Any]
+Candidates = typing.Dict[str, typing.Any]
+Result = typing.Dict[str, typing.Any]
 
 
 class Child(logger.LoggingMixin):
 
-    def __init__(self, vim):
+    def __init__(self, vim: Nvim) -> None:
         self.name = 'child'
 
         self._vim = vim
@@ -46,7 +51,7 @@ class Child(logger.LoggingMixin):
             unicode_errors='surrogateescape')
         self._ignore_sources = []
 
-    def main_loop(self, stdout):
+    def main_loop(self, stdout: typing.Any) -> None:
         while True:
             feed = sys.stdin.buffer.raw.read(102400)
             if feed is None:
@@ -67,7 +72,8 @@ class Child(logger.LoggingMixin):
                     self._write(stdout, ret)
                     self._vim.call('deoplete#auto_complete')
 
-    def main(self, name, args, queue_id):
+    def main(self, name: str, args: typing.List[typing.Any],
+             queue_id: int) -> typing.Optional[Candidates]:
         ret = None
         if name == 'enable_logging':
             self._enable_logging()
@@ -85,16 +91,16 @@ class Child(logger.LoggingMixin):
                 ret = results
         return ret
 
-    def _write(self, stdout, expr):
+    def _write(self, stdout: typing.Any, expr: typing.Any) -> None:
         stdout.buffer.write(self._packer.pack(expr))
         stdout.flush()
 
-    def _enable_logging(self):
+    def _enable_logging(self) -> None:
         logging = self._vim.vars['deoplete#_logging']
         logger.setup(self._vim, logging['level'], logging['logfile'])
         self.is_debug_enabled = True
 
-    def _add_source(self, path):
+    def _add_source(self, path: str) -> None:
         source = None
         try:
             Source = import_plugin(path, 'source', 'Source')
@@ -119,7 +125,7 @@ class Child(logger.LoggingMixin):
                 self._sources[source.name] = source
                 self.debug('Loaded Source: %s (%s)', source.name, path)
 
-    def _add_filter(self, path):
+    def _add_filter(self, path: str) -> None:
         f = None
         try:
             Filter = import_plugin(path, 'filter', 'Filter')
@@ -145,7 +151,8 @@ class Child(logger.LoggingMixin):
                 self._filters[f.name] = f
                 self.debug('Loaded Filter: %s (%s)', f.name, path)
 
-    def _merge_results(self, context, queue_id):
+    def _merge_results(self, context: UserContext,
+                       queue_id: int) -> typing.Dict[str, typing.Any]:
         results = self._gather_results(context)
 
         merged_results = []
@@ -171,7 +178,7 @@ class Child(logger.LoggingMixin):
             'merged_results': merged_results,
         }
 
-    def _gather_results(self, context):
+    def _gather_results(self, context: UserContext) -> typing.List[Result]:
         if (context['changedtick'] !=
                 self._vim.current.buffer.vars.get('changedtick', 0)):
             return []
@@ -189,7 +196,8 @@ class Child(logger.LoggingMixin):
 
         return results
 
-    def _get_result(self, context, source):
+    def _get_result(self, context: UserContext,
+                    source: typing.Any) -> Result:
         if source.disabled_syntaxes and 'syntax_names' not in context:
             context['syntax_names'] = get_syn_names(self._vim)
 
@@ -258,7 +266,8 @@ class Child(logger.LoggingMixin):
             'candidates': ctx['candidates'],
         }
 
-    def _gather_async_results(self, result, source):
+    def _gather_async_results(self, result: Result,
+                              source: typing.Any) -> None:
         try:
             context = result['context']
             context['is_refresh'] = False
@@ -270,7 +279,8 @@ class Child(logger.LoggingMixin):
         except Exception as exc:
             self._handle_source_exception(source, exc)
 
-    def _handle_source_exception(self, source, exc):
+    def _handle_source_exception(self,
+                                 source: typing.Any, exc: Exception) -> None:
         if isinstance(exc, SourceInitError):
             error(self._vim,
                   f'Error when loading source {source.name}: {exc}. '
@@ -289,7 +299,8 @@ class Child(logger.LoggingMixin):
         else:
             error_tb(self._vim, f'Error from {source.name}: {exc}')
 
-    def _process_filter(self, f, context, max_candidates):
+    def _process_filter(self, f: typing.Any,
+                        context: UserContext, max_candidates: int) -> None:
         try:
             self._profile_start(context, f.name)
             if (isinstance(context['candidates'], dict) and
@@ -308,7 +319,9 @@ class Child(logger.LoggingMixin):
         except Exception:
             error_tb(self._vim, 'Errors from: %s' % f)
 
-    def _get_candidates(self, result, context_input, next_input):
+    def _get_candidates(self, result: Result,
+                        context_input: str, next_input: str
+                        ) -> typing.Optional[Candidates]:
         source = result['source']
 
         # Gather async results
@@ -392,7 +405,8 @@ class Child(logger.LoggingMixin):
 
         return ctx['candidates']
 
-    def _itersource(self, context):
+    def _itersource(self, context: UserContext
+                    ) -> typing.Generator[typing.Any, None, None]:
         filetypes = context['filetypes']
         ignore_sources = set(self._ignore_sources)
         for ft in filetypes:
@@ -425,7 +439,7 @@ class Child(logger.LoggingMixin):
                     source.is_initialized = True
             yield source_name, source
 
-    def _profile_start(self, context, name):
+    def _profile_start(self, context: UserContext, name: str) -> None:
         if self._profile_flag == 0 or not self.is_debug_enabled:
             return
 
@@ -438,12 +452,13 @@ class Child(logger.LoggingMixin):
             self.debug(f'Profile Start: {name}')
             self._profile_start_time = time.clock()
 
-    def _profile_end(self, name):
+    def _profile_end(self, name: str) -> None:
         if self._profile_start_time:
             self.debug('Profile End  : {0:<25} time={1:2.10f}'.format(
                 name, time.clock() - self._profile_start_time))
 
-    def _use_previous_result(self, context, result, is_volatile):
+    def _use_previous_result(self, context: UserContext,
+                             result: Result, is_volatile: bool) -> bool:
         if context['position'][1] != result['prev_linenr']:
             return False
         if is_volatile:
@@ -453,7 +468,7 @@ class Child(logger.LoggingMixin):
                     re.sub(r'\w*$', '', result['prev_input']) and
                     context['input'].find(result['prev_input']) == 0)
 
-    def _is_skip(self, context, source):
+    def _is_skip(self, context: UserContext, source: typing.Any) -> bool:
         if 'syntax_names' in context and source.disabled_syntaxes:
             p = re.compile('(' + '|'.join(source.disabled_syntaxes) + ')$')
             if next(filter(p.search, context['syntax_names']), None):
@@ -468,7 +483,7 @@ class Child(logger.LoggingMixin):
         return not (source.min_pattern_length <=
                     len(context['complete_str']) <= source.max_pattern_length)
 
-    def _set_source_attributes(self, context):
+    def _set_source_attributes(self, context: UserContext) -> None:
         """Set source attributes from the context.
 
         Each item in `attrs` is the attribute name.
@@ -523,7 +538,7 @@ class Child(logger.LoggingMixin):
             if not source.is_volatile:
                 source.is_volatile = bool(source.filetypes)
 
-    def _on_event(self, context):
+    def _on_event(self, context: UserContext) -> None:
         event = context['event']
         for source_name, source in self._itersource(context):
             if source.events is None or event in source.events:
@@ -537,6 +552,6 @@ class Child(logger.LoggingMixin):
         for f in self._filters.values():
             f.on_event(context)
 
-    def _get_sources(self):
+    def _get_sources(self) -> typing.List[typing.Any]:
         # Note: for the size change of "self._sources" error
         return copy.copy(self._sources)
