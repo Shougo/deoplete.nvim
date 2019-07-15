@@ -91,8 +91,7 @@ class Deoplete(logger.LoggingMixin):
         if needs_poll:
             self._vim.call('deoplete#handler#_async_timer_start')
 
-        if not candidates and ('deoplete#_saved_completeopt'
-                               in self._vim.vars):
+        if not candidates:
             self._vim.call('deoplete#mapping#_restore_completeopt')
 
         # Async update is skipped if same.
