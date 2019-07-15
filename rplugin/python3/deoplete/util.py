@@ -222,7 +222,7 @@ def expand(path: str) -> str:
     return os.path.expanduser(os.path.expandvars(path))
 
 
-def getlines(vim: Nvim, start: str=1, end: str='$') -> typing.List[str]:
+def getlines(vim: Nvim, start: str = 1, end: str = '$') -> typing.List[str]:
     if end == '$':
         end = len(vim.current.buffer)
     max_len = min([end - start, 5000])

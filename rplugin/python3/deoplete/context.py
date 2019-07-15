@@ -8,7 +8,7 @@ import os
 import re
 import typing
 
-from deoplete.util import error, error_tb, Nvim
+from deoplete.util import Nvim
 
 UserContext = typing.Dict[str, typing.Any]
 
@@ -132,8 +132,8 @@ class Context(object):
             self._context_filetype['same_filetypes']
         ]
 
-    def _cache_context_filetype(
-        self, text: str, filetype: str, linenr: int, bufnr: int) -> None:
+    def _cache_context_filetype(self, text: str, filetype: str,
+                                linenr: int, bufnr: int) -> None:
         exists_context_filetype = self._vim.call(
             'exists', '*context_filetype#get_filetype')
         self._context_filetype = {

@@ -8,6 +8,7 @@ import typing
 
 from importlib.util import find_spec
 from deoplete.deoplete import Deoplete
+from deoplete.util import Nvim
 
 
 if find_spec('yarp'):
@@ -18,8 +19,6 @@ elif find_spec('pynvim'):
 else:
     import neovim
     vim = neovim
-
-from deoplete.util import Nvim
 
 Context = typing.Dict[str, typing.Any]
 

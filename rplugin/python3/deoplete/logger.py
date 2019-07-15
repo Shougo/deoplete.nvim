@@ -20,6 +20,8 @@ root = logging.getLogger('deoplete')
 root.propagate = False
 init = False
 
+FUNC = typing.Callable[..., typing.Any]
+
 
 def getLogger(name: str) -> logging.Logger:
     """Get a logger that is a child of the 'root' logger.
@@ -27,7 +29,7 @@ def getLogger(name: str) -> logging.Logger:
     return root.getChild(name)
 
 
-def setup(vim: Nvim, level: str, output_file: str='') -> None:
+def setup(vim: Nvim, level: str, output_file: str = '') -> None:
     """Setup logging for Deoplete
     """
     global init
@@ -68,7 +70,6 @@ def setup(vim: Nvim, level: str, output_file: str='') -> None:
                 output_file))
 
 
-FUNC = typing.Callable[..., typing.Any]
 def logmethod(func: FUNC) -> typing.Callable[[FUNC], FUNC]:
     """Decorator for setting up the logger in LoggingMixin subclasses.
 
@@ -129,7 +130,7 @@ class LoggingMixin(object):
 
 
 class DeopleteLogFilter(logging.Filter):
-    def __init__(self, vim: Nvim, name: str=''):
+    def __init__(self, vim: Nvim, name: str = ''):
         self.vim = vim
         self.counter: typing.Dict[str, int] = defaultdict(int)
         self.last_message_time: float = 0
