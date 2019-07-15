@@ -9,17 +9,20 @@ import os
 import msgpack
 import subprocess
 import sys
+import typing
 from functools import partial
 from pathlib import Path
 from queue import Queue
 
 from deoplete import logger
 from deoplete.process import Process
-from deoplete.util import error_tb, error
+from deoplete.util import error_tb, error, Nvim
+
+UserContext = typing.Dict[str, typing.Any]
 
 
 class _Parent(logger.LoggingMixin):
-    def __init__(self, vim):
+    def __init__(self, vim: Nvim) -> None:
         self.name = 'parent'
 
         self._vim = vim
@@ -27,46 +30,46 @@ class _Parent(logger.LoggingMixin):
 
         self._start_process()
 
-    def enable_logging(self):
+    def enable_logging(self) -> None:
         self._put('enable_logging', [])
         self.is_debug_enabled = True
 
-    def add_source(self, path):
+    def add_source(self, path: str) -> None:
         self._put('add_source', [path])
 
-    def add_filter(self, path):
+    def add_filter(self, path: str) -> None:
         if path in self._loaded_filters:
             return
         self._loaded_filters.add(path)
 
         self._put('add_filter', [path])
 
-    def set_source_attributes(self, context):
+    def set_source_attributes(self, context: UserContext) -> None:
         self._put('set_source_attributes', [context])
 
-    def set_custom(self, custom):
+    def set_custom(self, custom: typing.Any) -> None:
         self._put('set_custom', [custom])
 
-    def on_event(self, context):
+    def on_event(self, context: UserContext) -> None:
         self._put('on_event', [context])
 
 
 class SyncParent(_Parent):
-    def _start_process(self):
+    def _start_process(self) -> None:
         from deoplete.child import Child
         self._child = Child(self._vim)
 
-    def merge_results(self, context):
+    def merge_results(self, context: UserContext) -> None:
         results = self._child._merge_results(context, queue_id=None)
         return (results['is_async'], results['is_async'],
                 results['merged_results']) if results else (False, [])
 
-    def _put(self, name, args):
+    def _put(self, name: str, args: typing.List[typing.Any]) -> None:
         self._child.main(name, args, queue_id=None)
 
 
 class AsyncParent(_Parent):
-    def _get_python_executable(self):
+    def _get_python_executable(self) -> str:
         """Get Python executable.
 
         This handles Python being embedded in Vim on Windows or OSX.
@@ -90,7 +93,7 @@ class AsyncParent(_Parent):
             return self._vim.vars.get('python3_host_prog', 'python3')
         return exe
 
-    def _start_process(self):
+    def _start_process(self) -> None:
         self._stdin = None
         self._queue_id = ''
         self._queue_in = Queue()
@@ -121,14 +124,15 @@ class AsyncParent(_Parent):
                 self._vim.vars['deoplete#_serveraddr'],
                 startupinfo=startupinfo))
 
-    def _print_error(self, message):
+    def _print_error(self, message: str) -> None:
         error(self._vim, message)
 
-    def _connect_stdin(self, stdin):
+    def _connect_stdin(self, stdin: int) -> msgpack.Unpacker:
         self._stdin = stdin
         return self._unpacker
 
-    def merge_results(self, context):
+    def merge_results(self,
+                      context: UserContext) -> typing.Tuple[typing.Any]:
         if (context['event'] == 'Async' and
                 context['position'] == self._prev_pos and self._queue_id):
             # Use previous id
@@ -149,7 +153,8 @@ class AsyncParent(_Parent):
         return (results['is_async'], results['is_async'],
                 results['merged_results']) if results else (False, [])
 
-    def _put(self, name, args):
+    def _put(self, name: str,
+             args: typing.List[typing.Any]) -> typing.Optional[int]:
         if not self._hnd:
             return None
 
@@ -169,7 +174,7 @@ class AsyncParent(_Parent):
                 self._hnd = None
         return queue_id
 
-    def _get(self, queue_id):
+    def _get(self, queue_id: int) -> typing.List[typing.Any]:
         if not self._hnd:
             return []
 
