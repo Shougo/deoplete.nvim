@@ -129,7 +129,8 @@ class AsyncParent(_Parent):
         return self._unpacker
 
     def merge_results(self, context):
-        if context['position'] == self._prev_pos and self._queue_id:
+        if (context['event'] == 'Async' and
+                context['position'] == self._prev_pos and self._queue_id):
             # Use previous id
             queue_id = self._queue_id
         else:
