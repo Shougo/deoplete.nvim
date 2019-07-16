@@ -59,7 +59,8 @@ class SyncParent(_Parent):
         from deoplete.child import Child
         self._child = Child(self._vim)
 
-    def merge_results(self, context: UserContext) -> None:
+    def merge_results(self,
+                      context: UserContext) -> typing.Tuple[typing.Any]:
         results = self._child._merge_results(context, queue_id=None)
         return (results['is_async'], results['is_async'],
                 results['merged_results']) if results else (False, [])
@@ -90,7 +91,7 @@ class AsyncParent(_Parent):
                 guess = os.path.join(sys.exec_prefix, check)
                 if os.path.isfile(guess):
                     return guess
-            return self._vim.vars.get('python3_host_prog', 'python3')
+            return str(self._vim.vars.get('python3_host_prog', 'python3'))
         return exe
 
     def _start_process(self) -> None:
@@ -108,10 +109,10 @@ class AsyncParent(_Parent):
             unicode_errors='surrogateescape')
         self._prev_pos = []
 
-        startupinfo = None
+        info = None
         if os.name == 'nt':
-            startupinfo = subprocess.STARTUPINFO()
-            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            info = subprocess.STARTUPINFO()  # type: ignore
+            info.dwFlags |= subprocess.STARTF_USESHOWWINDOW  # type: ignore
 
         main = str(Path(__file__).parent.parent.parent.parent.joinpath(
             'autoload', 'deoplete', '_main.py'))
@@ -122,7 +123,7 @@ class AsyncParent(_Parent):
                 self._get_python_executable(),
                 main,
                 self._vim.vars['deoplete#_serveraddr'],
-                startupinfo=startupinfo))
+                startupinfo=info))
 
     def _print_error(self, message: str) -> None:
         error(self._vim, message)

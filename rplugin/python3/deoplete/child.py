@@ -462,11 +462,11 @@ class Child(logger.LoggingMixin):
         if context['position'][1] != result['prev_linenr']:
             return False
         if is_volatile:
-            return context['input'] == result['prev_input']
+            return bool(context['input'] == result['prev_input'])
         else:
-            return (re.sub(r'\w*$', '', context['input']) ==
-                    re.sub(r'\w*$', '', result['prev_input']) and
-                    context['input'].find(result['prev_input']) == 0)
+            return bool(re.sub(r'\w*$', '', context['input']) ==
+                        re.sub(r'\w*$', '', result['prev_input']) and
+                        context['input'].find(result['prev_input']) == 0)
 
     def _is_skip(self, context: UserContext, source: typing.Any) -> bool:
         if 'syntax_names' in context and source.disabled_syntaxes:

@@ -114,7 +114,7 @@ def error_vim(vim: Nvim, msg: str) -> None:
     error_tb(vim, msg)
 
 
-def escape(expr: str) -> None:
+def escape(expr: str) -> str:
     return expr.replace("'", "''")
 
 
@@ -148,7 +148,7 @@ def get_syn_names(vim: Nvim) -> str:
 def parse_file_pattern(f: typing.Iterable[str],
                        pattern: str) -> typing.List[str]:
     p = re.compile(pattern)
-    ret = []
+    ret: typing.List[str] = []
     for l in f:
         ret += p.findall(l)
     return list(set(ret))
@@ -222,7 +222,8 @@ def expand(path: str) -> str:
     return os.path.expanduser(os.path.expandvars(path))
 
 
-def getlines(vim: Nvim, start: str = 1, end: str = '$') -> typing.List[str]:
+def getlines(vim: Nvim, start: int = 1,
+             end: typing.Union[int, str] = '$') -> typing.List[str]:
     if end == '$':
         end = len(vim.current.buffer)
     max_len = min([end - start, 5000])
