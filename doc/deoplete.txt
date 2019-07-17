@@ -1861,6 +1861,9 @@ A: https://github.com/deoplete-plugins/deoplete-jedi/issues/35
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
 
+2019.07.16
+* Remove old deoplete#mappings# mappings.  You need to use new mappings.
+
 2019.04.16
 * Split tag source to https://github.com/deoplete-plugins/deoplete-tag.
 * Split dictionary source to
