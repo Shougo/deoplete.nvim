@@ -59,7 +59,8 @@ class _Parent(logger.LoggingMixin):
         pass
 
     @abstractmethod
-    def _put(self, name: str, args: typing.List[typing.Any]) -> None:
+    def _put(self, name: str,
+             args: typing.List[typing.Any]) -> typing.Optional[str]:
         pass
 
 
@@ -71,11 +72,14 @@ class SyncParent(_Parent):
     def merge_results(self,
                       context: UserContext) -> typing.Tuple[typing.Any]:
         results = self._child._merge_results(context, queue_id=None)
-        return (results['is_async'], results['is_async'],
-                results['merged_results']) if results else (False, [])
+        ret = (results['is_async'], results['is_async'],
+               results['merged_results']) if results else (False, [])
+        return ret  # type: ignore
 
-    def _put(self, name: str, args: typing.List[typing.Any]) -> None:
+    def _put(self, name: str,
+             args: typing.List[typing.Any]) -> typing.Optional[str]:
         self._child.main(name, args, queue_id=None)
+        return None
 
 
 class AsyncParent(_Parent):
@@ -88,27 +92,28 @@ class AsyncParent(_Parent):
         """
         exe = sys.executable
         if not os.path.basename(exe).lower().startswith('python'):
+            check: typing.Tuple[typing.Any, ...]
             if os.name == 'nt':
                 checks = (r'Scripts\python.exe', 'python.exe')
             else:
-                checks = (
+                checks = (  # type: ignore
                     'bin/python%s.%s' % (sys.version_info[0], sys.version[1]),
                     'bin/python%s' % (sys.version_info[0]),
                     'bin/python',
                 )
-            for check in checks:
-                guess = os.path.join(sys.exec_prefix, check)
-                if os.path.isfile(guess):
-                    return guess
+            for check in checks:  # type: ignore
+                guess = os.path.join(sys.exec_prefix, check)  # type: ignore
+                if os.path.isfile(str(guess)):
+                    return str(guess)
             return str(self._vim.vars.get('python3_host_prog', 'python3'))
         return exe
 
     def _start_process(self) -> None:
-        self._stdin = None
+        self._stdin: typing.Optional[typing.Any] = None
         self._queue_id = ''
-        self._queue_in: Queue = Queue()
-        self._queue_out: Queue = Queue()
-        self._queue_err: Queue = Queue()
+        self._queue_in: Queue = Queue()  # type: ignore
+        self._queue_out: Queue = Queue()  # type: ignore
+        self._queue_err: Queue = Queue()  # type: ignore
         self._packer = msgpack.Packer(
             use_bin_type=True,
             encoding='utf-8',
@@ -142,13 +147,13 @@ class AsyncParent(_Parent):
         return self._unpacker
 
     def merge_results(self,
-                      context: UserContext) -> typing.Tuple[typing.Any]:
+                      context: UserContext) -> typing.Tuple[typing.Any, ...]:
         if (context['event'] == 'Async' and
                 context['position'] == self._prev_pos and self._queue_id):
             # Use previous id
             queue_id = self._queue_id
         else:
-            queue_id = self._put('merge_results', [context])
+            queue_id = self._put('merge_results', [context])  # type: ignore
             if not queue_id:
                 return (False, False, [])
 
@@ -160,11 +165,11 @@ class AsyncParent(_Parent):
             return (True, False, [])
         self._queue_id = ''
         results = get[0]
-        return (results['is_async'], results['is_async'],
+        return (results['is_async'], results['is_async'],  # type: ignore
                 results['merged_results']) if results else (False, [])
 
     def _put(self, name: str,
-             args: typing.List[typing.Any]) -> typing.Optional[int]:
+             args: typing.List[typing.Any]) -> typing.Optional[str]:
         if not self._hnd:
             return None
 
@@ -180,11 +185,12 @@ class AsyncParent(_Parent):
                     self._stdin.write(self._queue_in.get_nowait())
             except BrokenPipeError:
                 error_tb(self._vim, 'Crash in child process')
-                error(self._vim, 'stderr=' + str(self._proc.read_error()))
+                error(self._vim, 'stderr=' +
+                      str(self._proc.read_error()))  # type: ignore
                 self._hnd = None
         return queue_id
 
-    def _get(self, queue_id: int) -> typing.List[typing.Any]:
+    def _get(self, queue_id: str) -> typing.List[typing.Any]:
         if not self._hnd:
             return []
 

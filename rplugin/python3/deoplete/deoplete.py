@@ -32,7 +32,7 @@ class Deoplete(logger.LoggingMixin):
         self._prev_results: typing.Dict[int, Candidates] = {}
         self._prev_input = ''
         self._prev_next_input = ''
-        self._context = None
+        self._context: typing.Optional[Context] = None
         self._parents: typing.List[Parent] = []
         self._parent_count = 0
         self._max_parents = self._vim.call('deoplete#custom#_get_option',
@@ -71,7 +71,7 @@ class Deoplete(logger.LoggingMixin):
         if not self._context:
             self.init_context()
 
-        context = self._context.get(user_context['event'])
+        context = self._context.get(user_context['event'])  # type: ignore
         context.update(user_context)
 
         self.debug('completion_begin (%s): %r',

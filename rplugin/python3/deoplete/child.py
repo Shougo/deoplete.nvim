@@ -73,7 +73,7 @@ class Child(logger.LoggingMixin):
                     self._vim.call('deoplete#auto_complete')
 
     def main(self, name: str, args: typing.List[typing.Any],
-             queue_id: int) -> typing.Optional[Candidates]:
+             queue_id: typing.Optional[int]) -> typing.Optional[Candidates]:
         ret = None
         if name == 'enable_logging':
             self._enable_logging()
@@ -152,7 +152,8 @@ class Child(logger.LoggingMixin):
                 self.debug('Loaded Filter: %s (%s)', f.name, path)
 
     def _merge_results(self, context: UserContext,
-                       queue_id: int) -> typing.Dict[str, typing.Any]:
+                       queue_id: typing.Optional[int]) -> typing.Dict[
+                           str, typing.Any]:
         results = self._gather_results(context)
 
         merged_results = []

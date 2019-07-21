@@ -64,7 +64,7 @@ def import_plugin(path: str, source: str,
 
     spec = importlib.util.spec_from_file_location(module_name, path)
     module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    spec.loader.exec_module(module)  # type: ignore
     cls = getattr(module, classname, None)
     if not cls:
         return None
