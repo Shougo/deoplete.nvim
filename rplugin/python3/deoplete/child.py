@@ -34,14 +34,14 @@ class Child(logger.LoggingMixin):
         self.name = 'child'
 
         self._vim = vim
-        self._filters = {}
-        self._sources = {}
+        self._filters: typing.Dict[str, typing.Any] = {}
+        self._sources: typing.Dict[str, typing.Any] = {}
         self._profile_flag = None
         self._profile_start_time = 0
-        self._loaded_sources = {}
-        self._loaded_filters = {}
-        self._source_errors = defaultdict(int)
-        self._prev_results = {}
+        self._loaded_sources: typing.Dict[str, typing.Any] = {}
+        self._loaded_filters: typing.Dict[str, typing.Any] = {}
+        self._source_errors: typing.Dict[str, int] = defaultdict(int)
+        self._prev_results: typing.Dict[str, Result] = {}
         self._unpacker = msgpack.Unpacker(
             encoding='utf-8',
             unicode_errors='surrogateescape')
@@ -49,11 +49,11 @@ class Child(logger.LoggingMixin):
             use_bin_type=True,
             encoding='utf-8',
             unicode_errors='surrogateescape')
-        self._ignore_sources = []
+        self._ignore_sources: typing.List[typing.Any] = []
 
     def main_loop(self, stdout: typing.Any) -> None:
         while True:
-            feed = sys.stdin.buffer.raw.read(102400)
+            feed = sys.stdin.buffer.raw.read(102400)  # type: ignore
             if feed is None:
                 continue
             if feed == b'':
@@ -123,7 +123,8 @@ class Child(logger.LoggingMixin):
             if source:
                 self._loaded_sources[source.name] = path
                 self._sources[source.name] = source
-                self.debug('Loaded Source: %s (%s)', source.name, path)
+                self.debug(  # type: ignore
+                    f'Loaded Source: {source.name} ({path})')
 
     def _add_filter(self, path: str) -> None:
         f = None
@@ -149,7 +150,8 @@ class Child(logger.LoggingMixin):
             if f:
                 self._loaded_filters[f.name] = path
                 self._filters[f.name] = f
-                self.debug('Loaded Filter: %s (%s)', f.name, path)
+                self.debug(  # type: ignore
+                    f'Loaded Filter: {f.name} ({path})')
 
     def _merge_results(self, context: UserContext,
                        queue_id: typing.Optional[int]) -> typing.Dict[
@@ -306,7 +308,7 @@ class Child(logger.LoggingMixin):
             self._profile_start(context, f.name)
             if (isinstance(context['candidates'], dict) and
                     'sorted_candidates' in context['candidates']):
-                filtered = []
+                filtered: typing.List[typing.Any] = []
                 context['is_sorted'] = True
                 for candidates in context['candidates']['sorted_candidates']:
                     context['candidates'] = candidates
@@ -404,7 +406,7 @@ class Child(logger.LoggingMixin):
             # Remove duplicates
             ctx['candidates'] = uniq_list_dict(ctx['candidates'])
 
-        return ctx['candidates']
+        return ctx['candidates']  # type: ignore
 
     def _itersource(self, context: UserContext
                     ) -> typing.Generator[typing.Any, None, None]:
@@ -424,7 +426,7 @@ class Child(logger.LoggingMixin):
                                             for x in source.filetypes):
                 continue
             if not source.is_initialized and hasattr(source, 'on_init'):
-                self.debug('on_init Source: %s', source.name)
+                self.debug('on_init Source: ' + source.name)  # type: ignore
                 try:
                     source.on_init(context)
                 except Exception as exc:
@@ -454,8 +456,11 @@ class Child(logger.LoggingMixin):
             self._profile_start_time = time.clock()
 
     def _profile_end(self, name: str) -> None:
-        if self._profile_start_time:
-            self.debug('Profile End  : {0:<25} time={1:2.10f}'.format(
+        if not self._profile_start_time:
+            return
+
+        self.debug(  # type: ignore
+            'Profile End  : {0:<25} time={1:2.10f}'.format(
                 name, time.clock() - self._profile_start_time))
 
     def _use_previous_result(self, context: UserContext,
@@ -511,7 +516,7 @@ class Child(logger.LoggingMixin):
         )
 
         for name, source in self._get_sources().items():
-            self.debug('Set Source attributes: %s', name)
+            self.debug('Set Source attributes: %s', name)  # type: ignore
 
             source.dup = bool(source.filetypes)
 
@@ -529,7 +534,8 @@ class Child(logger.LoggingMixin):
                 else:
                     setattr(source, attr, custom)
 
-                self.debug('Attribute: %s (%s)', attr, getattr(source, attr))
+                self.debug('Attribute: %s (%s)',  # type: ignore
+                           attr, getattr(source, attr))
 
             # Default min_pattern_length
             if source.min_pattern_length < 0:
@@ -553,6 +559,6 @@ class Child(logger.LoggingMixin):
         for f in self._filters.values():
             f.on_event(context)
 
-    def _get_sources(self) -> typing.List[typing.Any]:
+    def _get_sources(self) -> typing.Dict[str, typing.Any]:
         # Note: for the size change of "self._sources" error
         return copy.copy(self._sources)

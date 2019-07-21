@@ -74,7 +74,7 @@ class Deoplete(logger.LoggingMixin):
         context = self._context.get(user_context['event'])  # type: ignore
         context.update(user_context)
 
-        self.debug('completion_begin (%s): %r',
+        self.debug('completion_begin (%s): %r',  # type: ignore
                    context['event'], context['input'])
 
         if self._vim.call('deoplete#handler#_check_omnifunc', context):
@@ -115,7 +115,7 @@ class Deoplete(logger.LoggingMixin):
             'input': context['input'],
             'is_async': is_async,
         }
-        self.debug('do_complete (%s): '
+        self.debug('do_complete (%s): '  # type: ignore
                    + '%d candidates, input=%s, complete_position=%d, '
                    + 'is_async=%d',
                    context['event'],
@@ -131,12 +131,12 @@ class Deoplete(logger.LoggingMixin):
         else:
             self._context._init_cached()
 
-        context = self._context.get(user_context['event'])
+        context = self._context.get(user_context['event'])  # type: ignore
         context.update(user_context)
 
-        self.debug('initialized context: %s', context)
+        self.debug('initialized context: %s', context)  # type: ignore
 
-        self.debug('on_event: %s', context['event'])
+        self.debug('on_event: %s', context['event'])  # type: ignore
 
         self._check_recache(context)
 
@@ -253,7 +253,8 @@ class Deoplete(logger.LoggingMixin):
                 self._add_parent(deoplete.parent.AsyncParent)
 
             self._parents[self._parent_count].add_source(path)
-            self.debug('Process %d: %s', self._parent_count, path)
+            self.debug(  # type: ignore
+                f'Process {self._parent_count}: {path}')
 
             self._parent_count += 1
             if self._max_parents > 0:
