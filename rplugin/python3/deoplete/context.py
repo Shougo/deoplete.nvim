@@ -51,7 +51,7 @@ class Context(object):
             'position': self._vim.call('getpos', '.'),
             'same_filetypes': same_filetypes,
         }
-        context.update(self._cached)
+        context.update(self._cached)  # type: ignore
 
         if filetype != self._prev_filetype:
             self._prev_filetype = filetype

@@ -47,7 +47,7 @@ def convert2candidates(l: typing.Any) -> typing.List[typing.Any]:
 
 
 def globruntime(runtimepath: str, path: str) -> typing.List[str]:
-    ret = []
+    ret: typing.List[str] = []
     for rtp in runtimepath.split(','):
         ret += glob.glob(rtp + '/' + path)
     return ret
@@ -226,16 +226,16 @@ def getlines(vim: Nvim, start: int = 1,
              end: typing.Union[int, str] = '$') -> typing.List[str]:
     if end == '$':
         end = len(vim.current.buffer)
-    max_len = min([end - start, 5000])
+    max_len = min([int(end) - start, 5000])
     lines: typing.List[str] = []
     current = start
-    while current <= end:
+    while current <= int(end):
         lines += vim.call('getline', current, current + max_len)
         current += max_len + 1
     return lines
 
 
-def binary_search_begin(l: Candidates, prefix: str) -> int:
+def binary_search_begin(l: typing.List[Candidates], prefix: str) -> int:
     if not l:
         return -1
     if len(l) == 1:
@@ -259,7 +259,7 @@ def binary_search_begin(l: Candidates, prefix: str) -> int:
     return -1
 
 
-def binary_search_end(l: Candidates, prefix: str) -> int:
+def binary_search_end(l: typing.List[Candidates], prefix: str) -> int:
     if not l:
         return -1
     if len(l) == 1:
@@ -285,7 +285,7 @@ def binary_search_end(l: Candidates, prefix: str) -> int:
 
 def uniq_list_dict(l: typing.List[typing.Any]) -> typing.List[typing.Any]:
     # Uniq list of dictionaries
-    ret = []
+    ret: typing.List[typing.Any] = []
     for d in l:
         if d not in ret:
             ret.append(d)

@@ -10,6 +10,7 @@ import msgpack
 import subprocess
 import sys
 import typing
+from abc import abstractmethod
 from functools import partial
 from pathlib import Path
 from queue import Queue
@@ -26,7 +27,7 @@ class _Parent(logger.LoggingMixin):
         self.name = 'parent'
 
         self._vim = vim
-        self._loaded_filters = set()
+        self._loaded_filters: typing.Set[str] = set()
 
         self._start_process()
 
@@ -52,6 +53,14 @@ class _Parent(logger.LoggingMixin):
 
     def on_event(self, context: UserContext) -> None:
         self._put('on_event', [context])
+
+    @abstractmethod
+    def _start_process(self) -> None:
+        pass
+
+    @abstractmethod
+    def _put(self, name: str, args: typing.List[typing.Any]) -> None:
+        pass
 
 
 class SyncParent(_Parent):
@@ -97,9 +106,9 @@ class AsyncParent(_Parent):
     def _start_process(self) -> None:
         self._stdin = None
         self._queue_id = ''
-        self._queue_in = Queue()
-        self._queue_out = Queue()
-        self._queue_err = Queue()
+        self._queue_in: Queue = Queue()
+        self._queue_out: Queue = Queue()
+        self._queue_err: Queue = Queue()
         self._packer = msgpack.Packer(
             use_bin_type=True,
             encoding='utf-8',
@@ -107,7 +116,7 @@ class AsyncParent(_Parent):
         self._unpacker = msgpack.Unpacker(
             encoding='utf-8',
             unicode_errors='surrogateescape')
-        self._prev_pos = []
+        self._prev_pos: typing.List[typing.Any] = []
 
         info = None
         if os.name == 'nt':
