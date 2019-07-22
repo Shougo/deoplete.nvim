@@ -101,9 +101,6 @@ class Context(object):
             'is_windows': self._vim.call('has', 'win32'),
             'smartcase': self._vim.call(
                 'deoplete#custom#_get_option', 'smart_case'),
-            'vars': {x: y for x, y in self._vim.eval('g:').items()
-                     if x.startswith('deoplete#') and
-                     not x.startswith('deoplete#_')},
         }
 
     def _get_context_filetype(self,

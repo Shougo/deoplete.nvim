@@ -249,7 +249,9 @@ class Child(logger.LoggingMixin):
 
         # Gathering
         self._profile_start(ctx, source.name)
+        ctx['vars'] = self._vim.vars
         ctx['candidates'] = source.gather_candidates(ctx)
+        ctx['vars'] = None
         self._profile_end(source.name)
 
         if ctx['candidates'] is None:
@@ -274,7 +276,9 @@ class Child(logger.LoggingMixin):
         try:
             context = result['context']
             context['is_refresh'] = False
+            context['vars'] = self._vim.vars
             async_candidates = source.gather_candidates(context)
+            context['vars'] = None
             result['is_async'] = context['is_async']
             if async_candidates is None:
                 return
@@ -428,7 +432,9 @@ class Child(logger.LoggingMixin):
             if not source.is_initialized and hasattr(source, 'on_init'):
                 self.debug('on_init Source: ' + source.name)  # type: ignore
                 try:
+                    context['vars'] = self._vim.vars
                     source.on_init(context)
+                    context['vars'] = None
                 except Exception as exc:
                     if isinstance(exc, SourceInitError):
                         error(self._vim, 'Error when loading source '
