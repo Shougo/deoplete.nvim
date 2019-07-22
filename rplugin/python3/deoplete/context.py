@@ -6,20 +6,25 @@
 
 import os
 import re
+import typing
+
+from deoplete.util import Nvim
+
+UserContext = typing.Dict[str, typing.Any]
 
 
 class Context(object):
 
-    def __init__(self, vim):
+    def __init__(self, vim: Nvim) -> None:
         self._vim = vim
         self._prev_filetype = ''
-        self._cached = None
+        self._cached: typing.Optional[UserContext] = None
         self._cached_filetype = self._init_cached_filetype(
             self._prev_filetype)
         self._init_cached()
-        self._context_filetype = {}
+        self._context_filetype: UserContext = {}
 
-    def get(self, event):
+    def get(self, event: str) -> UserContext:
         text = self._vim.call('deoplete#util#get_input', event)
         [filetype, filetypes, same_filetypes] = self._get_context_filetype(
             text, event, self._vim.call('getbufvar', '%', '&filetype'))
@@ -30,7 +35,7 @@ class Context(object):
         width += word_len
         max_width = (width * 2 / 3)
 
-        context = {
+        context: UserContext = {
             'changedtick': self._vim.call(
                 'getbufvar', '%', 'changedtick', 0),
             'event': event,
@@ -46,7 +51,7 @@ class Context(object):
             'position': self._vim.call('getpos', '.'),
             'same_filetypes': same_filetypes,
         }
-        context.update(self._cached)
+        context.update(self._cached)  # type: ignore
 
         if filetype != self._prev_filetype:
             self._prev_filetype = filetype
@@ -56,7 +61,7 @@ class Context(object):
 
         return context
 
-    def _init_cached_filetype(self, filetype):
+    def _init_cached_filetype(self, filetype: str) -> UserContext:
         return {
             'keyword_pattern': self._vim.call(
                 'deoplete#util#get_keyword_pattern', filetype),
@@ -65,7 +70,7 @@ class Context(object):
                 'sources', filetype, []),
         }
 
-    def _init_cached(self):
+    def _init_cached(self) -> None:
         bufnr = self._vim.call('expand', '<abuf>')
         if not bufnr:
             bufnr = self._vim.call('bufnr', '%')
@@ -101,7 +106,9 @@ class Context(object):
                      not x.startswith('deoplete#_')},
         }
 
-    def _get_context_filetype(self, text, event, filetype):
+    def _get_context_filetype(self,
+                              text: str, event: str, filetype: str
+                              ) -> typing.List[typing.Any]:
         if not self._context_filetype and self._vim.call(
                 'exists', '*context_filetype#get_filetype'):
             # Force context_filetype call
@@ -125,7 +132,8 @@ class Context(object):
             self._context_filetype['same_filetypes']
         ]
 
-    def _cache_context_filetype(self, text, filetype, linenr, bufnr):
+    def _cache_context_filetype(self, text: str, filetype: str,
+                                linenr: int, bufnr: int) -> None:
         exists_context_filetype = self._vim.call(
             'exists', '*context_filetype#get_filetype')
         self._context_filetype = {
