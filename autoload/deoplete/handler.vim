@@ -290,6 +290,26 @@ function! s:on_complete_done() abort
     return
   endif
   call deoplete#handler#_skip_next_completion()
+
+  if get(v:completed_item, 'user_data', '') !=# ''
+    call s:substitute_suffix(json_decode(v:completed_item.user_data))
+  endif
+endfunction
+function! s:substitute_suffix(user_data) abort
+  if !has_key(a:user_data, 'old_suffix')
+        \ || !has_key(a:user_data, 'new_suffix')
+    return
+  endif
+  let old_suffix = a:user_data.old_suffix
+  let new_suffix = a:user_data.new_suffix
+
+  let next_text = deoplete#util#get_next_input('CompleteDone')
+  if stridx(next_text, old_suffix) != 0
+    return
+  endif
+
+  let next_text = new_suffix . next_text[len(old_suffix):]
+  call setline('.', deoplete#util#get_input('CompleteDone') . next_text)
 endfunction
 
 function! deoplete#handler#_skip_next_completion() abort
