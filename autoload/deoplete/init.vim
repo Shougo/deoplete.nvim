@@ -24,6 +24,9 @@ function! deoplete#init#_initialize() abort
 
   call s:init_internal_variables()
 
+  " For context_filetype check
+  silent! call context_filetype#get()
+
   if deoplete#init#_channel()
     return 1
   endif

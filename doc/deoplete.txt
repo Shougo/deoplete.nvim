@@ -1825,6 +1825,19 @@ Q: I want to complete AAA using deoplete.
 
 A: You can create the source for it. Why don't create the source if you need?
 
+Q: I want to use CSS omnifunc with context_filetype.vim.
+
+A: >
+	if !exists('g:context_filetype#same_filetypes')
+	  let g:context_filetype#filetypes = {}
+	endif
+	let g:context_filetype#filetypes.svelte = [
+	\    {'filetype' : 'css', 'start' : '<style>', 'end' : '</style>'},
+	\ ]
+	call deoplete#custom#var('omni', 'functions', {
+	\ 'css': ['csscomplete#CompleteCSS']
+	\})
+
 							*deoplete-faq-general*
 4. General Questions~
 
