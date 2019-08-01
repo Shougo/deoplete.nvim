@@ -40,14 +40,16 @@ function! deoplete#custom#_update_cache() abort
     let s:cached.source_vars[name] = get(source, 'vars', {})
   endfor
   for [name, vars] in items(custom_buffer.source_vars)
-    call extend(s:cached.source_vars[name], vars)
+    let s:cached.source_vars[name] =
+          \ extend(get(s:cached.source_vars, name, {}), vars)
   endfor
   let s:cached.filter = {}
   for [name, vars] in items(s:custom.filter)
     let s:cached.filter[name] = vars
   endfor
   for [name, vars] in items(custom_buffer.filter)
-    call extend(s:cached.filter[name], vars)
+    let s:cached.filter[name] =
+          \ extend(get(s:cached.filter, name, {}), vars)
   endfor
 endfunction
 
