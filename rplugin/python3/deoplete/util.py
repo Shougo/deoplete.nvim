@@ -253,8 +253,8 @@ def binary_search_begin(l: typing.List[Candidates], prefix: str) -> int:
         if word.startswith(prefix):
             if (index - 1) < 0:
                 return index
-            prev_word = l[index-1]['word']
-            if not prev_word.lower().startswith(prefix):  # type: ignore
+            prev_word = l[index-1]['word']  # type: ignore
+            if not prev_word.lower().startswith(prefix):
                 return index
             e = index
         elif prefix < word:
@@ -280,8 +280,8 @@ def binary_search_end(l: typing.List[Candidates], prefix: str) -> int:
         if word.startswith(prefix):
             if (index + 1) >= len(l):
                 return index
-            next_word = l[index+1]['word']
-            if not next_word.lower().startswith(prefix):  # type: ignore
+            next_word = l[index+1]['word']  # type: ignore
+            if not next_word.lower().startswith(prefix):
                 return index
             s = index + 1
         elif prefix < word:
