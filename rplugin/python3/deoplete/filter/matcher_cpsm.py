@@ -4,27 +4,29 @@
 # License: MIT license
 # ============================================================================
 
-import sys
 import os
+import sys
+import typing
 
 from deoplete.base.filter import Base
 from deoplete.util import error, globruntime
+from deoplete.util import Nvim, UserContext, Candidates
 
 
 class Filter(Base):
 
-    def __init__(self, vim):
+    def __init__(self, vim: Nvim) -> None:
         super().__init__(vim)
 
         self.name = 'matcher_cpsm'
         self.description = 'cpsm matcher'
 
-        self._cpsm = None
+        self._cpsm: typing.Optional[typing.Any] = None
 
-    def filter(self, context):
+    def filter(self, context: UserContext) -> Candidates:
         if (not context['candidates'] or not context['input']
                 or self._cpsm is False):
-            return context['candidates']
+            return context['candidates']  # type: ignore
 
         if self._cpsm is None:
             errmsg = self._init_cpsm(context)
@@ -41,11 +43,11 @@ class Filter(Base):
         return [x for x in context['candidates']
                 if x['word'] in sorted(cpsm_result, key=cpsm_result.index)]
 
-    def _init_cpsm(self, context):
+    def _init_cpsm(self, context: UserContext) -> str:
         ext = '.pyd' if context['is_windows'] else '.so'
         fname = 'bin/cpsm_py' + ext
         found = globruntime(self.vim.options['runtimepath'], fname)
-        errmsg = None
+        errmsg = ''
         if found:
             sys.path.insert(0, os.path.dirname(found[0]))
             try:
@@ -67,6 +69,8 @@ class Filter(Base):
             self._cpsm = False
         return errmsg
 
-    def _get_cpsm_result(self, candidates, pattern):
-        return self._cpsm.ctrlp_match((d['word'] for d in candidates),
-                                      pattern, limit=1000, ispath=False)[0]
+    def _get_cpsm_result(self, candidates: Candidates,
+                         pattern: str) -> typing.List[str]:
+        return self._cpsm.ctrlp_match(  # type: ignore
+            (d['word'] for d in candidates),
+            pattern, limit=1000, ispath=False)[0]
