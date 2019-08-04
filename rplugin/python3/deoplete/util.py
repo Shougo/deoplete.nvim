@@ -26,7 +26,7 @@ Candidates = typing.List[Candidate]
 
 
 def set_pattern(variable: typing.Dict[str, str],
-                keys: str, pattern: str) -> None:
+                keys: str, pattern: typing.Any) -> None:
     for key in keys.split(','):
         variable[key] = pattern
 
@@ -35,7 +35,7 @@ def convert2list(expr: typing.Any) -> typing.List[typing.Any]:
     return (expr if isinstance(expr, list) else [expr])
 
 
-def convert2candidates(l: typing.Any) -> typing.List[typing.Any]:
+def convert2candidates(l: typing.Any) -> Candidates:
     ret = []
     if l and isinstance(l, list):
         for x in l:

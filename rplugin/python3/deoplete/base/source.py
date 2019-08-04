@@ -40,7 +40,7 @@ class Base(LoggingMixin):
         self.is_silent = False
         self.rank = 100
         self.disabled_syntaxes: typing.List[str] = []
-        self.events = None
+        self.events: typing.List[str] = []
         self.vars: typing.Dict[str, typing.Any] = {}
         self.max_abbr_width = 80
         self.max_kind_width = 40
