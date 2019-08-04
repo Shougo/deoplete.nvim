@@ -6,8 +6,9 @@
 
 # For backward compatibility
 from deoplete.base.filter import Base as _Base
+from deoplete.util import Nvim
 
 
 class Base(_Base):
-    def __init__(self, vim):
+    def __init__(self, vim: Nvim) -> None:
         super().__init__(vim)

@@ -20,7 +20,9 @@ else:
     from neovim import Nvim
     from neovim.api import Buffer
 
-Candidates = typing.Dict[str, typing.Any]
+UserContext = typing.Dict[str, typing.Any]
+Candidate = typing.Dict[str, typing.Any]
+Candidates = typing.List[Candidate]
 
 
 def set_pattern(variable: typing.Dict[str, str],
@@ -239,17 +241,19 @@ def binary_search_begin(l: typing.List[Candidates], prefix: str) -> int:
     if not l:
         return -1
     if len(l) == 1:
-        return 0 if l[0]['word'].lower().startswith(prefix) else -1
+        word = l[0]['word']  # type: ignore
+        return 0 if word.lower().startswith(prefix) else -1
 
     s = 0
     e = len(l)
     prefix = prefix.lower()
     while s < e:
         index = int((s + e) / 2)
-        word = l[index]['word'].lower()
+        word = l[index]['word'].lower()  # type: ignore
         if word.startswith(prefix):
-            if (index - 1 < 0 or not
-                    l[index-1]['word'].lower().startswith(prefix)):
+            if (index - 1) < 0:
+                return index
+            if l[index-1]['word'].lower().startswith(prefix):  # type: ignore
                 return index
             e = index
         elif prefix < word:
@@ -263,17 +267,19 @@ def binary_search_end(l: typing.List[Candidates], prefix: str) -> int:
     if not l:
         return -1
     if len(l) == 1:
-        return 0 if l[0]['word'].lower().startswith(prefix) else -1
+        word = l[0]['word']  # type: ignore
+        return 0 if word.lower().startswith(prefix) else -1
 
     s = 0
     e = len(l)
     prefix = prefix.lower()
     while s < e:
         index = int((s + e) / 2)
-        word = l[index]['word'].lower()
+        word = l[index]['word'].lower()  # type: ignore
         if word.startswith(prefix):
-            if ((index + 1) >= len(l) or not
-                    l[index+1]['word'].lower().startswith(prefix)):
+            if (index + 1) >= len(l):
+                return index
+            if l[index+1]['word'].lower().startswith(prefix):  # type: ignore
                 return index
             s = index + 1
         elif prefix < word:
