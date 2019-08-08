@@ -554,7 +554,7 @@ class Child(logger.LoggingMixin):
     def _on_event(self, context: UserContext) -> None:
         event = context['event']
         for source_name, source in self._itersource(context):
-            if source.events is None or event in source.events:
+            if not source.events or event in source.events:
                 try:
                     source.on_event(context)
                 except Exception as exc:
