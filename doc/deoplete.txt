@@ -522,13 +522,6 @@ deoplete#manual_complete([{sources}])
 		return !col || getline('.')[col - 1]  =~ '\s'
 		endfunction"}}}
 <
-					*deoplete#refresh()*
-deoplete#refresh()
-		Refresh the candidates.
-		Note: It must be in |map-<expr>|.
->
-		inoremap <expr><C-l>     deoplete#refresh()
-<
 				*deoplete#smart_close_popup()*
 deoplete#smart_close_popup()
 		Insert candidate and re-generate popup menu for deoplete.
@@ -1873,6 +1866,10 @@ A: https://github.com/deoplete-plugins/deoplete-jedi/issues/35
 
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
+
+2019.08.11
+* Remove deoplete#refresh().  It does not work.  You should use
+  deoplete#manual_complete() instead.
 
 2019.07.16
 * Remove old deoplete#mappings# mappings.  You need to use new mappings.

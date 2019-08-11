@@ -72,14 +72,6 @@ function! deoplete#cancel_popup() abort
   call deoplete#handler#_skip_next_completion()
   return pumvisible() ? "\<C-e>" : ''
 endfunction
-function! deoplete#refresh() abort
-  if exists('g:deoplete#_context')
-    if get(g:deoplete#_context, 'event', '') ==# 'Manual'
-      let g:deoplete#_context.event = 'Refresh'
-    endif
-  endif
-  return pumvisible() ? "\<C-e>" : ''
-endfunction
 function! deoplete#insert_candidate(number) abort
   return deoplete#mapping#_insert_candidate(a:number)
 endfunction
