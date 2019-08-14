@@ -208,6 +208,7 @@ function! deoplete#init#_option() abort
         \ 'auto_complete_delay': 0,
         \ 'auto_refresh_delay': 20,
         \ 'camel_case': v:false,
+        \ 'check_stderr': v:true,
         \ 'ignore_case': &ignorecase,
         \ 'ignore_sources': {},
         \ 'candidate_marks': [],

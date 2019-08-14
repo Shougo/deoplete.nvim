@@ -194,7 +194,9 @@ class AsyncParent(_Parent):
         if not self._hnd:
             return []
 
-        while not self._queue_err.empty():
+        check_stderr = self._vim.call(
+            'deoplete#custom#_get_option', 'check_stderr')
+        while check_stderr and not self._queue_err.empty():
             self._print_error(self._queue_err.get_nowait())
 
         outs = []

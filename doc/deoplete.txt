@@ -150,6 +150,12 @@ candidate_marks
 		inoremap <expr>G       pumvisible() ?
 		\ deoplete#insert_candidate(4) : 'G'
 <
+						*deoplete-options-check_stderr*
+check_stderr
+		If it is True, deoplete check stderr output.
+
+		Default value: v:true
+
 						*deoplete-options-ignore_case*
 ignore_case
 		If it is True, deoplete ignores case.
