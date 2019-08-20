@@ -49,7 +49,7 @@ function! deoplete#handler#_do_complete() abort
   let context = g:deoplete#_context
   let event = get(context, 'event', '')
   let modes = (event ==# 'InsertEnter') ? ['n', 'i'] : ['i']
-  if s:is_exiting() || index(modes, mode()) < 0
+  if s:is_exiting() || index(modes, mode()) < 0 || s:check_input_method()
     return
   endif
 
@@ -71,7 +71,7 @@ function! deoplete#handler#_do_complete() abort
     call deoplete#mapping#_set_completeopt()
   endif
 
-  call feedkeys("\<Plug>_", 'i')
+  call deoplete#mapping#_complete()
 endfunction
 
 function! deoplete#handler#_check_omnifunc(context) abort
@@ -81,6 +81,7 @@ function! deoplete#handler#_check_omnifunc(context) abort
         \ || &l:omnifunc ==# ''
         \ || index(blacklist, &l:omnifunc) >= 0
         \ || prev.input ==# a:context.input
+        \ || s:check_input_method()
     return
   endif
 
@@ -129,6 +130,7 @@ function! s:check_prev_completion(event) abort
   let prev = g:deoplete#_prev_completion
   if a:event ==# 'Async' || mode() !=# 'i'
         \ || empty(get(prev, 'candidates', []))
+        \ || s:check_input_method()
     return
   endif
 
@@ -162,7 +164,7 @@ function! s:check_prev_completion(event) abort
         \ 'complete_position': prev.complete_position,
         \ 'candidates': candidates,
         \ }
-  call feedkeys("\<Plug>+", 'i')
+  call deoplete#mapping#_prev_complete()
 endfunction
 
 function! deoplete#handler#_async_timer_start() abort
@@ -259,6 +261,9 @@ function! s:is_skip_text(event) abort
 
   return (a:event !=# 'Manual' && input !=# ''
         \     && index(skip_chars, input[-1:]) >= 0)
+endfunction
+function! s:check_input_method() abort
+  return has('win32') && &iminsert
 endfunction
 
 function! s:define_on_event(event) abort
