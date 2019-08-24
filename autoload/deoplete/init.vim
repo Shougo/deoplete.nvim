@@ -30,6 +30,8 @@ function! deoplete#init#_initialize() abort
   if deoplete#init#_channel()
     return 1
   endif
+
+  call deoplete#mapping#_init()
 endfunction
 function! deoplete#init#_channel() abort
   if !exists('g:deoplete#_serveraddr')

@@ -4,6 +4,16 @@
 " License: MIT license
 "=============================================================================
 
+function! deoplete#mapping#_init() abort
+  " Note: The dummy function is needed for cpoptions bug in neovim
+  inoremap <expr><silent> <Plug>_
+        \ deoplete#mapping#_dummy('deoplete#mapping#_complete')
+  inoremap <expr><silent> <Plug>+
+        \ deoplete#mapping#_dummy('deoplete#mapping#_prev_complete')
+endfunction
+function! deoplete#mapping#_dummy(func) abort
+  return "\<C-r>=".a:func."()\<CR>"
+endfunction
 function! s:check_completion_info(candidates) abort
   if !exists('*complete_info')
     return 0
