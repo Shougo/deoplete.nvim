@@ -71,7 +71,7 @@ function! deoplete#handler#_do_complete() abort
     call deoplete#mapping#_set_completeopt()
   endif
 
-  call deoplete#mapping#_complete()
+  call feedkeys("\<Plug>_", 'i')
 endfunction
 
 function! deoplete#handler#_check_omnifunc(context) abort
@@ -164,7 +164,7 @@ function! s:check_prev_completion(event) abort
         \ 'complete_position': prev.complete_position,
         \ 'candidates': candidates,
         \ }
-  call deoplete#mapping#_prev_complete()
+  call feedkeys("\<Plug>+", 'i')
 endfunction
 
 function! deoplete#handler#_async_timer_start() abort
