@@ -24,15 +24,18 @@ class Filter(Base):
         if not m:
             return context['candidates']  # type: ignore
         next_input = m.group(0)
-        check_paren1 = self.vim.call('searchpair', '(', '', ')', 'bnw')
-        check_paren2 = self.vim.call('searchpair', '[', '', ']', 'bnw')
+
+        check_chars = []
+        if self.vim.call('searchpair', '(', '', ')', 'bnw'):
+            check_chars.append(')')
+        if self.vim.call('searchpair', '[', '', ']', 'bnw'):
+            check_chars.append(']')
+
         for [overlap, candidate, word] in [
                 [x, y, y['word']] for x, y
                 in [[overlap_length(x['word'], next_input), x]
                     for x in context['candidates']] if x > 0]:
-            if check_paren1 and ')' in word[-overlap:]:
-                continue
-            if check_paren2 and ']' in word[-overlap:]:
+            if [x for x in check_chars if x in word]:
                 continue
             if 'abbr' not in candidate:
                 candidate['abbr'] = word
