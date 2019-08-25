@@ -392,8 +392,15 @@ class Child(logger.LoggingMixin):
             ctx['candidates'] = source.on_post_filter(ctx)
 
         mark = source.mark + ' '
-        refresh = self._vim.call(
+
+        refresh = False
+        refresh_always = self._vim.call(
             'deoplete#custom#_get_option', 'refresh_always')
+        auto_complete = self._vim.call(
+            'deoplete#custom#_get_option', 'auto_complete')
+        if refresh_always and auto_complete:
+            refresh = True
+
         for candidate in ctx['candidates']:
             candidate['icase'] = 1
             candidate['equal'] = refresh
