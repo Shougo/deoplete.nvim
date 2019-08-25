@@ -5,6 +5,7 @@
 # ============================================================================
 
 import re
+import typing
 
 from deoplete.base.filter import Base
 from deoplete.util import Nvim, UserContext, Candidates
@@ -23,7 +24,8 @@ class Filter(Base):
         m = re.match(r'\S+', context['next_input'])
         if not m:
             return context['candidates']  # type: ignore
-        next_input = m.group(0)
+        next_input_words = [x for x in re.split(
+            r'([a-zA-Z_]+|\W)', m.group(0)) if x]
 
         check_chars = []
         if self.vim.call('searchpair', '(', '', ')', 'bnw'):
@@ -33,7 +35,7 @@ class Filter(Base):
 
         for [overlap, candidate, word] in [
                 [x, y, y['word']] for x, y
-                in [[overlap_length(x['word'], next_input), x]
+                in [[overlap_length(x['word'], next_input_words), x]
                     for x in context['candidates']] if x > 0]:
             if [x for x in check_chars if x in word]:
                 continue
@@ -43,8 +45,8 @@ class Filter(Base):
         return context['candidates']  # type: ignore
 
 
-def overlap_length(left: str, right: str) -> int:
-    pos = len(right)
-    while pos > 0 and not left.endswith(right[: pos]):
+def overlap_length(left: str, next_input_words: typing.List[str]) -> int:
+    pos = len(next_input_words)
+    while pos > 0 and not left.endswith(''.join(next_input_words[:pos])):
         pos -= 1
-    return pos
+    return len(''.join(next_input_words[:pos]))
