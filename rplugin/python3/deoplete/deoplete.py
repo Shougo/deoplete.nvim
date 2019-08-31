@@ -93,7 +93,8 @@ class Deoplete(logger.LoggingMixin):
             position = -1
             candidates = []
 
-        if needs_poll:
+        # Todo: If max_parents is 1, async completion does not work...
+        if self._max_parents != 1 and needs_poll:
             self._vim.call('deoplete#handler#_async_timer_start')
 
         if not candidates:

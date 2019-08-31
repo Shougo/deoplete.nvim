@@ -173,8 +173,10 @@ function! deoplete#handler#_async_timer_start() abort
     return
   endif
 
+  " Note: If use "Async", manual async completion does not work.
+  " Because it is skipped by "min_pattern_length".
   call timer_start(max([20, delay]),
-        \ {-> deoplete#handler#_completion_begin('Async')})
+        \ {-> deoplete#handler#_completion_begin('Manual')})
 endfunction
 
 function! deoplete#handler#_completion_begin(event) abort

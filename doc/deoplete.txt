@@ -1225,8 +1225,12 @@ vars		(Dictionary)			(Optional)
 			indicating that this is the last portion of the
 			candidates.
 
+			Note: The feature is deprecated and not recommended.
+			You should use callback system by
+			|deoplete#auto_complete()| instead.
+
 	The below is an example of async deoplete source.
-	If "context['is_async']" is True, the gather_candidates is called
+	While "context['is_async']" is True, the gather_candidates is called
 	repeatedly.
 >
 	from deoplete.base.source import Base
@@ -1240,9 +1244,13 @@ vars		(Dictionary)			(Optional)
 	        self._count = 0
 
 	    def gather_candidates(self, context):
+	        if not context['input']:
+	            return []
+	        if self._count >= 10:
+	            self._count = 0
 	        self._count += 1
 	        context['is_async'] = self._count < 10
-	        return [context['input'] + str(self._count)]
+	        return [context['input'].split()[-1] + str(self._count)]
 <
 		is_refresh		(Bool)
 			If the input is changed, it will be "True".
