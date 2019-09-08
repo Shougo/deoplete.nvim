@@ -263,7 +263,7 @@ function! s:is_skip_text(event) abort
         \     && index(skip_chars, input[-1:]) >= 0)
 endfunction
 function! s:check_input_method() abort
-  return has('win32') && &iminsert
+  return exists('getimstatus') && getimstatus()
 endfunction
 
 function! s:define_on_event(event) abort
