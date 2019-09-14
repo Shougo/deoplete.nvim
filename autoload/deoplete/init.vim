@@ -71,6 +71,10 @@ function! deoplete#init#_channel() abort
             \ 'deoplete requires Python3 support("+python3").')
     endif
 
+    if !deoplete#init#_python_version_check()
+      call deoplete#util#print_error('deoplete requires Python3.6.1+.')
+    endif
+
     if deoplete#util#has_yarp()
       echomsg string(expand('<sfile>'))
       if !exists('*yarp#py3')
