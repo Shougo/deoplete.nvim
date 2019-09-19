@@ -478,10 +478,8 @@ class Child(logger.LoggingMixin):
 
     def _use_previous_result(self, context: UserContext,
                              result: Result, is_volatile: bool) -> bool:
-        if context['position'][1] != result['prev_linenr']:
+        if context['position'][1] != result['prev_linenr'] or is_volatile:
             return False
-        if is_volatile:
-            return bool(context['input'] == result['prev_input'])
         else:
             return bool(re.sub(r'\w*$', '', context['input']) ==
                         re.sub(r'\w*$', '', result['prev_input']) and
