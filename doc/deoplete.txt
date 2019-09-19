@@ -118,7 +118,7 @@ auto_refresh_delay
 		Delay the refresh when asynchronous.
 		If it is less than equal 0, the feature is disabled.
 
-		Default value: 20 (miliseconds)
+		Default value: 100 (miliseconds)
 
 						*deoplete-options-camel_case*
 camel_case
