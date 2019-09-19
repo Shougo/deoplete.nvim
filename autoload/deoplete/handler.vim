@@ -173,8 +173,7 @@ function! deoplete#handler#_async_timer_start() abort
     return
   endif
 
-  call timer_start(max([20, delay]),
-        \ {-> deoplete#handler#_completion_begin('Async')})
+  call timer_start(max([20, delay]), {-> deoplete#auto_complete()})
 endfunction
 
 function! deoplete#handler#_completion_begin(event) abort
