@@ -186,7 +186,7 @@ function! deoplete#handler#_completion_begin(event) abort
 
   call s:check_prev_completion(a:event)
 
-  if a:event !=# 'Async'
+  if a:event !=# 'Update'
     call deoplete#init#_prev_completion()
   endif
 
@@ -205,7 +205,7 @@ function! s:is_skip(event) abort
   let auto_complete = deoplete#custom#_get_option('auto_complete')
 
   if &paste
-        \ || (a:event !=# 'Manual' && a:event !=# 'Async' && !auto_complete)
+        \ || (a:event !=# 'Manual' && a:event !=# 'Update' && !auto_complete)
         \ || (&l:completefunc !=# '' && &l:buftype =~# 'nofile')
         \ || (a:event !=# 'InsertEnter' && mode() !=# 'i')
     return 1
@@ -234,10 +234,11 @@ function! s:is_skip_text(event) abort
   if input ==# prev_input
         \ && a:event !=# 'Manual'
         \ && a:event !=# 'Async'
+        \ && a:event !=# 'Update'
         \ && a:event !=# 'TextChangedP'
     return 1
   endif
-  if a:event ==# 'Async' && prev_input !=# '' && input !=# prev_input
+  if a:event ==# 'Update' && prev_input !=# '' && input !=# prev_input
     return 1
   endif
 

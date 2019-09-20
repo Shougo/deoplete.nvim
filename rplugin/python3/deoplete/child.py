@@ -70,7 +70,7 @@ class Child(logger.LoggingMixin):
                 ret = self.main(name, args, queue_id)
                 if ret:
                     self._write(stdout, ret)
-                    self._vim.call('deoplete#auto_complete')
+                    self._vim.call('deoplete#auto_complete', 'Update')
 
     def main(self, name: str, args: typing.List[typing.Any],
              queue_id: typing.Optional[int]) -> typing.Optional[Candidates]:

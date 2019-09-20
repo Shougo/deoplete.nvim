@@ -148,7 +148,7 @@ class AsyncParent(_Parent):
 
     def merge_results(self,
                       context: UserContext) -> typing.Tuple[typing.Any, ...]:
-        if (context['event'] == 'Async' and
+        if (context['event'] == 'Update' and
                 context['position'] == self._prev_pos and self._queue_id):
             # Use previous id
             queue_id = self._queue_id
