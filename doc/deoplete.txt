@@ -1046,6 +1046,8 @@ is_volatile
 		gather_candidates results and will not call gather_candidates
 		on each input change. Only on_post_filter method will be
 		called on each input change (if implemented).
+		Note: If you create asynchronous source, you need to set
+		"is_volatile" to True.
 
 		Default: False
 
