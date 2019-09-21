@@ -297,7 +297,12 @@ function! s:on_complete_done() abort
   call deoplete#handler#_skip_next_completion()
 
   if get(v:completed_item, 'user_data', '') !=# ''
-    call s:substitute_suffix(json_decode(v:completed_item.user_data))
+    try
+      if type(v:completed_item.user_data) == type('')
+        call s:substitute_suffix(json_decode(v:completed_item.user_data))
+      endif
+    catch /.*/
+    endtry
   endif
 endfunction
 function! s:substitute_suffix(user_data) abort
