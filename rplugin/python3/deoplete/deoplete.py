@@ -102,8 +102,8 @@ class Deoplete(logger.LoggingMixin):
         # Async update is skipped if same.
         prev_completion = self._vim.vars['deoplete#_prev_completion']
         prev_candidates = prev_completion['candidates']
-        if (context['event'] == 'Async' and
-                context['event'] == prev_completion['event'] and
+        event = context['event']
+        if (event == 'Async' or event == 'Update' and
                 prev_candidates and len(candidates) <= len(prev_candidates)):
             return
 

@@ -186,7 +186,7 @@ function! deoplete#handler#_completion_begin(event) abort
 
   call s:check_prev_completion(a:event)
 
-  if a:event !=# 'Update'
+  if a:event !=# 'Update' && a:event !=# 'Async'
     call deoplete#init#_prev_completion()
   endif
 
