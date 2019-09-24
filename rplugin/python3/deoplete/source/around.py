@@ -18,8 +18,8 @@ class Source(Base):
         self.rank = 300
         self.vars = {
             'mark_above': '[A]',
-            'mark_below': '[B]',
-            'mark_changes': '[C]',
+            'mark_below': '[A]',
+            'mark_changes': '[A]',
             'range_above': 20,
             'range_below': 20,
         }

@@ -573,12 +573,6 @@ around						    *deoplete-source-around*
 		the words that are in sight or the ones you've just typed
 		somewhere else.
 
-		Legend: You can see where the words came from. Next to the
-		source mark [~] these suffixes are used:
-		    A - above the cursor
-		    B - below the cursor
-		    C - in changes
-
 		By default, around has a fixed range of looking for words
 		20 lines above and below your cursor position. You are able
 		to customize its settings through custom source variables.
@@ -1764,9 +1758,9 @@ A: Like this:
 	highlight PmenuSbar ctermbg=0 guibg=#d6d6d6
 <
 Q: What does each part of a line on the pop up mean?  For example I see:
-   Bree pops up Breed [~] A. What do [~] and A stand for?
+   Bree pops up Breed [A]. What do [A] stands for?
 
-A: It is the source mark. [~] is from around source.  A is from
+A: It is the source mark. [A] is from around source.  A is from
    |deoplete-source-around|.
 
 Q: I want to use floating preview window feature with deoplete.
