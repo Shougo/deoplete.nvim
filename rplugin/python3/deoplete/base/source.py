@@ -37,6 +37,7 @@ class Base(LoggingMixin):
         self.is_bytepos = False
         self.is_initialized = False
         self.is_volatile = False
+        self.is_async = False
         self.is_silent = False
         self.rank = 100
         self.disabled_syntaxes: typing.List[str] = []

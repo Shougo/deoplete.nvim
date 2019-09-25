@@ -225,7 +225,7 @@ class Child(logger.LoggingMixin):
         if (source.name in self._prev_results and
                 self._use_previous_result(
                     context, self._prev_results[source.name],
-                    source.is_volatile)):
+                    source.is_volatile, source.is_async)):
             return self._prev_results[source.name]
 
         ctx['is_async'] = False
@@ -251,6 +251,8 @@ class Child(logger.LoggingMixin):
         self._profile_start(ctx, source.name)
         ctx['vars'] = self._vim.vars
         ctx['candidates'] = source.gather_candidates(ctx)
+        if ctx['is_async']:
+            source.is_async = True
         ctx['vars'] = None
         self._profile_end(source.name)
 
@@ -477,8 +479,13 @@ class Child(logger.LoggingMixin):
                 name, time.clock() - self._profile_start_time))
 
     def _use_previous_result(self, context: UserContext,
-                             result: Result, is_volatile: bool) -> bool:
-        if context['position'][1] != result['prev_linenr'] or is_volatile:
+                             result: Result, is_volatile: bool,
+                             is_async: bool) -> bool:
+        if context['position'][1] != result['prev_linenr']:
+            return False
+        elif is_async:
+            return bool(context['input'] == result['prev_input'])
+        elif is_volatile:
             return False
         else:
             return bool(re.sub(r'\w*$', '', context['input']) ==
@@ -552,9 +559,6 @@ class Child(logger.LoggingMixin):
             if source.min_pattern_length < 0:
                 source.min_pattern_length = self._vim.call(
                     'deoplete#custom#_get_option', 'min_pattern_length')
-
-            if not source.is_volatile:
-                source.is_volatile = bool(source.filetypes)
 
     def _on_event(self, context: UserContext) -> None:
         event = context['event']
