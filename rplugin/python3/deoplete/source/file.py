@@ -38,8 +38,8 @@ class Source(Base):
 
     def get_complete_position(self, context: UserContext) -> int:
         pos = int(context['input'].rfind('/'))
-        force_completion_length = int(  # type: ignore
-            self.get_var('force_completion_length'))
+        force_completion_length = int(
+            self.get_var('force_completion_length'))  # type: ignore
         if pos < 0 and force_completion_length >= 0:
             fmt = '[a-zA-Z0-9.-]{{{}}}$'.format(force_completion_length)
             m = re.search(fmt, context['input'])

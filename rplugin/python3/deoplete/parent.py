@@ -125,8 +125,8 @@ class AsyncParent(_Parent):
 
         info = None
         if os.name == 'nt':
-            info = subprocess.STARTUPINFO()
-            info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            info = subprocess.STARTUPINFO()  # type: ignore
+            info.dwFlags |= subprocess.STARTF_USESHOWWINDOW  # type: ignore
 
         main = str(Path(__file__).parent.parent.parent.parent.joinpath(
             'autoload', 'deoplete', '_main.py'))

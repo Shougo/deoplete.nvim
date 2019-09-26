@@ -152,8 +152,8 @@ class Deoplete(logger.LoggingMixin):
         for cnt, parent in enumerate(self._parents):
             if cnt in self._prev_results:
                 # Use previous result
-                results += copy.deepcopy(  # type: ignore
-                    self._prev_results[cnt])
+                results += copy.deepcopy(
+                    self._prev_results[cnt])  # type: ignore
             else:
                 result = parent.merge_results(context)
                 is_async = is_async or result[0]
