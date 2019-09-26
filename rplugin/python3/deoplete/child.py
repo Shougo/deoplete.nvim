@@ -484,8 +484,12 @@ class Child(logger.LoggingMixin):
         if context['position'][1] != result['prev_linenr']:
             return False
         elif is_async:
+            # Note: If it is async, the cache must be used to call
+            # gather_async_results().
             return bool(context['input'] == result['prev_input'])
         elif is_volatile:
+            # Note: If it is volatile, the cache must be disabled to refresh
+            # candidates.
             return False
         else:
             return bool(re.sub(r'\w*$', '', context['input']) ==
