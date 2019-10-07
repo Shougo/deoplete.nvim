@@ -128,7 +128,7 @@ endfunction
 
 function! s:check_prev_completion(event) abort
   let prev = g:deoplete#_prev_completion
-  if a:event ==# 'Async' || mode() !=# 'i'
+  if a:event ==# 'Async' || a:event ==# 'Update' || mode() !=# 'i'
         \ || empty(get(prev, 'candidates', []))
         \ || s:check_input_method()
     return
