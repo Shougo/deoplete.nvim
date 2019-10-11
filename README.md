@@ -34,7 +34,7 @@ instead.
 
 https://github.com/Shougo/deoplete.nvim/releases/tag/4.1
 
-For vim-plug
+The recommented way is to use [vim-plug](https://github.com/junegunn/vim-plug) and add the following to your `call plug#begin` section on **`~/.vimrc`** (see also [how to automatically install plugins](https://github.com/junegunn/vim-plug/wiki/tips))
 
 ```viml
 if has('nvim')
