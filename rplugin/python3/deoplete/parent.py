@@ -96,8 +96,9 @@ class AsyncParent(_Parent):
             if os.name == 'nt':
                 checks = (r'Scripts\python.exe', 'python.exe')
             else:
-                checks = (  # type: ignore
-                    'bin/python%s.%s' % (sys.version_info[0], sys.version[1]),
+                checks = (
+                    'bin/python%s.%s' % (  # type: ignore
+                        sys.version_info[0], sys.version[1]),
                     'bin/python%s' % (sys.version_info[0]),
                     'bin/python',
                 )
