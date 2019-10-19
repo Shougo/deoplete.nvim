@@ -123,9 +123,12 @@ function! s:init_internal_variables() abort
       let g:deoplete#_serveraddr = $NVIM_LISTEN_ADDRESS
     endif
   catch
-    if deoplete#util#has_yarp() && !exists('*neovim_rpc#serveraddr')
-      call deoplete#util#print_error(
-            \ 'deoplete requires vim-hug-neovim-rpc plugin in Vim.')
+    if deoplete#util#has_yarp()
+      call neovim_rpc#serveraddr()
+      if !exists('*neovim_rpc#serveraddr')
+        call deoplete#util#print_error(
+              \ 'deoplete requires vim-hug-neovim-rpc plugin in Vim.')
+      endif
     endif
   endtry
 endfunction
