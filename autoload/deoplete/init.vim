@@ -123,6 +123,14 @@ function! s:init_internal_variables() abort
       let g:deoplete#_serveraddr = $NVIM_LISTEN_ADDRESS
     endif
   catch
+    call deoplete#util#print_error(v:exception)
+    call deoplete#util#print_error(v:throwpoint)
+
+    if !has('python3')
+      call deoplete#util#print_error(
+            \ 'deoplete requires Python3 support("+python3").')
+    endif
+
     if deoplete#util#has_yarp()
       " Dummy call is needed to check exists()
       call neovim_rpc#serveraddr()
