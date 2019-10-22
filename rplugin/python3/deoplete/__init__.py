@@ -14,11 +14,9 @@ from deoplete.util import Nvim
 if find_spec('yarp'):
     import vim
 elif find_spec('pynvim'):
-    import pynvim
-    vim = pynvim
+    import pynvim as vim
 else:
-    import neovim
-    vim = neovim
+    import neovim as vim
 
 Context = typing.Dict[str, typing.Any]
 

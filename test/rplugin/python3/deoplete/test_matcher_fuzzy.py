@@ -21,6 +21,7 @@ def _ctx(complete_str, ignorecase=True, camelcase=True):
         'candidates'   : _candidates
     }
 
+
 def test_matcher_fuzzy():
     f = Filter(None)
 
