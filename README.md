@@ -87,9 +87,9 @@ If Deoplete was installed prior to Python support being added to Neovim,
 `:UpdateRemotePlugins` should be executed manually in order to enable
 auto-completion.
 
-**Note: deoplete needs neovim-python ver.0.3.0+.**
+**Note: deoplete needs pynvim ver.0.3.0+.**
 
-You need update neovim-python module.
+You need update pynvim module.
 
     pip3 install --user --upgrade pynvim
 
