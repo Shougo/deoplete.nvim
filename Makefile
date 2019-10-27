@@ -23,6 +23,6 @@ test:
 	pytest
 
 vim-themis:
-	git clone https://github.com/thinca/vim-themis vim-themis
+	git clone --depth 1 https://github.com/thinca/vim-themis $@
 
 .PHONY: install lint test
