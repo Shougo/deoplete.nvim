@@ -79,16 +79,14 @@ def import_plugin(path: str, source: str,
 
 def debug(vim: Nvim, expr: typing.Any) -> None:
     if hasattr(vim, 'out_write'):
-        string = (expr if isinstance(expr, str) else str(expr))
-        vim.out_write('[deoplete] ' + string + '\n')
+        vim.out_write(f'[deoplete] {expr}\n')
     else:
         vim.call('deoplete#util#print_debug', expr)
 
 
 def error(vim: Nvim, expr: typing.Any) -> None:
     if hasattr(vim, 'err_write'):
-        string = (expr if isinstance(expr, str) else str(expr))
-        vim.err_write('[deoplete] ' + string + '\n')
+        vim.err_write(f'[deoplete] {expr}\n')
     else:
         vim.call('deoplete#util#print_error', expr)
 
@@ -165,7 +163,7 @@ def fuzzy_escape(string: str, camelcase: bool) -> str:
     p = re.sub(r'([a-zA-Z0-9_])', r'\1.*', re.escape(string))
     if camelcase and re.search(r'[A-Z]', string):
         p = re.sub(r'([a-z])', (lambda pat:
-                                '['+pat.group(1)+pat.group(1).upper()+']'), p)
+                                f'[{pat.group(1)}{pat.group(1).upper()}]'), p)
     p = re.sub(r'([a-zA-Z0-9_])\.\*', r'\1[^\1]*', p)
     return p
 
@@ -181,7 +179,7 @@ def truncate_skipping(string: str, max_width: int,
                       footer: str, footer_len: int) -> str:
     if not string:
         return ''
-    if len(string) <= max_width/2:
+    if len(string) <= max_width / 2:
         return string
     if strwidth(string) <= max_width:
         return string
@@ -192,7 +190,7 @@ def truncate_skipping(string: str, max_width: int,
 
 
 def truncate(string: str, max_width: int) -> str:
-    if len(string) <= max_width/2:
+    if len(string) <= max_width / 2:
         return string
     if strwidth(string) <= max_width:
         return string
