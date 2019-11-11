@@ -716,6 +716,7 @@ Default sorters: ['sorter_rank'].
 
 					*deoplete-filter-converter_default*
 Default converters: ['converter_remove_overlap', 'converter_truncate_abbr',
+                     'converter_truncate_kind', 'converter_truncate_info',
                      'converter_truncate_menu'].
 
 	You can change it by |deoplete#custom#source()|.
