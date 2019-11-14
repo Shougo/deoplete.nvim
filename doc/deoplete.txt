@@ -865,6 +865,10 @@ converter_auto_paren
 		It is useful if you use |neopairs| or |neosnippet|
 		plugins.
 
+				*deoplete-filter-converter_case*
+converter_case
+		It converts case like 'infercase'.
+
 				*deoplete-filter-converter_remove_overlap*
 converter_remove_overlap
 		It removes overlapped text in a candidate's word.
