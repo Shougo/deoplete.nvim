@@ -4,6 +4,8 @@
 # License: MIT license
 # ============================================================================
 
+import re
+
 from deoplete.base.filter import Base
 from deoplete.util import Nvim, UserContext, Candidates
 
@@ -17,6 +19,9 @@ class Filter(Base):
 
     def filter(self, context: UserContext) -> Candidates:
         complete_str = context['complete_str']
+        if not re.search(r'[A-Z]', complete_str):
+            return context['candidates']
+
         complete_lower = complete_str.lower()
         complete_len = len(complete_str)
         for candidate in [
