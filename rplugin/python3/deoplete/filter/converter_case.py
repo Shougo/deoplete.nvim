@@ -19,7 +19,6 @@ class Filter(Base):
         complete_str = context['complete_str']
         complete_lower = complete_str.lower()
         complete_len = len(complete_str)
-        debug(self.vim, context['candidates'])
         for candidate in [
                 x for x in context['candidates']
                 if x['word'].lower().startswith(complete_lower)]:
