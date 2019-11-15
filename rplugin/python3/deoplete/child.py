@@ -338,7 +338,7 @@ class Child(logger.LoggingMixin):
             return None
 
         # Source context
-        ctx = copy.deepcopy(result['context'])
+        ctx = copy.copy(result['context'])
 
         ctx['input'] = context_input
         ctx['next_input'] = next_input
@@ -368,6 +368,9 @@ class Child(logger.LoggingMixin):
             # Restore word key
             for candidate in ctx['candidates']:
                 candidate['word'] = candidate['__save_word']
+
+        # Note: converter may break candidates
+        ctx['candidates'] = copy.deepcopy(ctx['candidates'])
 
         # Sort and Convert
         sorters = [self._filters[x] for x
