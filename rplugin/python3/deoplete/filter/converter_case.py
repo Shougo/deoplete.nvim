@@ -20,7 +20,7 @@ class Filter(Base):
     def filter(self, context: UserContext) -> Candidates:
         complete_str = context['complete_str']
         if not re.search(r'[A-Z]', complete_str):
-            return context['candidates']
+            return context['candidates']  # type: ignore
 
         complete_lower = complete_str.lower()
         complete_len = len(complete_str)
