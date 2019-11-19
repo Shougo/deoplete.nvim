@@ -106,7 +106,9 @@ class AsyncParent(_Parent):
                 guess = os.path.join(sys.exec_prefix, check)  # type: ignore
                 if os.path.isfile(str(guess)):
                     return str(guess)
-            return str(self._vim.vars.get('python3_host_prog', 'python3'))
+            if 'python3_host_prog' not in self._vim.vars:
+                return 'python3'
+            return str(self._vim.vars['python3_host_prog'])
         return exe
 
     def _start_process(self) -> None:

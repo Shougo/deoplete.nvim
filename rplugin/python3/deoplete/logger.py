@@ -64,7 +64,7 @@ def setup(vim: Nvim, level: str, output_file: str = '') -> None:
                  '.'.join(map(str, sys.version_info[:3])),
                  pynvim_version)
 
-        if not vim.vars.get('deoplete#_logging_notified'):
+        if 'deoplete#_logging_notified' not in vim.vars:
             vim.vars['deoplete#_logging_notified'] = 1
             vim.call('deoplete#util#print_debug', 'Logging to %s' % (
                 output_file))
