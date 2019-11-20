@@ -36,7 +36,7 @@ function! s:check_required_python_for_deoplete() abort
           \ )
   endif
 
-  if !deoplete#init#_python_version_check()
+  if deoplete#init#_python_version_check()
     call health#report_ok('Require Python3.6.1+ was successful')
   else
     call health#report_error(
