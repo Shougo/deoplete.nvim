@@ -21,11 +21,8 @@ class Filter(Base):
     def filter(self, context: UserContext) -> Candidates:
         if not context['next_input']:
             return context['candidates']  # type: ignore
-        m = re.match(r'\S+', context['next_input'])
-        if not m:
-            return context['candidates']  # type: ignore
         next_input_words = [x for x in re.split(
-            r'([a-zA-Z_]+|\W)', m.group(0)) if x]
+            r'([a-zA-Z_]+|\W)', context['next_input']) if x]
 
         check_pairs = []
         if self.vim.call('searchpair', '(', '', ')', 'bnw'):
