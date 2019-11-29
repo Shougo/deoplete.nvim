@@ -369,15 +369,19 @@ class Child(logger.LoggingMixin):
             for candidate in ctx['candidates']:
                 candidate['word'] = candidate['__save_word']
 
+        # Sort
+        sorters = [self._filters[x] for x
+                   in source.sorters if x in self._filters]
+        for f in sorters:
+            self._process_filter(f, ctx, source.max_candidates)
+
         # Note: converter may break candidates
         ctx['candidates'] = copy.deepcopy(ctx['candidates'])
 
-        # Sort and Convert
-        sorters = [self._filters[x] for x
-                   in source.sorters if x in self._filters]
+        # Convert
         converters = [self._filters[x] for x
                       in source.converters if x in self._filters]
-        for f in sorters + converters:
+        for f in converters:
             self._process_filter(f, ctx, source.max_candidates)
 
         if (isinstance(ctx['candidates'], dict) and
