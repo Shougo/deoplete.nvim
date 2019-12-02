@@ -231,8 +231,7 @@ class Child(logger.LoggingMixin):
                                     ctx['max_abbr_width'])
         ctx['max_kind_width'] = min(source.max_kind_width,
                                     ctx['max_kind_width'])
-        ctx['max_info_width'] = min(source.max_info_width,
-                                    ctx['max_info_width'])
+        ctx['max_info_width'] = source.max_info_width
         ctx['max_menu_width'] = min(source.max_menu_width,
                                     ctx['max_menu_width'])
         if ctx['max_abbr_width'] > 0:
