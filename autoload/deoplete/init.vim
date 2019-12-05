@@ -49,6 +49,10 @@ function! deoplete#init#_channel() abort
     call deoplete#util#print_error('deoplete requires nvim 0.3.0+.')
     return 1
   endif
+  if !has('nvim') && v:version < 800
+    call deoplete#util#print_error('deoplete requires Vim 8.0+.')
+    return 1
+  endif
 
   try
     if deoplete#util#has_yarp()
