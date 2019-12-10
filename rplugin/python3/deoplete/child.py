@@ -471,7 +471,7 @@ class Child(logger.LoggingMixin):
                 return self._profile_start(context, name)
         elif self._profile_flag:
             self.debug(f'Profile Start: {name}')
-            self._profile_start_time = time.clock()
+            self._profile_start_time = time.monotonic()
 
     def _profile_end(self, name: str) -> None:
         if not self._profile_start_time:
@@ -479,7 +479,7 @@ class Child(logger.LoggingMixin):
 
         self.debug(  # type: ignore
             'Profile End  : {0:<25} time={1:2.10f}'.format(
-                name, time.clock() - self._profile_start_time))
+                name, time.monotonic() - self._profile_start_time))
 
     def _use_previous_result(self, context: UserContext,
                              result: Result, is_volatile: bool,
