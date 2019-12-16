@@ -25,7 +25,7 @@ function! deoplete#util#string(expr) abort
 endfunction
 
 function! deoplete#util#get_input(event) abort
-  let mode = mode()
+  let mode = mode()[0]
   if a:event ==# 'InsertEnter'
     let mode = 'i'
   endif
@@ -111,7 +111,8 @@ function! deoplete#util#get_syn_names() abort
   let names = []
   try
     " Note: synstack() seems broken in concealed text.
-    for id in synstack(line('.'), (mode() ==# 'i' ? col('.')-1 : col('.')))
+    for id in synstack(line('.'),
+          \ (mode()[0] ==# 'i' ? col('.')-1 : col('.')))
       let name = synIDattr(id, 'name')
       call add(names, name)
       if synIDattr(synIDtrans(id), 'name') !=# name

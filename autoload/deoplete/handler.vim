@@ -48,7 +48,7 @@ endfunction
 function! deoplete#handler#_do_complete() abort
   let context = g:deoplete#_context
   let event = get(context, 'event', '')
-  let modes = (event ==# 'InsertEnter') ? ['n', 'i'] : ['i']
+  let modes = (event ==# 'InsertEnter') ? ['n', 'i'] : ['i', 'ic', 'ix']
   if s:is_exiting() || index(modes, mode()) < 0 || s:check_input_method()
     return
   endif
@@ -128,7 +128,7 @@ endfunction
 
 function! s:check_prev_completion(event) abort
   let prev = g:deoplete#_prev_completion
-  if a:event ==# 'Async' || a:event ==# 'Update' || mode() !=# 'i'
+  if a:event ==# 'Async' || a:event ==# 'Update' || mode()[0] !=# 'i'
         \ || empty(get(prev, 'candidates', []))
         \ || s:check_input_method()
     return
@@ -207,7 +207,7 @@ function! s:is_skip(event) abort
   if &paste
         \ || (a:event !=# 'Manual' && a:event !=# 'Update' && !auto_complete)
         \ || (&l:completefunc !=# '' && &l:buftype =~# 'nofile')
-        \ || (a:event !=# 'InsertEnter' && mode() !=# 'i')
+        \ || (a:event !=# 'InsertEnter' && mode()[0] !=# 'i')
     return 1
   endif
 
