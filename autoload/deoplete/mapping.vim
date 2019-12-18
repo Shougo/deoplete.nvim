@@ -20,7 +20,7 @@ function! s:check_completion_info(candidates) abort
   endif
 
   let info = complete_info()
-  if info.mode !=# '' && info.mode !=# 'eval'
+  if (info.mode !=# '' && info.mode !=# 'eval') || info.selected >= 0
     return 1
   endif
 

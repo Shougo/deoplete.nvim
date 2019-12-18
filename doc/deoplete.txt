@@ -1619,6 +1619,13 @@ A: You must upgrade pynvim client. >
 
        $ pip3 install --user pynvim --upgrade
 
+Q: deoplete now automatically completes without permission
+https://github.com/Shougo/deoplete.nvim/issues/1013
+
+A: some sources(nvim-typescript, LanguageClient-neovim etc) use "is_async"
+feature.  It is affected with the problem.
+The feature is deprecated and not recommended.
+
 							*deoplete-faq-config*
 2. Configuration~
 
