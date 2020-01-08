@@ -1,4 +1,4 @@
-*deoplete.txt*	Dark powered asynchronous completion framework for Neovim/Vim8.
+*deoplete.txt*	Dark powered asynchronous completion framework for Neovim/Vim8
 
 Version: 5.2
 Author: Shougo <Shougo.Matsu at gmail.com>
@@ -72,8 +72,7 @@ You need update pynvim module.
     pip3 install --user --upgrade pynvim
 <
 If you want to read for Neovim-python/python3 interface install documentation,
-you should read |provider-python| and the Wiki.
-https://github.com/deoplete-plugins/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
+you should read |provider-python|.
 
 You can check the Python3 installation by using the |:checkhealth| command.
 
@@ -150,7 +149,7 @@ candidate_marks
 		inoremap <expr>G       pumvisible() ?
 		\ deoplete#insert_candidate(4) : 'G'
 <
-						*deoplete-options-check_stderr*
+					*deoplete-options-check_stderr*
 check_stderr
 		If it is True, deoplete check stderr output.
 
@@ -248,7 +247,7 @@ profile
 
 		Default value: v:false
 
-					*deoplete-options-prev_completion_mode*
+				*deoplete-options-prev_completion_mode*
 prev_completion_mode
 		It changes previous completion behavior.
 		It reduces popup flicker.
@@ -471,7 +470,7 @@ deoplete#custom#source({source-name}, {dict})
 		" call deoplete#enable_logging('DEBUG', 'deoplete.log')
 		" call deoplete#custom#source('jedi', 'is_debug_enabled', 1)
 <
-							*deoplete#custom#var()*
+						*deoplete#custom#var()*
 deoplete#custom#var({source-name}, {var-name}, {value})
 deoplete#custom#var({source-name}, {dict})
 		Set {source-name} source specialized variable {variable-name}
@@ -493,18 +492,18 @@ deoplete#auto_complete([{event}])
 						*deoplete#close_popup()*
 deoplete#close_popup()
 		Insert candidate and close popup menu for deoplete.
-		Note: It must be in |map-<expr>|.
+		Note: It must be in |:map-<expr>|.
 
 					*deoplete#complete_common_string()*
 deoplete#complete_common_string()
 		complete common string in candidates.  It will be convenient
 		when candidates have long common string.
-		Note: It must be in |map-<expr>|.
+		Note: It must be in |:map-<expr>|.
 
 						*deoplete#insert_candidate()*
 deoplete#insert_candidate({number})
 		Insert {number}th candidate.
-		Note: It must be in |map-<expr>|.
+		Note: It must be in |:map-<expr>|.
 
 						*deoplete#manual_complete()*
 deoplete#manual_complete([{sources}])
@@ -513,7 +512,7 @@ deoplete#manual_complete([{sources}])
 		You can provide a list of {sources}: It can be the name of a
 		source or a list of sources name.
 		Note: It blocks your Neovim/Vim.
-		Note: It must be in |map-<expr>|.
+		Note: It must be in |:map-<expr>|.
 
 		If you want to trigger deoplete manually, see also
 		|deoplete-options-auto_complete|, which should be 1 then
@@ -531,7 +530,7 @@ deoplete#manual_complete([{sources}])
 				*deoplete#smart_close_popup()*
 deoplete#smart_close_popup()
 		Insert candidate and re-generate popup menu for deoplete.
-		Note: It must be in |map-<expr>|.
+		Note: It must be in |:map-<expr>|.
 >
 		inoremap <expr><C-h>
 		\ deoplete#smart_close_popup()."\<C-h>"
@@ -545,7 +544,7 @@ deoplete#smart_close_popup()
 					*deoplete#undo_completion()*
 deoplete#undo_completion()
 		Undo inputted candidate.
-		Note: It must be in |map-<expr>|.
+		Note: It must be in |:map-<expr>|.
 >
 		inoremap <expr><C-g>     deoplete#undo_completion()
 <
@@ -607,17 +606,18 @@ buffer						*deoplete-source-buffer*
 		the keywords in B until you switch to buffer B.
 
 		Note: It takes time to get the candidates in the first time if
-		you want to edit the large files (like Vim 22000 lines eval.c).
+		you want to edit the large files (like Vim 22000 lines
+		eval.c).
+		you want to edit the large files (like Vim 22000 lines
+		eval.c).
 
 		rank: 100
 
 		Source custom variables:
 		require_same_filetype
-				If it is False, deoplete collects keywords from
-				buffers of any filetype
+				If it is False, deoplete collects keywords
+				from buffers of any filetype
 				(default: v:true)
-
-file							*deoplete-source-file*
 		This source collects keywords from local files. Specifically,
 		it completes file and directory names and paths, e.g.
 		/usr/lib/share.
@@ -636,7 +636,6 @@ file							*deoplete-source-file*
 				contain "/".
 				If it is less than 0, it is disabled.
 				(default: -1)
-
 member						*deoplete-source-member*
 		This source collects members from current buffer.
 
@@ -759,7 +758,7 @@ sorter_rank	Matched rank order sorter.  The higher the head matched word
 		      			*deoplete-filter-sorter_word*
 sorter_word	Word order sorter.
 
-			  		*deoplete-filter-converter_auto_delimiter*
+		  		*deoplete-filter-converter_auto_delimiter*
 converter_auto_delimiter
 		It adds "delimiters" variable characters in a candidate's
 		word if the candidate's abbr contains the delimiters.
@@ -769,7 +768,7 @@ converter_auto_delimiter
 				Delimiters list.
 				(default: ['/'])
 
-					*deoplete-filter-converter_reorder_attr*
+				*deoplete-filter-converter_reorder_attr*
 converter_reorder_attr
 
 		Reorder candidates by their attributes in the order specified.
@@ -844,10 +843,10 @@ converter_reorder_attr
 
 		The example above says: For Ruby files, I want to reorder the
 		candidates:
-		1. Candidates which have a 'kind' attribute containing 'Class'
+		1. Candidates which have a "kind" attribute containing 'Class'
 		will be filtered out of the list.
 		After they have been removed, proceed to the next attribute.
-		2. Candidates which have a 'abbr' attribute containing
+		2. Candidates which have a "abbr" attribute containing
 		'ExtensionClass' will be moved to the top of the list.
 		3. Any other candidates appear at the bottom, if there is
 		space.
@@ -928,7 +927,7 @@ converters	(List[str])			(Optional)
 
 		Default: |deoplete-filter-converter_default|
 
-					*deoplete-source-attribute-description*
+				*deoplete-source-attribute-description*
 description	(String)			(Optional)
 		The description of a source.
 
@@ -1037,7 +1036,7 @@ is_silent
 
 		Default: False
 
-					*deoplete-source-attribute-is_volatile*
+				*deoplete-source-attribute-is_volatile*
 is_volatile
 		(Bool)				(Optional)
 		If it is True, the source depends on the user input. It means
@@ -1060,7 +1059,7 @@ matchers	(List[str])			(Optional)
 
 		Default: |deoplete-filter-matcher_default|
 
-					*deoplete-source-attribute-matcher_key*
+				*deoplete-source-attribute-matcher_key*
 matcher_key	(String)			(Optional)
 		Matcher compare key instead of "word".
 		If it is empty string, the feature is disabled.
@@ -1295,7 +1294,8 @@ CREATE FILTER					*deoplete-create-filter*
 To create filter, you should read default filters implementation in
 rplugin/python3/deoplete/filter/*.py.
 
-The files are automatically loaded and deoplete creates new Filter class object.
+The files are automatically loaded and deoplete creates new Filter class
+object.
 Filter class must extend Base class in ".base".
 
 Note: The filters must be written in Python3 language.
@@ -1692,8 +1692,8 @@ A: You should add |deoplete-filter-matcher_length| to the matchers. >
         call deoplete#custom#source('_', 'matchers', ['matcher_fuzzy',
         \ 'matcher_length'])
 <
-   Note: Replace `'_'` with a specific source such as `'around'` if
-         you want to keep seeing certain sources, e.g. snippets.
+Note: Replace `'_'` with a specific source such as `"around"` if you want to
+keep seeing certain sources, e.g. snippets.
 
 Q: How can I change the order of sources?
 
@@ -1734,7 +1734,7 @@ A: >
 
 Q: I want to use the syntax files as a completion source
 
-A: Please install |neco-syntax| plugin.
+A: Please install "neco-syntax" plugin.
    https://github.com/Shougo/neco-syntax
 
 Q: I want to complete the candidates from other files.
@@ -1876,11 +1876,6 @@ A: No. Deoplete is an asynchronous completion plugin. But it does not mean
    that it is faster than neocomplete. It can skip the completion if you input
    the characters too fast. I think it is great than the speed. You should use
    faster machine for deoplete.
-
-Q: Is deoplete better than completor.vim?
-
-A: Please see
-   https://www.reddit.com/r/vim/comments/573e3d/completorvim_async_completion_framework_made_ease/
 
 Q: Are there any plans to support GotoDefinition feature like YouCompleteMe?
 
