@@ -1790,6 +1790,14 @@ Q: I want to complete from 'dictionary'.
 A:
 https://github.com/deoplete-plugins/deoplete-dictionary
 
+Q: Greek words do not trigger autocompletion.  But <C-n> completion works.
+https://github.com/Shougo/deoplete.nvim/issues/1054
+
+A: Please change |deoplete-options-keyword_patterns|.
+The default keyword pattern is "[a-zA-Z_]\k*".
+It does not includes Greek words.
+You can change it to "\k+". It is same with <C-n> behavior.
+
 						    *deoplete-faq-ft-specific*
 3. Filetype Specific Questions~
 
