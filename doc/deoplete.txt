@@ -259,7 +259,7 @@ prev_completion_mode
 		deoplete-tabnine.
 		otherwise: Disable previous completion feature.
 
-		Default value: "filter"
+		Default value: ""
 
 					*deoplete-options-refresh_always*
 refresh_always
