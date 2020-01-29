@@ -19,4 +19,4 @@ script:
   - make --keep-going test lint
   - coverage report -m --skip-covered
   - coverage xml
-  - bash <(curl -s https://codecov.io/bash) -X gcov -X coveragepy -X fix -X search -X xcode -f coverage.xml
+  - bash -ex <(curl -s https://codecov.io/bash) -X gcov -X coveragepy -X fix -X search -X xcode -f coverage.xml
