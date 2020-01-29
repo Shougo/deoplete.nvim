@@ -27,6 +27,14 @@ function! s:check_completion_info(candidates) abort
     return 1
   endif
 
+  scriptencoding utf-8
+
+  let input = getline('.')[: g:deoplete#_context.complete_position - 1]
+  if deoplete#util#check_eskk_phase_henkan()
+        \ && matchstr(input, '.$') =~# '[あ-ん]$'
+    return 0
+  endif
+
   let old_candidates = sort(map(copy(info.items), 'v:val.word'))
   return sort(map(copy(a:candidates), 'v:val.word')) ==# old_candidates
 endfunction

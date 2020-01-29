@@ -199,3 +199,13 @@ endfunction
 function! deoplete#util#split(string) abort
   return split(a:string, '\s*,\s*')
 endfunction
+
+function! deoplete#util#check_eskk_phase_henkan() abort
+  if !exists('b:eskk') || empty(b:eskk)
+    return 0
+  endif
+
+  let preedit = eskk#get_preedit()
+  let phase = preedit.get_henkan_phase()
+  return phase is g:eskk#preedit#PHASE_HENKAN
+endfunction
