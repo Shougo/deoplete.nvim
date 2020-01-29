@@ -27,8 +27,6 @@ function! s:check_completion_info(candidates) abort
     return 1
   endif
 
-  scriptencoding utf-8
-
   let input = getline('.')[: g:deoplete#_context.complete_position - 1]
   if deoplete#util#check_eskk_phase_henkan()
         \ && matchstr(input, '.$') =~# '[あ-ん]$'
