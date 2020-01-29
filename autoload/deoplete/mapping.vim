@@ -4,8 +4,6 @@
 " License: MIT license
 "=============================================================================
 
-scriptencoding utf-8
-
 function! deoplete#mapping#_init() abort
   " Note: The dummy function is needed for cpoptions bug in neovim
   inoremap <expr><silent> <Plug>_
@@ -31,7 +29,7 @@ function! s:check_completion_info(candidates) abort
 
   let input = getline('.')[: g:deoplete#_context.complete_position - 1]
   if deoplete#util#check_eskk_phase_henkan()
-        \ && matchstr(input, '.$') =~# '[あ-ん]$'
+        \ && matchstr(input, '.$') =~# '[\u3040-\u304A]$'
     return 0
   endif
 
