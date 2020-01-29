@@ -104,7 +104,7 @@ class Deoplete(logger.LoggingMixin):
         prev_candidates = prev_completion['candidates']
         event = context['event']
         if (event == 'Async' or event == 'Update' and
-                prev_candidates and len(candidates) <= len(prev_candidates)):
+                prev_candidates and candidates == prev_candidates):
             return
 
         # error(self._vim, candidates)

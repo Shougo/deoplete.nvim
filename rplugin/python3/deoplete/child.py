@@ -403,7 +403,9 @@ class Child(logger.LoggingMixin):
             'deoplete#custom#_get_option', 'refresh_always')
         auto_complete = self._vim.call(
             'deoplete#custom#_get_option', 'auto_complete')
-        if refresh_always and auto_complete:
+        eskk_check = self._vim.call(
+            'deoplete#util#check_eskk_phase_henkan')
+        if refresh_always and auto_complete and not eskk_check:
             refresh = True
 
         for candidate in ctx['candidates']:

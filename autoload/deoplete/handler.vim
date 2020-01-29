@@ -213,11 +213,6 @@ function! s:is_skip(event) abort
 
   return 0
 endfunction
-function! s:check_eskk_phase_henkan(input) abort
-  let preedit = eskk#get_preedit()
-  let phase = preedit.get_henkan_phase()
-  return phase is g:eskk#preedit#PHASE_HENKAN && a:input !~# '\w$'
-endfunction
 function! s:is_skip_text(event) abort
   let input = deoplete#util#get_input(a:event)
 
@@ -239,11 +234,6 @@ function! s:is_skip_text(event) abort
     return 1
   endif
   if a:event ==# 'Update' && prev_input !=# '' && input !=# prev_input
-    return 1
-  endif
-
-  if (exists('b:eskk') && !empty(b:eskk)
-        \     && !s:check_eskk_phase_henkan(input))
     return 1
   endif
 
