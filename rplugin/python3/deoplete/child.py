@@ -506,6 +506,11 @@ class Child(logger.LoggingMixin):
             p = re.compile('(' + '|'.join(source.disabled_syntaxes) + ')$')
             if next(filter(p.search, context['syntax_names']), None):
                 return True
+
+        iminsert = self._vim.call('getbufvar', '%', '&iminsert')
+        if iminsert == 1 and source.is_skip_langmap:
+            return True
+
         for ft in context['filetypes']:
             input_pattern = source.get_input_pattern(ft)
             if (input_pattern != '' and

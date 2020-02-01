@@ -39,6 +39,7 @@ class Base(LoggingMixin):
         self.is_volatile = False
         self.is_async = False
         self.is_silent = False
+        self.is_skip_langmap = True
         self.rank = 100
         self.disabled_syntaxes: typing.List[str] = []
         self.events: typing.List[str] = []
