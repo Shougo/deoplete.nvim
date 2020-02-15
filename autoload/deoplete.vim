@@ -57,6 +57,7 @@ function! deoplete#manual_complete(...) abort
   call deoplete#init#_prev_completion()
 
   " Start complete.
+  let g:deoplete#_manual = v:true
   return "\<C-r>=deoplete#mapping#_rpcrequest_wrapper("
         \ . string(get(a:000, 0, [])) . ")\<CR>"
 endfunction

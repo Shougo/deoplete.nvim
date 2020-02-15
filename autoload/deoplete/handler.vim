@@ -82,6 +82,7 @@ function! deoplete#handler#_check_omnifunc(context) abort
         \ || index(blacklist, &l:omnifunc) >= 0
         \ || prev.input ==# a:context.input
         \ || s:check_input_method()
+        \ || deoplete#custom#_get_option('manual_menu') && !g:deoplete#_manual
     return
   endif
 
@@ -281,6 +282,7 @@ function! s:on_insert_leave() abort
 endfunction
 
 function! s:on_complete_done() abort
+  let g:deoplete#_manual = v:false
   if get(v:completed_item, 'word', '') ==# ''
     return
   endif

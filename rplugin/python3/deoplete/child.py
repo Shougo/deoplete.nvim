@@ -518,6 +518,12 @@ class Child(logger.LoggingMixin):
                 return False
         if context['event'] == 'Manual':
             return False
+
+        manual_menu = self._vim.call(
+            'deoplete#custom#_get_option', 'manual_menu')
+        if manual_menu and not self._vim.vars['deoplete#_manual']:
+            return True
+
         return not (source.min_pattern_length <=
                     len(context['complete_str']) <= source.max_pattern_length)
 

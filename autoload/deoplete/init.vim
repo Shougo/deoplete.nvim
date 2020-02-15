@@ -113,6 +113,7 @@ function! s:init_internal_variables() abort
   call deoplete#init#_prev_completion()
 
   let g:deoplete#_context = {}
+  let g:deoplete#_manual = v:false
 
   if !exists('g:deoplete#_logging')
     let g:deoplete#_logging = {}
@@ -197,6 +198,9 @@ function! deoplete#init#_custom_variables() abort
   call s:check_custom_option(
         \ 'g:deoplete#enable_yarp',
         \ 'yarp')
+  call s:check_custom_option(
+        \ 'g:deoplete#manual_menu',
+        \ 'manual_menu')
 
   " Source variables
   call s:check_custom_var('file',
@@ -248,6 +252,7 @@ function! deoplete#init#_option() abort
         \ 'sources': {},
         \ 'trigger_key': v:char,
         \ 'yarp': v:false,
+        \ 'manual_menu': v:false,
         \ }
 endfunction
 function! deoplete#init#_prev_completion() abort

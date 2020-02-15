@@ -184,6 +184,13 @@ keyword_patterns
 <
 		Default value: {}
 
+						*deoplete-options-manual_menu*
+manual_menu
+		Do not show completion popup menu until |deoplete#manual_complete()|
+		will be called.
+
+		Default value: v:false
+
 						*deoplete-options-max_list*
 max_list
 		Show up to this limit candidates.
