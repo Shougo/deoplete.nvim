@@ -46,6 +46,9 @@ function! deoplete#send_event(event, ...) abort
         \ {'event': a:event, 'sources': sources})
 endfunction
 
+function! deoplete#complete() abort
+  return deoplete#mapping#_dummy('deoplete#mapping#_complete')
+endfunction
 function! deoplete#auto_complete(...) abort
   return deoplete#handler#_completion_begin(get(a:000, 0, 'Async'))
 endfunction

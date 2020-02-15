@@ -65,13 +65,18 @@ function! deoplete#handler#_do_complete() abort
   let prev.complete_position = context.complete_position
   let prev.linenr = line('.')
 
+  let auto_popup = deoplete#custom#_get_option(
+        \ 'auto_complete_popup') !=# 'manual'
+
   if context.event ==# 'Manual'
     let context.event = ''
-  elseif !exists('g:deoplete#_saved_completeopt')
+  elseif !exists('g:deoplete#_saved_completeopt') && auto_popup
     call deoplete#mapping#_set_completeopt()
   endif
 
-  call feedkeys("\<Plug>_", 'i')
+  if auto_popup
+    call feedkeys("\<Plug>_", 'i')
+  endif
 endfunction
 
 function! deoplete#handler#_check_omnifunc(context) abort
@@ -82,6 +87,7 @@ function! deoplete#handler#_check_omnifunc(context) abort
         \ || index(blacklist, &l:omnifunc) >= 0
         \ || prev.input ==# a:context.input
         \ || s:check_input_method()
+        \ || deoplete#custom#_get_option('auto_complete_popup') ==# 'manual'
     return
   endif
 
