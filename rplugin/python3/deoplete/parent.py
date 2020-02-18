@@ -118,8 +118,11 @@ class AsyncParent(_Parent):
         self._queue_out: Queue = Queue()  # type: ignore
         self._queue_err: Queue = Queue()  # type: ignore
         self._packer = msgpack.Packer(
-            use_bin_type=True)
+            use_bin_type=True,
+            encoding='utf-8',
+            unicode_errors='surrogateescape')
         self._unpacker = msgpack.Unpacker(
+            encoding='utf-8',
             unicode_errors='surrogateescape')
         self._prev_pos: typing.List[typing.Any] = []
 
