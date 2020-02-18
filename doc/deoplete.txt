@@ -46,7 +46,10 @@ Improvements in deoplete in comparison to |neocomplete|:
 INSTALL							*deoplete-install*
 
 Note: deoplete requires Neovim (0.3.0+) or Vim8 (latest is recommended) with
-Python3.6.1+ and |+timers| enabled.
+Python 3.6.1+ and |+timers| enabled.
+
+Please install/upgrade msgpack package(1.0.0+).
+https://github.com/msgpack/msgpack-python
 
 Please install nvim-yarp plugin for Vim8.
 https://github.com/roxma/nvim-yarp
@@ -1898,6 +1901,10 @@ A: https://github.com/deoplete-plugins/deoplete-jedi/issues/35
 
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
+
+2020.02.19
+* msgpack 1.0.0+ is required
+https://github.com/msgpack/msgpack-python#major-breaking-changes-in-msgpack-10
 
 2019.08.11
 * Remove deoplete#refresh().  It does not work.  You should use

@@ -37,11 +37,21 @@ function! s:check_required_python_for_deoplete() abort
   endif
 
   if !deoplete#init#_python_version_check()
-    call health#report_ok('Require Python3.6.1+ was successful')
+    call health#report_ok('Require Python 3.6.1+ was successful')
   else
     call health#report_error(
-          \ 'Require Python3.6.1+ was not successful',
-          \ 'Please use Python3.6.1+.')
+          \ 'Require Python 3.6.1+ was not successful',
+          \ 'Please use Python 3.6.1+.')
+  endif
+endfunction
+
+function! s:check_required_msgpack_for_deoplete() abort
+  if !deoplete#init#_msgpack_version_check()
+    call health#report_ok('Require msgpack 1.0.0+ was successful')
+  else
+    call health#report_error(
+          \ 'Require msgpack 1.0.0+ was not successful',
+          \ 'Please install/upgrade msgpack 1.0.0+.')
   endif
 endfunction
 
@@ -63,6 +73,7 @@ function! health#deoplete#check() abort
   call s:check_t_list()
   call s:check_timers()
   call s:check_required_python_for_deoplete()
+  call s:check_required_msgpack_for_deoplete()
 
   call s:still_have_issues()
 endfunction
