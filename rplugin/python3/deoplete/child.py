@@ -40,9 +40,12 @@ class Child(logger.LoggingMixin):
         self._source_errors: typing.Dict[str, int] = defaultdict(int)
         self._prev_results: typing.Dict[str, Result] = {}
         self._unpacker = msgpack.Unpacker(
+            encoding='utf-8',
             unicode_errors='surrogateescape')
         self._packer = msgpack.Packer(
-            use_bin_type=True)
+            use_bin_type=True,
+            encoding='utf-8',
+            unicode_errors='surrogateescape')
         self._ignore_sources: typing.List[typing.Any] = []
 
     def main_loop(self, stdout: typing.Any) -> None:
