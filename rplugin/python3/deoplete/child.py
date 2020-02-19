@@ -42,7 +42,7 @@ class Child(logger.LoggingMixin):
         self._unpacker = msgpack.Unpacker(
             unicode_errors='surrogateescape')
         self._packer = msgpack.Packer(
-            use_bin_type=True)
+            unicode_errors='surrogateescape')
         self._ignore_sources: typing.List[typing.Any] = []
 
     def main_loop(self, stdout: typing.Any) -> None:
