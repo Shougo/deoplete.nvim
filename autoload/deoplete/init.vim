@@ -76,7 +76,11 @@ function! deoplete#init#_channel() abort
     endif
 
     if !deoplete#init#_python_version_check()
-      call deoplete#util#print_error('deoplete requires Python3.6.1+.')
+      call deoplete#util#print_error('deoplete requires Python 3.6.1+.')
+    endif
+
+    if !deoplete#init#_msgpack_version_check()
+      call deoplete#util#print_error('deoplete requires msgpack 1.0.0+.')
     endif
 
     if deoplete#util#has_yarp()
@@ -270,4 +274,13 @@ vim.vars['deoplete#_python_version_check'] = (
     sys.version_info.micro) < (3, 6, 1)
 EOF
   return get(g:, 'deoplete#_python_version_check', 0)
+endfunction
+
+function! deoplete#init#_msgpack_version_check() abort
+  python3 << EOF
+import vim
+import msgpack
+vim.vars['deoplete#_msgpack_version_check'] = msgpack.version < (1, 0, 0)
+EOF
+  return get(g:, 'deoplete#_msgpack_version_check', 0)
 endfunction
