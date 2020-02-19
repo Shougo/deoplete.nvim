@@ -229,6 +229,7 @@ function! deoplete#init#_option() abort
   " Note: HTML omni func use search().
   return {
         \ 'auto_complete': v:true,
+        \ 'auto_complete_popup': 'auto',
         \ 'auto_complete_delay': 0,
         \ 'auto_refresh_delay': 100,
         \ 'camel_case': v:false,

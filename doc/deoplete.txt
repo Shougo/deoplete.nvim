@@ -115,6 +115,15 @@ auto_complete_delay
 
 		Default value: 0 (milliseconds)
 
+					*deoplete-options-auto_complete_popup*
+auto_complete_popup
+		Change auto completion popup behavior.
+
+		"auto": popup is displayed automatically.
+		"manual": popup is displayed by |deoplete#complete()|.
+
+		Default value: "auto"
+
 					*deoplete-options-auto_refresh_delay*
 auto_refresh_delay
 		Delay the refresh when asynchronous.
@@ -495,6 +504,11 @@ deoplete#auto_complete([{event}])
 						*deoplete#close_popup()*
 deoplete#close_popup()
 		Insert candidate and close popup menu for deoplete.
+		Note: It must be in |:map-<expr>|.
+
+						*deoplete#complete()*
+deoplete#complete()
+		Open current completion popup menu.
 		Note: It must be in |:map-<expr>|.
 
 					*deoplete#complete_common_string()*
@@ -1807,6 +1821,22 @@ A: Please change |deoplete-options-keyword_patterns|.
 The default keyword pattern is "[a-zA-Z_]\k*".
 It does not includes Greek words.
 You can change it to "\k+". It is same with <C-n> behavior.
+
+Q: Please provide a way to complete asynchronous without popup menu.
+
+A: >
+
+	call deoplete#custom#option({
+	      \ 'auto_complete_popup': 'manual',
+	      \ })
+	inoremap <silent><expr> <TAB>
+	    \ pumvisible() ? "\<C-n>" :
+	    \ <SID>check_back_space() ? "\<Tab>" :
+	    \ deoplete#complete()
+	function! s:check_back_space() abort
+	    let col = col('.') - 1
+	    return !col || getline('.')[col - 1]  =~# '\s'
+	endfunction
 
 						    *deoplete-faq-ft-specific*
 3. Filetype Specific Questions~
