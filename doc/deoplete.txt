@@ -48,7 +48,7 @@ INSTALL							*deoplete-install*
 Note: deoplete requires Neovim (0.3.0+) or Vim8 (latest is recommended) with
 Python 3.6.1+ and |+timers| enabled.
 
-Please install/upgrade msgpack package(1.0.0+).
+Please install/upgrade msgpack package (1.0.0+).
 https://github.com/msgpack/msgpack-python
 
 Please install nvim-yarp plugin for Vim8.
