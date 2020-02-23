@@ -34,10 +34,10 @@ Please install/upgrade msgpack package by pip.
 https://github.com/msgpack/msgpack-python
 
 
-Note: If you really need to use older Neovim, please use deoplete ver.4.1
+Note: If you really need to use older msgpack, please use deoplete ver.5.2
 instead.
 
-https://github.com/Shougo/deoplete.nvim/releases/tag/4.1
+https://github.com/Shougo/deoplete.nvim/releases/tag/5.2
 
 For vim-plug
 
