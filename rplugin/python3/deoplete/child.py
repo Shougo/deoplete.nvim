@@ -354,16 +354,18 @@ class Child(logger.LoggingMixin):
         matchers = [self._filters[x] for x
                     in source.matchers if x in self._filters]
         if source.matcher_key != '':
+            original_candidates = ctx['candidates']
             # Convert word key to matcher_key
-            for candidate in ctx['candidates']:
+            for candidate in original_candidates:
                 candidate['__save_word'] = candidate['word']
                 candidate['word'] = candidate[source.matcher_key]
         for f in matchers:
             self._process_filter(f, ctx, source.max_candidates)
         if source.matcher_key != '':
             # Restore word key
-            for candidate in ctx['candidates']:
+            for candidate in original_candidates:
                 candidate['word'] = candidate['__save_word']
+                del candidate['__save_word']
 
         # Sort
         sorters = [self._filters[x] for x
