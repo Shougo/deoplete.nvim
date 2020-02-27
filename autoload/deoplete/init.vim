@@ -85,7 +85,6 @@ function! deoplete#init#_channel() abort
     endif
 
     if deoplete#util#has_yarp()
-      echomsg string(expand('<sfile>'))
       if !exists('*yarp#py3')
         call deoplete#util#print_error(
               \ 'deoplete requires nvim-yarp plugin.')
