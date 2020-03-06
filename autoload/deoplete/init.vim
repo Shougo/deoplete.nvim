@@ -54,11 +54,6 @@ function! deoplete#init#_channel() abort
     return 1
   endif
 
-  if deoplete#init#_msgpack_version_check()
-    call deoplete#util#print_error('deoplete requires msgpack 1.0.0+.')
-    return 1
-  endif
-
   try
     if deoplete#util#has_yarp()
       let g:deoplete#_yarp = yarp#py3('deoplete')
