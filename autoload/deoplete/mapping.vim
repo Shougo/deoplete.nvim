@@ -24,7 +24,7 @@ function! s:check_completion_info(candidates) abort
   if (info.mode !=# '' && info.mode !=# 'eval')
         \ || (noinsert && info.selected > 0)
         \ || (!noinsert && info.selected >= 0)
-        \ || empty(g:deoplete#_context)
+        \ || !has_key(g:deoplete#_context, 'complete_position')
     return 1
   endif
 
