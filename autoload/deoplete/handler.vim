@@ -68,6 +68,11 @@ function! deoplete#handler#_do_complete() abort
   let auto_popup = deoplete#custom#_get_option(
         \ 'auto_complete_popup') !=# 'manual'
 
+  " Enable auto refresh when popup is displayed
+  if exists('*complete_info') && complete_info().mode ==# 'eval'
+    let auto_popup = v:true
+  endif
+
   if context.event ==# 'Manual'
     let context.event = ''
   elseif !exists('g:deoplete#_saved_completeopt') && auto_popup
