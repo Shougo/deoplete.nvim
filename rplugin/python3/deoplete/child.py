@@ -523,7 +523,9 @@ class Child(logger.LoggingMixin):
             if (input_pattern != '' and
                     re.search('(' + input_pattern + ')$', context['input'])):
                 return False
-        if context['event'] == 'Manual':
+        auto_complete_popup = self._vim.call(
+            'deoplete#custom#_get_option', 'auto_complete_popup')
+        if context['event'] == 'Manual' or auto_complete_popup == 'manual':
             return False
         return not (source.min_pattern_length <=
                     len(context['complete_str']) <= source.max_pattern_length)
