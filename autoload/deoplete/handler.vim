@@ -238,6 +238,7 @@ function! s:is_skip_text(event) abort
   " g:deoplete#_prev_completion
   let prev_input = get(g:deoplete#_context, 'input', '')
   if input ==# prev_input
+        \ && input !=# ''
         \ && a:event !=# 'Manual'
         \ && a:event !=# 'Async'
         \ && a:event !=# 'Update'
