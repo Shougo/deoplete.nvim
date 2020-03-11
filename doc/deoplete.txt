@@ -635,6 +635,8 @@ buffer						*deoplete-source-buffer*
 				If it is False, deoplete collects keywords
 				from buffers of any filetype
 				(default: v:true)
+
+file						    *deoplete-source-file*
 		This source collects keywords from local files. Specifically,
 		it completes file and directory names and paths, e.g.
 		/usr/lib/share.
