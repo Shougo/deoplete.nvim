@@ -56,7 +56,7 @@ class Source(Base):
                      else './')
 
         p = self._longest_path_that_exists(context, input_str)
-        if p in (None, []) or p == '/' or re.search('//+$', p):
+        if not p or p == '/' or re.search('//+$', p):
             return []
         complete_str = self._substitute_path(context, dirname(p) + '/')
         if not os.path.isdir(complete_str):

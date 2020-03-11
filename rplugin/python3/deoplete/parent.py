@@ -173,7 +173,7 @@ class AsyncParent(_Parent):
             return (True, False, [])
         self._queue_id = ''
         results = get[0]
-        return (results['is_async'], results['is_async'],  # type: ignore
+        return (results['is_async'], results['is_async'],
                 results['merged_results']) if results else (False, [])
 
     def _put(self, name: str,
