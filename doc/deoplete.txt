@@ -1840,6 +1840,28 @@ A: >
 	    return !col || getline('.')[col - 1]  =~# '\s'
 	endfunction
 
+Q: Why I have to trigger |deoplete#complete()| at least twice for the popup to
+show (sometimes three times but the behaviour is not consistent), when I use
+slow completion sources.
+
+A: You should know what is |deoplete#complete()| behavior.  It only displays
+current finished completion candidates.  If the sources are slow, the
+candidates may not be generated.  If you need to wait to finish the
+completion, you should use |deoplete#manual_complete()| instead.
+
+https://github.com/Shougo/deoplete.nvim/issues/1065
+
+Q: Auto-refreshing behaviour doesn't work when you try to delete characters.
+It just closes the popup. (when auto completion feature is disabled)
+
+A: Auto-refreshing is auto completion related feature.  You should know
+deoplete is not for manual completion plugin.
+If you really need the feature, it works for me. >
+
+	set completeopt+=noselect
+	inoremap <expr> <C-h> pumvisible() ?
+	\ "\<C-h>" . deoplete#complete() : "\<C-h>"
+
 						    *deoplete-faq-ft-specific*
 3. Filetype Specific Questions~
 
