@@ -107,8 +107,15 @@ function! deoplete#handler#_check_omnifunc(context) abort
         let prev.input = a:context.input
         let prev.candidates = []
 
-        call deoplete#mapping#_set_completeopt()
-        call feedkeys("\<C-x>\<C-o>", 'in')
+        if &completeopt =~# 'noselect'
+          call deoplete#mapping#_set_completeopt()
+          call feedkeys("\<C-x>\<C-o>", 'in')
+        else
+          call deoplete#util#print_error(
+                \ 'omni_patterns feature is disabled.')
+          call deoplete#util#print_error(
+                \ 'You need to set "noselect" in completeopt option.')
+        endif
         return 1
       endif
     endfor

@@ -222,11 +222,15 @@ omni_patterns
 		an empty base argument or moves the cursor in omnifunc.  See
 		|complete-functions|
 
+		Note: You need to set "noselect" in 'completeopt' option to
+		work.
+
 		If this pattern is not defined or empty for a filetype,
 		deoplete does not call 'omnifunc'.
 
 		Note: It is a Vim regexp.
 >
+		set completeopt+=noselect
 		call deoplete#custom#option('omni_patterns', {
 		\ 'java': '[^. *\t]\.\w*',
 		\  'html': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],
@@ -1966,6 +1970,9 @@ A: https://github.com/deoplete-plugins/deoplete-jedi/issues/35
 
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
+
+2020.03.17
+* Add completeopt check when deoplete-options-omni_patterns.
 
 2020.02.19
 * msgpack 1.0.0+ is required
