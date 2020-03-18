@@ -40,6 +40,7 @@ endfunction
 function! deoplete#mapping#_complete() abort
   if !has_key(g:deoplete#_context, 'candidates')
         \ || s:check_completion_info(g:deoplete#_context.candidates)
+        \ || !&modifiable
     return ''
   endif
 
