@@ -53,7 +53,7 @@ function! deoplete#handler#_do_complete() abort
     return
   endif
 
-  if empty(get(context, 'candidates', []))
+  if !has_key(context, 'candidates')
         \ || deoplete#util#get_input(context.event) !=# context.input
     return
   endif
@@ -69,7 +69,7 @@ function! deoplete#handler#_do_complete() abort
         \ 'auto_complete_popup') !=# 'manual'
 
   " Enable auto refresh when popup is displayed
-  if exists('*complete_info') && complete_info().mode ==# 'eval'
+  if deoplete#util#check_popup()
     let auto_popup = v:true
   endif
 

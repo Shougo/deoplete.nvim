@@ -209,3 +209,7 @@ function! deoplete#util#check_eskk_phase_henkan() abort
   let phase = preedit.get_henkan_phase()
   return phase is g:eskk#preedit#PHASE_HENKAN
 endfunction
+
+function! deoplete#util#check_popup() abort
+  return exists('*complete_info') && complete_info().mode ==# 'eval'
+endfunction

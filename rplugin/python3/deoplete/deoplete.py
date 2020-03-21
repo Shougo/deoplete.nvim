@@ -116,7 +116,7 @@ class Deoplete(logger.LoggingMixin):
             'is_async': is_async,
         }
 
-        if candidates:
+        if candidates or self._vim.call('deoplete#util#check_popup'):
             self.debug('do_complete (%s): '  # type: ignore
                        + '%d candidates, input=%s, complete_position=%d, '
                        + 'is_async=%d',
