@@ -5,6 +5,9 @@ export THEMIS_HOME := ./vim-themis
 
 
 install: vim-themis
+	pip install --upgrade -r test/requirements.txt
+
+install-user: vim-themis
 	pip install --user --upgrade -r test/requirements.txt
 
 lint:
