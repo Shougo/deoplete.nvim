@@ -44,6 +44,11 @@ function! deoplete#mapping#_complete() abort
     return ''
   endif
 
+  if empty(g:deoplete#_context.candidates) && deoplete#util#check_popup()
+    " Note: call complete(pos, []) does not close the popup
+    return "\<C-e>"
+  endif
+
   call complete(g:deoplete#_context.complete_position + 1,
         \ g:deoplete#_context.candidates)
 
