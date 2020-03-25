@@ -184,8 +184,8 @@ class Child(logger.LoggingMixin):
         }
 
     def _gather_results(self, context: UserContext) -> typing.List[Result]:
-        if (context['changedtick'] !=
-                self._vim.current.buffer.vars.get('changedtick', 0)):
+        # Note: self._vim.current.buffer may not work when Vim quit
+        if context['changedtick'] != self._vim.eval('b:changedtick'):
             return []
         results = []
 
