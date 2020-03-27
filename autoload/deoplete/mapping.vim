@@ -45,6 +45,7 @@ function! deoplete#mapping#_complete() abort
   endif
 
   if empty(g:deoplete#_context.candidates) && deoplete#util#check_popup()
+        \ && !deoplete#util#check_eskk_phase_henkan()
     " Note: call complete(pos, []) does not close the popup
     return "\<C-e>"
   endif
