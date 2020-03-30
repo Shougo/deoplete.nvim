@@ -41,10 +41,11 @@ class Filter(Base):
         linenr = context['position'][1]
 
         def compare(x: Candidate) -> int:
-            matched = int(complete_str in x['word'].lower())
+            word = x['word']
+            matched = int(complete_str in word.lower())
             score = -matched * 40
-            if x['word'] in self._cache:
-                mru = min([abs(x - linenr) for x in self._cache[x['word']]])
+            if word in self._cache:
+                mru = min([abs(x - linenr) for x in self._cache[word]])
                 mru -= LINES_MAX
                 score += mru * 10
             return score
