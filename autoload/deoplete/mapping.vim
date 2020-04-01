@@ -33,6 +33,7 @@ function! s:check_completion_info(candidates) abort
         \ && matchstr(input, '.$') =~# '[\u3040-\u304A]$'
     return 0
   endif
+  return 0
 
   let old_candidates = sort(map(copy(info.items), 'v:val.word'))
   return sort(map(copy(a:candidates), 'v:val.word')) ==# old_candidates
@@ -46,8 +47,9 @@ function! deoplete#mapping#_complete() abort
 
   if empty(g:deoplete#_context.candidates) && deoplete#util#check_popup()
         \ && !deoplete#util#check_eskk_phase_henkan()
-    " Note: call complete(pos, []) does not close the popup
-    return "\<C-e>"
+    " Note: call complete() to close the popup
+    call complete(1, [])
+    return ''
   endif
 
   call complete(g:deoplete#_context.complete_position + 1,
