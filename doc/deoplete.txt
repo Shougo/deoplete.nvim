@@ -629,8 +629,6 @@ buffer						*deoplete-source-buffer*
 		Note: It takes time to get the candidates in the first time if
 		you want to edit the large files (like Vim 22000 lines
 		eval.c).
-		you want to edit the large files (like Vim 22000 lines
-		eval.c).
 
 		rank: 100
 
@@ -1163,7 +1161,7 @@ name		(String)			(Required)
 					*deoplete-source-attribute-on_event*
 on_event	(Function)			(Optional)
 		Called for |InsertEnter|, |BufWritePost|, |BufReadPost| and
-		||VimLeavePre| autocommands, through |deoplete#send_event()|.
+		|VimLeavePre| autocommands, through |deoplete#send_event()|.
 		It is useful to make cache.
 		It takes {self} and {context} as its parameter.
 >
