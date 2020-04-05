@@ -199,6 +199,11 @@ function! deoplete#handler#_completion_begin(event) abort
 
   if s:is_skip(a:event)
     let g:deoplete#_context.candidates = []
+
+    " Close the popup
+    if deoplete#util#check_popup()
+      call feedkeys("\<Plug>_", 'i')
+    endif
     return
   endif
 
