@@ -66,6 +66,7 @@ class Source(Base):
                         'ccomplete#Complete',
                         'htmlcomplete#CompleteTags',
                         'LanguageClient#complete',
+                        'rubycomplete#Complete',
                         'phpcomplete#CompletePHP']:
                     # In the blacklist
                     return -1

@@ -232,10 +232,11 @@ omni_patterns
 >
 		set completeopt+=noselect
 		call deoplete#custom#option('omni_patterns', {
+		\ 'ruby': ['[^. *\t]\.\w*', '[a-zA-Z_]\w*::'],
 		\ 'java': '[^. *\t]\.\w*',
-		\  'html': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],
-		\  'xhtml': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],
-		\  'xml': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],
+		\ 'html': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],
+		\ 'xhtml': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],
+		\ 'xml': ['<', '</', '<[^>]*\s[[:alnum:]-]*'],
 		\})
 <
 		Default value: {}
@@ -699,7 +700,6 @@ omni							*deoplete-source-omni*
 				(default: {})
 >
 		call deoplete#custom#source('omni', 'functions', {
-		    \ 'ruby':  'rubycomplete#Complete',
 		    \ 'javascript': ['tern#Complete', 'jspc#omni']
 		    \})
 <
@@ -716,7 +716,6 @@ omni							*deoplete-source-omni*
 				(default: See in omni.py)
 >
 		call deoplete#custom#var('omni', 'input_patterns', {
-		    \ 'ruby': ['[^. *\t]\.\w*', '[a-zA-Z_]\w*::'],
 		    \ 'java': '[^. *\t]\.\w*',
 		    \ 'php': '\w+|[^. \t]->\w*|\w+::\w*',
 		    \})
