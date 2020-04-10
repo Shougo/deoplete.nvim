@@ -585,6 +585,7 @@ class Child(logger.LoggingMixin):
 
     def _on_event(self, context: UserContext) -> None:
         event = context['event']
+        context['vars'] = self._vim.vars
         for source_name, source in self._itersource(context):
             if not source.events or event in source.events:
                 try:
@@ -596,6 +597,7 @@ class Child(logger.LoggingMixin):
 
         for f in self._filters.values():
             f.on_event(context)
+        context['vars'] = None
 
     def _get_sources(self) -> typing.Dict[str, typing.Any]:
         # Note: for the size change of "self._sources" error
