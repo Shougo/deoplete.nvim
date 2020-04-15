@@ -262,11 +262,13 @@ function! s:is_skip_text(event) abort
   endif
 
   let displaywidth = strdisplaywidth(input) + 1
+  let is_virtual = virtcol('.') >= displaywidth
   if &l:formatoptions =~# '[tca]' && &l:textwidth > 0
         \     && displaywidth >= &l:textwidth
     if &l:formatoptions =~# '[ta]'
           \ || !empty(filter(deoplete#util#get_syn_names(),
           \                  "v:val ==# 'Comment'"))
+          \ || is_virtual
       return 1
     endif
   endif
