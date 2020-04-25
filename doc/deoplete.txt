@@ -167,6 +167,13 @@ check_stderr
 
 		Default value: v:true
 
+					*deoplete-options-complete_suffix*
+complete_suffix
+		If it is True, deoplete inserts the suffix of the completion
+		for supported sources.  It is useful for deoplete-tabnine.
+
+		Default value: v:true
+
 						*deoplete-options-ignore_case*
 ignore_case
 		If it is True, deoplete ignores case.

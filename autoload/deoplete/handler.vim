@@ -322,7 +322,8 @@ function! s:on_complete_done() abort
   endif
 endfunction
 function! s:substitute_suffix(user_data) abort
-  if !has_key(a:user_data, 'old_suffix')
+  if !deoplete#custom#_get_option('complete_suffix')
+        \ || !has_key(a:user_data, 'old_suffix')
         \ || !has_key(a:user_data, 'new_suffix')
     return
   endif
