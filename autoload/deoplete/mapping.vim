@@ -45,6 +45,7 @@ function! deoplete#mapping#_complete() abort
     return ''
   endif
 
+  " echomsg string(g:deoplete#_context)
   if empty(g:deoplete#_context.candidates) && deoplete#util#check_popup()
     " Note: call complete() to close the popup
     call complete(1, [])

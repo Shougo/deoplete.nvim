@@ -246,21 +246,6 @@ function! s:is_skip_text(event) abort
     return 1
   endif
 
-  " Note: Use g:deoplete#_context is needed instead of
-  " g:deoplete#_prev_completion
-  let prev_input = get(g:deoplete#_context, 'input', '')
-  if input ==# prev_input
-        \ && input !=# ''
-        \ && a:event !=# 'Manual'
-        \ && a:event !=# 'Async'
-        \ && a:event !=# 'Update'
-        \ && a:event !=# 'TextChangedP'
-    return 1
-  endif
-  if a:event ==# 'Update' && prev_input !=# '' && input !=# prev_input
-    return 1
-  endif
-
   let displaywidth = strdisplaywidth(input) + 1
   let is_virtual = virtcol('.') >= displaywidth
   if &l:formatoptions =~# '[tca]' && &l:textwidth > 0
