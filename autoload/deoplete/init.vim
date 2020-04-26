@@ -148,6 +148,7 @@ function! deoplete#init#_custom_variables() abort
   if get(g:, 'deoplete#disable_auto_complete', v:false)
     call deoplete#custom#option('auto_complete', v:false)
   endif
+
   call s:check_custom_option(
         \ 'g:deoplete#auto_complete_delay',
         \ 'auto_complete_delay')
@@ -213,14 +214,24 @@ function! deoplete#init#_custom_variables() abort
 endfunction
 
 function! s:check_custom_var(source_name, old_var, new_var) abort
-  if exists(a:old_var)
-    call deoplete#custom#var(a:source_name, a:new_var, eval(a:old_var))
+  if !exists(a:old_var)
+    return
   endif
+
+  call deoplete#util#print_error(
+        \ printf('%s is deprecated variable.  '.
+        \ 'Please use deoplete#custom#var() instead.', a:old_var))
+  call deoplete#custom#var(a:source_name, a:new_var, eval(a:old_var))
 endfunction
 function! s:check_custom_option(old_var, new_var) abort
-  if exists(a:old_var)
-    call deoplete#custom#option(a:new_var, eval(a:old_var))
+  if !exists(a:old_var)
+    return
   endif
+
+  call deoplete#util#print_error(
+        \ printf('%s is deprecated variable.  '.
+        \ 'Please use deoplete#custom#option() instead.', a:old_var))
+  call deoplete#custom#option(a:new_var, eval(a:old_var))
 endfunction
 
 function! deoplete#init#_option() abort

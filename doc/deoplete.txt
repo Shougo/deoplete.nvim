@@ -1976,6 +1976,9 @@ A: https://github.com/deoplete-plugins/deoplete-jedi/issues/35
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
 
+2020.04.26
+* Add deprecated variables warnings.
+
 2020.03.17
 * Add completeopt check when deoplete-options-omni_patterns.
 
