@@ -194,6 +194,9 @@ function! deoplete#init#_custom_variables() abort
         \ 'g:deoplete#enable_smart_case',
         \ 'smart_case')
   call s:check_custom_option(
+        \ 'g:deoplete#enable_complete_suffix',
+        \ 'complete_suffix')
+  call s:check_custom_option(
         \ 'g:deoplete#enable_yarp',
         \ 'yarp')
 
@@ -232,6 +235,7 @@ function! deoplete#init#_option() abort
         \ 'ignore_case': &ignorecase,
         \ 'ignore_sources': {},
         \ 'candidate_marks': [],
+        \ 'complete_suffix': v:true,
         \ 'max_list': 500,
         \ 'num_processes': 4,
         \ 'keyword_patterns': {'_': '[a-zA-Z_]\k*'},
