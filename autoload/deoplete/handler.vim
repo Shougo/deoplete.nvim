@@ -216,6 +216,11 @@ function! s:is_skip(event) abort
     return 1
   endif
 
+  " Note: The check is needed for <C-y> mapping
+  if s:is_skip_prev_text(a:event)
+    return 1
+  endif
+
   if s:is_skip_text(a:event)
     " Close the popup
     if deoplete#util#check_popup()
@@ -231,6 +236,23 @@ function! s:is_skip(event) abort
         \ || (a:event !=# 'Manual' && a:event !=# 'Update' && !auto_complete)
         \ || (&l:completefunc !=# '' && &l:buftype =~# 'nofile')
         \ || (a:event !=# 'InsertEnter' && mode() !=# 'i')
+    return 1
+  endif
+
+  return 0
+endfunction
+function! s:is_skip_prev_text(event) abort
+  let input = deoplete#util#get_input(a:event)
+
+  " Note: Use g:deoplete#_context is needed instead of
+  " g:deoplete#_prev_completion
+  let prev_input = get(g:deoplete#_context, 'input', '')
+  if input ==# prev_input
+        \ && input !=# ''
+        \ && a:event !=# 'Manual'
+        \ && a:event !=# 'Async'
+        \ && a:event !=# 'Update'
+        \ && a:event !=# 'TextChangedP'
     return 1
   endif
 
