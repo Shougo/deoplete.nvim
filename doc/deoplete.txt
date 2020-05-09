@@ -328,7 +328,7 @@ sources
 		\ '_': ['buffer'],
 		\ 'cpp': ['buffer', 'tag'],
 		\})
-
+<
 					*deoplete-options-min_pattern_length*
 min_pattern_length
 		The default number of the input completion at the time of key
@@ -1971,7 +1971,41 @@ A: No. Deoplete is an asynchronous completion plugin. But it does not mean
 
 Q: Are there any plans to support GotoDefinition feature like YouCompleteMe?
 
-A: https://github.com/deoplete-plugins/deoplete-jedi/issues/35
+A: It should be implemented by LSP side.  It is not auto completion plugin's
+   work.
+
+Q: How is deoplete different from similar plugins?
+
+A: deoplete is:
+
+   * Python3 based auto completion plugin
+   * Supports both neovim and Vim8(but neovim is recommended)
+   * More configurable than other completion plugins
+
+   For example, asyncomplete is Vim script based plugin.
+   So if you don't like Python based plugin, you should not use Python based
+   auto completion plugin(deoplete, ncm2).
+
+   coc.nvim is node.js based huge plugin.
+   It is not just completion plugin, it is all in one IDE system.
+   It is similar with YouCompleteMe.
+   If you don't like node.js based plugin or huge plugin base system, you
+   should not choose coc.nvim.
+
+   And the important view is the author.
+   If you like the author or the author created plugins, you should choose the
+   auto completion plugin.
+   For example, you use denite.nvim deoplete is better than other plugins.
+
+   If you use vim-lsp plugin, you should use asyncomplete.vim instead.
+   Because asyncomplete is created for vim-lsp and it maintained as well.
+
+   deoplete is not easy to use plugin and most configurable.  If you don't
+   like to study plugin's usage and configuration, deoplete is not better
+   choice.
+
+   I don't think deoplete is the best for everyone.  Please choose auto
+   completion plugin.
 
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
