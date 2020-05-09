@@ -1995,7 +1995,8 @@ A: deoplete is:
    And the important view is the author.
    If you like the author or the author created plugins, you should choose the
    auto completion plugin.
-   For example, you use denite.nvim deoplete is better than other plugins.
+   For example, if you use denite.nvim, deoplete will be better than other
+   plugins.
 
    If you use vim-lsp plugin, you should use asyncomplete.vim instead.
    Because asyncomplete is created for vim-lsp and it maintained as well.
