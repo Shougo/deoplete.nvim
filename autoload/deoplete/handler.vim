@@ -311,6 +311,11 @@ function! s:on_insert_leave() abort
   call deoplete#mapping#_restore_completeopt()
   let g:deoplete#_context = {}
   call deoplete#init#_prev_completion()
+
+  if &cpoptions =~# '$'
+    " If 'cpoptions' includes '$' with popup, redraw problem exists.
+    redraw
+  endif
 endfunction
 
 function! s:on_complete_done() abort
