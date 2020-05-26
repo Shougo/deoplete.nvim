@@ -256,6 +256,7 @@ function! s:is_skip_prev_text(event) abort
     return 1
   endif
 
+  " Note: It fixes insert first candidate automatically problem
   if a:event ==# 'Update' && prev_input !=# '' && input !=# prev_input
     return 1
   endif
