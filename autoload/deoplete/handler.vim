@@ -256,6 +256,10 @@ function! s:is_skip_prev_text(event) abort
     return 1
   endif
 
+  if a:event ==# 'Update' && prev_input !=# '' && input !=# prev_input
+    return 1
+  endif
+
   return 0
 endfunction
 function! s:is_skip_text(event) abort
