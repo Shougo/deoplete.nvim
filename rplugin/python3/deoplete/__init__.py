@@ -33,6 +33,7 @@ if hasattr(vim, 'plugin'):
         def init_channel(self,
                          args: typing.List[typing.Any]) -> None:
             self._deoplete = Deoplete(self._vim)
+            self._vim.call('deoplete#send_event', 'BufReadPost')
 
         @vim.rpc_export('deoplete_enable_logging')  # type: ignore
         def enable_logging(self, context: Context) -> None:
@@ -56,7 +57,7 @@ if find_spec('yarp'):
     global_deoplete = Deoplete(vim)
 
     def deoplete_init() -> None:
-        pass
+        global_deoplete._vim.call('deoplete#send_event', 'BufReadPost')
 
     def deoplete_enable_logging(context: Context) -> None:
         global_deoplete.enable_logging()
