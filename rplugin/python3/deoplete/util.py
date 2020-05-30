@@ -35,16 +35,16 @@ def convert2list(expr: typing.Any) -> typing.List[typing.Any]:
     return (expr if isinstance(expr, list) else [expr])
 
 
-def convert2candidates(l: typing.Any) -> Candidates:
+def convert2candidates(li: typing.Any) -> Candidates:
     ret = []
-    if l and isinstance(l, list):
-        for x in l:
+    if li and isinstance(li, list):
+        for x in li:
             if isinstance(x, str):
                 ret.append({'word': x})
             else:
                 ret.append(x)
     else:
-        ret = l
+        ret = li
     return ret
 
 
@@ -149,8 +149,8 @@ def parse_file_pattern(f: typing.Iterable[str],
                        pattern: str) -> typing.List[str]:
     p = re.compile(pattern)
     ret: typing.List[str] = []
-    for l in f:
-        ret += p.findall(l)
+    for li in f:
+        ret += p.findall(li)
     return list(set(ret))
 
 
@@ -235,23 +235,23 @@ def getlines(vim: Nvim, start: int = 1,
     return lines
 
 
-def binary_search_begin(l: typing.List[Candidates], prefix: str) -> int:
-    if not l:
+def binary_search_begin(li: typing.List[Candidates], prefix: str) -> int:
+    if not li:
         return -1
-    if len(l) == 1:
-        word = l[0]['word']  # type: ignore
+    if len(li) == 1:
+        word = li[0]['word']  # type: ignore
         return 0 if word.lower().startswith(prefix) else -1
 
     s = 0
-    e = len(l)
+    e = len(li)
     prefix = prefix.lower()
     while s < e:
         index = int((s + e) / 2)
-        word = l[index]['word'].lower()  # type: ignore
+        word = li[index]['word'].lower()  # type: ignore
         if word.startswith(prefix):
             if (index - 1) < 0:
                 return index
-            prev_word = l[index-1]['word']  # type: ignore
+            prev_word = li[index-1]['word']  # type: ignore
             if not prev_word.lower().startswith(prefix):
                 return index
             e = index
@@ -262,23 +262,23 @@ def binary_search_begin(l: typing.List[Candidates], prefix: str) -> int:
     return -1
 
 
-def binary_search_end(l: typing.List[Candidates], prefix: str) -> int:
-    if not l:
+def binary_search_end(li: typing.List[Candidates], prefix: str) -> int:
+    if not li:
         return -1
-    if len(l) == 1:
-        word = l[0]['word']  # type: ignore
+    if len(li) == 1:
+        word = li[0]['word']  # type: ignore
         return 0 if word.lower().startswith(prefix) else -1
 
     s = 0
-    e = len(l)
+    e = len(li)
     prefix = prefix.lower()
     while s < e:
         index = int((s + e) / 2)
-        word = l[index]['word'].lower()  # type: ignore
+        word = li[index]['word'].lower()  # type: ignore
         if word.startswith(prefix):
-            if (index + 1) >= len(l):
+            if (index + 1) >= len(li):
                 return index
-            next_word = l[index+1]['word']  # type: ignore
+            next_word = li[index+1]['word']  # type: ignore
             if not next_word.lower().startswith(prefix):
                 return index
             s = index + 1
@@ -289,10 +289,10 @@ def binary_search_end(l: typing.List[Candidates], prefix: str) -> int:
     return -1
 
 
-def uniq_list_dict(l: typing.List[typing.Any]) -> typing.List[typing.Any]:
+def uniq_list_dict(li: typing.List[typing.Any]) -> typing.List[typing.Any]:
     # Uniq list of dictionaries
     ret: typing.List[typing.Any] = []
-    for d in l:
+    for d in li:
         if d not in ret:
             ret.append(d)
     return ret
