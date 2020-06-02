@@ -50,8 +50,7 @@ endfunction
 function! deoplete#handler#_do_complete() abort
   let context = g:deoplete#_context
   let event = get(context, 'event', '')
-  let modes = (event ==# 'InsertEnter') ? ['n', 'i'] : ['i']
-  if s:is_exiting() || index(modes, mode()) < 0 || s:check_input_method()
+  if s:is_exiting() || v:insertmode !=# 'i' || s:check_input_method()
     return
   endif
 
@@ -237,7 +236,7 @@ function! s:is_skip(event) abort
   if &paste
         \ || (a:event !=# 'Manual' && a:event !=# 'Update' && !auto_complete)
         \ || (&l:completefunc !=# '' && &l:buftype =~# 'nofile')
-        \ || (a:event !=# 'InsertEnter' && mode() !=# 'i')
+        \ || v:insertmode !=# 'i'
     return 1
   endif
 
