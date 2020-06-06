@@ -88,7 +88,7 @@ class AsyncParent(_Parent):
 
         This handles Python being embedded in Vim on Windows or OSX.
 
-        Taken from jedia.api.environment._try_get_same_env.
+        Taken from jedi.api.environment._try_get_same_env.
         """
         exe = sys.executable
         if not os.path.basename(exe).lower().startswith('python'):
