@@ -88,22 +88,22 @@ class AsyncParent(_Parent):
 
         This handles Python being embedded in Vim on Windows or OSX.
 
-        Taken from jedia.api.environment._try_get_same_env.
+        Taken from jedi.api.environment._try_get_same_env.
         """
         exe = sys.executable
         if not os.path.basename(exe).lower().startswith('python'):
-            check: typing.Tuple[typing.Any, ...]
-            if os.name == 'nt':
+            checks: typing.Tuple[typing.Any, ...]
+            if sys.platform == 'win32':
                 checks = (r'Scripts\python.exe', 'python.exe')
             else:
                 checks = (
-                    'bin/python%s.%s' % (  # type: ignore
+                    'bin/python%s.%s' % (
                         sys.version_info[0], sys.version[1]),
                     'bin/python%s' % (sys.version_info[0]),
                     'bin/python',
                 )
-            for check in checks:  # type: ignore
-                guess = os.path.join(sys.exec_prefix, check)  # type: ignore
+            for check in checks:
+                guess = os.path.join(sys.exec_prefix, check)
                 if os.path.isfile(str(guess)):
                     return str(guess)
             if 'python3_host_prog' not in self._vim.vars:
@@ -114,9 +114,9 @@ class AsyncParent(_Parent):
     def _start_process(self) -> None:
         self._stdin: typing.Optional[typing.Any] = None
         self._queue_id = ''
-        self._queue_in: Queue = Queue()  # type: ignore
-        self._queue_out: Queue = Queue()  # type: ignore
-        self._queue_err: Queue = Queue()  # type: ignore
+        self._queue_in: 'Queue[bytes]' = Queue()
+        self._queue_out: 'Queue[typing.Any]' = Queue()
+        self._queue_err: 'Queue[typing.Any]' = Queue()
         if msgpack.version < (1, 0, 0):
             self._packer = msgpack.Packer(
                 encoding='utf-8',
@@ -132,9 +132,9 @@ class AsyncParent(_Parent):
         self._prev_pos: typing.List[typing.Any] = []
 
         info = None
-        if os.name == 'nt':
-            info = subprocess.STARTUPINFO()  # type: ignore
-            info.dwFlags |= subprocess.STARTF_USESHOWWINDOW  # type: ignore
+        if sys.platform == 'win32':
+            info = subprocess.STARTUPINFO()
+            info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
         main = str(Path(__file__).parent.parent.parent.parent.joinpath(
             'autoload', 'deoplete', '_main.py'))
