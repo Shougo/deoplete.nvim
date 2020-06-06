@@ -93,7 +93,7 @@ class AsyncParent(_Parent):
         exe = sys.executable
         if not os.path.basename(exe).lower().startswith('python'):
             checks: typing.Tuple[typing.Any, ...]
-            if os.name == 'nt':
+            if sys.platform == 'win32':
                 checks = (r'Scripts\python.exe', 'python.exe')
             else:
                 checks = (
@@ -132,9 +132,9 @@ class AsyncParent(_Parent):
         self._prev_pos: typing.List[typing.Any] = []
 
         info = None
-        if os.name == 'nt':
-            info = subprocess.STARTUPINFO()  # type: ignore
-            info.dwFlags |= subprocess.STARTF_USESHOWWINDOW  # type: ignore
+        if sys.platform == 'win32':
+            info = subprocess.STARTUPINFO()
+            info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
         main = str(Path(__file__).parent.parent.parent.parent.joinpath(
             'autoload', 'deoplete', '_main.py'))
