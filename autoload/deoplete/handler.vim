@@ -327,16 +327,18 @@ function! s:on_complete_done() abort
   if get(v:completed_item, 'word', '') ==# ''
     return
   endif
+
   call deoplete#handler#_skip_next_completion()
 
-  if get(v:completed_item, 'user_data', '') !=# ''
-    try
-      if type(v:completed_item.user_data) == type('')
-        call s:substitute_suffix(json_decode(v:completed_item.user_data))
-      endif
-    catch /.*/
-    endtry
+  if type(get(v:completed_item, 'user_data', '')) !=# v:t_string
+        \ || v:completed_item.user_data ==# ''
+    return
   endif
+
+  try
+    call s:substitute_suffix(json_decode(v:completed_item.user_data))
+  catch /.*/
+  endtry
 endfunction
 function! s:substitute_suffix(user_data) abort
   if !deoplete#custom#_get_option('complete_suffix')
