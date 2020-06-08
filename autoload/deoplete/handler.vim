@@ -330,13 +330,13 @@ function! s:on_complete_done() abort
 
   call deoplete#handler#_skip_next_completion()
 
-  if type(get(v:completed_item, 'user_data', '')) !=# v:t_string
-        \ || v:completed_item.user_data ==# ''
+  let user_data = get(v:completed_item, 'user_data', '')
+  if type(user_data) !=# v:t_string || user_data ==# ''
     return
   endif
 
   try
-    call s:substitute_suffix(json_decode(v:completed_item.user_data))
+    call s:substitute_suffix(json_decode(user_data))
   catch /.*/
   endtry
 endfunction
