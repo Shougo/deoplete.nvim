@@ -1661,6 +1661,11 @@ A: some sources(nvim-typescript, LanguageClient-neovim etc) use "is_async"
 feature.  It is affected with the problem.
 The feature is deprecated and not recommended.
 
+Q: deoplete conflicts with lexima.vim
+
+A: >
+https://github.com/cohama/lexima.vim/issues/65#issuecomment-339338677
+
 							*deoplete-faq-config*
 2. Configuration~
 
