@@ -1875,7 +1875,7 @@ If you really need the feature, it works for me. >
 	set completeopt+=noselect
 	inoremap <expr> <C-h> pumvisible() ?
 	\ "\<C-h>" . deoplete#complete() : "\<C-h>"
-
+<
 						    *deoplete-faq-ft-specific*
 3. Filetype Specific Questions~
 
@@ -1891,6 +1891,14 @@ Q: I want to use C/C++ omni completion with deoplete.
 A: You should use |deoplete-clangx|.
 
    https://github.com/Shougo/deoplete-clangx
+
+or use omnifunc instead. >
+
+	set completeopt+=noselect
+	call deoplete#custom#option('omni_patterns', {
+	\ 'c': ['[^. *\t]\%(\.\|->\)\w*',
+	\ 'cpp': ['[^. *\t]\%(\.\|->\)\w*', '[a-zA-Z_]\w*::'],
+	\})
 
 Q: I want to use jedi-vim omni completion with deoplete.
 
