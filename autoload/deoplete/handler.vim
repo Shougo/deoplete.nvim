@@ -77,7 +77,7 @@ function! deoplete#handler#_do_complete() abort
   if context.event ==# 'Manual'
     let context.event = ''
   elseif !exists('g:deoplete#_saved_completeopt') && auto_popup
-    call deoplete#mapping#_set_completeopt()
+    call deoplete#mapping#_set_completeopt(context.is_async)
   endif
 
   if auto_popup
@@ -109,7 +109,7 @@ function! deoplete#handler#_check_omnifunc(context) abort
         let prev.candidates = []
 
         if &completeopt =~# 'noselect'
-          call deoplete#mapping#_set_completeopt()
+          call deoplete#mapping#_set_completeopt(v:false)
           call feedkeys("\<C-x>\<C-o>", 'in')
         else
           call deoplete#util#print_error(
@@ -160,7 +160,7 @@ function! s:check_prev_completion(event) abort
     return
   endif
 
-  call deoplete#mapping#_set_completeopt()
+  call deoplete#mapping#_set_completeopt(v:false)
 
   let mode = deoplete#custom#_get_option('prev_completion_mode')
   let candidates = copy(prev.candidates)

@@ -67,7 +67,7 @@ function! deoplete#mapping#_prev_complete() abort
 
   return ''
 endfunction
-function! deoplete#mapping#_set_completeopt() abort
+function! deoplete#mapping#_set_completeopt(is_async) abort
   if exists('g:deoplete#_saved_completeopt')
     return
   endif
@@ -75,7 +75,9 @@ function! deoplete#mapping#_set_completeopt() abort
   set completeopt-=longest
   set completeopt+=menuone
   set completeopt-=menu
-  if &completeopt !~# 'noinsert\|noselect'
+  if &completeopt !~# 'noinsert\|noselect' || a:is_async
+    " Note: If is_async, noselect is needed to prevent without confirmation
+    " problem
     set completeopt+=noselect
   endif
 endfunction
