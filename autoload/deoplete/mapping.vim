@@ -78,6 +78,7 @@ function! deoplete#mapping#_set_completeopt(is_async) abort
   if &completeopt !~# 'noinsert\|noselect' || a:is_async
     " Note: If is_async, noselect is needed to prevent without confirmation
     " problem
+    set completeopt-=noinsert
     set completeopt+=noselect
   endif
 endfunction
