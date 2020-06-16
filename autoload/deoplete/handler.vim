@@ -109,7 +109,7 @@ function! deoplete#handler#_check_omnifunc(context) abort
         let prev.candidates = []
 
         if &completeopt =~# 'noselect'
-          call deoplete#mapping#_set_completeopt(v:false)
+          call deoplete#mapping#_set_completeopt(v:true)
           call feedkeys("\<C-x>\<C-o>", 'in')
         else
           call deoplete#util#print_error(

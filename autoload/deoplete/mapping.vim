@@ -68,10 +68,9 @@ function! deoplete#mapping#_prev_complete() abort
   return ''
 endfunction
 function! deoplete#mapping#_set_completeopt(is_async) abort
-  if exists('g:deoplete#_saved_completeopt')
-    return
+  if !exists('g:deoplete#_saved_completeopt')
+    let g:deoplete#_saved_completeopt = &completeopt
   endif
-  let g:deoplete#_saved_completeopt = &completeopt
   set completeopt-=longest
   set completeopt+=menuone
   set completeopt-=menu
