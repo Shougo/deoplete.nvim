@@ -77,7 +77,7 @@ function! deoplete#handler#_do_complete() abort
   if context.event ==# 'Manual'
     let context.event = ''
   elseif !exists('g:deoplete#_saved_completeopt') && auto_popup
-    call deoplete#mapping#_set_completeopt()
+    call deoplete#mapping#_set_completeopt(context.is_async)
   endif
 
   if auto_popup
@@ -108,16 +108,8 @@ function! deoplete#handler#_check_omnifunc(context) abort
         let prev.input = a:context.input
         let prev.candidates = []
 
-        if &completeopt =~# 'noselect'
-          call deoplete#mapping#_set_completeopt()
-          call feedkeys("\<C-x>\<C-o>", 'in')
-        else
-          call deoplete#util#print_error(
-                \ 'omni_patterns feature is disabled.')
-          call deoplete#util#print_error(
-                \ 'You need to set "noselect" in completeopt option.')
-        endif
-        return 1
+        call deoplete#mapping#_set_completeopt(v:true)
+        call feedkeys("\<C-x>\<C-o>", 'in')
       endif
     endfor
   endfor
@@ -160,7 +152,7 @@ function! s:check_prev_completion(event) abort
     return
   endif
 
-  call deoplete#mapping#_set_completeopt()
+  call deoplete#mapping#_set_completeopt(v:false)
 
   let mode = deoplete#custom#_get_option('prev_completion_mode')
   let candidates = copy(prev.candidates)
