@@ -110,7 +110,7 @@ class Deoplete(logger.LoggingMixin):
             'candidates': candidates,
             'event': context['event'],
             'input': context['input'],
-            'is_async': is_async,
+            'is_async': needs_poll,
         }
 
         if candidates or self._vim.call('deoplete#util#check_popup'):
