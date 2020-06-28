@@ -258,8 +258,8 @@ function! s:is_skip_prev_text(event) abort
 endfunction
 function! s:is_skip_text(event) abort
   let input = deoplete#util#get_input(a:event)
-  if !has('nvim') && input =~# "\xbd"
-    " In Vim8, <bd> brokes nvim-yarp.
+  if !has('nvim') && "\x80" <= input && input <= "\xff"
+    " In Vim8, any characters between <80> to <ff>, such as <bd>, breaks nvim-yarp.
     return 1
   endif
 
