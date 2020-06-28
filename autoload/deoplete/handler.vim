@@ -258,6 +258,10 @@ function! s:is_skip_prev_text(event) abort
 endfunction
 function! s:is_skip_text(event) abort
   let input = deoplete#util#get_input(a:event)
+  if !has('nvim') && input =~# "\xbd"
+    " In Vim8, <bd> brokes nvim-yarp.
+    return 1
+  endif
 
   let lastchar = matchstr(input, '.$')
   let skip_multibyte = deoplete#custom#_get_option('skip_multibyte')
