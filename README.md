@@ -6,6 +6,9 @@
 [![Join the chat at https://gitter.im/Shougo/deoplete.nvim](https://badges.gitter.im/Shougo/deoplete.nvim.svg)](https://gitter.im/Shougo/deoplete.nvim?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Doc](https://img.shields.io/badge/doc-%3Ah%20deoplete-orange.svg)](doc/deoplete.txt)
 
+Note: If you need to understand that deoplete different from similar plugins,
+please read "deoplete-faq" section in the documentation.
+
 Deoplete is the abbreviation of "dark powered neo-completion".  It
 provides an extensible and asynchronous completion framework for
 neovim/Vim8.
