@@ -160,3 +160,5 @@ Deoplete for JavaScript
 ![Rust using rls](https://user-images.githubusercontent.com/1750795/38780764-8524b0b8-40a9-11e8-91bc-6e4148c398a3.png)
 
 ![Ruby dictionary completion](https://user-images.githubusercontent.com/1314340/44786516-5bb57a00-abcf-11e8-8687-492fa5f9f905.gif)
+
+![LanguageClient-neovim integration](https://user-images.githubusercontent.com/4245199/87716288-efd25f80-c7ae-11ea-8080-334d155b3155.png)
