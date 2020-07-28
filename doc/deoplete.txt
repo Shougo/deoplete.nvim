@@ -2006,9 +2006,9 @@ A: deoplete is:
    should not choose coc.nvim.
 
    completion-nvim is Lua based plugin for neovim.
-   It cannot use in Vim8.
-   If you like Lua and you don't use Vim8 and you don't like external
-   dependency, it is better choice.
+   You cannot use it in Vim8.
+   If you like Lua, you don't use Vim8, and you don't like external
+   dependency, it is a better choice.
 
    And the important view is the author.
    If you like the author or the author created plugins, you should choose the
