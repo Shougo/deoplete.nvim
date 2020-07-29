@@ -38,7 +38,7 @@ function! deoplete#init#_channel() abort
     return 1
   endif
 
-  let python3 = get(g:, 'python3_host_prog', 'python3')
+  let python3 = expand(get(g:, 'python3_host_prog', 'python3'))
   if !executable(python3)
     call deoplete#util#print_error(
           \ string(python3) . ' is not executable.')
