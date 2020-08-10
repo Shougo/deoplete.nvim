@@ -4,8 +4,6 @@
 # License: MIT license
 # ============================================================================
 
-import re
-
 from deoplete.base.filter import Base
 from deoplete.util import Nvim, UserContext, Candidates
 
