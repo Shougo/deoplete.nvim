@@ -141,8 +141,8 @@ def get_custom(custom: typing.Dict[str, typing.Any],
         return default
 
 
-def get_syn_names(vim: Nvim) -> str:
-    return str(vim.call('deoplete#util#get_syn_names'))
+def get_syn_names(vim: Nvim) -> typing.List[str]:
+    return list(vim.call('deoplete#util#get_syn_names'))
 
 
 def parse_file_pattern(f: typing.Iterable[str],

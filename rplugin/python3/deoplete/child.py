@@ -509,10 +509,10 @@ class Child(logger.LoggingMixin):
                         context['input'].find(result['prev_input']) == 0)
 
     def _is_skip(self, context: UserContext, source: typing.Any) -> bool:
-        if 'syntax_names' in context and source.disabled_syntaxes:
-            p = re.compile('(' + '|'.join(source.disabled_syntaxes) + ')$')
-            if next(filter(p.search, context['syntax_names']), None):
-                return True
+        if (context.get('syntax_names', []) and source.disabled_syntaxes
+                and len(set(context['syntax_names']) &
+                        set(source.disabled_syntaxes)) > 0):
+            return True
 
         iminsert = self._vim.call('getbufvar', '%', '&iminsert')
         if iminsert == 1 and source.is_skip_langmap:

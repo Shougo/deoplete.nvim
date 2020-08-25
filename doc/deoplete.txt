@@ -470,7 +470,7 @@ deoplete#custom#source({source-name}, {dict})
 
 		" Disable the candidates in Comment/String syntaxes.
 		call deoplete#custom#source('_',
-		\ 'disabled_syntaxes', ['Comment', 'String'])
+		\ 'disabled_syntaxes', ['Comment', 'String', 'Constant'])
 
 		" Change the truncate width.
 		call deoplete#custom#source('javacomplete2',
