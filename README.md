@@ -45,7 +45,7 @@ https://github.com/Shougo/deoplete.nvim/releases/tag/5.2
 For vim-plug
 
 ```viml
-if has('nvim')
+if !has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
   Plug 'Shougo/deoplete.nvim'
