@@ -1670,6 +1670,13 @@ Q: deoplete conflicts with lexima.vim
 A: >
 https://github.com/cohama/lexima.vim/issues/65#issuecomment-339338677
 
+Q: Vim's build-in completion behavior(|i_CTRL-P| etc) is changed after
+deoplete is enabled.  The first entry is not inserted.
+
+A: It is the feature of deoplete.  The default insertion is disabled to enable
+completion asynchronously.  If you don't like the behavior, you should use
+other auto completion plugin.
+
 							*deoplete-faq-config*
 2. Configuration~
 
