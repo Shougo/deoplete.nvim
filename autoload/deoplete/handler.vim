@@ -321,6 +321,8 @@ function! s:on_insert_leave() abort
 endfunction
 
 function! s:on_complete_done() abort
+  call deoplete#mapping#_restore_completeopt()
+
   if get(v:completed_item, 'word', '') ==# ''
     return
   endif
