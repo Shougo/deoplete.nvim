@@ -492,7 +492,8 @@ deoplete#custom#source({source-name}, {dict})
 		" Enable jedi source debug messages
 		" call deoplete#custom#option('profile', v:true)
 		" call deoplete#enable_logging('DEBUG', 'deoplete.log')
-		" call deoplete#custom#source('jedi', 'is_debug_enabled', 1)
+		" call deoplete#custom#source('jedi',
+		\ 'is_debug_enabled', v:true)
 <
 						*deoplete#custom#var()*
 deoplete#custom#var({source-name}, {var-name}, {value})
@@ -1621,7 +1622,7 @@ A: Please enable logging feature like this. >
 
 	call deoplete#custom#option('profile', v:true)
 	call deoplete#enable_logging('DEBUG', 'deoplete.log')
-	call deoplete#custom#source('jedi', 'is_debug_enabled', 1)
+	call deoplete#custom#source('jedi', 'is_debug_enabled', v:true)
 
 Q: "Channel id must be a positive integer" error.
 https://github.com/Shougo/deoplete.nvim/issues/406
