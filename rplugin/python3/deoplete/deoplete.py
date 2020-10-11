@@ -179,7 +179,8 @@ class Deoplete(logger.LoggingMixin):
         complete_position = min(x['complete_position'] for x in results)
 
         all_candidates: typing.List[Candidates] = []
-        for result in sorted(results, key=lambda x: x['rank'], reverse=True):
+        for result in sorted(results,
+                             key=lambda x: int(x['rank']), reverse=True):
             candidates = result['candidates']
             prefix = context['input'][
                 complete_position:result['complete_position']]
