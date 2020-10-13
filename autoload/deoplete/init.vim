@@ -240,7 +240,7 @@ function! deoplete#init#_option() abort
         \ 'auto_complete': v:true,
         \ 'auto_complete_delay': 0,
         \ 'auto_complete_popup': 'auto',
-        \ 'auto_refresh_delay': 100,
+        \ 'auto_refresh_delay': 20,
         \ 'camel_case': v:false,
         \ 'candidate_marks': [],
         \ 'check_stderr': v:true,

@@ -113,7 +113,7 @@ auto_complete
 auto_complete_delay
 		Delay the completion after input in milliseconds.
 
-		Default value: 0 (milliseconds)
+		Default value: 20 (milliseconds)
 
 					*deoplete-options-auto_complete_popup*
 auto_complete_popup
