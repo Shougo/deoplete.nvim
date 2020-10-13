@@ -250,7 +250,7 @@ function! deoplete#init#_option() abort
         \ 'keyword_patterns': {'_': '[a-zA-Z_]\k*'},
         \ 'max_list': 500,
         \ 'min_pattern_length': 2,
-        \ 'num_processes': 4,
+        \ 'num_processes': 1,
         \ 'omni_patterns': {},
         \ 'on_insert_enter': v:true,
         \ 'on_text_changed_i': v:true,

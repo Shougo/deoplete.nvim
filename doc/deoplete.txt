@@ -217,7 +217,7 @@ num_processes
 		If it is less than or equal to 0, the number of processes is
 		equal to that of sources.
 
-		Default value: 4
+		Default value: 1
 
 					*deoplete-options-omni_patterns*
 omni_patterns
