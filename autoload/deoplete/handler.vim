@@ -203,6 +203,13 @@ function! deoplete#handler#_completion_begin(event) abort
 
   call deoplete#util#rpcnotify(
         \ 'deoplete_auto_completion_begin', {'event': a:event})
+
+  let auto_popup = deoplete#custom#_get_option(
+        \ 'auto_complete_popup') !=# 'manual'
+  if auto_popup || deoplete#util#check_popup()
+    " For popup flicker
+    call feedkeys("\<Plug>_", 'i')
+  endif
 endfunction
 function! s:is_skip(event) abort
   if a:event ==# 'TextChangedP' && !empty(v:completed_item)
