@@ -1687,9 +1687,7 @@ Q: I want to silence the |ins-completion-menu| messages in the command line
 
 A: You can disable the messages through the 'shortmess' option. >
 
-	if has("patch-7.4.314")
-	  set shortmess+=c
-	endif
+	set shortmess+=c
 
 Q: I want to use the auto select feature like |neocomplete|.
 
