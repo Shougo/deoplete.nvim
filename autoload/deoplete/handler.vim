@@ -208,7 +208,7 @@ function! deoplete#handler#_completion_begin(event) abort
         \ 'auto_complete_popup') !=# 'manual'
   if auto_popup || deoplete#util#check_popup()
     " For popup flicker
-    call feedkeys("\<Plug>_", 'i')
+    "call feedkeys("\<Plug>_", 'i')
   endif
 endfunction
 function! s:is_skip(event) abort
