@@ -29,7 +29,7 @@ Here are some [completion sources](https://github.com/Shougo/deoplete.nvim/wiki/
 ## Install
 
 **Note:** deoplete requires Neovim (0.3.0+ and of course, **latest** is
-recommended) or Vim8 with Python 3.6.1+ and timers enabled.  See
+recommended) or Vim8.1 with Python 3.6.1+ and timers enabled.  See
 [requirements](#requirements) if you aren't sure whether you have this.
 
 Note: deoplete requires msgpack package 1.0.0+.

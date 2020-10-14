@@ -26,11 +26,7 @@ function! deoplete#handler#_init() abort
     call s:define_completion_via_timer('InsertEnter')
   endif
   if deoplete#custom#_get_option('refresh_always')
-    if exists('##TextChangedP')
-      call s:define_completion_via_timer('TextChangedP')
-    else
-      call s:define_completion_via_timer('InsertCharPre')
-    endif
+    call s:define_completion_via_timer('TextChangedP')
   endif
 
   " Note: Vim 8 GUI(MacVim and Win32) is broken
@@ -204,11 +200,16 @@ function! deoplete#handler#_completion_begin(event) abort
   call deoplete#util#rpcnotify(
         \ 'deoplete_auto_completion_begin', {'event': a:event})
 
+  " For <BS> popup flicker
   let auto_popup = deoplete#custom#_get_option(
         \ 'auto_complete_popup') !=# 'manual'
-  if auto_popup || deoplete#util#check_popup()
-    " For popup flicker
-    "call feedkeys("\<Plug>_", 'i')
+  let prev_input = get(g:deoplete#_context, 'input', '')
+  let cur_input = deoplete#util#get_input(a:event)
+  if auto_popup && empty(v:completed_item)
+        \ && cur_input !=# prev_input
+        \ && len(cur_input) + 1 ==# len(prev_input)
+        \ && stridx(prev_input, cur_input) == 0
+    call feedkeys("\<Plug>_", 'i')
   endif
 endfunction
 function! s:is_skip(event) abort

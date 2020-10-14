@@ -48,7 +48,7 @@ function! deoplete#mapping#_complete() abort
   if !has_key(g:deoplete#_context, 'candidates')
         \ || s:check_completion_info(g:deoplete#_context.candidates)
         \ || !&modifiable
-    let g:deoplete#_context.candidates = []
+    call complete(1, [])
     return ''
   endif
 

@@ -35,10 +35,6 @@ function! deoplete#util#get_input(event) abort
         \         '^.*\%' . (mode ==# 'i' ? col('.') : col('.') - 1)
         \         . 'c' . (mode ==# 'i' ? '' : '.'))
 
-  if a:event ==# 'InsertCharPre'
-    let input .= v:char
-  endif
-
   return input
 endfunction
 function! deoplete#util#get_next_input(event) abort
