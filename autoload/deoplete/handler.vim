@@ -291,6 +291,11 @@ function! s:is_skip_text(event) abort
     endif
   endif
 
+  if s:matched_indentkeys(input) !=# ''
+    call deoplete#util#indent_current_line()
+    return 1
+  endif
+
   let skip_chars = deoplete#custom#_get_option('skip_chars')
 
   return (a:event !=# 'Manual' && input !=# ''
@@ -298,6 +303,24 @@ function! s:is_skip_text(event) abort
 endfunction
 function! s:check_input_method() abort
   return exists('*getimstatus') && getimstatus()
+endfunction
+function! s:matched_indentkeys(input) abort
+  for word in filter(map(split(&l:indentkeys, ','),
+        \ "v:val =~# '^<.*>$' ? matchstr(v:val, '^<\\zs.*\\ze>$')
+        \                  : matchstr(v:val, ':\\|e\\|=\\zs.*')"),
+        \ "v:val !=# ''")
+
+    if word ==# 'e'
+      let word = 'else'
+    endif
+
+    let lastpos = len(a:input) - len(word)
+    if lastpos >= 0 && strridx(a:input, word) == lastpos
+      return word
+    endif
+  endfor
+
+  return ''
 endfunction
 
 function! s:define_on_event(event) abort
