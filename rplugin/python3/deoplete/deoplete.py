@@ -166,7 +166,9 @@ class Deoplete(logger.LoggingMixin):
             bool, bool, int, typing.List[typing.Any]]:
         use_prev = (context['input'] == self._prev_input
                     and context['next_input'] == self._prev_next_input
-                    and context['event'] != 'Manual')
+                    and context['event'] != 'Manual'
+                    and context['event'] != 'Async'
+                    and context['event'] != 'Update')
         if not use_prev:
             self._prev_results = {}
 
