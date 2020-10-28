@@ -305,6 +305,11 @@ function! s:check_input_method() abort
   return exists('*getimstatus') && getimstatus()
 endfunction
 function! s:matched_indentkeys(input) abort
+  if &l:indentexpr ==# ''
+    " Disable auto indent
+    return ''
+  endif
+
   for word in filter(map(split(&l:indentkeys, ','),
         \ "v:val =~# '^<.*>$' ? matchstr(v:val, '^<\\zs.*\\ze>$')
         \                  : matchstr(v:val, ':\\|e\\|=\\zs.*')"),
