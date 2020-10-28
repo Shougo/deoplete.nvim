@@ -52,6 +52,14 @@ function! deoplete#mapping#_complete() abort
     return ''
   endif
 
+  let auto_popup = deoplete#custom#_get_option(
+        \ 'auto_complete_popup') !=# 'manual'
+
+  if !exists('g:deoplete#_saved_completeopt') && auto_popup
+    " Note: completeopt must be changed before complete()
+    call deoplete#mapping#_set_completeopt(g:deoplete#_context.is_async)
+  endif
+
   " echomsg string(g:deoplete#_context)
   if empty(g:deoplete#_context.candidates) && deoplete#util#check_popup()
     " Note: call complete() to close the popup
@@ -68,6 +76,8 @@ function! deoplete#mapping#_prev_complete() abort
   if s:check_completion_info(g:deoplete#_filtered_prev.candidates)
     return ''
   endif
+
+  call deoplete#mapping#_set_completeopt(v:false)
 
   call complete(g:deoplete#_filtered_prev.complete_position + 1,
         \ g:deoplete#_filtered_prev.candidates)

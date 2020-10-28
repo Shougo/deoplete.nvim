@@ -62,18 +62,16 @@ function! deoplete#handler#_do_complete() abort
   let prev.complete_position = context.complete_position
   let prev.linenr = line('.')
 
+  if context.event ==# 'Manual'
+    let context.event = ''
+  endif
+
   let auto_popup = deoplete#custom#_get_option(
         \ 'auto_complete_popup') !=# 'manual'
 
   " Enable auto refresh when popup is displayed
   if deoplete#util#check_popup()
     let auto_popup = v:true
-  endif
-
-  if context.event ==# 'Manual'
-    let context.event = ''
-  elseif !exists('g:deoplete#_saved_completeopt') && auto_popup
-    call deoplete#mapping#_set_completeopt(context.is_async)
   endif
 
   if auto_popup
@@ -147,8 +145,6 @@ function! s:check_prev_completion(event) abort
   if prev.linenr != line('.') || len(complete_str) < min_pattern_length
     return
   endif
-
-  call deoplete#mapping#_set_completeopt(v:false)
 
   let mode = deoplete#custom#_get_option('prev_completion_mode')
   let candidates = copy(prev.candidates)
