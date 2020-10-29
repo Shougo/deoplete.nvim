@@ -75,6 +75,9 @@ function! deoplete#handler#_do_complete() abort
   endif
 
   if auto_popup
+    " Note: completeopt must be changed before complete()
+    call deoplete#mapping#_set_completeopt(g:deoplete#_context.is_async)
+
     call feedkeys("\<Plug>_", 'i')
   endif
 endfunction
