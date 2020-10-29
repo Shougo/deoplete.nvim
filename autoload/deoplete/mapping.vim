@@ -55,7 +55,7 @@ function! deoplete#mapping#_complete() abort
   let auto_popup = deoplete#custom#_get_option(
         \ 'auto_complete_popup') !=# 'manual'
 
-  if !exists('g:deoplete#_saved_completeopt') && auto_popup
+  if auto_popup
     " Note: completeopt must be changed before complete()
     call deoplete#mapping#_set_completeopt(g:deoplete#_context.is_async)
   endif
