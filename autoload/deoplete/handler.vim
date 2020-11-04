@@ -311,13 +311,8 @@ function! s:matched_indentkeys(input) abort
 
   for word in filter(map(split(&l:indentkeys, ','),
         \ "v:val =~# '^<.*>$' ? matchstr(v:val, '^<\\zs.*\\ze>$')
-        \                  : matchstr(v:val, ':\\|e\\|=\\zs.*')"),
+        \                  : matchstr(v:val, 'e\\|=\\zs.*')"),
         \ "v:val !=# ''")
-
-    if word ==# ':' && &filetype ==# 'vim'
-      " ':' completion must not be skipped
-      continue
-    endif
 
     if word ==# 'e'
       let word = 'else'
