@@ -314,6 +314,11 @@ function! s:matched_indentkeys(input) abort
         \                  : matchstr(v:val, ':\\|e\\|=\\zs.*')"),
         \ "v:val !=# ''")
 
+    if word ==# ':' && &filetype ==# 'vim'
+      " ':' completion must not be skipped
+      continue
+    endif
+
     if word ==# 'e'
       let word = 'else'
     endif
