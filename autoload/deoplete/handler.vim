@@ -230,11 +230,19 @@ function! s:is_skip(event) abort
     return 1
   endif
 
+  " Check nofile buffers
+  if &l:buftype =~# 'nofile'
+    let nofile_complete_filetypes = deoplete#custom#_get_option(
+          \ 'nofile_complete_filetypes')
+    if index(nofile_complete_filetypes, &l:filetype) < 0
+      return 1
+    endif
+  endif
+
   let auto_complete = deoplete#custom#_get_option('auto_complete')
 
   if &paste
         \ || (a:event !=# 'Manual' && a:event !=# 'Update' && !auto_complete)
-        \ || (&l:completefunc !=# '' && &l:buftype =~# 'nofile')
         \ || v:insertmode !=# 'i'
     return 1
   endif

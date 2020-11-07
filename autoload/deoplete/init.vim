@@ -251,6 +251,7 @@ function! deoplete#init#_option() abort
         \ 'max_list': 500,
         \ 'min_pattern_length': 2,
         \ 'num_processes': 1,
+        \ 'nofile_complete_filetypes': ['denite-filter'],
         \ 'omni_patterns': {},
         \ 'on_insert_enter': v:true,
         \ 'on_text_changed_i': v:true,

@@ -209,6 +209,13 @@ max_list
 
 		Default value: 500
 
+				*deoplete-options-nofile_complete_filetypes*
+nofile_complete_filetypes
+		If 'buftype' is "nofile", deoplete completion is disabled
+		automatically except the filetype list.
+
+		Default value: ["denite-filter"]
+
 					*deoplete-options-num_processes*
 num_processes
 		The number of processes used for the deoplete parallel
@@ -2038,6 +2045,10 @@ A: deoplete is:
 
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
+
+2020.04.26
+* Disable nofile buffers completion except
+  deoplete-options-nofile_complete_filetypes.
 
 2020.04.26
 * Add deprecated variables warnings.
