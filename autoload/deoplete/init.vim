@@ -112,6 +112,7 @@ function! s:init_internal_variables() abort
   call deoplete#init#_prev_completion()
 
   let g:deoplete#_context = {}
+  let g:deoplete#_recently_used = []
 
   if !exists('g:deoplete#_logging')
     let g:deoplete#_logging = {}

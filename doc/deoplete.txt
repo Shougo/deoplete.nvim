@@ -792,7 +792,7 @@ matcher_length
 
 			      		*deoplete-filter-sorter_rank*
 sorter_rank	Matched rank order sorter.  The higher the head matched word
-		or already typed word.
+		or already typed or inserted word.
 		The locality bonus feature is implemented like VSCode.
 
 		      			*deoplete-filter-sorter_word*
