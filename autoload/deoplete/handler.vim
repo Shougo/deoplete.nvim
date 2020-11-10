@@ -231,7 +231,7 @@ function! s:is_skip(event) abort
   endif
 
   " Check nofile buffers
-  if &l:buftype =~# 'nofile'
+  if &l:buftype =~# 'nofile' && bufname('%') !=# '[Command Line]'
     let nofile_complete_filetypes = deoplete#custom#_get_option(
           \ 'nofile_complete_filetypes')
     if index(nofile_complete_filetypes, &l:filetype) < 0
