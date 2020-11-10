@@ -296,7 +296,8 @@ prev_completion_mode
 refresh_always
 		Deoplete refreshes the candidates automatically if this value
 		is True.
-		Note: It increases the screen flicker.
+		Note: It increases the screen flicker when
+		|deoplete-options-num_processes| != 0.
 
 		Default value: v:true
 
