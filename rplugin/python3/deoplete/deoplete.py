@@ -164,11 +164,15 @@ class Deoplete(logger.LoggingMixin):
 
     def _merge_results(self, context: UserContext) -> typing.Tuple[
             bool, bool, int, typing.List[typing.Any]]:
+        # If parallel feature is enabled, it is updated frequently.
+        # But if it is single process, it cannot be updated.
+        # So it must be updated.
+        async_check = len(self._parents) > 1 or (
+            context['event'] != 'Async' and context['event'] != 'Update')
         use_prev = (context['input'] == self._prev_input
                     and context['next_input'] == self._prev_next_input
                     and context['event'] != 'Manual'
-                    and context['event'] != 'Async'
-                    and context['event'] != 'Update')
+                    and async_check)
         if not use_prev:
             self._prev_results = {}
 
