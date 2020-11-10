@@ -2059,7 +2059,7 @@ A: deoplete is:
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
 
-2020.04.26
+2020.11.07
 * Disable nofile buffers completion except
   deoplete-options-nofile_complete_filetypes.
 
