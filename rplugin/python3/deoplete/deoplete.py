@@ -109,6 +109,7 @@ class Deoplete(logger.LoggingMixin):
         # error(self._vim, candidates)
         self._vim.vars['deoplete#_context'] = {
             'complete_position': position,
+            'complete_str': context['input'][position:],
             'candidates': candidates,
             'event': context['event'],
             'input': context['input'],
