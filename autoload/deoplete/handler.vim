@@ -318,9 +318,7 @@ function! s:matched_indentkeys(input) abort
   endif
 
   for word in filter(map(split(&l:indentkeys, ','),
-        \ "v:val =~# '^<.*>$' ? matchstr(v:val, '^<\\zs.*\\ze>$')
-        \                  : matchstr(v:val, 'e\\|=\\zs.*')"),
-        \ "v:val !=# ''")
+        \ "matchstr(v:val, 'e\\|=\\zs.*')"), "v:val !=# ''")
 
     if word ==# 'e'
       let word = 'else'
