@@ -48,6 +48,7 @@ class Context(object):
                 'deoplete#util#get_next_input', event),
             'position': self._vim.call('getpos', '.'),
             'same_filetypes': same_filetypes,
+            'time': self._vim.call('reltime'),
         }
         context.update(self._cached)  # type: ignore
 

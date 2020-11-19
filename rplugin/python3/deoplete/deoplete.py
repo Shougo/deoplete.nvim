@@ -96,14 +96,19 @@ class Deoplete(logger.LoggingMixin):
         if needs_poll:
             self._vim.call('deoplete#handler#_async_timer_start')
 
-        # Async update is skipped if same.
-        # Note: If needs_poll, it cannot be skipped.
         prev_completion = self._vim.vars['deoplete#_prev_completion']
+
+        # Skip if async update is same.
+        # Note: If needs_poll, it cannot be skipped.
         prev_candidates = prev_completion['candidates']
         event = context['event']
         same_candidates = prev_candidates and candidates == prev_candidates
         if not needs_poll and same_candidates and (
                 event == 'Async' or event == 'Update'):
+            return
+
+        # Skip if old completion.
+        if context['time'] < prev_completion['time']:
             return
 
         # error(self._vim, candidates)
@@ -113,6 +118,7 @@ class Deoplete(logger.LoggingMixin):
             'candidates': candidates,
             'event': context['event'],
             'input': context['input'],
+            'time': context['time'],
             'is_async': needs_poll,
         }
 

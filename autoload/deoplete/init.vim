@@ -274,6 +274,7 @@ function! deoplete#init#_prev_completion() abort
         \ 'linenr': -1,
         \ 'candidates': [],
         \ 'complete_position': -1,
+        \ 'time': reltime(),
         \ }
 endfunction
 

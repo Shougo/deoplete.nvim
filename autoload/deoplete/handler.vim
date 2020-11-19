@@ -61,6 +61,7 @@ function! deoplete#handler#_do_complete() abort
   let prev.candidates = context.candidates
   let prev.complete_position = context.complete_position
   let prev.linenr = line('.')
+  let prev.time = context.time
 
   if context.event ==# 'Manual'
     let context.event = ''
