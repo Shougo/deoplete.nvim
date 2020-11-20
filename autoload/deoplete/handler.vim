@@ -186,8 +186,20 @@ endfunction
 function! deoplete#handler#_completion_begin(event) abort
   call deoplete#custom#_update_cache()
 
-  if s:is_skip(a:event)
+  let auto_popup = deoplete#custom#_get_option(
+        \ 'auto_complete_popup') !=# 'manual'
+  let prev_input = get(g:deoplete#_context, 'input', '')
+  let cur_input = deoplete#util#get_input(a:event)
+
+  let check_back_space = auto_popup
+        \ && cur_input !=# prev_input
+        \ && len(cur_input) + 1 ==# len(prev_input)
+        \ && stridx(prev_input, cur_input) == 0
+  let refresh_backspace = deoplete#custom#_get_option('refresh_backspace')
+
+  if s:is_skip(a:event) || (check_back_space && !refresh_backspace)
     let g:deoplete#_context.candidates = []
+    let g:deoplete#_context.input = cur_input
     return
   endif
 
@@ -201,14 +213,7 @@ function! deoplete#handler#_completion_begin(event) abort
         \ 'deoplete_auto_completion_begin', {'event': a:event})
 
   " For <BS> popup flicker
-  let auto_popup = deoplete#custom#_get_option(
-        \ 'auto_complete_popup') !=# 'manual'
-  let prev_input = get(g:deoplete#_context, 'input', '')
-  let cur_input = deoplete#util#get_input(a:event)
-  if auto_popup && empty(v:completed_item)
-        \ && cur_input !=# prev_input
-        \ && len(cur_input) + 1 ==# len(prev_input)
-        \ && stridx(prev_input, cur_input) == 0
+  if check_back_space && empty(v:completed_item)
     call feedkeys("\<Plug>_", 'i')
   endif
 endfunction

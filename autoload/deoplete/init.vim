@@ -236,7 +236,6 @@ function! s:check_custom_option(old_var, new_var) abort
 endfunction
 
 function! deoplete#init#_option() abort
-  " Note: HTML omni func use search().
   return {
         \ 'auto_complete': v:true,
         \ 'auto_complete_delay': 0,
@@ -259,6 +258,7 @@ function! deoplete#init#_option() abort
         \ 'prev_completion_mode': '',
         \ 'profile': v:false,
         \ 'refresh_always': v:true,
+        \ 'refresh_backspace': v:true,
         \ 'skip_chars': ['(', ')'],
         \ 'skip_multibyte': v:false,
         \ 'smart_case': &smartcase,

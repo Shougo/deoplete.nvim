@@ -304,6 +304,13 @@ refresh_always
 
 		Default value: v:true
 
+					*deoplete-options-refresh_backspace*
+refresh_backspace
+		Deoplete refreshes the candidates automatically when you
+		press <BS> or <C-h> key.
+
+		Default value: v:true
+
 					*deoplete-options-skip_multibyte*
 skip_multibyte
 		Deoplete skip multibyte text completion automatically if this
