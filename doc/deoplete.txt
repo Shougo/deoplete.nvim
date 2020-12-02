@@ -30,7 +30,7 @@ Compatibility		|deoplete-compatibility|
 INTRODUCTION					*deoplete-introduction*
 
 *deoplete* is the abbreviation of "dark powered neo-completion".  It
-provides asynchronous keyword completion system in the
+provides an asynchronous keyword completion system in the
 current buffer.
 
 Note: deoplete may consume more memory than other plugins do.
@@ -145,6 +145,15 @@ camel_case
 					*deoplete-options-candidate_marks*
 candidate_marks
 		The candidate additional marks.
+
+		If set, this will be used to display an additional mark next
+		to the the first {N} candidates. The first mark is used for the
+		top ranked candidate, the second for the second candidate and
+		so forth.
+
+		In the example below, the first 5 candidates are marked A..G,
+		which serve as mnemonics for commands to insert that
+		candidate.
 
 		Default value: []
 >
@@ -299,6 +308,7 @@ prev_completion_mode
 refresh_always
 		Deoplete refreshes the candidates automatically if this value
 		is True.
+
 		Note: It increases the screen flicker when
 		|deoplete-options-num_processes| != 0.
 
@@ -313,7 +323,7 @@ refresh_backspace
 
 					*deoplete-options-skip_multibyte*
 skip_multibyte
-		Deoplete skip multibyte text completion automatically if this
+		Deoplete skips multibyte text completion automatically if this
 		value is True.
 
 		Default value: v:false
@@ -334,7 +344,7 @@ smart_case
 					*deoplete-options-sources*
 sources
 		It is a dictionary to specify source names.  The key is
-		filetype and the value is source names list.  If the key is
+		filetype and the value is a list of source names.  If the key is
 		"_", the value will be used for default filetypes.  For
 		example, you can load some sources in C++ filetype.
 		If the value is [], it will load all sources.
@@ -529,7 +539,7 @@ KEY MAPPINGS 					*deoplete-key-mappings*
 deoplete#auto_complete([{event}])
 		It calls the auto completion of deoplete.  You can use it to
 		call auto completion again.
-		{event} is autocmd event name.  If it is omit, "Async" is
+		{event} is autocmd event name.  If it is omitted, "Async" is
 		used.
 
 						*deoplete#close_popup()*
@@ -544,18 +554,18 @@ deoplete#complete()
 
 					*deoplete#complete_common_string()*
 deoplete#complete_common_string()
-		complete common string in candidates.  It will be convenient
-		when candidates have long common string.
+		complete common string in candidates.
+		This can be useful when candidates have a long common prefix.
 		Note: It must be in |:map-<expr>|.
 
 						*deoplete#insert_candidate()*
-deoplete#insert_candidate({number})
-		Insert {number}th candidate.
+deoplete#insert_candidate({index})
+		Insert the candidate at index {index}. Indices start at 0.
 		Note: It must be in |:map-<expr>|.
 
 						*deoplete#manual_complete()*
 deoplete#manual_complete([{sources}])
-		It calls the completion of deoplete.  You can use it with
+		Trigger deoplete completion.  You can use it with
 		custom completion setups.
 		You can provide a list of {sources}: It can be the name of a
 		source or a list of sources name.
@@ -563,8 +573,7 @@ deoplete#manual_complete([{sources}])
 		Note: It must be in |:map-<expr>|.
 
 		If you want to trigger deoplete manually, see also
-		|deoplete-options-auto_complete|, which should be 1 then
-		typically.
+		|deoplete-options-auto_complete|, which should typically then be 1.
 >
 		inoremap <silent><expr> <TAB>
 		\ pumvisible() ? "\<C-n>" :
@@ -591,7 +600,7 @@ deoplete#smart_close_popup()
 
 					*deoplete#undo_completion()*
 deoplete#undo_completion()
-		Undo inputted candidate.
+		Undo inserted candidate.
 		Note: It must be in |:map-<expr>|.
 >
 		inoremap <expr><C-g>     deoplete#undo_completion()
@@ -748,6 +757,10 @@ omni							*deoplete-source-omni*
 <
 ==============================================================================
 FILTERS							*deoplete-filters*
+
+Once candidates have been supplied by one or more sources, they are passed
+through the filters, which are matchers, converters or sorters. Sources can have
+specific filters.
 
 					*deoplete-filter-matcher_default*
 Default matchers: ['matcher_fuzzy']
@@ -951,7 +964,7 @@ rplugin/python3/deoplete/source/*.py.
 
 The files are automatically loaded and deoplete creates new Source class
 object.
-Source class must extend Base class in ".base".
+Source class must extend the Base class in ".base".
 
 Note: The sources must be written in Python3 language.
 
@@ -969,7 +982,7 @@ __init__	(Function)
 						*deoplete-source-attribute-__*
 __{name}	(Unspecified)			(Optional)
 		Additional source information.
-		Note: Recommend sources save variables instead of
+		Note: Sources should save variables instead of
 		global variables.
 
 					*deoplete-source-attribute-converters*
@@ -1012,40 +1025,45 @@ filetypes	(List[str])			(Optional)
 		Available filetype list.
 
 		Default: []
-		Note: It means this source available in all filetypes.
+		Note: It means this source is available for all filetypes.
 
 				*deoplete-source-attribute-gather_candidates*
 gather_candidates
 		(Function)			(Required)
 		It is called to gather candidates.
-		It takes {self} and {context} as its parameter and returns a
+		It takes {self} and {context} as parameters and returns a
 		list of {candidate}.
-		If the error is occurred, it must return None.
+		If an error occurrs, it must return None.
 		{candidate} must be String or Dictionary contains
 		|deoplete-candidate-attributes|.
 		Here, {context} is the context information when the source is
 		called (|deoplete-notation-{context}|).
 		Note: The source must not filter the candidates by user input.
-		It is |deoplete-filters| work.  If the source filter the
-		candidates, user cannot filter the candidates by fuzzy match.
+		Instead, let the |deoplete-filters| match and sort the results.  If the source filters the
+		candidates, the user cannot then filter the candidates by fuzzy match.
 
 			*deoplete-source-attribute-get_complete_position*
 get_complete_position
 		(Function)			(Optional)
-		It is called to get complete position.
+		It is called to get the position of the current completion.
 		It takes {self} and {context} as its parameter and returns
-		complete position in current line.
-		Here, {context} is the context information when the source is
+		a number representing the starting position of the completion
+		in the current line.
+
+		Here, {context} is the context information from when the source is
 		called (|deoplete-notation-{context}|).
 
 		Default: position using |deoplete-options-keyword_patterns|.
 		Note: If |deoplete-source-attribute-is_bytepos| is True, it
 		must return byte position.
 
+		This is useful if you want to complete terms that are more
+		than simple keywords.
+
 				*deoplete-source-attribute-input_pattern*
 input_pattern
 		(String)			(Optional)
-		If it is matched with input, deoplete ignores
+		If it matches the input, deoplete ignores
 		|deoplete-source-attribute-min_pattern_length|.
 		It is useful for omni function sources.
 		Note: It is Python3 regexp.
@@ -1059,7 +1077,7 @@ input_patterns
 		The dictionary version of
 		|deoplete-source-attribute-input_pattern|.
 		A key is filetype and a value is input pattern.
-		Note: It is Python3 regexp.
+		Note: Values are Python3 regexps.
 
 					*deoplete-source-attribute-is_bytepos*
 is_bytepos
@@ -1068,7 +1086,7 @@ is_bytepos
 		|deoplete-source-attribute-get_complete_position|
 		returns byteposition instead of character position.
 		It is useful for Vim script to create sources because Vim
-		script string uses byte position.  Python string uses
+		script string uses byte position.  Python strings use
 		character position.
 
 		Default: False
@@ -1127,7 +1145,7 @@ matcher_key	(String)			(Optional)
 				*deoplete-source-attribute-max_abbr_width*
 max_abbr_width
 		(Integer)			(Optional)
-		If the candidate abbr length exceeds the length it will be cut
+		If the candidate abbr length exceeds this value, it will be cut
 		down.
 		If it is less than or equal to 0, it will be disabled.
 
@@ -1136,7 +1154,7 @@ max_abbr_width
 				*deoplete-source-attribute-max_candidates*
 max_candidates
 		(Integer)			(Optional)
-		If the candidates are more than it, deoplete will ignore the
+		If there are more candidates than this value, deoplete will ignore the
 		filtering.
 
 		Default: 500
@@ -1144,27 +1162,25 @@ max_candidates
 				*deoplete-source-attribute-max_kind_width*
 max_kind_width
 		(Integer)			(Optional)
-		If the candidate kind length exceeds the length it will be cut
-		down.
-		If it is less than or equal to 0, it will be disabled.
+		If the candidate kind length exceeds this value it will be trimmed.
+		If this value is less than or equal to 0, it will be disabled.
 
 		Default: 40
 
 				*deoplete-source-attribute-max_info_width*
 max_info_width
 		(Integer)			(Optional)
-		If the candidate info length exceeds the length it will be cut
-		down.
-		If it is less than or equal to 0, it will be disabled.
+		If the candidate info length exceeds this value it is trimmed.
+		If this value is less than or equal to 0, it will be disabled.
 
 		Default: 200
 
 				*deoplete-source-attribute-max_menu_width*
 max_menu_width
 		(Integer)			(Optional)
-		If the candidate menu length exceeds the length it will be cut
+		If the candidate menu length exceeds this value it is trimmed.
 		down.
-		If it is less than or equal to 0, it will be disabled.
+		If this value is less than or equal to 0, it will be disabled.
 
 		Default: 40
 
@@ -1272,6 +1288,9 @@ vars		(Dictionary)			(Optional)
 			The input string of the current line, namely the part
 			before the cursor.
 
+		is_refresh		(Bool)
+			If the input is changed, it will be "True".
+
 		is_async		(Bool)
 			If the gather is asynchronous, the source must set
 			it to "True". A typical strategy for an asynchronous
@@ -1310,8 +1329,6 @@ vars		(Dictionary)			(Optional)
 	        context['is_async'] = self._count < 10
 	        return [context['input'].split()[-1] + str(self._count)]
 <
-		is_refresh		(Bool)
-			If the input is changed, it will be "True".
 
 
 ------------------------------------------------------------------------------
@@ -1355,6 +1372,9 @@ rplugin/python3/deoplete/filter/*.py.
 The files are automatically loaded and deoplete creates new Filter class
 object.
 Filter class must extend Base class in ".base".
+
+Matchers, sorters and converters are all kinds of filters, and should all
+be placed in the same filter directory.
 
 Note: The filters must be written in Python3 language.
 
