@@ -147,7 +147,9 @@ candidate_marks
 		The candidate additional marks.
 
 		If set, this will be used to display an additional mark next
-		to the the first {N} candidates. The first mark is used for the
+		to the the first {N} candidates. The first mark is used for
+		the top ranked candidate, the second for the second candidate
+		and so forth.
 		top ranked candidate, the second for the second candidate and
 		so forth.
 
@@ -344,9 +346,10 @@ smart_case
 					*deoplete-options-sources*
 sources
 		It is a dictionary to specify source names.  The key is
-		filetype and the value is a list of source names.  If the key is
-		"_", the value will be used for default filetypes.  For
-		example, you can load some sources in C++ filetype.
+		filetype and the value is a list of source names.  If the key
+		is "_", the value will be used for default filetypes.  For
+		example, you can load some sources in C++ filetype.  If the
+		value is [], it will load all sources.
 		If the value is [], it will load all sources.
 
 		Default value: {}
@@ -367,7 +370,7 @@ min_pattern_length
 
 		Default: 2
 
-						*deoplete-options-yarp*
+					*deoplete-options-yarp*
 yarp
 		Use nvim-yarp library instead of neovim remote plugin feature.
 		Note: nvim-yarp plugin is needed.
@@ -573,7 +576,8 @@ deoplete#manual_complete([{sources}])
 		Note: It must be in |:map-<expr>|.
 
 		If you want to trigger deoplete manually, see also
-		|deoplete-options-auto_complete|, which should typically then be 1.
+		|deoplete-options-auto_complete|, which should typically then
+		be 1.
 >
 		inoremap <silent><expr> <TAB>
 		\ pumvisible() ? "\<C-n>" :
@@ -759,8 +763,8 @@ omni							*deoplete-source-omni*
 FILTERS							*deoplete-filters*
 
 Once candidates have been supplied by one or more sources, they are passed
-through the filters, which are matchers, converters or sorters. Sources can have
-specific filters.
+through the filters, which are matchers, converters or sorters. Sources can
+have specific filters.
 
 					*deoplete-filter-matcher_default*
 Default matchers: ['matcher_fuzzy']
@@ -955,8 +959,6 @@ converter_truncate_menu
 				*deoplete-filter-converter_word_abbr*
 converter_word_abbr
 		Convert candidate word to abbr.
-
-==============================================================================
 CREATE SOURCE					*deoplete-create-source*
 
 To create source, you should read default sources implementation in
@@ -1038,11 +1040,17 @@ gather_candidates
 		|deoplete-candidate-attributes|.
 		Here, {context} is the context information when the source is
 		called (|deoplete-notation-{context}|).
-		Note: The source must not filter the candidates by user input.
-		Instead, let the |deoplete-filters| match and sort the results.  If the source filters the
-		candidates, the user cannot then filter the candidates by fuzzy match.
 
-			*deoplete-source-attribute-get_complete_position*
+		Note: The source must not filter the candidates by user input.
+		Instead, let the |deoplete-filters| match and sort the
+		results.  If the source filters the candidates, the user
+		cannot then filter the candidates by fuzzy match.
+		Instead, let the |deoplete-filters| match and sort the
+		results.  If the source filters the candidates, the user
+		cannot then filter the candidates by fuzzy match.
+		candidates, the user cannot then filter the candidates by
+		fuzzy match.
+
 get_complete_position
 		(Function)			(Optional)
 		It is called to get the position of the current completion.
@@ -1050,7 +1058,8 @@ get_complete_position
 		a number representing the starting position of the completion
 		in the current line.
 
-		Here, {context} is the context information from when the source is
+		Here, {context} is the context information from when the
+		source is called (|deoplete-notation-{context}|).
 		called (|deoplete-notation-{context}|).
 
 		Default: position using |deoplete-options-keyword_patterns|.
@@ -1058,8 +1067,6 @@ get_complete_position
 		must return byte position.
 
 		This is useful if you want to complete terms that are more
-		than simple keywords.
-
 				*deoplete-source-attribute-input_pattern*
 input_pattern
 		(String)			(Optional)
@@ -1108,7 +1115,7 @@ is_silent
 				*deoplete-source-attribute-is_skip_langmap*
 is_skip_langmap
 		(Bool)				(Optional)
-		If it is True, the source skips the |langmap| completion.
+		If it is True, the source skips the 'langmap' completion.
 
 		Default: True
 
@@ -1145,25 +1152,26 @@ matcher_key	(String)			(Optional)
 				*deoplete-source-attribute-max_abbr_width*
 max_abbr_width
 		(Integer)			(Optional)
-		If the candidate abbr length exceeds this value, it will be cut
+		If the candidate abbr length exceeds this value, it will be
+		cut down.
 		down.
 		If it is less than or equal to 0, it will be disabled.
 
 		Default: 80
-
 				*deoplete-source-attribute-max_candidates*
 max_candidates
 		(Integer)			(Optional)
-		If there are more candidates than this value, deoplete will ignore the
-		filtering.
+		If there are more candidates than this value, deoplete will
+		ignore the filtering.
 
 		Default: 500
 
 				*deoplete-source-attribute-max_kind_width*
 max_kind_width
 		(Integer)			(Optional)
-		If the candidate kind length exceeds this value it will be trimmed.
-		If this value is less than or equal to 0, it will be disabled.
+		If the candidate kind length exceeds this value it will be
+		trimmed.  If this value is less than or equal to 0, it will be
+		disabled.
 
 		Default: 40
 
@@ -1362,7 +1370,6 @@ info		(String)			(Optional)
 dup		(Integer)			(Optional)
 		If it is non zero, the item will be displayed in the popup
 		menu when an item with the same word is already present.
-
 ==============================================================================
 CREATE FILTER					*deoplete-create-filter*
 
