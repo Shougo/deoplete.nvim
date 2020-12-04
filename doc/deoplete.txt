@@ -150,8 +150,6 @@ candidate_marks
 		to the the first {N} candidates. The first mark is used for
 		the top ranked candidate, the second for the second candidate
 		and so forth.
-		top ranked candidate, the second for the second candidate and
-		so forth.
 
 		In the example below, the first 5 candidates are marked A..G,
 		which serve as mnemonics for commands to insert that
