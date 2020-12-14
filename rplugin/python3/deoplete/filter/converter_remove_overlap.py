@@ -29,11 +29,11 @@ class Filter(Base):
         check_pairs = []
         pair_pos = self.vim.call('searchpairpos', '(', '', ')', 'nW')
         if ('(' in context['input'] and cur_pos < pair_pos and
-            cur_pos[0] == pair_pos[0]):
+                cur_pos[0] == pair_pos[0]):
             check_pairs.append(['(', ')', pair_pos])
         pair_pos = self.vim.call('searchpairpos', '[', '', ']', 'nW')
         if ('[' in context['input'] and cur_pos < pair_pos and
-            cur_pos[0] == pair_pos[0]):
+                cur_pos[0] == pair_pos[0]):
             check_pairs.append(['[', ']', pair_pos])
 
         for [overlap, candidate, word] in [
