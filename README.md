@@ -6,6 +6,8 @@
 [![Join the chat at https://gitter.im/Shougo/deoplete.nvim](https://badges.gitter.im/Shougo/deoplete.nvim.svg)](https://gitter.im/Shougo/deoplete.nvim?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Doc](https://img.shields.io/badge/doc-%3Ah%20deoplete-orange.svg)](doc/deoplete.txt)
 
+Please read [help](doc/documentation.txt) for details.
+
 Note: If you need to understand what's different between deoplete and other
 similar plugins, please read "deoplete-faq" section in the documentation.
 
@@ -21,7 +23,7 @@ Here are some [completion sources](https://github.com/Shougo/deoplete.nvim/wiki/
 
 - [Install](#install)
   - [Requirements](#requirements)
-- [Configuration](#configuration)
+- [Minimal Configuration](#configuration)
 - [Screenshots](#screenshots)
 
 <!-- vim-markdown-toc -->
@@ -106,7 +108,7 @@ If you want to read the Neovim-python/python3 interface install documentation,
 you should read `:help provider-python` and the Wiki.
 <https://github.com/deoplete-plugins/deoplete-jedi/wiki/Setting-up-Python-for-Neovim>
 
-## Configuration
+## Minimal Configuration
 
 ```vim
 " Use deoplete.
