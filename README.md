@@ -23,7 +23,7 @@ Here are some [completion sources](https://github.com/Shougo/deoplete.nvim/wiki/
 
 - [Install](#install)
   - [Requirements](#requirements)
-- [Minimal Configuration](#configuration)
+- [Configuration](#configuration)
 - [Screenshots](#screenshots)
 
 <!-- vim-markdown-toc -->
@@ -108,7 +108,7 @@ If you want to read the Neovim-python/python3 interface install documentation,
 you should read `:help provider-python` and the Wiki.
 <https://github.com/deoplete-plugins/deoplete-jedi/wiki/Setting-up-Python-for-Neovim>
 
-## Minimal Configuration
+## Configuration
 
 ```vim
 " Use deoplete.
