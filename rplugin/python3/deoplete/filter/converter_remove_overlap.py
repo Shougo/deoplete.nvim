@@ -24,7 +24,7 @@ class Filter(Base):
         next_input_words = [x for x in re.split(
             r'([a-zA-Z_]+|\W)', context['next_input']) if x]
 
-        # Skip parentheses if close parenthese is found after cursor
+        # Skip parentheses if close parentheses is found after cursor
         cur_pos = self.vim.call('getcurpos')[1:3]
         check_pairs = []
         pair_pos = self.vim.call('searchpairpos', '(', '', ')', 'nW')
