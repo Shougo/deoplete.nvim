@@ -20,7 +20,7 @@ class Filter(Base):
     def filter(self, context: UserContext) -> Candidates:
         complete_str = context['complete_str']
         if not re.search(r'[A-Z]', complete_str):
-            return context['candidates']  # type: ignore
+            return list(context['candidates'])
 
         complete_lower = complete_str.lower()
         complete_len = len(complete_str)
@@ -29,4 +29,4 @@ class Filter(Base):
                 if x['word'].lower().startswith(complete_lower)]:
             candidate['word'] = complete_str + candidate[
                 'word'][complete_len:]
-        return context['candidates']  # type: ignore
+        return list(context['candidates'])

@@ -21,7 +21,7 @@ from deoplete.util import (bytepos2charpos, charpos2bytepos, error, error_tb,
                            convert2candidates, uniq_list_dict, Nvim)
 
 UserContext = typing.Dict[str, typing.Any]
-Candidates = typing.Dict[str, typing.Any]
+Candidates = typing.List[typing.Dict[str, typing.Any]]
 Result = typing.Dict[str, typing.Any]
 
 
@@ -75,7 +75,8 @@ class Child(logger.LoggingMixin):
                     self._vim.call('deoplete#auto_complete', 'Update')
 
     def main(self, name: str, args: typing.List[typing.Any],
-             queue_id: typing.Optional[int]) -> typing.Optional[Candidates]:
+             queue_id: typing.Optional[int]) -> typing.Optional[
+                typing.Dict[str, typing.Any]]:
         ret = None
         if name == 'enable_logging':
             self._enable_logging()
@@ -330,8 +331,7 @@ class Child(logger.LoggingMixin):
             error_tb(self._vim, 'Errors from: %s' % f)
 
     def _get_candidates(self, result: Result,
-                        context_input: str, next_input: str
-                        ) -> typing.Optional[Candidates]:
+                        context_input: str, next_input: str) -> Candidates:
         source = result['source']
 
         # Gather async results
@@ -339,7 +339,7 @@ class Child(logger.LoggingMixin):
             self._gather_async_results(result, source)
 
         if not result['candidates']:
-            return None
+            return []
 
         # Source context
         ctx = copy.copy(result['context'])
@@ -431,7 +431,7 @@ class Child(logger.LoggingMixin):
             # Remove duplicates
             ctx['candidates'] = uniq_list_dict(ctx['candidates'])
 
-        return ctx['candidates']  # type: ignore
+        return list(ctx['candidates'])
 
     def _itersource(self, context: UserContext
                     ) -> typing.Generator[typing.Any, None, None]:

@@ -19,11 +19,11 @@ class Filter(Base):
         max_width = context['max_menu_width']
         if not context['candidates'] or 'menu' not in context[
                 'candidates'][0] or max_width <= 0:
-            return context['candidates']  # type: ignore
+            return list(context['candidates'])
 
         footer_width = max_width / 3
         for candidate in context['candidates']:
             candidate['menu'] = truncate_skipping(
                 candidate.get('menu', ''),
                 max_width, '..', footer_width)
-        return context['candidates']  # type: ignore
+        return list(context['candidates'])

@@ -26,7 +26,7 @@ class Filter(Base):
     def filter(self, context: UserContext) -> Candidates:
         if (not context['candidates'] or not context['input']
                 or self._cpsm is False):
-            return context['candidates']  # type: ignore
+            return list(context['candidates'])
 
         if self._cpsm is None:
             errmsg = self._init_cpsm(context)

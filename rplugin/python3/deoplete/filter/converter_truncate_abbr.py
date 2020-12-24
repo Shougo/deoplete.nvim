@@ -18,11 +18,11 @@ class Filter(Base):
     def filter(self, context: UserContext) -> Candidates:
         max_width = context['max_abbr_width']
         if max_width <= 0:
-            return context['candidates']  # type: ignore
+            return list(context['candidates'])
 
         footer_width = max_width / 3
         for candidate in context['candidates']:
             candidate['abbr'] = truncate_skipping(
                 candidate.get('abbr', candidate['word']),
                 max_width, '..', footer_width)
-        return context['candidates']  # type: ignore
+        return list(context['candidates'])

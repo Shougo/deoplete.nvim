@@ -26,4 +26,4 @@ class Filter(Base):
                 (('abbr' in x and p2.search(x['abbr'])) or
                  ('info' in x and p2.search(x['info'])))]:
             candidate['word'] += '('
-        return context['candidates']  # type: ignore
+        return list(context['candidates'])

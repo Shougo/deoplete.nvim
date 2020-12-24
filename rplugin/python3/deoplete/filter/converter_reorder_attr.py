@@ -66,7 +66,7 @@ class Filter(Base):
         preferred_order_attrs = self.get_var(  # type: ignore
             'attrs_order').get(context['filetype'], [])
         if not context['candidates'] or not preferred_order_attrs:
-            return context['candidates']  # type: ignore
+            return list(context['candidates'])
 
         max_list_size = self.vim.call(
             'deoplete#custom#_get_option', 'max_list'

@@ -30,7 +30,7 @@ class Filter(Base):
                 not last_find(x['word'], delimiters) and
                 last_find(x['abbr'], delimiters)]:
             candidate['word'] += delimiter
-        return context['candidates']  # type: ignore
+        return list(context['candidates'])
 
 
 def last_find(s: str, needles: typing.List[str]) -> typing.Optional[str]:

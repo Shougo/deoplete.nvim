@@ -22,4 +22,4 @@ class Filter(Base):
                           if '(' in x['word']]:
             candidate['word'] = re.sub(r'\(.*\)(\$\d+)?', '',
                                        candidate['word'])
-        return context['candidates']  # type: ignore
+        return list(context['candidates'])

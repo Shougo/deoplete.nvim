@@ -98,4 +98,4 @@ class Source(Base):
             candidate['dup'] = 1
             candidate['equal'] = 1
 
-        return candidates  # type: ignore
+        return list(candidates)

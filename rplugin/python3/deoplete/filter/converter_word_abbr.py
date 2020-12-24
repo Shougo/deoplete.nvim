@@ -18,4 +18,4 @@ class Filter(Base):
     def filter(self, context: UserContext) -> Candidates:
         for candidate in context['candidates']:
             candidate['abbr'] = candidate['word']
-        return context['candidates']  # type: ignore
+        return list(context['candidates'])

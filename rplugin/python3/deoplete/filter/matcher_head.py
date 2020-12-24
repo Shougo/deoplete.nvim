@@ -32,7 +32,7 @@ class Filter(Base):
             candidates = context['candidates'][begin:end+1]
 
             if context['ignorecase']:
-                return candidates  # type: ignore
+                return list(candidates)
         else:
             candidates = context['candidates']
 
