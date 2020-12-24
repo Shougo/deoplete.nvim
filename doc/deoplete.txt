@@ -812,6 +812,10 @@ matcher_length
 		Length matching matcher.
 		It removes candidates shorter than or equal to the user input.
 
+					*deoplete-filter-matcher_matchfuzzy*
+matcher_matchfuzzy
+		|matchfuzzy()| matcher.
+
 			      		*deoplete-filter-sorter_rank*
 sorter_rank	Matched rank order sorter.  The higher the head matched word
 		or already typed or inserted word.
