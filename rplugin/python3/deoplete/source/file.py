@@ -58,16 +58,18 @@ class Source(Base):
         p = self._longest_path_that_exists(context, input_str)
         if not p or p == '/' or re.search('//+$', p):
             return []
-        complete_str = self._substitute_path(context, dirname(p) + '/')
-        if not os.path.isdir(complete_str):
+        complete_str = self._substitute_path(
+            context, str(Path(p).parent) + '/')
+        if not Path(complete_str).is_dir():
             return []
         hidden = context['complete_str'].find('.') == 0
         contents: typing.List[typing.Any] = [[], []]
         try:
-            for item in sorted(os.listdir(complete_str), key=str.lower):
+            for item in sorted([str(x) for x in Path(complete_str).iterdir()],
+                               key=str.lower):
                 if not hidden and item[0] == '.':
                     continue
-                contents[not os.path.isdir(complete_str + item)].append(item)
+                contents[not Path(complete_str + item).is_dir()].append(item)
         except PermissionError:
             pass
 
