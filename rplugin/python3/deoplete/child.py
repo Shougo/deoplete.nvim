@@ -5,7 +5,6 @@
 # ============================================================================
 
 import copy
-import os.path
 import re
 import sys
 import time
@@ -13,6 +12,7 @@ import msgpack
 import typing
 
 from collections import defaultdict
+from pathlib import Path
 
 from deoplete import logger
 from deoplete.exceptions import SourceInitError
@@ -104,6 +104,9 @@ class Child(logger.LoggingMixin):
         self.is_debug_enabled = True
 
     def _add_source(self, path: str) -> None:
+        # Resolve symbolic link
+        path = str(Path(path).resolve())
+
         source = None
         try:
             Source = import_plugin(path, 'source', 'Source')
@@ -111,14 +114,15 @@ class Child(logger.LoggingMixin):
                 return
 
             source = Source(self._vim)
-            name = os.path.splitext(os.path.basename(path))[0]
+            name = Path(path).stem
             source.name = getattr(source, 'name', name)
             source.path = path
-            if source.name in self._loaded_sources:
+            loaded_path = self._loaded_sources.get(source.name, '')
+            if source.name in self._loaded_sources and path != loaded_path:
                 # Duplicated name
                 error_tb(self._vim, 'Duplicated source: %s' % source.name)
                 error_tb(self._vim, 'path: "%s" "%s"' %
-                         (path, self._loaded_sources[source.name]))
+                         (path, loaded_path))
                 source = None
         except Exception:
             error_tb(self._vim, 'Could not load source: %s' % path)
@@ -137,7 +141,7 @@ class Child(logger.LoggingMixin):
                 return
 
             f = Filter(self._vim)
-            name = os.path.splitext(os.path.basename(path))[0]
+            name = Path(path).stem
             f.name = getattr(f, 'name', name)
             f.path = path
             if f.name in self._loaded_filters:
