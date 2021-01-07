@@ -4,11 +4,12 @@
 # License: MIT license
 # ============================================================================
 
-import os
-import re
-import sys
+from os.path import expandvars
+from pathlib import Path
 import glob
 import importlib.util
+import re
+import sys
 import traceback
 import typing
 import unicodedata
@@ -61,7 +62,7 @@ def import_plugin(path: str, source: str,
 
     If the class exists, add its directory to sys.path.
     """
-    name = os.path.splitext(os.path.basename(path))[0]
+    name = str(Path(path).name)[: -3]
     module_name = 'deoplete.%s.%s' % (source, name)
 
     spec = importlib.util.spec_from_file_location(module_name, path)
@@ -71,7 +72,7 @@ def import_plugin(path: str, source: str,
     if not cls:
         return None
 
-    dirname = os.path.dirname(path)
+    dirname = str(Path(path).parent)
     if dirname not in sys.path:
         sys.path.insert(0, dirname)
     return cls
@@ -169,8 +170,8 @@ def fuzzy_escape(string: str, camelcase: bool) -> str:
 
 
 def load_external_module(base: str, module: str) -> None:
-    current = os.path.dirname(os.path.abspath(base))
-    module_dir = os.path.join(os.path.dirname(current), module)
+    current = Path(base).parent.resolve()
+    module_dir = str(current.parent.joinpath(module))
     if module_dir not in sys.path:
         sys.path.insert(0, module_dir)
 
@@ -219,7 +220,7 @@ def charwidth(c: str) -> int:
 
 
 def expand(path: str) -> str:
-    return os.path.expanduser(os.path.expandvars(path))
+    return expandvars(Path(path).expanduser())
 
 
 def getlines(vim: Nvim, start: int = 1,
