@@ -5,10 +5,9 @@
 # License: MIT license
 # ============================================================================
 
-import os
+from pathlib import Path
 import re
 import typing
-from os.path import exists, dirname
 
 from deoplete.base.source import Base
 from deoplete.util import expand, Nvim, UserContext, Candidates
@@ -59,13 +58,14 @@ class Source(Base):
         if not p or p == '/' or re.search('//+$', p):
             return []
         complete_str = self._substitute_path(
-            context, str(Path(p).parent) + '/')
+            context, str(Path(expand(p))) + '/')
         if not Path(complete_str).is_dir():
             return []
         hidden = context['complete_str'].find('.') == 0
         contents: typing.List[typing.Any] = [[], []]
         try:
-            for item in sorted([str(x) for x in Path(complete_str).iterdir()],
+            for item in sorted([str(x.name) for x
+                                in Path(complete_str).iterdir()],
                                key=str.lower):
                 if not hidden and item[0] == '.':
                     continue
@@ -83,8 +83,9 @@ class Source(Base):
         data = re.split(r'((?:%s+|(?:(?<![\w\s/\.])(?:~|\.{1,2})?/)+))' %
                         self._isfname, input_str)
         data = [''.join(data[i:]) for i in range(len(data))]
-        existing_paths = sorted(filter(lambda x: exists(
-            dirname(self._substitute_path(context, x))), data))
+        existing_paths = sorted(filter(
+            lambda x: Path(self._substitute_path(context, x)).parent.exists(),
+            data))
         return existing_paths[-1] if existing_paths else ''
 
     def _substitute_path(self, context: UserContext, path: str) -> str:
@@ -93,10 +94,9 @@ class Source(Base):
             if self.get_var('enable_buffer_path') and context['bufpath']:
                 base = context['bufpath']
             else:
-                base = os.path.join(context['cwd'], 'x')
+                base = str(Path(context['cwd']).joinpath('x'))
 
-            for _ in m.group(1):
-                base = dirname(base)
-            return os.path.abspath(os.path.join(
-                base, path[len(m.group(0)):])) + '/'
+            if m.group(1) == '..':
+                base = str(Path(base).parent)
+            return str(Path(base).joinpath(path[len(m.group(0)):])) + '/'
         return expand(path)
