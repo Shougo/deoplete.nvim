@@ -4,7 +4,7 @@
 # License: MIT license
 # ============================================================================
 
-import os
+from pathlib import Path
 import re
 import typing
 
@@ -80,9 +80,9 @@ class Context(object):
             bufname = self._vim.call('bufname', bufnr)
         cwd = self._vim.call('getcwd')
         buftype = self._vim.call('getbufvar', '%', '&buftype')
-        bufpath = (bufname if os.path.isabs(bufname)
-                   else os.path.join(cwd, bufname))
-        if not os.path.exists(bufpath) or 'nofile' in buftype:
+        bufpath = (bufname if Path(bufname).is_absolute()
+                   else str(Path(cwd).joinpath(bufname)))
+        if not Path(bufpath).exists() or 'nofile' in buftype:
             bufpath = ''
 
         self._cached = {
