@@ -4,9 +4,9 @@
 # License: MIT license
 # ============================================================================
 
+from pathlib import Path
 import copy
 import glob
-import os
 import typing
 
 import deoplete.parent
@@ -241,25 +241,24 @@ class Deoplete(logger.LoggingMixin):
             return
 
         sources = (
-            os.path.join('rplugin', 'python3', 'deoplete',
-                         source, '*.py'),
-            os.path.join('rplugin', 'python3', 'deoplete',
-                         source + 's', '*.py'),
-            os.path.join('rplugin', 'python3', 'deoplete',
-                         source, '*', '*.py'),
+            Path('rplugin').joinpath('python3', 'deoplete',
+                                     source, '*.py'),
+            Path('rplugin').joinpath('python3', 'deoplete',
+                                     source + 's', '*.py'),
+            Path('rplugin').joinpath('python3', 'deoplete',
+                                     source, '*', '*.py'),
         )
 
         for src in sources:
             for path in self._runtimepath_list:
-                yield from glob.iglob(os.path.join(path, src))
+                yield from glob.iglob(str(Path(path).joinpath(src)))
 
     def _load_sources(self, context: UserContext) -> None:
         if not self._parents and self._max_parents == 1:
             self._add_parent(deoplete.parent.SyncParent)
 
         for path in self._find_rplugins('source'):
-            if (path in self._loaded_paths
-                    or os.path.basename(path) == 'base.py'):
+            if path in self._loaded_paths or Path(path).name == 'base.py':
                 continue
             self._loaded_paths.add(path)
 
