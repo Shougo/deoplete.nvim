@@ -134,6 +134,9 @@ class Child(logger.LoggingMixin):
                     f'Loaded Source: {source.name} ({path})')
 
     def _add_filter(self, path: str) -> None:
+        # Resolve symbolic link
+        path = str(Path(path).resolve())
+
         f = None
         try:
             Filter = import_plugin(path, 'filter', 'Filter')
@@ -144,11 +147,12 @@ class Child(logger.LoggingMixin):
             name = Path(path).stem
             f.name = getattr(f, 'name', name)
             f.path = path
-            if f.name in self._loaded_filters:
+            loaded_path = self._loaded_filters.get(f.name, '')
+            if f.name in self._loaded_filters and path != loaded_path:
                 # Duplicated name
                 error_tb(self._vim, 'Duplicated filter: %s' % f.name)
                 error_tb(self._vim, 'path: "%s" "%s"' %
-                         (path, self._loaded_filters[f.name]))
+                         (path, self._loaded_path))
                 f = None
         except Exception:
             # Exception occurred when loading a filter.  Log stack trace.
