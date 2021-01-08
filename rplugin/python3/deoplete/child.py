@@ -152,7 +152,7 @@ class Child(logger.LoggingMixin):
                 # Duplicated name
                 error_tb(self._vim, 'Duplicated filter: %s' % f.name)
                 error_tb(self._vim, 'path: "%s" "%s"' %
-                         (path, self._loaded_path))
+                         (path, loaded_path))
                 f = None
         except Exception:
             # Exception occurred when loading a filter.  Log stack trace.
