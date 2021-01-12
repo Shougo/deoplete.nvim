@@ -323,6 +323,9 @@ function! s:matched_indentkeys(input) abort
     return ''
   endif
 
+  " Note: check the last word
+  let checkstr = matchstr(a:input, '\w+$')
+
   for word in filter(map(split(&l:indentkeys, ','),
         \ "matchstr(v:val, 'e\\|=\\zs.*')"), "v:val !=# ''")
 
@@ -331,7 +334,8 @@ function! s:matched_indentkeys(input) abort
     endif
 
     let lastpos = len(a:input) - len(word)
-    if lastpos >= 0 && strridx(a:input, word) == lastpos
+    if checkstr ==# word || (word =~# '^\W\+$' &&
+          \ lastpos >= 0 && strridx(a:input, word) == lastpos)
       return word
     endif
   endfor
