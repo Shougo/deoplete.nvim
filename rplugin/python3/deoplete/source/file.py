@@ -94,7 +94,7 @@ class Source(Base):
             if self.get_var('enable_buffer_path') and context['bufpath']:
                 base = context['bufpath']
             else:
-                base = str(Path(context['cwd']).joinpath('x'))
+                base = context['cwd']
 
             if m.group(1) == '..':
                 base = str(Path(base).parent)
