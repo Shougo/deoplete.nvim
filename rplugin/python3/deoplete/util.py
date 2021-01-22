@@ -220,7 +220,9 @@ def charwidth(c: str) -> int:
 
 
 def expand(path: str) -> str:
-    return expandvars(Path(path).expanduser())
+    if path.startswith('~'):
+        path = str(Path(path).expanduser())
+    return expandvars(path)
 
 
 def getlines(vim: Nvim, start: int = 1,
