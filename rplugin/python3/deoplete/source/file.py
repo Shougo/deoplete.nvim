@@ -6,11 +6,12 @@
 # ============================================================================
 
 from pathlib import Path
+from pynvim import Nvim
 import re
 import typing
 
 from deoplete.base.source import Base
-from deoplete.util import expand, Nvim, UserContext, Candidates
+from deoplete.util import expand, UserContext, Candidates
 
 
 class Source(Base):

@@ -5,6 +5,7 @@
 # ============================================================================
 
 from pathlib import Path
+from pynvim import Nvim
 import copy
 import glob
 import typing
@@ -12,7 +13,7 @@ import typing
 import deoplete.parent
 from deoplete import logger
 from deoplete.context import Context
-from deoplete.util import error, error_tb, Nvim
+from deoplete.util import error, error_tb
 
 UserContext = typing.Dict[str, typing.Any]
 Candidates = typing.Dict[str, typing.Any]

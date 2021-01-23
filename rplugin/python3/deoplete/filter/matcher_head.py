@@ -4,9 +4,11 @@
 # License: MIT license
 # ============================================================================
 
+from pynvim import Nvim
+
 from deoplete.base.filter import Base
 from deoplete.util import binary_search_begin, binary_search_end
-from deoplete.util import Nvim, UserContext, Candidates
+from deoplete.util import UserContext, Candidates
 
 
 class Filter(Base):

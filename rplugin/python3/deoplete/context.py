@@ -5,10 +5,9 @@
 # ============================================================================
 
 from pathlib import Path
+from pynvim import Nvim
 import re
 import typing
-
-from deoplete.util import Nvim
 
 UserContext = typing.Dict[str, typing.Any]
 

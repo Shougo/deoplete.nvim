@@ -6,6 +6,8 @@
 
 from os.path import expandvars
 from pathlib import Path
+from pynvim import Nvim
+from pynvim.api import Buffer
 import glob
 import importlib.util
 import re
@@ -13,13 +15,6 @@ import sys
 import traceback
 import typing
 import unicodedata
-
-if importlib.util.find_spec('pynvim'):
-    from pynvim import Nvim
-    from pynvim.api import Buffer
-else:
-    from neovim import Nvim
-    from neovim.api import Buffer
 
 UserContext = typing.Dict[str, typing.Any]
 Candidate = typing.Dict[str, typing.Any]

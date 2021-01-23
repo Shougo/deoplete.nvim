@@ -4,12 +4,13 @@
 # License: MIT license
 # ============================================================================
 
+from abc import abstractmethod
+from pynvim import Nvim
 import re
 import typing
-from abc import abstractmethod
 
 from deoplete.logger import LoggingMixin
-from deoplete.util import debug, error_vim, Nvim, UserContext, Candidates
+from deoplete.util import debug, error_vim, UserContext, Candidates
 
 
 class Base(LoggingMixin):

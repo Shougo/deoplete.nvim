@@ -4,19 +4,20 @@
 # License: MIT license
 # ============================================================================
 
-import time
-import msgpack
-import subprocess
-import sys
-import typing
 from abc import abstractmethod
 from functools import partial
 from pathlib import Path
+from pynvim import Nvim
 from queue import Queue
+import msgpack
+import subprocess
+import sys
+import time
+import typing
 
 from deoplete import logger
 from deoplete.process import Process
-from deoplete.util import error_tb, error, Nvim
+from deoplete.util import error_tb, error
 
 UserContext = typing.Dict[str, typing.Any]
 

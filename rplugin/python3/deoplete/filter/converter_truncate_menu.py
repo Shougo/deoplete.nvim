@@ -4,8 +4,10 @@
 # License: MIT license
 # ============================================================================
 
+from pynvim import Nvim
+
 from deoplete.base.filter import Base
-from deoplete.util import truncate_skipping, Nvim, UserContext, Candidates
+from deoplete.util import truncate_skipping, UserContext, Candidates
 
 
 class Filter(Base):

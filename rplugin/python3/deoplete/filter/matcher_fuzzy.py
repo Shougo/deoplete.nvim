@@ -4,12 +4,12 @@
 # License: MIT license
 # ============================================================================
 
+from pynvim import Nvim
 import re
 
 from deoplete.base.filter import Base
-from deoplete.util import (
-    fuzzy_escape, binary_search_begin, binary_search_end)
-from deoplete.util import Nvim, UserContext, Candidates
+from deoplete.util import binary_search_begin, binary_search_end
+from deoplete.util import fuzzy_escape, UserContext, Candidates
 
 
 class Filter(Base):

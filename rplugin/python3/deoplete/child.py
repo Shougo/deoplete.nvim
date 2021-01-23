@@ -4,21 +4,21 @@
 # License: MIT license
 # ============================================================================
 
+from collections import defaultdict
+from pathlib import Path
+from pynvim import Nvim
 import copy
+import msgpack
 import re
 import sys
 import time
-import msgpack
 import typing
-
-from collections import defaultdict
-from pathlib import Path
 
 from deoplete import logger
 from deoplete.exceptions import SourceInitError
 from deoplete.util import (bytepos2charpos, charpos2bytepos, error, error_tb,
                            import_plugin, get_custom, get_syn_names,
-                           convert2candidates, uniq_list_dict, Nvim)
+                           convert2candidates, uniq_list_dict)
 
 UserContext = typing.Dict[str, typing.Any]
 Candidates = typing.List[typing.Dict[str, typing.Any]]

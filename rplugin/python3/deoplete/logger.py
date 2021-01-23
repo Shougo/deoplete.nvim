@@ -8,10 +8,9 @@ import time
 import logging
 import typing
 
-from deoplete.util import Nvim
-
-from functools import wraps
 from collections import defaultdict
+from functools import wraps
+from pynvim import Nvim
 
 log_format = '%(asctime)s %(levelname)-8s [%(process)d] (%(name)s) %(message)s'
 log_message_cooldown = 0.5

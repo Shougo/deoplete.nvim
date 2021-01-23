@@ -4,12 +4,13 @@
 # License: MIT license
 # ============================================================================
 
+from pynvim import Nvim
 import re
 import typing
 
 from deoplete.base.filter import Base
 from deoplete.util import getlines
-from deoplete.util import Nvim, UserContext, Candidates, Candidate
+from deoplete.util import UserContext, Candidates, Candidate
 
 
 LINES_MAX = 150

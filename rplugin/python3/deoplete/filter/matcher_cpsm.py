@@ -5,12 +5,13 @@
 # ============================================================================
 
 from pathlib import Path
+from pynvim import Nvim
 import sys
 import typing
 
 from deoplete.base.filter import Base
 from deoplete.util import error, globruntime
-from deoplete.util import Nvim, UserContext, Candidates
+from deoplete.util import UserContext, Candidates
 
 
 class Filter(Base):
