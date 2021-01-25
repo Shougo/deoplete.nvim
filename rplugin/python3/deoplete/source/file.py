@@ -58,8 +58,7 @@ class Source(Base):
         p = self._longest_path_that_exists(context, input_str)
         if not p or p == '/' or re.search('//+$', p):
             return []
-        complete_str = self._substitute_path(
-            context, str(Path(expand(p))) + '/')
+        complete_str = self._substitute_path(context, expand(p) + '/')
         if not Path(complete_str).is_dir():
             return []
         hidden = context['complete_str'].find('.') == 0

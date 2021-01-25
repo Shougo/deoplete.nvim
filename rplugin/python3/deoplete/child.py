@@ -239,6 +239,8 @@ class Child(logger.LoggingMixin):
                     source.is_volatile, source.is_async)):
             return self._prev_results[source.name]
 
+        ctx['bufpath'] = context['bufpath']
+        ctx['cwd'] = context['cwd']
         ctx['is_async'] = False
         ctx['is_refresh'] = True
         ctx['max_abbr_width'] = min(source.max_abbr_width,
