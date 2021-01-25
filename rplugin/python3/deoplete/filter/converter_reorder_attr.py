@@ -64,7 +64,7 @@ class Filter(Base):
         return new_candidates
 
     def filter(self, context: UserContext) -> Candidates:
-        preferred_order_attrs = self.get_var(  # type: ignore
+        preferred_order_attrs = self.get_var(
             'attrs_order').get(context['filetype'], [])
         if not context['candidates'] or not preferred_order_attrs:
             return list(context['candidates'])
