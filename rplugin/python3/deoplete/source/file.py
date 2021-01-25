@@ -26,6 +26,7 @@ class Source(Base):
         self.events: typing.List[str] = ['InsertEnter']
         self.vars = {
             'enable_buffer_path': True,
+            'enable_slash_completion': False,
             'force_completion_length': -1,
         }
 
@@ -56,7 +57,9 @@ class Source(Base):
                      else './')
 
         p = self._longest_path_that_exists(context, input_str)
-        if not p or p == '/' or re.search('//+$', p):
+        slash_completion = bool(self.get_var('enable_slash_completion'))
+        if not p or re.search('//+$', p) or (
+                p == '/' and not slash_completion):
             return []
         complete_str = self._substitute_path(context, expand(p) + '/')
         if not Path(complete_str).is_dir():

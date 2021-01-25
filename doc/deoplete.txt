@@ -690,11 +690,17 @@ file						    *deoplete-source-file*
 				directory.
 				(default: v:true)
 
+		enable_slash_completion
+				If it is True, file source completes the files
+				when user input "/".
+				(default: v:false)
+
 		force_completion_length
 				The completion length if the input does not
 				contain "/".
 				If it is less than 0, it is disabled.
 				(default: -1)
+
 member						*deoplete-source-member*
 		This source collects members from current buffer.
 
