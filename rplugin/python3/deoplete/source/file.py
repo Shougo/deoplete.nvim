@@ -85,19 +85,20 @@ class Source(Base):
                         self._isfname, input_str)
         data = [''.join(data[i:]) for i in range(len(data))]
         existing_paths = sorted(filter(
-            lambda x: Path(self._substitute_path(context, x)).parent.exists(),
+            lambda x: Path(self._substitute_path(context, x)).exists(),
             data))
         return existing_paths[-1] if existing_paths else ''
 
     def _substitute_path(self, context: UserContext, path: str) -> str:
         m = re.match(r'(\.{1,2})/+', path)
-        if m:
-            if self.get_var('enable_buffer_path') and context['bufpath']:
-                base = context['bufpath']
-            else:
-                base = context['cwd']
+        if not m:
+            return expand(path)
 
-            if m.group(1) == '..':
-                base = str(Path(base).parent)
-            return str(Path(base).joinpath(path[len(m.group(0)):])) + '/'
-        return expand(path)
+        if self.get_var('enable_buffer_path') and context['bufpath']:
+            base = context['bufpath']
+        else:
+            base = context['cwd']
+
+        if m.group(1) == '..':
+            base = str(Path(base).parent)
+        return str(Path(base).joinpath(path[len(m.group(0)):])) + '/'
