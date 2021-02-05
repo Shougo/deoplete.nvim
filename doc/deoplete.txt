@@ -193,6 +193,7 @@ ignore_case
 ignore_sources
 		It is a dictionary to decide ignore source names.
 		The key is filetype and the value is source names list.
+		Note: It is disabled in |deoplete#manual_complete()|.
 
 		Default value: {}
 

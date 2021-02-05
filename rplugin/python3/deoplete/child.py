@@ -453,7 +453,9 @@ class Child(logger.LoggingMixin):
                                'ignore_sources', ft, []))
 
         for source_name, source in self._get_sources().items():
-            if source.filetypes is None or source_name in ignore_sources:
+            if source.filetypes is None or (
+                    source_name in ignore_sources and
+                    context['event'] != 'Manual'):
                 continue
             if context['sources'] and source_name not in context['sources']:
                 continue
