@@ -216,7 +216,10 @@ def charwidth(c: str) -> int:
 
 def expand(path: str) -> str:
     if path.startswith('~'):
-        path = str(Path(path).expanduser())
+        try:
+            path = str(Path(path).expanduser())
+        except RuntimeError:
+            pass
     return expandvars(path)
 
 
