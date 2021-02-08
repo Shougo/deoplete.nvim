@@ -349,7 +349,6 @@ sources
 		is "_", the value will be used for default filetypes.  For
 		example, you can load some sources in C++ filetype.  If the
 		value is [], it will load all sources.
-		If the value is [], it will load all sources.
 
 		Default value: {}
 >
