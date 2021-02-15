@@ -47,6 +47,7 @@ https://github.com/Shougo/deoplete.nvim/releases/tag/5.2
 For vim-plug
 
 ```viml
+Plug 'msgpack/msgpack-python'
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
