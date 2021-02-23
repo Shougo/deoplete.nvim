@@ -223,6 +223,14 @@ def expand(path: str) -> str:
     return expandvars(path)
 
 
+def exists_path(path: str) -> bool:
+    try:
+        return Path(path).exists()
+    except RuntimeError:
+        pass
+    return False
+
+
 def getlines(vim: Nvim, start: int = 1,
              end: typing.Union[int, str] = '$') -> typing.List[str]:
     if end == '$':

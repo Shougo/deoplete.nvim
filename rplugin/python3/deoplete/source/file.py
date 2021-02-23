@@ -11,7 +11,7 @@ import re
 import typing
 
 from deoplete.base.source import Base
-from deoplete.util import expand, UserContext, Candidates
+from deoplete.util import expand, exists_path, UserContext, Candidates
 
 
 class Source(Base):
@@ -87,8 +87,7 @@ class Source(Base):
                         self._isfname, input_str)
         data = [''.join(data[i:]) for i in range(len(data))]
         existing_paths = sorted(filter(
-            lambda x: Path(self._substitute_path(context, x)).exists(),
-            data))
+            lambda x: exists_path(self._substitute_path(context, x)), data))
         return existing_paths[-1] if existing_paths else ''
 
     def _substitute_path(self, context: UserContext, path: str) -> str:

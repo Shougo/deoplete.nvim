@@ -9,6 +9,8 @@ from pynvim import Nvim
 import re
 import typing
 
+from deoplete.util import exists_path
+
 UserContext = typing.Dict[str, typing.Any]
 
 
@@ -81,7 +83,7 @@ class Context(object):
         buftype = self._vim.call('getbufvar', '%', '&buftype')
         bufpath = (bufname if Path(bufname).is_absolute()
                    else str(Path(cwd).joinpath(bufname)))
-        if not Path(bufpath).exists() or 'nofile' in buftype:
+        if not exists_path(bufpath) or 'nofile' in buftype:
             bufpath = ''
 
         self._cached = {
