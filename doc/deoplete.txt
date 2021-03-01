@@ -1345,8 +1345,6 @@ vars		(Dictionary)			(Optional)
 	        context['is_async'] = self._count < 10
 	        return [context['input'].split()[-1] + str(self._count)]
 <
-
-
 ------------------------------------------------------------------------------
 CANDIDATE ATTRIBUTES			*deoplete-candidate-attributes*
 
@@ -1378,6 +1376,7 @@ info		(String)			(Optional)
 dup		(Integer)			(Optional)
 		If it is non zero, the item will be displayed in the popup
 		menu when an item with the same word is already present.
+
 ==============================================================================
 CREATE FILTER					*deoplete-create-filter*
 
