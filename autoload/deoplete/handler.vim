@@ -327,7 +327,8 @@ function! s:matched_indentkeys(input) abort
   let checkstr = matchstr(a:input, '\w+$')
 
   for word in filter(map(split(&l:indentkeys, ','),
-        \ "matchstr(v:val, 'e\\|=\\zs.*')"), "v:val !=# ''")
+        \ "matchstr(v:val, 'e\\|=\\zs.*')"),
+        \ "v:val !=# '' && v:val =~# '\\h\\w*'")
 
     if word ==# 'e'
       let word = 'else'
