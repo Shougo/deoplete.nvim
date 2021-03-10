@@ -44,10 +44,13 @@ function! s:check_completion_info(candidates) abort
   let old_candidates = sort(map(copy(info.items), 'v:val.word'))
   return sort(map(copy(a:candidates), 'v:val.word')) ==# old_candidates
 endfunction
+function! deoplete#mapping#_can_complete() abort
+  return has_key(get(g:, 'deoplete#_context', {}), 'candidates')
+        \ && !s:check_completion_info(g:deoplete#_context.candidates)
+        \ && &modifiable
+endfunction
 function! deoplete#mapping#_complete() abort
-  if !has_key(g:deoplete#_context, 'candidates')
-        \ || s:check_completion_info(g:deoplete#_context.candidates)
-        \ || !&modifiable
+  if !deoplete#mapping#_can_complete()
     let g:deoplete#_context.candidates = []
     return ''
   endif

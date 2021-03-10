@@ -87,3 +87,7 @@ endfunction
 function! deoplete#complete_common_string() abort
   return deoplete#mapping#_complete_common_string()
 endfunction
+function! deoplete#can_complete() abort
+  return !empty(get(get(g:, 'deoplete#_context', {}), 'candidates', []))
+        \ && deoplete#mapping#_can_complete()
+endfunction

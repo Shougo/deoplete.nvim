@@ -543,6 +543,11 @@ deoplete#auto_complete([{event}])
 		{event} is autocmd event name.  If it is omitted, "Async" is
 		used.
 
+						*deoplete#can_complete()*
+deoplete#can_complete()
+		Return v:true if current word completion is available.
+		Note: |deoplete-options-auto_complete_popup| must be "manual".
+
 						*deoplete#close_popup()*
 deoplete#close_popup()
 		Insert candidate and close popup menu for deoplete.
@@ -1910,7 +1915,7 @@ A: >
 	inoremap <silent><expr> <TAB>
 	    \ pumvisible() ? "\<C-n>" :
 	    \ <SID>check_back_space() ? "\<Tab>" :
-	    \ deoplete#complete()
+	    \ deoplete#can_complete() ? deoplete#complete() : ''
 	function! s:check_back_space() abort
 	    let col = col('.') - 1
 	    return !col || getline('.')[col - 1]  =~# '\s'
