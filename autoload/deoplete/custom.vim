@@ -92,8 +92,14 @@ function! deoplete#custom#_get_filetype_option(name, filetype, default) abort
   endif
 
   let option = s:cached.option[a:name]
-  let filetype = has_key(option, a:filetype) ? a:filetype : '_'
-  return get(option, filetype, a:default)
+  " Check filetype -> a.b filetype -> '_'
+  for filetype in [a:filetype] + split(a:filetype, '\.') + ['_']
+    if has_key(option, filetype)
+      return option[filetype]
+    endif
+  endfor
+
+  return a:default
 endfunction
 function! deoplete#custom#_get_source_vars(name) abort
   return get(s:cached.source_vars, a:name, {})

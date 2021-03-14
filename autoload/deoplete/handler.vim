@@ -14,7 +14,7 @@ function! deoplete#handler#_init() abort
   for event in [
         \ 'InsertEnter', 'InsertLeave',
         \ 'BufReadPost', 'BufWritePost',
-        \ 'VimLeavePre',
+        \ 'VimLeavePre', 'FileType',
         \ ]
     call s:define_on_event(event)
   endfor
