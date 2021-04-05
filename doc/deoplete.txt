@@ -691,8 +691,8 @@ file						    *deoplete-source-file*
 		Source custom variables:
 		enable_buffer_path
 				If it is True, file source completes the files
-				from the buffer path instead of the current
-				directory.
+				from the buffer directory instead of the
+				current directory.
 				(default: v:true)
 
 		enable_slash_completion
