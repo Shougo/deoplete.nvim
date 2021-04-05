@@ -56,6 +56,7 @@ class Source(Base):
                      if context['input'].rfind('/') >= 0
                      else './')
 
+        # Note: context['bufpath'] will be empty if not exists file
         bufname = context['bufname']
         bufpath = (bufname if Path(bufname).is_absolute()
                    else str(Path(context['cwd']).joinpath(bufname)))
