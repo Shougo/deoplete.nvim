@@ -48,6 +48,8 @@ function! deoplete#mapping#_can_complete() abort
   return has_key(get(g:, 'deoplete#_context', {}), 'candidates')
         \ && !s:check_completion_info(g:deoplete#_context.candidates)
         \ && &modifiable
+        \ && deoplete#util#get_input(g:deoplete#_context.event)
+        \     ==# g:deoplete#_context.input
 endfunction
 function! deoplete#mapping#_complete() abort
   if !deoplete#mapping#_can_complete()
