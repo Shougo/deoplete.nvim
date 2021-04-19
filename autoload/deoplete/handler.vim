@@ -47,11 +47,7 @@ function! deoplete#handler#_do_complete() abort
   let context = g:deoplete#_context
   let event = get(context, 'event', '')
   if s:is_exiting() || v:insertmode !=# 'i' || s:check_input_method()
-    return
-  endif
-
-  if !has_key(context, 'candidates')
-        \ || deoplete#util#get_input(context.event) !=# context.input
+        \ || !has_key(context, 'candidates')
     return
   endif
 
@@ -135,7 +131,7 @@ function! s:completion_timer_stop() abort
   unlet s:completion_timer
 endfunction
 
-function! s:check_prev_completion(event) abort
+function! deoplete#handler#_check_prev_completion(event) abort
   let prev = g:deoplete#_prev_completion
   if a:event ==# 'Async' || a:event ==# 'Update' || mode() !=# 'i'
         \ || empty(get(prev, 'candidates', []))
@@ -171,7 +167,7 @@ function! s:check_prev_completion(event) abort
         \ 'complete_position': prev.complete_position,
         \ 'candidates': candidates,
         \ }
-  call feedkeys("\<Plug>+", 'i')
+  return 1
 endfunction
 
 function! deoplete#handler#_async_timer_start() abort
@@ -203,7 +199,9 @@ function! deoplete#handler#_completion_begin(event) abort
     return
   endif
 
-  call s:check_prev_completion(a:event)
+  if deoplete#handler#_check_prev_completion(a:event)
+    call feedkeys("\<Plug>+", 'i')
+  endif
 
   if a:event !=# 'Update' && a:event !=# 'Async'
     call deoplete#init#_prev_completion()

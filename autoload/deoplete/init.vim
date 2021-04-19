@@ -255,7 +255,7 @@ function! deoplete#init#_option() abort
         \ 'omni_patterns': {},
         \ 'on_insert_enter': v:true,
         \ 'on_text_changed_i': v:true,
-        \ 'prev_completion_mode': '',
+        \ 'prev_completion_mode': 'filter',
         \ 'profile': v:false,
         \ 'refresh_always': v:true,
         \ 'refresh_backspace': v:true,

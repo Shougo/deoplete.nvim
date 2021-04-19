@@ -48,12 +48,20 @@ function! deoplete#mapping#_can_complete() abort
   return has_key(get(g:, 'deoplete#_context', {}), 'candidates')
         \ && !s:check_completion_info(g:deoplete#_context.candidates)
         \ && &modifiable
-        \ && deoplete#util#get_input(g:deoplete#_context.event)
-        \     ==# g:deoplete#_context.input
 endfunction
 function! deoplete#mapping#_complete() abort
   if !deoplete#mapping#_can_complete()
     let g:deoplete#_context.candidates = []
+    return ''
+  endif
+
+  if deoplete#util#get_input(g:deoplete#_context.event)
+        \     !=# g:deoplete#_context.input
+    " Use prev completion instead
+    if deoplete#handler#_check_prev_completion(g:deoplete#_context.event)
+      call feedkeys("\<Plug>+", 'i')
+    endif
+
     return ''
   endif
 
@@ -82,7 +90,13 @@ function! deoplete#mapping#_prev_complete() abort
     return ''
   endif
 
-  call deoplete#mapping#_set_completeopt(v:false)
+  let auto_popup = deoplete#custom#_get_option(
+        \ 'auto_complete_popup') !=# 'manual'
+
+  if auto_popup
+    " Note: completeopt must be changed before complete()
+    call deoplete#mapping#_set_completeopt(v:false)
+  endif
 
   call complete(g:deoplete#_filtered_prev.complete_position + 1,
         \ g:deoplete#_filtered_prev.candidates)
