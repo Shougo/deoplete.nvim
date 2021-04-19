@@ -428,6 +428,7 @@ class Child(logger.LoggingMixin):
         for candidate in ctx['candidates']:
             candidate['icase'] = 1
             candidate['equal'] = refresh
+            candidate['source'] = source.name
 
             # Set default menu
             if (mark != ' ' and
