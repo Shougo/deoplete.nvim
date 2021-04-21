@@ -199,7 +199,7 @@ function! deoplete#handler#_completion_begin(event) abort
     return
   endif
 
-  if deoplete#handler#_check_prev_completion(a:event)
+  if auto_popup && deoplete#handler#_check_prev_completion(a:event)
     call feedkeys("\<Plug>+", 'i')
   endif
 
