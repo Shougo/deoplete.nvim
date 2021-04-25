@@ -61,7 +61,8 @@ class Source(Base):
         bufpath = (bufname if Path(bufname).is_absolute()
                    else str(Path(context['cwd']).joinpath(bufname)))
         buftype = self.vim.call('getbufvar', '%', '&buftype')
-        if 'nofile' in buftype:
+        if not bufname or 'nofile' in buftype or not self.get_var(
+                'enable_buffer_path'):
             bufpath = ''
 
         p = self._longest_path_that_exists(context, input_str, bufpath)
@@ -70,7 +71,10 @@ class Source(Base):
                 p == '/' and not slash_completion):
             return []
 
-        complete_str = self._substitute_path(context, expand(p) + '/', bufpath)
+        p = expand(p)
+        if p[-1] != '/':
+            p += '/'
+        complete_str = self._substitute_path(context, p, bufpath)
         if not Path(complete_str).is_dir():
             return []
         hidden = context['complete_str'].find('.') == 0
@@ -81,7 +85,8 @@ class Source(Base):
                                key=str.lower):
                 if not hidden and item[0] == '.':
                     continue
-                contents[not Path(complete_str + item).is_dir()].append(item)
+                is_dir = not Path(complete_str + '/' + item).is_dir()
+                contents[is_dir].append(item)
         except PermissionError:
             pass
 
@@ -92,8 +97,9 @@ class Source(Base):
     def _longest_path_that_exists(self, context: UserContext,
                                   input_str: str, bufpath: str) -> str:
         input_str = re.sub(r'[^/]*$', '', input_str)
-        data = re.split(r'((?:%s+|(?:(?<![\w\s/\.])(?:~|\.{1,2})?/)+))' %
-                        self._isfname, input_str)
+        data = [x for x in re.split(
+            r'((?:%s+|(?:(?<![\w\s/\.])(?:~|\.{1,2})?/)+))' %
+            self._isfname, input_str)]
         data = [''.join(data[i:]) for i in range(len(data))]
         existing_paths = sorted(filter(
             lambda x: exists_path(self._substitute_path(
@@ -106,11 +112,15 @@ class Source(Base):
         if not m:
             return expand(path)
 
-        if self.get_var('enable_buffer_path') and bufpath:
+        if bufpath:
             base = str(Path(bufpath).parent)
         else:
             base = context['cwd']
 
         if m.group(1) == '..':
             base = str(Path(base).parent)
-        return str(Path(base).joinpath(path[len(m.group(0)):])) + '/'
+        rest = path[len(m.group(0)):]
+        if rest:
+            return str(Path(base).joinpath(rest)) + '/'
+        else:
+            return base
