@@ -26,8 +26,8 @@ if hasattr(vim, 'plugin'):
     @vim.plugin
     class DeopleteHandlers(object):
 
-        def __init__(self, vim: Nvim):
-            self._vim = vim
+        def __init__(self, _vim: Nvim):
+            self._vim = _vim
 
         @vim.function('_deoplete_init', sync=False)  # type: ignore
         def init_channel(self,
