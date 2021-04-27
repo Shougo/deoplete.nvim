@@ -10,10 +10,12 @@ import typing
 
 from deoplete.deoplete import Deoplete
 
-
-if find_spec('yarp'):
+try:
+    # For Vim8
     import vim
-else:
+except ModuleNotFoundError:
+    # For neovim
+    # Note: neovim cannot import vim module
     import pynvim as vim
 
 Context = typing.Dict[str, typing.Any]
