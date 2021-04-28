@@ -2042,8 +2042,6 @@ Q: How to donate money to you?
 A: I don't get the donation, but if you want to donate, please support neovim
 project.  My plugins depends on neovim development.
 
-https://salt.bountysource.com/teams/neovim
-
 Q: What means "dark powered"?
 
 A: I think text editor is everything in the world. I want to do everything in
