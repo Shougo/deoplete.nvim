@@ -153,9 +153,9 @@ function! deoplete#handler#_check_prev_completion(event) abort
     let input = input[prev.complete_position :]
     let escaped_input = escape(input, '~\.^$[]*')
     let pattern = substitute(escaped_input, '\w', '\\w*\0', 'g')
-    call filter(candidates, 'v:val.word =~? pattern')
+    call filter(candidates, { _, val -> val.word =~? pattern })
     if mode ==# 'length'
-      call filter(candidates, 'len(v:val.word) > len(input)')
+      call filter(candidates, { _, val -> len(val.word) > len(input) })
     endif
   elseif mode ==# 'mirror'
     " pass
@@ -296,7 +296,7 @@ function! s:is_skip_text(event) abort
         \     && displaywidth >= &l:textwidth
     if &l:formatoptions =~# '[ta]'
           \ || !empty(filter(deoplete#util#get_syn_names(),
-          \                  "v:val ==# 'Comment'"))
+          \                  { _, val -> val ==# 'Comment' }))
           \ || is_virtual
       return 1
     endif
@@ -325,8 +325,8 @@ function! s:matched_indentkeys(input) abort
   let checkstr = matchstr(a:input, '\w+$')
 
   for word in filter(map(split(&l:indentkeys, ','),
-        \ "matchstr(v:val, 'e\\|=\\zs.*')"),
-        \ "v:val !=# '' && v:val =~# '\\h\\w*'")
+        \ { _, val -> matchstr(val, 'e\\|=\\zs.*') }),
+        \ { _, val -> val !=# '' && val =~# '\\h\\w*' })
 
     if word ==# 'e'
       let word = 'else'

@@ -41,8 +41,9 @@ function! s:check_completion_info(candidates) abort
   endif
   return 0
 
-  let old_candidates = sort(map(copy(info.items), 'v:val.word'))
-  return sort(map(copy(a:candidates), 'v:val.word')) ==# old_candidates
+  let old_candidates = sort(map(copy(info.items), { _, val -> val.word }))
+  return sort(map(copy(a:candidates),
+        \ { _, val -> val.word })) ==# old_candidates
 endfunction
 function! deoplete#mapping#_can_complete() abort
   return has_key(get(g:, 'deoplete#_context', {}), 'candidates')
@@ -157,7 +158,8 @@ function! deoplete#mapping#_complete_common_string() abort
 
   let complete_str = prev.input[prev.complete_position :]
   let candidates = filter(copy(prev.candidates),
-        \ 'stridx(tolower(v:val.word), tolower(complete_str)) == 0')
+        \ { _, val -> stridx(tolower(val.word),
+        \                    tolower(complete_str)) == 0 })
 
   if empty(candidates) || complete_str ==# ''
     return ''

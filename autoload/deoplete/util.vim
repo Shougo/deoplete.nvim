@@ -84,7 +84,7 @@ function! s:vimoption2python(option) abort
 endfunction
 
 function! deoplete#util#uniq(list) abort
-  let list = map(copy(a:list), '[v:val, v:val]')
+  let list = map(copy(a:list), { _, val -> [val, val] })
   let i = 0
   let seen = {}
   while i < len(list)
@@ -96,7 +96,7 @@ function! deoplete#util#uniq(list) abort
       let i += 1
     endif
   endwhile
-  return map(list, 'v:val[0]')
+  return map(list, { _, val -> val[0] })
 endfunction
 
 function! deoplete#util#get_syn_names() abort
@@ -179,8 +179,8 @@ endfunction
 " >0 if a > b
 " 0 if versions are equal.
 function! deoplete#util#versioncmp(a, b) abort
-  let a = map(split(a:a, '\.'), 'str2nr(v:val)')
-  let b = map(split(a:b, '\.'), 'str2nr(v:val)')
+  let a = map(split(a:a, '\.'), { _, val -> str2nr(val) })
+  let b = map(split(a:b, '\.'), { _, val -> str2nr(val) })
   let l = min([len(a), len(b)])
   let d = 0
 
