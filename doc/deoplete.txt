@@ -1814,6 +1814,11 @@ Q: How can I sort all entries alphabetically?
 A: >
 	call deoplete#custom#source('_', 'sorters', ['sorter_word'])
 
+Q: I want to disable all sources marks.
+
+A: >
+	call deoplete#custom#source('_', 'mark', '')
+
 Q: I want to use head matcher instead of fuzzy matcher.
 
 A: You can achieve this by following >

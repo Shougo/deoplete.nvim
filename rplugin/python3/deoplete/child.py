@@ -431,8 +431,10 @@ class Child(logger.LoggingMixin):
             candidate['source'] = source.name
 
             # Set default menu
-            if (mark != ' ' and
-                    candidate.get('menu', '').find(mark) != 0):
+            if mark == ' ':
+                # Disable menu
+                candidate['menu'] = ''
+            elif candidate.get('menu', '').find(mark) != 0:
                 candidate['menu'] = mark + candidate.get('menu', '')
 
             if source.dup:
