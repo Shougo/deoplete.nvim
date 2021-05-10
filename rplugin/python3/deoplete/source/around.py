@@ -17,6 +17,7 @@ class Source(Base):
         super().__init__(vim)
         self.name = 'around'
         self.rank = 300
+        self.mark = '[A]'
         self.vars = {
             'mark_above': '[A]',
             'mark_below': '[A]',
