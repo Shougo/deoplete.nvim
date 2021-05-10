@@ -1148,6 +1148,11 @@ is_volatile
 					*deoplete-source-attribute-mark*
 mark		(String)			(Optional)
 		The mark of a source.
+		Note: If the source set candidate menu, the source must set
+		it.  If the attribute is empty string, the candidate menu will
+		be disabled.
+
+		Default: ''
 
 					*deoplete-source-attribute-matchers*
 matchers	(List[str])			(Optional)
