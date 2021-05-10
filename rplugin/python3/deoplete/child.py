@@ -415,6 +415,13 @@ class Child(logger.LoggingMixin):
 
         mark = source.mark + ' '
 
+        # Check user mark set
+        user_mark = self._vim.call(
+            'deoplete#custom#_get_source', source.name).get('mark', '')
+        if user_mark == '':
+            user_mark = self._vim.call(
+                'deoplete#custom#_get_source', '_').get('mark', mark)
+
         refresh = False
         refresh_always = self._vim.call(
             'deoplete#custom#_get_option', 'refresh_always')
@@ -431,10 +438,10 @@ class Child(logger.LoggingMixin):
             candidate['source'] = source.name
 
             # Set default menu
-            if mark == ' ':
+            if user_mark == '':
                 # Disable menu
                 candidate['menu'] = ''
-            elif candidate.get('menu', '').find(mark) != 0:
+            elif mark != ' ' and candidate.get('menu', '').find(mark) != 0:
                 candidate['menu'] = mark + candidate.get('menu', '')
 
             if source.dup:
