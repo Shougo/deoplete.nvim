@@ -137,7 +137,7 @@ function! s:init_internal_variables() abort
 
     if deoplete#util#has_yarp()
       " Dummy call is needed to check exists()
-      call neovim_rpc#serveraddr()
+      silent! call neovim_rpc#serveraddr()
       if !exists('*neovim_rpc#serveraddr')
         call deoplete#util#print_error(
               \ 'deoplete requires vim-hug-neovim-rpc plugin in Vim.')
