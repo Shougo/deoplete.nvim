@@ -563,6 +563,7 @@ class Child(logger.LoggingMixin):
             'dup',
             'filetypes',
             'input_pattern',
+            'input_patterns',
             'is_debug_enabled',
             'is_silent',
             'is_volatile',
