@@ -44,7 +44,7 @@ instead.
 
 https://github.com/Shougo/deoplete.nvim/releases/tag/5.2
 
-For vim-plug
+### vim-plug
 
 ```viml
 if has('nvim')
@@ -57,7 +57,7 @@ endif
 let g:deoplete#enable_at_startup = 1
 ```
 
-For dein.vim
+### dein.vim
 
 ```viml
 call dein#add('Shougo/deoplete.nvim')
@@ -68,7 +68,53 @@ endif
 let g:deoplete#enable_at_startup = 1
 ```
 
-For manual installation(not recommended)
+### Built-in Vim 8/NeoVim package manager (pack feature)
+
+Becasue Deoplete uses functions for configuration, we have to ensure it is loaded. So we put it as an *optional* package (`opt` subdirectory of your pack) and load it explicitly in the configuration file:
+
+#### Vim 8
+```
+git clone https://github.com/Shougo/deoplete.nvim ~/.vim/pack/dist/opt/deoplete.nvim
+```
+
+Generate helptags (optional):
+```
+:helptags ~/.vim/pack/dist/opt/deoplete.nvim/doc
+```
+
+#### NeoVim
+
+```
+git clone https://github.com/Shougo/deoplete.nvim ~/.config/nvim/pack/dist/opt/deoplete.nvim
+```
+
+Generate helptags (optional):
+```
+:helptags ~/.config/nvim/pack/dist/opt/deoplete.nvim/doc
+```
+
+#### Common configuration in `init.vim`/`.vimrc`
+
+```
+let g:deoplete#enable_at_startup = 1
+
+" This actually loads the plugin
+packadd deoplete.nvim
+
+" So here it's safe to call things like call deoplete#custom#option
+call deoplete#custom#option('ignore_sources', {'_': ['around', 'buffer']})
+```
+
+#### Generate the remote plugin manifest
+
+This is a very important step:
+```
+:UpdateRemotePlugins
+```
+
+And restart the editor for the plugin to start working.
+
+### Manual installation(not recommended)
 
 1. Extract the files and put them in your Neovim or .vim directory
    (usually `$XDG_CONFIG_HOME/nvim/`).
