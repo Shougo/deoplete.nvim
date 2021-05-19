@@ -239,7 +239,9 @@ def getlines(vim: Nvim, start: int = 1,
     lines: typing.List[str] = []
     current = start
     while current <= int(end):
-        lines += vim.call('getline', current, current + max_len)
+        # Skip very long lines
+        lines += [x for x in vim.call('getline', current, current + max_len)
+                  if len(x) < 300]
         current += max_len + 1
     return lines
 
