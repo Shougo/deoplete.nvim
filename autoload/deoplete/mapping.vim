@@ -156,17 +156,9 @@ function! deoplete#mapping#_complete_common_string() abort
     return ''
   endif
 
-  let complete_str = prev.input[prev.complete_position :]
-  let candidates = filter(copy(prev.candidates),
-        \ { _, val -> stridx(tolower(val.word),
-        \                    tolower(complete_str)) == 0 })
-
-  if empty(candidates) || complete_str ==# ''
-    return ''
-  endif
-
-  let common_str = candidates[0].word
-  for candidate in candidates[1:]
+  let complete_str = deoplete#util#get_input('')[prev.complete_position :]
+  let common_str = prev.candidates[0].word
+  for candidate in prev.candidates[1:]
     while stridx(tolower(candidate.word), tolower(common_str)) != 0
       let common_str = common_str[: -2]
     endwhile
