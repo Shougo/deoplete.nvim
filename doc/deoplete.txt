@@ -587,8 +587,8 @@ deoplete#manual_complete([{sources}])
 		\ <SID>check_back_space() ? "\<TAB>" :
 		\ deoplete#manual_complete()
 		function! s:check_back_space() abort "{{{
-		let col = col('.') - 1
-		return !col || getline('.')[col - 1]  =~ '\s'
+		  let col = col('.') - 1
+		  return !col || getline('.')[col - 1]  =~ '\s'
 		endfunction"}}}
 <
 				*deoplete#smart_close_popup()*
@@ -1429,6 +1429,8 @@ filter
 ==============================================================================
 EXTERNAL SOURCES				*deoplete-external-sources*
 
+Please see https://github.com/Shougo/deoplete.nvim/wiki/Completion-Sources
+
 neco-vim: "vim" source for Vim script
 https://github.com/Shougo/neco-vim
 
@@ -1441,124 +1443,11 @@ https://github.com/Shougo/neoinclude.vim
 neco-syntax: "syntax" source
 https://github.com/Shougo/neco-syntax
 
-vimshell: "vimshell" source for vimshell
-https://github.com/Shougo/vimshell.vim
-
-neco-ghc: "ghc" source for Haskell
-https://github.com/eagletmt/neco-ghc
-
-neco-look: "look" source to suggest words from sorted dictionary
-https://github.com/ujihisa/neco-look
-
-vim-racer: "racer" source for Rust
-https://github.com/racer-rust/vim-racer
-
-UltiSnips source: "ultisnips" source for UltiSnips
-https://github.com/SirVer/ultisnips
-
-clang-complete: "clang_complete" source for C/C++/Objective-C
-https://github.com/Rip-Rip/clang_complete
-
-deoplete-go: "go" source for Go
-https://github.com/deoplete-plugins/deoplete-go
-
-elixir.nvim: "elixir" source for Elixir
-https://github.com/awetzel/elixir.nvim
-
-deoplete-jedi: "jedi" source for Python
-https://github.com/deoplete-plugins/deoplete-jedi
-
-perlomni.vim: "PerlOmni" source for Perl
-https://github.com/c9s/perlomni.vim
-
-nvim-typescript: "typescript" source for typescript
-https://github.com/mhartington/nvim-typescript
-
-async-clj-omni: "async_clj" source for Clojure
-https://github.com/SevereOverfl0w/async-clj-omni
-
-deoplete-ternjs: "ternjs" source for JavaScript
-https://github.com/carlitux/deoplete-ternjs
-
-deoplete-swift: "swift" source for Swift
-https://github.com/landaire/deoplete-swift
-
-neovim-intellij-complete-deoplete: "intellij" source for Intellij IDE
-https://github.com/vhakulinen/neovim-intellij-complete-deoplete
-
-tmux-complete: "tmuxcomplete" source for tmux panes
-https://github.com/wellle/tmux-complete.vim
-
-deoplete-github: "github" source for "gitcommit" filetype
-https://github.com/SevereOverfl0w/deoplete-github
-
-deoplete-flow: "flow" source for JavaScript
-https://github.com/steelsojka/deoplete-flow
-
-deoplete-d: "d" source for D language
-https://github.com/landaire/deoplete-d
-
-deoplete-rtags: "rtags" source for "c", "cpp", "objc" and "objcpp" filetypes
-https://github.com/LuXuryPro/deoplete-rtags
-
-deoplete-solargraph "solargraph" source for Ruby language
-https://github.com/uplus/deoplete-solargraph
-
-deoplete-padawan: "padawan" source for padawan.php
-https://github.com/pbogut/deoplete-padawan
-
-webcomplete.vim: "webcomplete" source for browser opened pages
-https://github.com/thalesmello/webcomplete.vim
-
-deoplete-julia: "julia" source for Julia
-https://github.com/JuliaEditorSupport/deoplete-julia
-
-acid.nvim: "acid" source for Clojure
-https://github.com/hkupty/acid.nvim
-
-deoplete-omnisharp: "cs" source for C#
-https://github.com/Robzz/deoplete-omnisharp/
-
-deoplete-omnisharp: Improved version of deoplete-omnisharp
-https://github.com/dimixar/deoplete-omnisharp/
-
-deoplete-omnisharp: Embedded omnisharp server version of deoplete-omnisharp
-https://github.com/cyansprite/deoplete-omnisharp
-
-deoplete-hack: "hack" source for Hack and PHP
-https://github.com/zefei/deoplete-hack
-
-deoplete-laravel-plugin: "laravel-plugin" source for "php" and "blade"
-filetypes
-https://github.com/rafaelndev/deoplete-laravel-plugin
-
 deoplete-zsh: "zsh" source for Zsh
 https://github.com/deoplete-plugins/deoplete-zsh
 
-deoplete-fish: "fish" source for fish shell
-https://github.com/ponko2/deoplete-fish
-
-deoplete-fsharp: "fsharp" source for F#
-https://github.com/callmekohei/deoplete-fsharp
-
-autocomplete-flow: "flow" source for JavaScript
-https://github.com/wokalski/autocomplete-flow
-
-deoplete-asm: "asm" source for Assembly Language
-https://github.com/deoplete-plugins/deoplete-asm
-
-deoplete-abook: "abook" source for abook contacts
-https://github.com/fszymanski/deoplete-abook
-
-deoplete-emoji: "emoji" source for emoji codes
-https://github.com/fszymanski/deoplete-emoji
-
-LanguageClient-neovim: "LanguageClient" source for Language Server
-Protocol(LSP)
-https://github.com/autozimu/LanguageClient-neovim
-
-deoplete-vim-lsp: "lsp" source for vim-lsp
-https://github.com/lighttiger2505/deoplete-vim-lsp
+deoplete-lsp source for neovim builtin LSP features
+https://github.com/deoplete-plugins/deoplete-lsp
 
 deoplete-tags: "tag" source for tag files
 https://github.com/deoplete-plugins/deoplete-tag
@@ -1927,8 +1816,8 @@ A: >
 	    \ <SID>check_back_space() ? "\<Tab>" :
 	    \ deoplete#can_complete() ? deoplete#complete() : ''
 	function! s:check_back_space() abort
-	    let col = col('.') - 1
-	    return !col || getline('.')[col - 1]  =~# '\s'
+	  let col = col('.') - 1
+	  return !col || getline('.')[col - 1]  =~# '\s'
 	endfunction
 
 Q: Why I have to trigger |deoplete#complete()| at least twice for the popup to
