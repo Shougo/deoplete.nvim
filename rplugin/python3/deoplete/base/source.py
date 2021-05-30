@@ -52,6 +52,9 @@ class Base(LoggingMixin):
         self.max_candidates = 500
         self.matcher_key = ''
         self.dup = False
+        self.ignore_case = False
+        self.smart_case = False
+        self.camel_case = False
 
     def get_complete_position(self, context: UserContext) -> int:
         m = re.search('(?:' + context['keyword_pattern'] + ')$|$',

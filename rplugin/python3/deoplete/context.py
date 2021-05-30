@@ -90,17 +90,11 @@ class Context(object):
             'bufnr': bufnr,
             'bufname': bufname,
             'bufpath': bufpath,
-            'camelcase': self._vim.call(
-                'deoplete#custom#_get_option', 'camel_case'),
             'complete_str': '',
             'custom': self._vim.call('deoplete#custom#_get'),
             'cwd': cwd,
             'encoding': self._vim.options['encoding'],
-            'ignorecase': self._vim.call(
-                'deoplete#custom#_get_option', 'ignore_case'),
             'is_windows': self._vim.call('has', 'win32'),
-            'smartcase': self._vim.call(
-                'deoplete#custom#_get_option', 'smart_case'),
         }
 
     def _get_context_filetype(self,

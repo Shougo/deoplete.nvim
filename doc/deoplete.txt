@@ -131,17 +131,6 @@ auto_refresh_delay
 
 		Default value: 100 (milliseconds)
 
-						*deoplete-options-camel_case*
-camel_case
-		If it is True, lowercase letters are also matched with the
-		corresponding uppercase ones.
-		Ex: "foB" is matched with "FooBar" but not with "foobar".
-		Note: This feature is only available in
-		|deoplete-filter-matcher_fuzzy| or
-		|deoplete-filter-matcher_full_fuzzy|.
-
-		Default value: v:false
-
 					*deoplete-options-candidate_marks*
 candidate_marks
 		The candidate additional marks.
@@ -182,12 +171,6 @@ complete_suffix
 		for supported sources.  It is useful for deoplete-tabnine.
 
 		Default value: v:true
-
-						*deoplete-options-ignore_case*
-ignore_case
-		If it is True, deoplete ignores case.
-
-		Default value: same with your 'ignorecase' value
 
 					*deoplete-options-ignore_sources*
 ignore_sources
@@ -334,13 +317,6 @@ skip_chars
 		The list of skip characters in the auto completion.
 
 		Default value: ['(', ')']
-
-						*deoplete-options-smart_case*
-smart_case
-		When a capital letter is included in input, deoplete does
-		not ignore the upper- and lowercase.
-
-		Default value: same with your 'smartcase' value
 
 					*deoplete-options-sources*
 sources
@@ -618,7 +594,7 @@ EXAMPLES						*deoplete-examples*
 	" Use deoplete.
 	let g:deoplete#enable_at_startup = 1
 	" Use smartcase.
-	call deoplete#custom#option('smart_case', v:true)
+	call deoplete#custom#source('_', 'smart_case', v:true)
 
 	" <CR>: close popup and save indent.
 	inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
@@ -1000,6 +976,17 @@ __{name}	(Unspecified)			(Optional)
 		Note: Sources should save variables instead of
 		global variables.
 
+					*deoplete-source-attribute-camel_case*
+camel_case
+		If it is True, lowercase letters are also matched with the
+		corresponding uppercase ones.
+		Ex: "foB" is matched with "FooBar" but not with "foobar".
+		Note: This feature is only available in
+		|deoplete-filter-matcher_fuzzy| or
+		|deoplete-filter-matcher_full_fuzzy|.
+
+		Default value: v:false
+
 					*deoplete-source-attribute-converters*
 converters	(List[str])			(Optional)
 		Source default converters list.
@@ -1079,7 +1066,14 @@ get_complete_position
 		Note: If |deoplete-source-attribute-is_bytepos| is True, it
 		must return byte position.
 
-		This is useful if you want to complete terms that are more
+		This is useful if you want to complete terms that are more.
+
+					*deoplete-source-attribute-ignore_case*
+ignore_case
+		If it is True, deoplete ignores case.
+
+		Default value: v:false
+
 				*deoplete-source-attribute-input_pattern*
 input_pattern
 		(String)			(Optional)
@@ -1263,6 +1257,13 @@ rank		(Integer)			(Optional)
 		Note: It is high priority than match position.
 
 		Default: 100
+
+					*deoplete-source-attribute-smart_case*
+smart_case
+		When a capital letter is included in input, deoplete does
+		not ignore the upper- and lowercase.
+
+		Default value: v:false
 
 					*deoplete-source-attribute-sorters*
 sorters		(List[str])			(Optional)
@@ -2001,6 +2002,10 @@ A: deoplete is:
 
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
+
+2021.05.30
+* "smart_case" and "ignore_case" and "camel_case" are source specific options
+  instead.
 
 2020.11.07
 * Disable nofile buffers completion except

@@ -360,13 +360,15 @@ class Child(logger.LoggingMixin):
         ctx['is_sorted'] = False
 
         # Set ignorecase
-        case = ctx['smartcase'] or ctx['camelcase']
+        case = source.smart_case or source.camel_case
+        ignorecase = source.ignore_case
         if case:
             if re.search(r'[A-Z]', ctx['complete_str']):
-                ctx['ignorecase'] = False
+                ignorecase = False
             else:
-                ctx['ignorecase'] = True
-        ignorecase = ctx['ignorecase']
+                ignorecase = True
+        ctx['ignorecase'] = ignorecase
+        ctx['camelcase'] = source.camel_case
 
         # Match
         matchers = [self._filters[x] for x
@@ -558,10 +560,12 @@ class Child(logger.LoggingMixin):
         Each item in `attrs` is the attribute name.
         """
         attrs = (
+            'camel_case',
             'converters',
             'disabled_syntaxes',
             'dup',
             'filetypes',
+            'ignore_case',
             'input_pattern',
             'input_patterns',
             'is_debug_enabled',
@@ -576,6 +580,7 @@ class Child(logger.LoggingMixin):
             'max_menu_width',
             'max_pattern_length',
             'min_pattern_length',
+            'smart_case',
             'sorters',
         )
 
