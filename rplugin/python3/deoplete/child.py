@@ -367,8 +367,9 @@ class Child(logger.LoggingMixin):
                 ignorecase = False
             else:
                 ignorecase = True
-        ctx['ignorecase'] = ignorecase
         ctx['camelcase'] = source.camel_case
+        ctx['ignorecase'] = ignorecase
+        ctx['smartcase'] = source.smart_case
 
         # Match
         matchers = [self._filters[x] for x
