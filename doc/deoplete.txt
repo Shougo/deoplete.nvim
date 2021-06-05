@@ -1939,8 +1939,10 @@ A: >
 
 Q: How to donate money to you?
 
-A: I don't get the donation, but if you want to donate, please support neovim
-project.  My plugins depends on neovim development.
+A: I have started github sponsorship to spend more time for Vim/neovim
+plugins.  You can donate money to help me!
+
+https://github.com/sponsors/Shougo
 
 Q: What means "dark powered"?
 
