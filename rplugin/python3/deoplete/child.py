@@ -259,6 +259,8 @@ class Child(logger.LoggingMixin):
         if ctx['max_menu_width'] > 0:
             ctx['max_menu_width'] = max(10, ctx['max_menu_width'])
 
+        self._set_context_case(source, ctx)
+
         # Gathering
         self._profile_start(ctx, source.name)
         ctx['vars'] = self._vim.vars
@@ -299,6 +301,19 @@ class Child(logger.LoggingMixin):
             context['candidates'] += convert2candidates(async_candidates)
         except Exception as exc:
             self._handle_source_exception(source, exc)
+
+    def _set_context_case(self, source: typing.Any,
+                          context: UserContext) -> None:
+        case = source.smart_case or source.camel_case
+        ignorecase = source.ignore_case
+        if case:
+            if re.search(r'[A-Z]', context['complete_str']):
+                ignorecase = False
+            else:
+                ignorecase = True
+        context['camelcase'] = source.camel_case
+        context['ignorecase'] = ignorecase
+        context['smartcase'] = source.smart_case
 
     def _handle_source_exception(self,
                                  source: typing.Any, exc: Exception) -> None:
@@ -359,17 +374,7 @@ class Child(logger.LoggingMixin):
         ctx['complete_str'] = context_input[ctx['char_position']:]
         ctx['is_sorted'] = False
 
-        # Set ignorecase
-        case = source.smart_case or source.camel_case
-        ignorecase = source.ignore_case
-        if case:
-            if re.search(r'[A-Z]', ctx['complete_str']):
-                ignorecase = False
-            else:
-                ignorecase = True
-        ctx['camelcase'] = source.camel_case
-        ctx['ignorecase'] = ignorecase
-        ctx['smartcase'] = source.smart_case
+        self._set_context_case(source, ctx)
 
         # Match
         matchers = [self._filters[x] for x
@@ -409,8 +414,6 @@ class Child(logger.LoggingMixin):
             ctx['candidates'] = []
             for candidates in sorted_candidates:
                 ctx['candidates'] += candidates
-
-        ctx['ignorecase'] = ignorecase
 
         # On post filter
         if hasattr(source, 'on_post_filter'):
