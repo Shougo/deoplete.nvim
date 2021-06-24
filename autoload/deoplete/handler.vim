@@ -322,11 +322,11 @@ function! s:matched_indentkeys(input) abort
   endif
 
   " Note: check the last word
-  let checkstr = matchstr(a:input, '\w+$')
+  let checkstr = matchstr(a:input, '\w\+$')
 
   for word in filter(map(split(&l:indentkeys, ','),
-        \ { _, val -> matchstr(val, 'e\\|=\\zs.*') }),
-        \ { _, val -> val !=# '' && val =~# '\\h\\w*' })
+        \ { _, val -> matchstr(val, 'e\|=\zs.*') }),
+        \ { _, val -> val !=# '' && val =~# '\h\w*' })
 
     if word ==# 'e'
       let word = 'else'
