@@ -49,19 +49,11 @@ def setup(vim: Nvim, level: str, output_file: str = '') -> None:
             level = 'DEBUG'
         root.setLevel(getattr(logging, level))
 
-        try:
-            import pkg_resources
-
-            pynvim_version = pkg_resources.get_distribution('pynvim').version
-        except Exception:
-            pynvim_version = 'unknown'
-
         log = getLogger('logging')
         log.info('--- Deoplete Log Start ---')
-        log.info('%s, Python %s, pynvim %s',
+        log.info('%s, Python %s',
                  vim.call('deoplete#util#neovim_version'),
-                 '.'.join(map(str, sys.version_info[:3])),
-                 pynvim_version)
+                 '.'.join(map(str, sys.version_info[:3])))
 
         if 'deoplete#_logging_notified' not in vim.vars:
             vim.vars['deoplete#_logging_notified'] = 1

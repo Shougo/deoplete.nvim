@@ -61,6 +61,8 @@ def import_plugin(path: str, source: str,
     module_name = 'deoplete.%s.%s' % (source, name)
 
     spec = importlib.util.spec_from_file_location(module_name, path)
+    if not spec:
+        return None
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)  # type: ignore
     cls = getattr(module, classname, None)
