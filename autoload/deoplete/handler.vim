@@ -283,6 +283,11 @@ function! s:is_skip_text(event) abort
     return 1
   endif
 
+  " Check input queue
+  if getchar(1) != 0
+    return 1
+  endif
+
   let lastchar = matchstr(input, '.$')
   let skip_multibyte = deoplete#custom#_get_option('skip_multibyte')
   if skip_multibyte && len(lastchar) != strwidth(lastchar)
