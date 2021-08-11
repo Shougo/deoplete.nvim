@@ -87,7 +87,7 @@ class Source(Base):
                     continue
                 is_dir = not Path(complete_str + '/' + item).is_dir()
                 contents[is_dir].append(item)
-        except PermissionError:
+        except (PermissionError, FileNotFoundError):
             pass
 
         dirs, files = contents
