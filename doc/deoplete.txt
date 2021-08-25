@@ -946,6 +946,7 @@ converter_truncate_menu
 				*deoplete-filter-converter_word_abbr*
 converter_word_abbr
 		Convert candidate word to abbr.
+
 CREATE SOURCE					*deoplete-create-source*
 
 To create source, you should read default sources implementation in
