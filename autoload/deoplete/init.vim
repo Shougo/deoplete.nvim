@@ -242,6 +242,7 @@ function! deoplete#init#_option() abort
         \ 'auto_complete_popup': 'auto',
         \ 'auto_refresh_delay': 20,
         \ 'candidate_marks': [],
+        \ 'overwrite_completeopt': v:true,
         \ 'check_stderr': v:true,
         \ 'complete_suffix': v:true,
         \ 'ignore_sources': {},

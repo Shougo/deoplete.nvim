@@ -265,6 +265,14 @@ on_text_changed_i
 
 		Default value: v:true
 
+				*deoplete-options-overwrite_completeopt*
+overwrite_completeopt
+		Deoplete overwrites 'completeopt' option.
+		You can disable the feature but if you change it, deoplete may
+		not work.
+
+		Default value: v:true
+
 						*deoplete-options-profile*
 profile
 		If it is True, deoplete will print the time information to
@@ -2008,6 +2016,8 @@ https://github.com/Shougo/deoplete.nvim/issues/1192
 A: Unfortunately, both deoplete and coc.nvim provide auto completion feature.
    So deoplete conflicts with coc.nvim.
    You cannot use both. You need to choose coc.nvim or deoplete.
+   Note: But to change |deoplete-options-overwrite_completeopt| may work for
+   you.
 
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*

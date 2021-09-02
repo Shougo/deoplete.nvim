@@ -107,6 +107,10 @@ function! deoplete#mapping#_prev_complete() abort
   return ''
 endfunction
 function! deoplete#mapping#_set_completeopt(is_async) abort
+  if !deoplete#custom#_get_option('overwrite_completeopt')
+    return
+  endif
+
   if !exists('g:deoplete#_saved_completeopt')
     let g:deoplete#_saved_completeopt = &completeopt
   endif
