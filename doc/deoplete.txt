@@ -2002,6 +2002,13 @@ A: deoplete is:
    I don't think deoplete is the best for everyone.  Please choose auto
    completion plugin.
 
+Q: deoplete with coc.nvim does not work.
+https://github.com/Shougo/deoplete.nvim/issues/1192
+
+A: Unfortunately, both deoplete and coc.nvim provide auto completion feature.
+   So deoplete conflicts with coc.nvim.
+   You cannot use both. You need to choose coc.nvim or deoplete.
+
 ==============================================================================
 COMPATIBILITY					*deoplete-compatibility*
 
