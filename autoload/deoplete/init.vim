@@ -221,7 +221,8 @@ function! s:check_custom_var(source_name, old_var, new_var) abort
 
   call deoplete#util#print_error(
         \ printf('%s is deprecated variable.  '.
-        \ 'Please use deoplete#custom#var() instead.', a:old_var))
+        \ 'Please use deoplete#custom#var("%s", "%s", {value}) instead.',
+        \ a:old_var, a:source_name, a:new_var))
   call deoplete#custom#var(a:source_name, a:new_var, eval(a:old_var))
 endfunction
 function! s:check_custom_option(old_var, new_var) abort
@@ -231,7 +232,8 @@ function! s:check_custom_option(old_var, new_var) abort
 
   call deoplete#util#print_error(
         \ printf('%s is deprecated variable.  '.
-        \ 'Please use deoplete#custom#option() instead.', a:old_var))
+        \ 'Please use deoplete#custom#option("%s", {value}) instead.',
+        \ a:old_var, a:new_var))
   call deoplete#custom#option(a:new_var, eval(a:old_var))
 endfunction
 

@@ -730,7 +730,7 @@ omni							*deoplete-source-omni*
 				setting.
 				(default: {})
 >
-		call deoplete#custom#source('omni', 'functions', {
+		call deoplete#custom#var('omni', 'functions', {
 		    \ 'javascript': ['tern#Complete', 'jspc#omni']
 		    \})
 <
