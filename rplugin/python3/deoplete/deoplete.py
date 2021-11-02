@@ -7,7 +7,6 @@
 from pathlib import Path
 from pynvim import Nvim
 import copy
-import glob
 import typing
 
 import deoplete.parent
@@ -27,7 +26,6 @@ class Deoplete(logger.LoggingMixin):
 
         self._vim = vim
         self._runtimepath = ''
-        self._runtimepath_list: typing.List[str] = []
         self._custom: typing.Dict[str, typing.Dict[str, typing.Any]] = {}
         self._loaded_paths: typing.Set[str] = set()
         self._prev_results: typing.Dict[int, Candidates] = {}
@@ -234,42 +232,38 @@ class Deoplete(logger.LoggingMixin):
             parent.enable_logging()
         self._parents.append(parent)
 
-    def _find_rplugins(self,
-                       source: str) -> typing.Generator[str, None, None]:
+    def _find_rplugins(self, source: str) -> typing.List[Path]:
         """Search for base.py or *.py
 
         Searches $VIMRUNTIME/*/rplugin/python3/deoplete/$source[s]/
         """
-        if not self._runtimepath_list:
-            return
 
-        sources = (
-            Path('rplugin').joinpath('python3', 'deoplete',
-                                     source, '*.py'),
-            Path('rplugin').joinpath('python3', 'deoplete',
-                                     source + 's', '*.py'),
-            Path('rplugin').joinpath('python3', 'deoplete',
-                                     source, '*', '*.py'),
-        )
-
-        for src in sources:
-            for path in self._runtimepath_list:
-                yield from glob.iglob(str(Path(path).joinpath(src)))
+        result = []
+        result += self._vim.call(
+            'globpath', self._vim.options['runtimepath'],
+            f'rplugin/python3/deoplete/{source}/*.py', 1, 1)
+        result += self._vim.call(
+            'globpath', self._vim.options['runtimepath'],
+            f'rplugin/python3/deoplete/{source}s/*.py', 1, 1)
+        result += self._vim.call(
+            'globpath', self._vim.options['runtimepath'],
+            f'rplugin/python3/deoplete/{source}/*/*.py', 1, 1)
+        return [Path(x) for x in result]
 
     def _load_sources(self, context: UserContext) -> None:
         if not self._parents and self._max_parents == 1:
             self._add_parent(deoplete.parent.SyncParent)
 
         for path in self._find_rplugins('source'):
-            if path in self._loaded_paths or Path(path).name == 'base.py':
+            if str(path) in self._loaded_paths or path.name == 'base.py':
                 continue
-            self._loaded_paths.add(path)
+            self._loaded_paths.add(str(path))
 
             if len(self._parents) <= self._parent_count:
                 # Add parent automatically
                 self._add_parent(deoplete.parent.AsyncParent)
 
-            self._parents[self._parent_count].add_source(path)
+            self._parents[self._parent_count].add_source(str(path))
             self.debug(  # type: ignore
                 f'Process {self._parent_count}: {path}')
 
@@ -282,7 +276,7 @@ class Deoplete(logger.LoggingMixin):
     def _load_filters(self, context: UserContext) -> None:
         for path in self._find_rplugins('filter'):
             for parent in self._parents:
-                parent.add_filter(path)
+                parent.add_filter(str(path))
 
     def _set_source_attributes(self, context: UserContext) -> None:
         for parent in self._parents:
@@ -292,7 +286,6 @@ class Deoplete(logger.LoggingMixin):
         runtimepath = self._vim.options['runtimepath']
         if runtimepath != self._runtimepath:
             self._runtimepath = runtimepath
-            self._runtimepath_list = runtimepath.split(',')
             self._load_sources(context)
             self._load_filters(context)
 
