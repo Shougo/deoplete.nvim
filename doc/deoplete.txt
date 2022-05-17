@@ -1638,6 +1638,17 @@ A: It is the feature of deoplete.  The default insertion is disabled to enable
 completion asynchronously.  If you don't like the behavior, you should use
 other auto completion plugin.
 
+Q: deoplete does not work on macVim environment.
+
+A:
+https://github.com/Shougo/deoplete.nvim/issues/1196
+
+The homebrew version of macVim is distributed with python included. Thus, when
+you try to install "pynvim" from the command line it will likely be installed
+in the wrong library location. This results in the headline error. The
+solution is to set the python path in the .vimrc file and use homebrew to link
+to the python version installed by macVim.
+
 							*deoplete-faq-config*
 2. Configuration~
 
