@@ -18,7 +18,7 @@ function! deoplete#mapping#_init() abort
   noremap  <silent> <Plug>+  <Nop>
 endfunction
 function! deoplete#mapping#_dummy(func) abort
-  return "\<C-r>=".a:func."()\<CR>"
+  return "\<Cmd>call ".a:func."()\<CR>"
 endfunction
 function! s:check_completion_info(candidates) abort
   if !exists('*complete_info')
