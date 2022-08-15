@@ -49,7 +49,7 @@ function! deoplete#init#_channel() abort
     call deoplete#util#print_error('deoplete requires nvim 0.3.0+.')
     return 1
   endif
-  if !has('nvim') && has('patch-8.2.1978')
+  if !has('nvim') && !has('patch-8.2.1978')
     call deoplete#util#print_error('deoplete requires Vim 8.2.1978+.')
     return 1
   endif
