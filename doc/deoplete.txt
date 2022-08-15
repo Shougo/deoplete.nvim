@@ -45,8 +45,8 @@ Improvements in deoplete in comparison to neocomplete:
 ==============================================================================
 INSTALL							*deoplete-install*
 
-Note: deoplete requires Neovim (0.3.0+) or Vim8.1+ (latest is recommended)
-with Python 3.6.1+ and |+timers| enabled.
+Note: deoplete requires Neovim (0.3.0+) or Vim8.2.1978+ (latest is
+recommended) with Python 3.6.1+ and |+timers| enabled.
 
 Please install/upgrade msgpack package (1.0.0+).
 https://github.com/msgpack/msgpack-python
