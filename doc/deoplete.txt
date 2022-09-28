@@ -1805,6 +1805,20 @@ Q: I want to use floating preview window feature with deoplete.
 
 A: Please install float-preview.nvim plugin.
 https://github.com/ncm2/float-preview.nvim
+Note: You need to use sources with description like "deoplete-lsp".
+>
+	set runtimepath+=~/src/deoplete.nvim/
+	set runtimepath+=~/src/deoplete-lsp
+	set runtimepath+=~/src/nvim-lspconfig
+	set runtimepath+=~/src/float-preview.nvim
+	
+	let g:deoplete#enable_at_startup = 1
+	let g:float_preview#docked = 0
+	
+	lua <<END
+	  require'lspconfig'.gopls.setup{}
+	  require'lspconfig'.pylsp.setup{}
+	END
 
 Q: I want to complete from 'tags'.
 
