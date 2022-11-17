@@ -72,13 +72,13 @@ endif
 let g:deoplete#enable_at_startup = 1
 ```
 
-For manual installation(not recommended)
+Vim >= 8 built-in package manager (not recommended)
 
-1. Extract the files and put them in your Neovim or .vim directory
-   (usually `$XDG_CONFIG_HOME/nvim/`).
+1. Clone the repo in a package (e.g. `$XDG_CONFIG_HOME/nvim/pack/dist/start`, where `dist` is the name of the package)
 
-2. Write `call deoplete#enable()` or `let g:deoplete#enable_at_startup = 1` in
-   your `init.vim`
+2. Write `call deoplete#enable()` or `let g:deoplete#enable_at_startup = 1` in your `init.vim`
+
+3. Inside Vim/NeoVim, call `:UpdateRemotePlugins`
 
 ### Requirements
 
