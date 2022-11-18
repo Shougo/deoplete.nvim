@@ -32,6 +32,7 @@ Here are some [completion sources](https://github.com/Shougo/deoplete.nvim/wiki/
 
 <!-- vim-markdown-toc -->
 
+
 ## Install
 
 **Note:** deoplete requires Neovim (0.3.0+ and of course, **latest** is
@@ -50,7 +51,7 @@ https://github.com/Shougo/deoplete.nvim/releases/tag/5.2
 
 For vim-plug
 
-```viml
+```vim
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
@@ -63,7 +64,7 @@ let g:deoplete#enable_at_startup = 1
 
 For dein.vim
 
-```viml
+```vim
 call dein#add('Shougo/deoplete.nvim')
 if !has('nvim')
   call dein#add('roxma/nvim-yarp')
@@ -74,11 +75,14 @@ let g:deoplete#enable_at_startup = 1
 
 Vim >= 8 built-in package manager (not recommended)
 
-1. Clone the repo in a package (e.g. `$XDG_CONFIG_HOME/nvim/pack/dist/start`, where `dist` is the name of the package)
+1. Clone the repo in a package (e.g. `$XDG_CONFIG_HOME/nvim/pack/dist/start`,
+   where `dist` is the name of the package)
 
-2. Write `call deoplete#enable()` or `let g:deoplete#enable_at_startup = 1` in your `init.vim`
+2. Write `call deoplete#enable()` or `let g:deoplete#enable_at_startup = 1` in
+   your `init.vim`
 
-3. Inside Vim/NeoVim, call `:UpdateRemotePlugins`
+3. Inside NeoVim, call `:UpdateRemotePlugins`
+
 
 ### Requirements
 
@@ -112,6 +116,7 @@ If you want to read the Neovim-python/python3 interface install documentation,
 you should read `:help provider-python` and the Wiki.
 <https://github.com/deoplete-plugins/deoplete-jedi/wiki/Setting-up-Python-for-Neovim>
 
+
 ## Configuration
 
 ```vim
@@ -120,6 +125,7 @@ let g:deoplete#enable_at_startup = 1
 ```
 
 See `:help deoplete-options` for a complete list of options.
+
 
 ## Screenshots
 
