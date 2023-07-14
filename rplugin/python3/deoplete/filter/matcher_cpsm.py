@@ -46,7 +46,7 @@ class Filter(Base):
 
     def _init_cpsm(self, context: UserContext) -> str:
         ext = '.pyd' if context['is_windows'] else '.so'
-        fname = 'bin/cpsm_py' + ext
+        fname = 'autoload/cpsm_py' + ext
         found = globruntime(self.vim.options['runtimepath'], fname)
         errmsg = ''
         if found:
