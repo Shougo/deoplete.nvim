@@ -213,12 +213,9 @@ endfunction
 function! deoplete#util#indent_current_line() abort
   let pos = getpos('.')
   let len = len(getline('.'))
-  let equalprg = &l:equalprg
   try
-    setlocal equalprg=
     silent normal! ==
   finally
-    let &l:equalprg = equalprg
     let pos[2] += len(getline('.')) - len
     call setpos('.', pos)
   endtry
