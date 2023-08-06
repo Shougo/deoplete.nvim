@@ -455,7 +455,8 @@ class Child(logger.LoggingMixin):
         # Note: cannot use set() for dict
         if source.dup:
             # Remove duplicates
-            ctx['candidates'] = uniq_list_dict(ctx['candidates'])
+            ctx['candidates'] = uniq_list_dict(
+                ctx['candidates'])  # type: ignore
 
         return list(ctx['candidates'])
 

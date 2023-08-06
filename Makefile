@@ -11,9 +11,6 @@ install-user: vim-themis
 	pip install --user --upgrade -r test/requirements.txt
 
 lint:
-	vint --version
-	vint plugin
-	vint autoload
 	flake8 --version
 	flake8 rplugin
 	mypy --version
