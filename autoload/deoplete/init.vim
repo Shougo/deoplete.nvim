@@ -86,9 +86,9 @@ function! deoplete#init#_channel() abort
       endif
     else
       call deoplete#util#print_error(
-          \ 'deoplete failed to load. '
-          \ .'Try the :UpdateRemotePlugins command and restart Neovim. '
-          \ .'See also :checkhealth.')
+            \ 'deoplete failed to load. '
+            \ .'Try the :UpdateRemotePlugins command and restart Neovim. '
+            \ .'See also :checkhealth and :messages output.')
     endif
 
     return 1
