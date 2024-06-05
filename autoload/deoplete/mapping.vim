@@ -28,7 +28,7 @@ function! s:check_completion_info(candidates) abort
   endif
 
   let info = complete_info()
-  let noinsert = &completeopt =~# 'noinsert'
+  let noinsert = &l:completeopt =~# 'noinsert'
   if (info.mode !=# '' && info.mode !=# 'eval')
         \ || (noinsert && info.selected > 0)
         \ || (!noinsert && info.selected >= 0)
@@ -114,21 +114,21 @@ function! deoplete#mapping#_set_completeopt(is_async) abort
   endif
 
   if !exists('g:deoplete#_saved_completeopt')
-    let g:deoplete#_saved_completeopt = &completeopt
+    let g:deoplete#_saved_completeopt = &l:completeopt
   endif
-  set completeopt-=longest
-  set completeopt+=menuone
-  set completeopt-=menu
-  if &completeopt !~# 'noinsert\|noselect' || a:is_async
+  setlocal completeopt-=longest
+  setlocal completeopt+=menuone
+  setlocal completeopt-=menu
+  if &l:completeopt !~# 'noinsert\|noselect' || a:is_async
     " Note: If is_async, noselect is needed to prevent without confirmation
     " problem
-    set completeopt-=noinsert
-    set completeopt+=noselect
+    setlocal completeopt-=noinsert
+    setlocal completeopt+=noselect
   endif
 endfunction
 function! deoplete#mapping#_restore_completeopt() abort
   if exists('g:deoplete#_saved_completeopt')
-    let &completeopt = g:deoplete#_saved_completeopt
+    let &l:completeopt = g:deoplete#_saved_completeopt
     unlet g:deoplete#_saved_completeopt
   endif
 endfunction
