@@ -12,7 +12,7 @@ import typing
 import deoplete.parent
 from deoplete import logger
 from deoplete.context import Context
-from deoplete.util import error, error_tb
+from deoplete.util import bytepos2charpos, error, error_tb
 
 UserContext = typing.Dict[str, typing.Any]
 Candidates = typing.Dict[str, typing.Any]
@@ -113,9 +113,11 @@ class Deoplete(logger.LoggingMixin):
             return
 
         # error(self._vim, candidates)
+        complete_str = '' if position < 0 else context['input'][
+            bytepos2charpos(context['encoding'], context['input'], position):]
         self._vim.vars['deoplete#_context'] = {
             'complete_position': position,
-            'complete_str': context['input'][position:],
+            'complete_str': complete_str,
             'candidates': candidates,
             'event': context['event'],
             'input': context['input'],
@@ -194,17 +196,22 @@ class Deoplete(logger.LoggingMixin):
 
         complete_position = min(x['complete_position'] for x in results)
 
+        # Positions are byte offsets; slice the input by characters
+        encoding = context['encoding']
+        text = context['input']
+        start = bytepos2charpos(encoding, text, complete_position)
+
         all_candidates: typing.List[Candidates] = []
         for result in sorted(results,
                              key=lambda x: int(x['rank']), reverse=True):
             candidates = result['candidates']
-            prefix = context['input'][
-                complete_position:result['complete_position']]
+            prefix = text[start:bytepos2charpos(
+                encoding, text, result['complete_position'])]
 
             if prefix != '':
-                for candidate in candidates:
-                    # Add prefix
-                    candidate['word'] = prefix + candidate['word']
+                # Copy: the cached result in _prev_results must stay as is
+                candidates = [dict(c, word=prefix + c['word'])
+                              for c in candidates]
 
             all_candidates += candidates
 
