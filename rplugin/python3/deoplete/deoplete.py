@@ -202,9 +202,9 @@ class Deoplete(logger.LoggingMixin):
                 complete_position:result['complete_position']]
 
             if prefix != '':
-                for candidate in candidates:
-                    # Add prefix
-                    candidate['word'] = prefix + candidate['word']
+                # Copy: the cached result in _prev_results must stay as is
+                candidates = [dict(c, word=prefix + c['word'])
+                              for c in candidates]
 
             all_candidates += candidates
 
