@@ -1,5 +1,7 @@
 from unittest import mock
 
+import pytest
+
 from deoplete.deoplete import Deoplete
 
 
@@ -18,16 +20,27 @@ def _deoplete(text):
     return d
 
 
-def test_merge_results_prefix():
-    d = _deoplete('foo.ba')
+# 'é' is 2 bytes: positions are byte offsets
+@pytest.mark.parametrize('text,start', [('foo.ba', 0), ('é.foo.ba', 3)])
+def test_merge_results_prefix(text, start):
+    d = _deoplete(text)
     d._parents = [mock.Mock()]
     d._parents[0].merge_results.return_value = (False, False, [
-        {'complete_position': 0, 'rank': 100,
+        {'complete_position': start, 'rank': 100,
          'candidates': [{'word': 'foo.bar'}]},
-        {'complete_position': 4, 'rank': 50,
+        {'complete_position': start + 4, 'rank': 50,
          'candidates': [{'word': 'bar'}]},
     ])
     # The second call reuses the cached result
     for _ in range(2):
         words = [c['word'] for c in d._merge_results(d._context.get())[3]]
         assert words == ['foo.bar', 'foo.bar']
+
+
+@pytest.mark.parametrize('text,position,complete_str',
+                         [('é.foo', 3, 'foo'), ('é', -1, '')])
+def test_complete_str(text, position, complete_str):
+    d = _deoplete(text)
+    d._merge_results = mock.Mock(return_value=(False, False, position, []))
+    d.completion_begin({'event': 'TextChangedI'})
+    assert d._vim.vars['deoplete#_context']['complete_str'] == complete_str
